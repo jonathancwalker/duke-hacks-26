@@ -81,7 +81,8 @@ const FEELINGS = [
 function simVisitor() {
   const [feeling, arousal] = FEELINGS[Math.floor(Math.random() * FEELINGS.length)];
   const a = 1 + Math.random() * 2, b = 1 + Math.random() * 2, ph = Math.random() * 6, cx = .3 + Math.random() * .4, cy = .35 + Math.random() * .3;
-  const path = f => [{ key: 'sim', x: S.W * (cx + .28 * Math.sin(a * 6.28 * f + ph)), y: S.H * (cy + .3 * Math.sin(b * 6.28 * f)) }];
+  const path = f => [{ key: 'sim', x: S.W * (cx + .28 * Math.sin(a * 6.28 * f + ph)), y: S.H * (cy + .3 * Math.sin(b * 6.28 * f)),
+    fist: f > .4 && f < .55 }];   // a fist mid-trace lifts the pen, so the path is two separate shapes
   const voices = Object.keys(VOICES), voice = voices[Math.floor(Math.random() * voices.length)];
   const envelope = Array.from({ length: 24 }, (_, i) => VOICES[voice](i / 23) * (.85 + .15 * Math.random()));
   return { heard: { feeling, arousal, envelope }, path, voice };
