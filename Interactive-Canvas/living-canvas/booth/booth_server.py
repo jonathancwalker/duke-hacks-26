@@ -17,6 +17,7 @@ import concurrent.futures
 import threading
 import json
 import os
+import re
 import sys
 import time
 import urllib.request
@@ -461,7 +462,14 @@ class Handler(BaseHTTPRequestHandler):
         if self.path.split("?")[0] in ("/vibe", "/vibe.html"):
             with open(os.path.join(HERE, "..", "vibe", "vibe.html"), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
-        if self.path == "/config.js":                  # Shared-Canvas page config: no Supabase, single station
+        m = re.fullmatch(r"/vibe/([a-z_]+)\.(js|css)", self.path.split("?")[0])
+        if m:                                          # vibe page modules and stylesheet
+            p = os.path.join(HERE, "..", "vibe", f"{m[1]}.{m[2]}")
+            if os.path.isfile(p):
+                with open(p, "rb") as f:
+                    ctype = "text/javascript" if m[2] == "js" else "text/css"
+                    return self._send(200, f.read(), ctype + "; charset=utf-8")
+        if self.path == "/config.js":                 # Shared-Canvas page config: no Supabase, single station
             return self._send(200, b"window.CANVAS_CONFIG = {};", "application/javascript")
         if self.path == "/api/health":
             try:
