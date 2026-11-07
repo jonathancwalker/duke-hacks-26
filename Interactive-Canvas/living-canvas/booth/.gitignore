@@ -1,3 +1,4 @@
 .venv
 visits.jsonl
 __pycache__/
+.frames/

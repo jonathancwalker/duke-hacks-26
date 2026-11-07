@@ -269,6 +269,10 @@ def direct(v):
 
 
 # ---------------------------------------------------------------- GPU lab
+LAB_TIMEOUT_S = float(os.environ.get("BOOTH_LAB_TIMEOUT", "60"))   # a visitor is waiting on vibe frames
+FRAMES = os.path.join(HERE, ".frames")                             # last good GPU frames, served when the lab is down
+
+
 def lab_cfg():
     with open(os.path.join(EXP, ".lab.json")) as f:
         return json.load(f)
@@ -421,8 +425,36 @@ def brush_rules(feeling, arousal, cat):
             "warmth": warm, "light": light, "reading": "", "source": "rules"}
 
 
+# Built-in catalog for when the lab is down: the painters brush_rules picks from, with approximate palettes.
+FALLBACK_CATALOG = [
+    {"name": "Van Gogh, The Starry Night (1889)", "brush": "impasto",
+     "palette": ["#1d3a6b", "#2f5f9e", "#0e1a33", "#e3c55a", "#6f8fb3", "#9fb6a0"]},
+    {"name": "Munch, The Scream (1893)", "brush": "wash",
+     "palette": ["#d2652d", "#e8a33c", "#2c4a6e", "#4b6b5a", "#8a3b22", "#c9b48a"]},
+    {"name": "Monet, Water Lilies (1906)", "brush": "dab",
+     "palette": ["#3f6b4f", "#6f9a7a", "#9fbfb0", "#2c4a5a", "#c9c7a3", "#d79ab0"]},
+    {"name": "Whistler, Nocturne in Black and Gold (1875)", "brush": "wash",
+     "palette": ["#12161a", "#2a3236", "#4a4e44", "#c99a3c", "#6b6a58", "#1f2a2c"]},
+    {"name": "Renoir, Dance at Le Moulin de la Galette (1876)", "brush": "dab",
+     "palette": ["#3b4a3a", "#7a8a6a", "#c7b48a", "#e8dcc0", "#3a3f5a", "#b06a4a"]},
+    {"name": "Matisse, Woman with a Hat (1905)", "brush": "flat",
+     "palette": ["#3f7a5a", "#d98a4a", "#6a5a9a", "#e0c25a", "#b84a4a", "#8fb0a0"]},
+]
+
+
+def brush_catalog():
+    """The lab's artist catalog, or the built-in one when the lab is slow or down (a slow fetch keeps going)."""
+    if _CATALOG:
+        return _CATALOG
+    try:
+        return _POOL.submit(catalog).result(timeout=LAB_TIMEOUT_S)
+    except Exception as e:
+        print(f"[booth] artist catalog unavailable ({e.__class__.__name__}); using the built-in painters", file=sys.stderr)
+        return FALLBACK_CATALOG
+
+
 def brush_direct(v):
-    cat = catalog()
+    cat = brush_catalog()
     feeling, arousal = (v.get("feeling") or "")[:200], max(0.0, min(1.0, float(v.get("arousal", 0.5) or 0.5)))
     d = None
     if GEMINI is not None:
@@ -483,10 +515,41 @@ def _jpg(out):
     return "data:image/jpeg;base64," + out["images"][0]["jpg"]
 
 
+def _frame_path(key):
+    return os.path.join(FRAMES, re.sub(r"[^a-z0-9]+", "-", key.lower()).strip("-")[:80] + ".jpg")
+
+
+def keep_frame(image, keys):
+    try:
+        os.makedirs(FRAMES, exist_ok=True)
+        data = base64.b64decode(image.split(",", 1)[1])
+        for k in keys:
+            with open(_frame_path(k), "wb") as f:
+                f.write(data)
+    except OSError as e:
+        print(f"[booth] could not cache frame: {e}", file=sys.stderr)
+
+
+def lab_frame(code, keys, fallbacks):
+    """Run a one-image lab job and cache the frame under keys. If the lab fails, serve the first cached fallback."""
+    try:
+        image = _jpg(lab_exec(code, timeout=LAB_TIMEOUT_S))
+    except Exception as e:
+        for k in fallbacks:
+            if os.path.isfile(_frame_path(k)):
+                print(f"[booth] lab failed ({e.__class__.__name__}: {str(e)[:120]}); serving cached frame {k!r}", file=sys.stderr)
+                with open(_frame_path(k), "rb") as f:
+                    return {"image": "data:image/jpeg;base64," + base64.b64encode(f.read()).decode(), "fallback": k}
+        raise RuntimeError(f"GPU lab unavailable and no cached frame ({e.__class__.__name__})") from e
+    keep_frame(image, keys)
+    return {"image": image}
+
+
 def vibe_base(v):
     """The night's calm starting underpainting (same scene and seed as every vibe frame)."""
-    scene = load_event(v.get("event"))["scene"]
-    return {"image": _jpg(lab_exec(f"show(base_frame(scene={json.dumps(scene)}), 'base')"))}
+    ev = load_event(v.get("event"))
+    key = f"{ev['id']} base"
+    return lab_frame(f"show(base_frame(scene={json.dumps(ev['scene'])}), 'base')", [key], [key])
 
 
 def vibe_render(v):
@@ -496,11 +559,15 @@ def vibe_render(v):
                      (("energy", 0.5, 0.0), ("warmth", 0.0, -1.0), ("light", 0.0, -1.0)))
     atmosphere = " ".join(str(v.get("atmosphere", "") or "").split())[:120]
     mode = "abstract" if v.get("mode") == "abstract" else "scene"
-    scene = load_event(v.get("event"))["scene"]
+    ev = load_event(v.get("event"))
+    lead = f"{ev['id']} {mode} {max(weights, key=weights.get) if weights else 'none'}"
+    last, base = f"{ev['id']} {mode} last", f"{ev['id']} base"
     t0 = time.time()
-    out = lab_exec(f"show(vibe_frame({json.dumps(weights)}, {args}, atmosphere={json.dumps(atmosphere)}, mode={json.dumps(mode)}, "
-                   f"scene={json.dumps(scene)}), 'vibe')", timeout=120)
-    return {"image": _jpg(out), "seconds": round(time.time() - t0, 2)}
+    # Lab down: the last frame for this lead painter, else the last frame in this mode, else (scene) the base.
+    r = lab_frame(f"show(vibe_frame({json.dumps(weights)}, {args}, atmosphere={json.dumps(atmosphere)}, mode={json.dumps(mode)}, "
+                  f"scene={json.dumps(ev['scene'])}), 'vibe')",
+                  [lead, last], [lead, last] + ([base] if mode == "scene" else []))
+    return {**r, "seconds": round(time.time() - t0, 2)}
 
 
 # ---------------------------------------------------------------- HTTP

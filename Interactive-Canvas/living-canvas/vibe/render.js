@@ -28,6 +28,18 @@ export function linen(c) {
   }
 }
 
+// Stand-in mood frame when the GPU lab has none to give: soft overlapping blots of the visitor's palette.
+export function paletteWash(palette) {
+  const { W, H } = S, c = mk(), x = c.getContext('2d');
+  x.fillStyle = palette[0]; x.fillRect(0, 0, W, H);
+  x.filter = `blur(${Math.round(W / 50)}px)`; x.globalAlpha = .55;
+  for (let i = 0; i < 70; i++) {
+    x.fillStyle = palette[i % palette.length];
+    x.beginPath(); x.ellipse(Math.random() * W, Math.random() * H, W * (.04 + Math.random() * .1), H * (.04 + Math.random() * .1), Math.random() * 3, 0, 7); x.fill();
+  }
+  return c;
+}
+
 // Size the canvases and lay down the night's starting painting (img, or linen when img is null).
 export function startCanvas(img) {
   for (const c of [paint, trail, cursor]) { c.width = S.W; c.height = S.H; }
