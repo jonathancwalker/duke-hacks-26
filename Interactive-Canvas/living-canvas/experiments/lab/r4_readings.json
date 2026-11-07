@@ -1,0 +1,255 @@
+[
+ {
+  "key": "grief",
+  "words": "Missing my grandma tonight.",
+  "arousal": 0.1,
+  "laban": {
+   "weight": -0.6,
+   "time": -0.7,
+   "space": 0,
+   "flow": -0.3,
+   "detected": true,
+   "still": true
+  },
+  "axes": {
+   "energy": -0.8,
+   "temperature": -0.5,
+   "value": -0.7,
+   "reading": "quiet nocturnal longing held in tender blue shadows"
+  },
+  "mix": {
+   "Turner, The Fighting Temeraire (1839)": 0.65,
+   "Whistler, Nocturne in Black and Gold (1875)": 0.2,
+   "Monet, Water Lilies (1906)": 0.15
+  },
+  "mix_reading": "tender nostalgia fading into quiet evening remembrance",
+  "seconds": {
+   "axes": 3.7,
+   "mix": 4.7
+  }
+ },
+ {
+  "key": "love",
+  "words": "Everyone I love is in this room right now!",
+  "arousal": 0.8,
+  "laban": {
+   "weight": -0.5,
+   "time": 0.6,
+   "space": -0.5,
+   "flow": 0.8,
+   "detected": true
+  },
+  "axes": {
+   "energy": 0.78,
+   "temperature": 0.82,
+   "value": 0.8,
+   "reading": "effervescent golden light of collective affection"
+  },
+  "mix": {
+   "Kandinsky, Composition VII (1913)": 0.55,
+   "Klimt, The Kiss (1908)": 0.3,
+   "Rembrandt, The Night Watch (1642)": 0.15
+  },
+  "mix_reading": "an exuberant burst of shared warmth",
+  "seconds": {
+   "axes": 3.0,
+   "mix": 4.9
+  }
+ },
+ {
+  "key": "stress",
+  "words": "I'm so stressed about the job market.",
+  "arousal": 0.9,
+  "laban": {
+   "weight": 0.8,
+   "time": 0.9,
+   "space": 0.7,
+   "flow": -0.8,
+   "detected": true
+  },
+  "axes": {
+   "energy": 0.85,
+   "temperature": -0.45,
+   "value": -0.65,
+   "reading": "bound tension and acute anxiety in shadow"
+  },
+  "mix": {
+   "Munch, The Scream (1893)": 0.6,
+   "Van Gogh, Wheatfield with Crows (1890)": 0.25,
+   "Gericault, The Raft of the Medusa (1819)": 0.15
+  },
+  "mix_reading": "acute panic coiled into rigid tension",
+  "seconds": {
+   "axes": 4.5,
+   "mix": 6.2
+  }
+ },
+ {
+  "key": "snow",
+  "words": "First snow of the year on the walk here.",
+  "arousal": 0.3,
+  "laban": {
+   "weight": -0.6,
+   "time": -0.5,
+   "space": -0.4,
+   "flow": 0.5,
+   "detected": true
+  },
+  "axes": {
+   "energy": -0.65,
+   "temperature": -0.75,
+   "value": 0.6,
+   "reading": "gentle quiet of a winter morning arrival"
+  },
+  "mix": {
+   "Friedrich, Wanderer above the Sea of Fog (1818)": 0.55,
+   "Monet, Impression, Sunrise (1872)": 0.3,
+   "Monet, Water Lilies (1906)": 0.15
+  },
+  "mix_reading": "quiet wonder under the first falling snow",
+  "seconds": {
+   "axes": 4.1,
+   "mix": 4.4
+  }
+ },
+ {
+  "key": "win",
+  "words": "WE WON THE GAME!!",
+  "arousal": 1.0,
+  "laban": {
+   "weight": 0.82,
+   "time": 1.0,
+   "space": -0.83,
+   "flow": 0.78,
+   "detected": true
+  },
+  "axes": {
+   "energy": 0.96,
+   "temperature": 0.85,
+   "value": 0.82,
+   "reading": "pure triumphant ecstasy bursting in radiant light"
+  },
+  "mix": {
+   "Kandinsky, Composition VII (1913)": 0.55,
+   "Delacroix, Liberty Leading the People (1830)": 0.35,
+   "Turner, Rain, Steam and Speed (1844)": 0.1
+  },
+  "mix_reading": "explosive triumph and wild ecstatic release",
+  "seconds": {
+   "axes": 5.0,
+   "mix": 4.2
+  }
+ },
+ {
+  "key": "lost",
+  "words": "Honestly no idea what I'm doing with my life.",
+  "arousal": 0.4,
+  "laban": {
+   "weight": -0.2,
+   "time": 0.2,
+   "space": -0.8,
+   "flow": -0.3,
+   "detected": true
+  },
+  "axes": {
+   "energy": -0.25,
+   "temperature": -0.35,
+   "value": -0.2,
+   "reading": "adrift in misty aimless contemplation"
+  },
+  "mix": {
+   "Friedrich, Wanderer above the Sea of Fog (1818)": 0.55,
+   "Whistler, Nocturne in Black and Gold (1875)": 0.3,
+   "Monet, Impression, Sunrise (1872)": 0.15
+  },
+  "mix_reading": "quietly adrift in the fog of tomorrow",
+  "seconds": {
+   "axes": 3.8,
+   "mix": 6.0
+  }
+ },
+ {
+  "key": "anger",
+  "words": "I'm angry about how things are going.",
+  "arousal": 0.95,
+  "laban": {
+   "weight": 0.9,
+   "time": 0.9,
+   "space": 0.9,
+   "flow": -0.9,
+   "detected": true
+  },
+  "axes": {
+   "energy": 0.95,
+   "temperature": 0.8,
+   "value": -0.7,
+   "reading": "seething rage tightly coiled and burning"
+  },
+  "mix": {
+   "Goya, The Third of May 1808 (1814)": 0.65,
+   "Delacroix, The Death of Sardanapalus (1827)": 0.2,
+   "Van Gogh, Wheatfield with Crows (1890)": 0.15
+  },
+  "mix_reading": "rigid fury cutting through the dark",
+  "seconds": {
+   "axes": 3.6,
+   "mix": 6.0
+  }
+ },
+ {
+  "key": "neutral, still",
+  "words": "I came here with some friends after class.",
+  "arousal": 0.08,
+  "laban": {
+   "weight": -0.6,
+   "time": -0.7,
+   "space": 0,
+   "flow": -0.3,
+   "detected": true,
+   "still": true
+  },
+  "axes": {
+   "energy": -0.7,
+   "temperature": 0.2,
+   "value": 0.45,
+   "reading": "casual afternoon companionship in gentle drifting light"
+  },
+  "mix": {
+   "Seurat, A Sunday on La Grande Jatte (1884)": 0.7,
+   "Monet, Water Lilies (1906)": 0.3
+  },
+  "mix_reading": "quiet afternoon sociability lingering after class",
+  "seconds": {
+   "axes": 3.1,
+   "mix": 4.9
+  }
+ },
+ {
+  "key": "neutral, animated",
+  "words": "I came here with some friends after class.",
+  "arousal": 0.82,
+  "laban": {
+   "weight": 0.82,
+   "time": 1.0,
+   "space": -0.83,
+   "flow": 0.78,
+   "detected": true
+  },
+  "axes": {
+   "energy": 0.82,
+   "temperature": 0.45,
+   "value": 0.52,
+   "reading": "restless youthful surge of afternoon camaraderie"
+  },
+  "mix": {
+   "Kandinsky, Composition VII (1913)": 0.55,
+   "Rembrandt, The Night Watch (1642)": 0.3,
+   "Turner, Rain, Steam and Speed (1844)": 0.15
+  },
+  "mix_reading": "wild kinetic energy of shared release",
+  "seconds": {
+   "axes": 3.6,
+   "mix": 4.9
+  }
+ }
+]
