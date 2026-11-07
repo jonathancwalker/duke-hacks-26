@@ -20,6 +20,7 @@ import os
 import re
 import sys
 import time
+import urllib.parse
 import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -36,6 +37,32 @@ GEMINI, CLIENT, DIRECTOR_NAME = None, None, "rules"
 PLACEMENT = os.environ.get("BOOTH_PLACEMENT", "hybrid")
 if PLACEMENT not in ("hybrid", "axes"):
     sys.exit(f"BOOTH_PLACEMENT must be 'hybrid' or 'axes', not {PLACEMENT!r}")
+
+# The event the booth is set up for: one JSON per event in events/ (name, kind, question, scene, closing).
+# BOOTH_EVENT picks the default; a page can ask for another with ?event=<name>.
+EVENTS = os.path.join(HERE, "..", "events")
+EVENT_KEYS = ("name", "kind", "question", "scene", "closing")
+EVENT = os.environ.get("BOOTH_EVENT", "museum")
+
+
+def load_event(name=None):
+    """The event config by file name (default BOOTH_EVENT). LookupError if there is none, ValueError if incomplete."""
+    name = name or EVENT
+    path = os.path.join(EVENTS, f"{name}.json")
+    if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9_-]+", name) or not os.path.isfile(path):
+        raise LookupError(f"no event {name!r} in events/")
+    with open(path) as f:
+        ev = json.load(f)
+    missing = [k for k in EVENT_KEYS if not str(ev.get(k) or "").strip()]
+    if missing:
+        raise ValueError(f"events/{name}.json is missing {', '.join(missing)}")
+    return {"id": name, **{k: str(ev[k]).strip() for k in EVENT_KEYS}}
+
+
+try:
+    load_event()
+except (LookupError, ValueError) as e:
+    sys.exit(f"BOOTH_EVENT: {e}")
 
 # Must match ART_NAMES on the lab server. Descriptions are manner and feeling only, never subject.
 ART_LIBRARY = {
@@ -427,9 +454,10 @@ def _jpg(out):
     return "data:image/jpeg;base64," + out["images"][0]["jpg"]
 
 
-def vibe_base():
+def vibe_base(v):
     """The night's calm starting underpainting (same scene and seed as every vibe frame)."""
-    return {"image": _jpg(lab_exec("show(base_frame(), 'base')"))}
+    scene = load_event(v.get("event"))["scene"]
+    return {"image": _jpg(lab_exec(f"show(base_frame(scene={json.dumps(scene)}), 'base')"))}
 
 
 def vibe_render(v):
@@ -439,9 +467,10 @@ def vibe_render(v):
                      (("energy", 0.5, 0.0), ("warmth", 0.0, -1.0), ("light", 0.0, -1.0)))
     atmosphere = " ".join(str(v.get("atmosphere", "") or "").split())[:120]
     mode = "abstract" if v.get("mode") == "abstract" else "scene"
+    scene = load_event(v.get("event"))["scene"]
     t0 = time.time()
-    out = lab_exec(f"show(vibe_frame({json.dumps(weights)}, {args}, atmosphere={json.dumps(atmosphere)}, mode={json.dumps(mode)}), 'vibe')",
-                   timeout=120)
+    out = lab_exec(f"show(vibe_frame({json.dumps(weights)}, {args}, atmosphere={json.dumps(atmosphere)}, mode={json.dumps(mode)}, "
+                   f"scene={json.dumps(scene)}), 'vibe')", timeout=120)
     return {"image": _jpg(out), "seconds": round(time.time() - t0, 2)}
 
 
@@ -469,6 +498,14 @@ class Handler(BaseHTTPRequestHandler):
                 with open(p, "rb") as f:
                     ctype = "text/javascript" if m[2] == "js" else "text/css"
                     return self._send(200, f.read(), ctype + "; charset=utf-8")
+        if self.path.split("?")[0] == "/api/event":    # the active event: BOOTH_EVENT, or ?event=<name>
+            name = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get("event", [None])[0]
+            try:
+                return self._send(200, load_event(name))
+            except LookupError as e:
+                return self._send(404, {"error": str(e)})
+            except ValueError as e:
+                return self._send(500, {"error": str(e)})
         if self.path == "/config.js":                 # Shared-Canvas page config: no Supabase, single station
             return self._send(200, b"window.CANVAS_CONFIG = {};", "application/javascript")
         if self.path == "/api/health":
@@ -490,7 +527,7 @@ class Handler(BaseHTTPRequestHandler):
             if self.path == "/api/brush/glaze":
                 return self._send(200, brush_glaze(payload))
             if self.path == "/api/vibe/base":
-                return self._send(200, vibe_base())
+                return self._send(200, vibe_base(payload))
             if self.path == "/api/vibe/render":
                 return self._send(200, vibe_render(payload))
             if self.path == "/api/reset":

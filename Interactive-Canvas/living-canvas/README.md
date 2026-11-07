@@ -26,6 +26,8 @@ By default each visitor becomes a mix of real paintings plus intensity (`BOOTH_P
 
 **Vibe paint:** open http://localhost:8790/vibe. Say how you feel, trace a path in the air with a finger, and the painting is repainted in your mood only along that path. **Simulate** runs a pretend visitor. Pick what the night starts from at the top: the chapel, a blank canvas the chapel emerges from, or a blank canvas for abstract mood paint.
 
+**Events:** each event is one JSON file in `events/` (`name`, `kind`, `question`, `scene`, `closing`). The vibe page asks the event's question, paints its scene, and ends each visit with its closing line. Pick the event with `BOOTH_EVENT=concert` (default `museum`), or per page with http://localhost:8790/vibe?event=concert. Add an event by adding a file; no code changes.
+
 Stop the GPU when you're done (`gcloud compute instances stop ...`, same flags). You also need `experiments/.lab.json` with the lab URL and token; it's kept out of git, so ask the team for it.
 
 ## Folders
