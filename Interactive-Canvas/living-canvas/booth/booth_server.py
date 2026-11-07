@@ -29,6 +29,34 @@ MODEL = "claude-opus-5-5"
 GCP_PROJECT = os.environ.get("BOOTH_GCP_PROJECT")
 GEMINI_MODEL = os.environ.get("BOOTH_GEMINI_MODEL", "gemini-3.8-flash")
 GEMINI, CLIENT, DIRECTOR_NAME = None, None, "rules"
+# How a visitor is placed in art space (see HYPOTHESES.md, round 4):
+#   hybrid: Gemini also picks a mix of 2-4 library paintings; the GPU blends them and adds the axes on top (default)
+#   axes:   energy / warmth / light only (the pre-round-4 booth)
+PLACEMENT = os.environ.get("BOOTH_PLACEMENT", "hybrid")
+if PLACEMENT not in ("hybrid", "axes"):
+    sys.exit(f"BOOTH_PLACEMENT must be 'hybrid' or 'axes', not {PLACEMENT!r}")
+
+# Must match ART_NAMES on the lab server. Descriptions are manner and feeling only, never subject.
+ART_LIBRARY = {
+    "Rembrandt, The Night Watch (1642)": "dramatic chiaroscuro, warm gold light out of darkness, crowded momentum",
+    "Friedrich, Wanderer above the Sea of Fog (1818)": "solitary contemplation, misty sublime distance, cool restraint",
+    "Hokusai, The Great Wave (1831)": "crisp graphic force, cool blues, sudden power held in balance",
+    "Turner, The Fighting Temeraire (1839)": "elegiac golden sunset, nostalgia, warm fading light",
+    "Turner, Rain, Steam and Speed (1844)": "blurred rush, golden haze, headlong momentum",
+    "Monet, Impression, Sunrise (1872)": "soft hazy dawn, quiet hope, muted blue with one orange spark",
+    "Whistler, Nocturne in Black and Gold (1875)": "dark nocturne, scattered sparks, melancholy, forms dissolving",
+    "Seurat, A Sunday on La Grande Jatte (1884)": "bright orderly sunlight, calm sociability, patient dots of color",
+    "Van Gogh, The Starry Night (1889)": "swirling restless night, cool blues against yellow, wonder and unrest",
+    "Van Gogh, Wheatfield with Crows (1890)": "agitated ominous strokes, yellow against dark blue, foreboding",
+    "Munch, The Scream (1893)": "anxiety and dread, wavering lines, hot orange sky over cold blue",
+    "Monet, Water Lilies (1906)": "stillness, reflection, serene greens and blues, meditative",
+    "Klimt, The Kiss (1908)": "warm gold, intimacy, tenderness, rich ornament",
+    "Kandinsky, Composition VII (1913)": "exploding color, overwhelming energy, joyful or chaotic abstraction",
+    "Goya, The Third of May 1808 (1814)": "violence and fear, darkness with one stark light, anger",
+    "Delacroix, Liberty Leading the People (1830)": "heroic defiance, collective surge, smoke and triumph",
+    "Delacroix, The Death of Sardanapalus (1827)": "hot reds, frenzy, chaotic excess",
+    "Gericault, The Raft of the Medusa (1819)": "desperate struggle in a dark storm, hope against despair",
+}
 
 if GCP_PROJECT:   # hackathon credits: Google's own model on Vertex AI
     try:
@@ -112,6 +140,15 @@ def visitor_text(v):
             f"(motion detected: {bool(L.get('detected'))})\n</visitor>")
 
 
+MIX_ADDENDUM = """
+
+Also choose a mix: 2 to 4 paintings from the list below whose manner, palette and feeling match this visitor, with
+weights that sum to 1. Make one painting dominant unless the visitor is genuinely mixed. Match feeling, never subject
+matter: nobody asks for a wave or a kiss. The mix gives the visitor their character; the three axes set intensity.
+
+Paintings:
+""" + "\n".join(f"- {n}: {d}" for n, d in ART_LIBRARY.items())
+
 # Gemini's response_schema uses the OpenAPI subset (upper-case type names, no additionalProperties).
 GEMINI_SCHEMA = {
     "type": "OBJECT",
@@ -119,6 +156,26 @@ GEMINI_SCHEMA = {
                    "value": {"type": "NUMBER"}, "reading": {"type": "STRING"}},
     "required": ["energy", "temperature", "value", "reading"],
 }
+if PLACEMENT == "hybrid":   # one call returns both the axes and the mix
+    GEMINI_SCHEMA = {**GEMINI_SCHEMA,
+                     "properties": {**GEMINI_SCHEMA["properties"], "mix": {"type": "ARRAY", "items": {"type": "OBJECT",
+                         "properties": {"painting": {"type": "STRING", "enum": list(ART_LIBRARY)}, "weight": {"type": "NUMBER"}},
+                         "required": ["painting", "weight"]}}},
+                     "required": GEMINI_SCHEMA["required"] + ["mix"]}
+
+
+def clean_mix(items):
+    """Keep known paintings with positive weight, merge duplicates, renormalize. Empty if anything is unusable."""
+    mix = {}
+    for it in items or []:
+        try:
+            name, w = it["painting"], float(it["weight"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if name in ART_LIBRARY and w > 0:
+            mix[name] = mix.get(name, 0.0) + w
+    total = sum(mix.values())
+    return {n: round(w / total, 3) for n, w in sorted(mix.items(), key=lambda kv: -kv[1])} if total > 0 else {}
 
 
 def gemini_director(v):
@@ -126,7 +183,7 @@ def gemini_director(v):
         model=GEMINI_MODEL,
         contents=visitor_text(v),
         config=genai_types.GenerateContentConfig(
-            system_instruction=DIRECTOR_SYSTEM,
+            system_instruction=DIRECTOR_SYSTEM + (MIX_ADDENDUM if PLACEMENT == "hybrid" else ""),
             response_mime_type="application/json",
             response_schema=GEMINI_SCHEMA,
             temperature=0.4,
@@ -136,7 +193,7 @@ def gemini_director(v):
         return {**rule_director(v), "source": "rules (Gemini returned no text)"}
     d = json.loads(resp.text)
     return {"energy": clamp(d["energy"]), "temperature": clamp(d["temperature"]), "value": clamp(d["value"]),
-            "reading": str(d.get("reading", ""))[:90], "source": GEMINI_MODEL}
+            "reading": str(d.get("reading", ""))[:90], "mix": clean_mix(d.get("mix")), "source": GEMINI_MODEL}
 
 
 def claude_director(v):
@@ -211,7 +268,9 @@ def visit(v):
     d = direct(v)
     t1 = time.time()
     coefs = {k: d[k] for k in ("energy", "temperature", "value")}
-    out = lab_exec(f"m, c, info = booth_visit({json.dumps(coefs)})\nshow(m, 'moment'); show(c, 'crowd')\n"
+    mix = d.get("mix") or {} if PLACEMENT == "hybrid" else {}   # empty mix = axes-only for this visit
+    d["placement"] = "hybrid" if mix else "axes"
+    out = lab_exec(f"m, c, info = booth_visit({json.dumps(coefs)}, mix={json.dumps(mix)})\nshow(m, 'moment'); show(c, 'crowd')\n"
                    f"import json as _j; print(_j.dumps(info))")
     info = json.loads(out["stdout"].strip().splitlines()[-1])
     imgs = {im["name"]: "data:image/jpeg;base64," + im["jpg"] for im in out["images"]}
@@ -229,7 +288,7 @@ def log_visit(v, d, info, timing):
     rec = {"t": time.strftime("%Y-%m-%dT%H:%M:%S"), "n": info.get("n"),
            "words": v.get("transcript") if LOG_WORDS else len((v.get("transcript") or "").split()),
            "prosody": v.get("prosody"), "laban": v.get("laban"),
-           "director": {k: d.get(k) for k in ("energy", "temperature", "value", "reading", "source")},
+           "director": {k: d.get(k) for k in ("energy", "temperature", "value", "reading", "mix", "placement", "source")},
            "nearest": info.get("you_nearest"), "timing": timing}
     try:
         with open(VISIT_LOG, "a") as f:
@@ -427,10 +486,10 @@ class Handler(BaseHTTPRequestHandler):
             if self.path == "/api/vibe/render":
                 return self._send(200, vibe_render(payload))
             if self.path == "/api/reset":
-                lab_exec("booth_reset(); c = paint_booth({'energy': 0, 'temperature': 0, 'value': 0}); show(c, 'crowd')")
+                lab_exec("booth_reset(); show(booth_current(), 'crowd')")
                 return self._send(200, {"ok": True})
             if self.path == "/api/current":
-                out = lab_exec("show(paint_booth(BOOTH['C'] | {'discord': 0.0}), 'crowd'); print(BOOTH['n'])")
+                out = lab_exec("show(booth_current(), 'crowd'); print(BOOTH['n'])")
                 return self._send(200, {"crowd": "data:image/jpeg;base64," + out["images"][0]["jpg"], "n": int(out["stdout"].strip() or 0)})
             self._send(404, {"error": "not found"})
         except Exception as e:
@@ -442,5 +501,5 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"[booth] http://localhost:{PORT}  (director: {DIRECTOR_NAME})")
+    print(f"[booth] http://localhost:{PORT}  (director: {DIRECTOR_NAME}; placement: {PLACEMENT})")
     ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()

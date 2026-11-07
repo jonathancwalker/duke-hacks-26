@@ -257,7 +257,7 @@ async function capture() {
 
 async function sendVisit(v) {
   busy = true; $('#btnGo').disabled = true; $('#btnSim').disabled = true;
-  status('Claude is reading you… then painting');
+  status('Reading you… then painting');
   try {
     const r = await fetch('/api/visit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(v) }).then(r => r.json());
     if (r.error) throw new Error(r.error);
@@ -265,14 +265,20 @@ async function sendVisit(v) {
     // Privacy: the big screen never shows a visitor's words, only the director's museum-style reading.
     const reading = (d.reading || '').trim();
     $('#capWords').textContent = reading ? reading[0].toUpperCase() + reading.slice(1) : 'A moment without words';
-    $('#capMeta').textContent = `closest to ${i.you_nearest.join(' and ')} · energy ${d.energy.toFixed(1)}, warmth ${d.temperature.toFixed(1)}, light ${d.value.toFixed(1)}`;
+    // Hybrid placement names the paintings in the visitor's mix; axes-only falls back to the nearest paintings.
+    const mixText = list => list.map(([n, w]) => `${Math.round(w * 100)}% ${n}`).join(' · ');
+    const axesText = `energy ${d.energy.toFixed(1)}, warmth ${d.temperature.toFixed(1)}, light ${d.value.toFixed(1)}`;
+    $('#capMeta').textContent = (i.you_mix && i.you_mix.length)
+      ? `${mixText(i.you_mix)} · ${axesText}`
+      : `closest to ${i.you_nearest.join(' and ')} · ${axesText}`;
     $('#caption').classList.add('on');
     $('#sub').textContent = 'Your moment';
     await showPainting(r.moment); addThumb(r.moment);
     status(`Director: ${d.source} in ${r.timing.director_s}s · painting ${r.timing.gpu_s}s · visitor ${i.n}`);
     await new Promise(res => setTimeout(res, 7000));
     $('#caption').classList.remove('on');
-    $('#sub').textContent = `The crowd after ${i.n} visitor${i.n === 1 ? '' : 's'} · closest to ${i.crowd_nearest.join(' and ')}`;
+    $('#sub').textContent = `The crowd after ${i.n} visitor${i.n === 1 ? '' : 's'} · ` +
+      ((i.crowd_mix && i.crowd_mix.length) ? mixText(i.crowd_mix) : `closest to ${i.crowd_nearest.join(' and ')}`);
     await showPainting(r.crowd);
   } catch (e) { status('Something went wrong: ' + e.message); console.error(e); }
   busy = false; $('#btnGo').disabled = false; $('#btnSim').disabled = false;
