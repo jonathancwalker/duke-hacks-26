@@ -1,0 +1,2742 @@
+{
+ "feelings": [
+  "grief",
+  "grief2",
+  "triumph",
+  "triumph2",
+  "calm",
+  "calm2",
+  "rage",
+  "rage2",
+  "anxious",
+  "anxious2",
+  "love",
+  "love2",
+  "lonely",
+  "lonely2",
+  "hope",
+  "hope2",
+  "homesick",
+  "homesick2",
+  "wonder",
+  "wonder2",
+  "exhausted",
+  "exhausted2",
+  "excited",
+  "excited2",
+  "grateful",
+  "grateful2",
+  "fear",
+  "fear2",
+  "nostalgia",
+  "nostalgia2",
+  "playful",
+  "playful2",
+  "neutral",
+  "neutral2",
+  "spring",
+  "spring2",
+  "betrayed",
+  "betrayed2",
+  "proud",
+  "proud2"
+ ],
+ "palettes": {
+  "a_affect_clip": [
+   {
+    "colors": [
+     "#827399",
+     "#b196ae",
+     "#495172",
+     "#d9c4cc",
+     "#213040"
+    ],
+    "brightness_measured": 0.503,
+    "saturation_measured": 0.163
+   },
+   {
+    "colors": [
+     "#65658f",
+     "#9985a3",
+     "#284465",
+     "#c5b1be",
+     "#062332"
+    ],
+    "brightness_measured": 0.435,
+    "saturation_measured": 0.181
+   },
+   {
+    "colors": [
+     "#c76c2e",
+     "#cea15a",
+     "#a2392e",
+     "#dcd6aa",
+     "#62202b"
+    ],
+    "brightness_measured": 0.543,
+    "saturation_measured": 0.418
+   },
+   {
+    "colors": [
+     "#c26730",
+     "#ca9c59",
+     "#9c342e",
+     "#d9d0a6",
+     "#5c1d29"
+    ],
+    "brightness_measured": 0.525,
+    "saturation_measured": 0.405
+   },
+   {
+    "colors": [
+     "#799aa0",
+     "#a8bdc7",
+     "#54716f",
+     "#e0e7ef",
+     "#3a4844"
+    ],
+    "brightness_measured": 0.606,
+    "saturation_measured": 0.087
+   },
+   {
+    "colors": [
+     "#658493",
+     "#97a6b6",
+     "#3d5d63",
+     "#ced0da",
+     "#253737"
+    ],
+    "brightness_measured": 0.527,
+    "saturation_measured": 0.098
+   },
+   {
+    "colors": [
+     "#b94543",
+     "#c77d59",
+     "#86173e",
+     "#d3b595",
+     "#430d2b"
+    ],
+    "brightness_measured": 0.447,
+    "saturation_measured": 0.385
+   },
+   {
+    "colors": [
+     "#a3353c",
+     "#b46c51",
+     "#710435",
+     "#c2a387",
+     "#330322"
+    ],
+    "brightness_measured": 0.384,
+    "saturation_measured": 0.364
+   },
+   {
+    "colors": [
+     "#855c8e",
+     "#b17f9c",
+     "#443f6d",
+     "#d2b0b7",
+     "#14213a"
+    ],
+    "brightness_measured": 0.442,
+    "saturation_measured": 0.24
+   },
+   {
+    "colors": [
+     "#b55b57",
+     "#c88c71",
+     "#83334a",
+     "#d9c1a8",
+     "#451d32"
+    ],
+    "brightness_measured": 0.486,
+    "saturation_measured": 0.295
+   },
+   {
+    "colors": [
+     "#b05d4b",
+     "#c18e6a",
+     "#82333f",
+     "#d3c1a6",
+     "#461c2b"
+    ],
+    "brightness_measured": 0.482,
+    "saturation_measured": 0.292
+   },
+   {
+    "colors": [
+     "#bb7145",
+     "#c8a26e",
+     "#94433a",
+     "#dcd5b3",
+     "#59272e"
+    ],
+    "brightness_measured": 0.541,
+    "saturation_measured": 0.32
+   },
+   {
+    "colors": [
+     "#885b8d",
+     "#b47f9a",
+     "#473e6d",
+     "#d3b1b6",
+     "#16213b"
+    ],
+    "brightness_measured": 0.444,
+    "saturation_measured": 0.244
+   },
+   {
+    "colors": [
+     "#926d96",
+     "#bd92a8",
+     "#564d74",
+     "#dfc2c7",
+     "#272e43"
+    ],
+    "brightness_measured": 0.503,
+    "saturation_measured": 0.197
+   },
+   {
+    "colors": [
+     "#cc7744",
+     "#d6aa6e",
+     "#a5473d",
+     "#e6dfb8",
+     "#662c34"
+    ],
+    "brightness_measured": 0.576,
+    "saturation_measured": 0.365
+   },
+   {
+    "colors": [
+     "#d7864d",
+     "#e0b97a",
+     "#b15545",
+     "#f2edc6",
+     "#73383d"
+    ],
+    "brightness_measured": 0.625,
+    "saturation_measured": 0.362
+   },
+   {
+    "colors": [
+     "#65749d",
+     "#9e94b4",
+     "#2a5170",
+     "#cfbfce",
+     "#0e2d3b"
+    ],
+    "brightness_measured": 0.482,
+    "saturation_measured": 0.177
+   },
+   {
+    "colors": [
+     "#c45f4f",
+     "#d3936c",
+     "#943447",
+     "#e1caaa",
+     "#532035"
+    ],
+    "brightness_measured": 0.516,
+    "saturation_measured": 0.346
+   },
+   {
+    "colors": [
+     "#716394",
+     "#a484a4",
+     "#30446d",
+     "#cdb2bd",
+     "#082438"
+    ],
+    "brightness_measured": 0.443,
+    "saturation_measured": 0.212
+   },
+   {
+    "colors": [
+     "#696894",
+     "#9f88a8",
+     "#2b476b",
+     "#cab5c2",
+     "#082636"
+    ],
+    "brightness_measured": 0.449,
+    "saturation_measured": 0.19
+   },
+   {
+    "colors": [
+     "#546c8a",
+     "#8a8ca6",
+     "#20495c",
+     "#bdb6c3",
+     "#0a252c"
+    ],
+    "brightness_measured": 0.442,
+    "saturation_measured": 0.139
+   },
+   {
+    "colors": [
+     "#5a7589",
+     "#8d95a9",
+     "#2e4f5b",
+     "#c1bfca",
+     "#172a2d"
+    ],
+    "brightness_measured": 0.469,
+    "saturation_measured": 0.108
+   },
+   {
+    "colors": [
+     "#c77231",
+     "#cea65f",
+     "#a33f2e",
+     "#dedaaf",
+     "#64252c"
+    ],
+    "brightness_measured": 0.556,
+    "saturation_measured": 0.407
+   },
+   {
+    "colors": [
+     "#ce863b",
+     "#d5b970",
+     "#ad5335",
+     "#e8ecc1",
+     "#713433"
+    ],
+    "brightness_measured": 0.613,
+    "saturation_measured": 0.392
+   },
+   {
+    "colors": [
+     "#9b926d",
+     "#b3ba9d",
+     "#7c654b",
+     "#dbe7d9",
+     "#523f34"
+    ],
+    "brightness_measured": 0.596,
+    "saturation_measured": 0.152
+   },
+   {
+    "colors": [
+     "#c48f5f",
+     "#d3bd8d",
+     "#a0614c",
+     "#edefd2",
+     "#683f3d"
+    ],
+    "brightness_measured": 0.627,
+    "saturation_measured": 0.261
+   },
+   {
+    "colors": [
+     "#cf5a41",
+     "#d9945e",
+     "#a12940",
+     "#e3cca3",
+     "#5b1a34"
+    ],
+    "brightness_measured": 0.522,
+    "saturation_measured": 0.42
+   },
+   {
+    "colors": [
+     "#c95648",
+     "#d58e63",
+     "#982845",
+     "#e1c6a2",
+     "#531934"
+    ],
+    "brightness_measured": 0.505,
+    "saturation_measured": 0.392
+   },
+   {
+    "colors": [
+     "#a46b71",
+     "#bf958c",
+     "#724658",
+     "#dac6ba",
+     "#3c2937"
+    ],
+    "brightness_measured": 0.505,
+    "saturation_measured": 0.174
+   },
+   {
+    "colors": [
+     "#c66937",
+     "#cf9e5f",
+     "#9e3734",
+     "#ddd3aa",
+     "#5e202d"
+    ],
+    "brightness_measured": 0.536,
+    "saturation_measured": 0.395
+   },
+   {
+    "colors": [
+     "#a99455",
+     "#b9c08d",
+     "#8d653a",
+     "#dbedd4",
+     "#603f2f"
+    ],
+    "brightness_measured": 0.612,
+    "saturation_measured": 0.26
+   },
+   {
+    "colors": [
+     "#d49951",
+     "#deca87",
+     "#b56743",
+     "#f3fad5",
+     "#7b453e"
+    ],
+    "brightness_measured": 0.667,
+    "saturation_measured": 0.347
+   },
+   {
+    "colors": [
+     "#9b3f66",
+     "#b86d73",
+     "#5f2254",
+     "#cba399",
+     "#23102e"
+    ],
+    "brightness_measured": 0.396,
+    "saturation_measured": 0.307
+   },
+   {
+    "colors": [
+     "#b46d59",
+     "#c79b7b",
+     "#874349",
+     "#dcceb6",
+     "#4d2833"
+    ],
+    "brightness_measured": 0.525,
+    "saturation_measured": 0.249
+   },
+   {
+    "colors": [
+     "#ac827c",
+     "#c7ac9e",
+     "#7f5a60",
+     "#e6dcd0",
+     "#4c3940"
+    ],
+    "brightness_measured": 0.575,
+    "saturation_measured": 0.129
+   },
+   {
+    "colors": [
+     "#d58747",
+     "#ddba77",
+     "#b1553f",
+     "#efeec5",
+     "#73383a"
+    ],
+    "brightness_measured": 0.625,
+    "saturation_measured": 0.373
+   },
+   {
+    "colors": [
+     "#af4e6c",
+     "#c97d7c",
+     "#742e5c",
+     "#dbb4a6",
+     "#351b39"
+    ],
+    "brightness_measured": 0.457,
+    "saturation_measured": 0.308
+   },
+   {
+    "colors": [
+     "#b74746",
+     "#c67e5c",
+     "#841b40",
+     "#d3b596",
+     "#420e2b"
+    ],
+    "brightness_measured": 0.448,
+    "saturation_measured": 0.371
+   },
+   {
+    "colors": [
+     "#d17a48",
+     "#dbae71",
+     "#a94a41",
+     "#ebe3bc",
+     "#6a2f38"
+    ],
+    "brightness_measured": 0.591,
+    "saturation_measured": 0.367
+   },
+   {
+    "colors": [
+     "#d27c44",
+     "#dbb070",
+     "#ac4b3e",
+     "#ebe5bc",
+     "#6d3037"
+    ],
+    "brightness_measured": 0.596,
+    "saturation_measured": 0.379
+   }
+  ],
+  "a_affect_gemini": [
+   {
+    "colors": [
+     "#685c89",
+     "#9a7c9a",
+     "#2a3d62",
+     "#c2a9b4",
+     "#031d2f"
+    ],
+    "brightness_measured": 0.41,
+    "saturation_measured": 0.198
+   },
+   {
+    "colors": [
+     "#695e8b",
+     "#9c7f9d",
+     "#2b3f64",
+     "#c4acb7",
+     "#041f31"
+    ],
+    "brightness_measured": 0.419,
+    "saturation_measured": 0.197
+   },
+   {
+    "colors": [
+     "#dba044",
+     "#e1d382",
+     "#bf6b3a",
+     "#eefcd1",
+     "#86483d"
+    ],
+    "brightness_measured": 0.686,
+    "saturation_measured": 0.406
+   },
+   {
+    "colors": [
+     "#dca045",
+     "#e2d382",
+     "#c06b3b",
+     "#effcd1",
+     "#86483d"
+    ],
+    "brightness_measured": 0.686,
+    "saturation_measured": 0.405
+   },
+   {
+    "colors": [
+     "#84b1a2",
+     "#aed5d3",
+     "#69846f",
+     "#e6faff",
+     "#50594a"
+    ],
+    "brightness_measured": 0.675,
+    "saturation_measured": 0.131
+   },
+   {
+    "colors": [
+     "#86b2a2",
+     "#b0d7d4",
+     "#6b8570",
+     "#e6fafe",
+     "#525a4b"
+    ],
+    "brightness_measured": 0.679,
+    "saturation_measured": 0.13
+   },
+   {
+    "colors": [
+     "#9a1c2c",
+     "#aa5d3e",
+     "#5c032a",
+     "#b59575",
+     "#350022"
+    ],
+    "brightness_measured": 0.343,
+    "saturation_measured": 0.382
+   },
+   {
+    "colors": [
+     "#a12630",
+     "#b06443",
+     "#67012d",
+     "#bc9c7b",
+     "#350121"
+    ],
+    "brightness_measured": 0.363,
+    "saturation_measured": 0.387
+   },
+   {
+    "colors": [
+     "#b64a4b",
+     "#c77f61",
+     "#832043",
+     "#d4b79a",
+     "#41122d"
+    ],
+    "brightness_measured": 0.453,
+    "saturation_measured": 0.354
+   },
+   {
+    "colors": [
+     "#b24350",
+     "#c57863",
+     "#7c1c47",
+     "#d2b097",
+     "#3a0f2e"
+    ],
+    "brightness_measured": 0.435,
+    "saturation_measured": 0.353
+   },
+   {
+    "colors": [
+     "#b8b05e",
+     "#c6dda0",
+     "#a37e40",
+     "#e0fee3",
+     "#78543a"
+    ],
+    "brightness_measured": 0.694,
+    "saturation_measured": 0.315
+   },
+   {
+    "colors": [
+     "#afac5d",
+     "#bdd89f",
+     "#9a7a3d",
+     "#dffee5",
+     "#715136"
+    ],
+    "brightness_measured": 0.679,
+    "saturation_measured": 0.303
+   },
+   {
+    "colors": [
+     "#6a6290",
+     "#9e83a2",
+     "#2b4268",
+     "#c7b0bc",
+     "#052234"
+    ],
+    "brightness_measured": 0.432,
+    "saturation_measured": 0.199
+   },
+   {
+    "colors": [
+     "#6d6696",
+     "#a386a8",
+     "#2d466e",
+     "#cdb4c0",
+     "#072538"
+    ],
+    "brightness_measured": 0.448,
+    "saturation_measured": 0.209
+   },
+   {
+    "colors": [
+     "#a4a85f",
+     "#b5d39f",
+     "#90773c",
+     "#dffee8",
+     "#694d33"
+    ],
+    "brightness_measured": 0.663,
+    "saturation_measured": 0.284
+   },
+   {
+    "colors": [
+     "#a9a65a",
+     "#b8d19a",
+     "#93753a",
+     "#e0fee6",
+     "#6a4c32"
+    ],
+    "brightness_measured": 0.661,
+    "saturation_measured": 0.293
+   },
+   {
+    "colors": [
+     "#686795",
+     "#9e87a8",
+     "#28466b",
+     "#cab3c1",
+     "#052536"
+    ],
+    "brightness_measured": 0.445,
+    "saturation_measured": 0.199
+   },
+   {
+    "colors": [
+     "#6f729b",
+     "#a492b1",
+     "#335070",
+     "#d2bfcb",
+     "#132d3c"
+    ],
+    "brightness_measured": 0.484,
+    "saturation_measured": 0.174
+   },
+   {
+    "colors": [
+     "#86a975",
+     "#a0d0b2",
+     "#747a47",
+     "#d7faf1",
+     "#574f33"
+    ],
+    "brightness_measured": 0.648,
+    "saturation_measured": 0.231
+   },
+   {
+    "colors": [
+     "#7db296",
+     "#a3d7cd",
+     "#698462",
+     "#defcfe",
+     "#525842"
+    ],
+    "brightness_measured": 0.672,
+    "saturation_measured": 0.181
+   },
+   {
+    "colors": [
+     "#596f90",
+     "#908faa",
+     "#244c62",
+     "#c3b9c7",
+     "#0c2830"
+    ],
+    "brightness_measured": 0.456,
+    "saturation_measured": 0.148
+   },
+   {
+    "colors": [
+     "#5a6f92",
+     "#928fab",
+     "#234c64",
+     "#c4b9c7",
+     "#0a2832"
+    ],
+    "brightness_measured": 0.457,
+    "saturation_measured": 0.155
+   },
+   {
+    "colors": [
+     "#db9c44",
+     "#e0cf80",
+     "#bd683b",
+     "#f0fcd1",
+     "#83463c"
+    ],
+    "brightness_measured": 0.678,
+    "saturation_measured": 0.4
+   },
+   {
+    "colors": [
+     "#dca045",
+     "#e2d382",
+     "#c06b3b",
+     "#effcd1",
+     "#86483d"
+    ],
+    "brightness_measured": 0.686,
+    "saturation_measured": 0.405
+   },
+   {
+    "colors": [
+     "#8bb78a",
+     "#a9dec6",
+     "#798759",
+     "#dbfdf9",
+     "#5e5b40"
+    ],
+    "brightness_measured": 0.688,
+    "saturation_measured": 0.215
+   },
+   {
+    "colors": [
+     "#96b77e",
+     "#afdfbd",
+     "#858751",
+     "#dbfef4",
+     "#665a3d"
+    ],
+    "brightness_measured": 0.692,
+    "saturation_measured": 0.241
+   },
+   {
+    "colors": [
+     "#b23e49",
+     "#c3755c",
+     "#7c1342",
+     "#d0ae92",
+     "#3a0a2b"
+    ],
+    "brightness_measured": 0.425,
+    "saturation_measured": 0.372
+   },
+   {
+    "colors": [
+     "#ae445c",
+     "#c4776d",
+     "#752250",
+     "#d4af9b",
+     "#351331"
+    ],
+    "brightness_measured": 0.434,
+    "saturation_measured": 0.331
+   },
+   {
+    "colors": [
+     "#87af7b",
+     "#a3d6b9",
+     "#777f4c",
+     "#dafef6",
+     "#5b5437"
+    ],
+    "brightness_measured": 0.666,
+    "saturation_measured": 0.234
+   },
+   {
+    "colors": [
+     "#a6ad63",
+     "#b7d8a4",
+     "#927c40",
+     "#defee9",
+     "#6c5236"
+    ],
+    "brightness_measured": 0.676,
+    "saturation_measured": 0.285
+   },
+   {
+    "colors": [
+     "#d3a048",
+     "#dad185",
+     "#b76c3a",
+     "#edfcd4",
+     "#80483b"
+    ],
+    "brightness_measured": 0.678,
+    "saturation_measured": 0.379
+   },
+   {
+    "colors": [
+     "#bdae5b",
+     "#c9db9c",
+     "#a67b3f",
+     "#e2fee1",
+     "#79533b"
+    ],
+    "brightness_measured": 0.692,
+    "saturation_measured": 0.32
+   },
+   {
+    "colors": [
+     "#5287a0",
+     "#90a7c1",
+     "#26606b",
+     "#cdd0e0",
+     "#1a393a"
+    ],
+    "brightness_measured": 0.529,
+    "saturation_measured": 0.154
+   },
+   {
+    "colors": [
+     "#4d809b",
+     "#8ca0bb",
+     "#1d5a68",
+     "#c8c8d9",
+     "#133336"
+    ],
+    "brightness_measured": 0.503,
+    "saturation_measured": 0.158
+   },
+   {
+    "colors": [
+     "#8eb47f",
+     "#a9dbbd",
+     "#7c8450",
+     "#dafef6",
+     "#60583b"
+    ],
+    "brightness_measured": 0.681,
+    "saturation_measured": 0.234
+   },
+   {
+    "colors": [
+     "#bcab57",
+     "#c8d898",
+     "#a5783c",
+     "#e3fee0",
+     "#775038"
+    ],
+    "brightness_measured": 0.684,
+    "saturation_measured": 0.325
+   },
+   {
+    "colors": [
+     "#9a4069",
+     "#b86d75",
+     "#5d2456",
+     "#cba49a",
+     "#22112f"
+    ],
+    "brightness_measured": 0.397,
+    "saturation_measured": 0.304
+   },
+   {
+    "colors": [
+     "#a53d5b",
+     "#bd6f69",
+     "#6c1c4e",
+     "#cda795",
+     "#2c0e2d"
+    ],
+    "brightness_measured": 0.406,
+    "saturation_measured": 0.331
+   },
+   {
+    "colors": [
+     "#baa652",
+     "#c6d493",
+     "#a37439",
+     "#e4fedf",
+     "#754c36"
+    ],
+    "brightness_measured": 0.673,
+    "saturation_measured": 0.329
+   },
+   {
+    "colors": [
+     "#c3a24c",
+     "#ccd18b",
+     "#aa6f37",
+     "#e7fdda",
+     "#784936"
+    ],
+    "brightness_measured": 0.67,
+    "saturation_measured": 0.35
+   }
+  ],
+  "b_clip_swatch_raw": [
+   {
+    "colors": [
+     "#b0dce2",
+     "#f701ae",
+     "#fc94f1",
+     "#f7f3b8",
+     "#c6fed3"
+    ],
+    "brightness_measured": 0.809,
+    "saturation_measured": 0.45
+   },
+   {
+    "colors": [
+     "#b0dce2",
+     "#eac8fd",
+     "#f701ae",
+     "#f7f3b8",
+     "#f2cbc7"
+    ],
+    "brightness_measured": 0.809,
+    "saturation_measured": 0.361
+   },
+   {
+    "colors": [
+     "#b0dce2",
+     "#561f7d",
+     "#263a67",
+     "#f701ae",
+     "#f7f3b8"
+    ],
+    "brightness_measured": 0.57,
+    "saturation_measured": 0.45
+   },
+   {
+    "colors": [
+     "#d0f9f0",
+     "#75eabd",
+     "#0deafd",
+     "#f3fa2c",
+     "#fc736b"
+    ],
+    "brightness_measured": 0.85,
+    "saturation_measured": 0.51
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#272711",
+     "#272338",
+     "#d7d1ed",
+     "#bf00b7"
+    ],
+    "brightness_measured": 0.49,
+    "saturation_measured": 0.36
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#222813",
+     "#f701ae",
+     "#38efb5",
+     "#f3fa2c"
+    ],
+    "brightness_measured": 0.67,
+    "saturation_measured": 0.599
+   },
+   {
+    "colors": [
+     "#f701ae",
+     "#272711",
+     "#f3fa2c",
+     "#0deafd",
+     "#12d470"
+    ],
+    "brightness_measured": 0.65,
+    "saturation_measured": 0.63
+   },
+   {
+    "colors": [
+     "#f701ae",
+     "#272711",
+     "#0deafd",
+     "#f3fa2c",
+     "#12d470"
+    ],
+    "brightness_measured": 0.65,
+    "saturation_measured": 0.63
+   },
+   {
+    "colors": [
+     "#b2dbe8",
+     "#33ebe9",
+     "#f701ae",
+     "#f8f77d",
+     "#fc94f1"
+    ],
+    "brightness_measured": 0.79,
+    "saturation_measured": 0.541
+   },
+   {
+    "colors": [
+     "#b2dbe8",
+     "#272711",
+     "#f701ae",
+     "#08254f",
+     "#33ebe9"
+    ],
+    "brightness_measured": 0.51,
+    "saturation_measured": 0.389
+   },
+   {
+    "colors": [
+     "#b1dddb",
+     "#38efb5",
+     "#84a596",
+     "#dbd981",
+     "#7c72f5"
+    ],
+    "brightness_measured": 0.75,
+    "saturation_measured": 0.42
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#f701ae",
+     "#f3fa2c",
+     "#1f68cc",
+     "#1b2916"
+    ],
+    "brightness_measured": 0.59,
+    "saturation_measured": 0.6
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#f3fa2c",
+     "#272711",
+     "#2c3c52",
+     "#9e9e9e"
+    ],
+    "brightness_measured": 0.57,
+    "saturation_measured": 0.331
+   },
+   {
+    "colors": [
+     "#bf00b7",
+     "#222813",
+     "#fb59f0",
+     "#b2dbe8",
+     "#561f7d"
+    ],
+    "brightness_measured": 0.47,
+    "saturation_measured": 0.54
+   },
+   {
+    "colors": [
+     "#f701ae",
+     "#fc94f1",
+     "#0deafd",
+     "#f6f85b",
+     "#96018f"
+    ],
+    "brightness_measured": 0.69,
+    "saturation_measured": 0.69
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#272711",
+     "#f3fa2c",
+     "#b4ddd4",
+     "#ced3ef"
+    ],
+    "brightness_measured": 0.73,
+    "saturation_measured": 0.36
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#1b2916",
+     "#f701ae",
+     "#353a51",
+     "#f3fa2c"
+    ],
+    "brightness_measured": 0.549,
+    "saturation_measured": 0.51
+   },
+   {
+    "colors": [
+     "#b1dddb",
+     "#f701ae",
+     "#f3fa2c",
+     "#f6ce9e",
+     "#fc94f1"
+    ],
+    "brightness_measured": 0.79,
+    "saturation_measured": 0.571
+   },
+   {
+    "colors": [
+     "#7ca4b0",
+     "#ced3ef",
+     "#49707c",
+     "#d0f9f0",
+     "#3b3b3b"
+    ],
+    "brightness_measured": 0.629,
+    "saturation_measured": 0.12
+   },
+   {
+    "colors": [
+     "#3b3b3b",
+     "#9e9e9e",
+     "#b1dddb",
+     "#f6ce9e",
+     "#6a6a6a"
+    ],
+    "brightness_measured": 0.61,
+    "saturation_measured": 0.09
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#f701ae",
+     "#2c2510",
+     "#fc94f1",
+     "#f6f85b"
+    ],
+    "brightness_measured": 0.65,
+    "saturation_measured": 0.57
+   },
+   {
+    "colors": [
+     "#b0dce2",
+     "#f701ae",
+     "#aabad4",
+     "#f2cbc7",
+     "#272711"
+    ],
+    "brightness_measured": 0.63,
+    "saturation_measured": 0.299
+   },
+   {
+    "colors": [
+     "#f701ae",
+     "#262626",
+     "#0deafd",
+     "#f3fa2c",
+     "#243ed2"
+    ],
+    "brightness_measured": 0.57,
+    "saturation_measured": 0.63
+   },
+   {
+    "colors": [
+     "#f701ae",
+     "#f3fa2c",
+     "#0deafd",
+     "#fc94f1",
+     "#b457f4"
+    ],
+    "brightness_measured": 0.73,
+    "saturation_measured": 0.75
+   },
+   {
+    "colors": [
+     "#b1dddb",
+     "#272711",
+     "#f701ae",
+     "#f2cbc7",
+     "#353a51"
+    ],
+    "brightness_measured": 0.53,
+    "saturation_measured": 0.3
+   },
+   {
+    "colors": [
+     "#f701ae",
+     "#12d470",
+     "#0deafd",
+     "#04966e",
+     "#f3fa2c"
+    ],
+    "brightness_measured": 0.73,
+    "saturation_measured": 0.69
+   },
+   {
+    "colors": [
+     "#222813",
+     "#f701ae",
+     "#0deafd",
+     "#fc94f1",
+     "#b457f4"
+    ],
+    "brightness_measured": 0.57,
+    "saturation_measured": 0.6
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#b4ddd4",
+     "#f3fa2c",
+     "#fb59f0",
+     "#222813"
+    ],
+    "brightness_measured": 0.69,
+    "saturation_measured": 0.51
+   },
+   {
+    "colors": [
+     "#b0dce2",
+     "#f8f59b",
+     "#f701ae",
+     "#fc94f1",
+     "#d7d1ed"
+    ],
+    "brightness_measured": 0.79,
+    "saturation_measured": 0.451
+   },
+   {
+    "colors": [
+     "#b0dce2",
+     "#f6ce9e",
+     "#9e9e9e",
+     "#3b3b3b",
+     "#f3fa2c"
+    ],
+    "brightness_measured": 0.71,
+    "saturation_measured": 0.27
+   },
+   {
+    "colors": [
+     "#b1dddb",
+     "#f701ae",
+     "#3b3b3b",
+     "#75eabd",
+     "#fc94f1"
+    ],
+    "brightness_measured": 0.65,
+    "saturation_measured": 0.421
+   },
+   {
+    "colors": [
+     "#b0dce2",
+     "#f6f85b",
+     "#38efb5",
+     "#d0d8bc",
+     "#bebd67"
+    ],
+    "brightness_measured": 0.85,
+    "saturation_measured": 0.419
+   },
+   {
+    "colors": [
+     "#3b3b3b",
+     "#0deafd",
+     "#1b2916",
+     "#2d2135",
+     "#b4ddd4"
+    ],
+    "brightness_measured": 0.45,
+    "saturation_measured": 0.181
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#222813",
+     "#f701ae",
+     "#b2b7d3",
+     "#f3fa2c"
+    ],
+    "brightness_measured": 0.65,
+    "saturation_measured": 0.51
+   },
+   {
+    "colors": [
+     "#7aa5ab",
+     "#ced3ef",
+     "#b4ddd4",
+     "#e7d1b9",
+     "#dbd981"
+    ],
+    "brightness_measured": 0.81,
+    "saturation_measured": 0.211
+   },
+   {
+    "colors": [
+     "#b1dddb",
+     "#628b8a",
+     "#262626",
+     "#ced3ef",
+     "#d6afb2"
+    ],
+    "brightness_measured": 0.63,
+    "saturation_measured": 0.12
+   },
+   {
+    "colors": [
+     "#b0dce2",
+     "#222813",
+     "#f701ae",
+     "#f3fa2c",
+     "#f7f3b8"
+    ],
+    "brightness_measured": 0.689,
+    "saturation_measured": 0.48
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#272711",
+     "#fb59f0",
+     "#bf00b7",
+     "#bdd8ef"
+    ],
+    "brightness_measured": 0.59,
+    "saturation_measured": 0.51
+   },
+   {
+    "colors": [
+     "#f701ae",
+     "#b1dddb",
+     "#222813",
+     "#96018f",
+     "#fc94f1"
+    ],
+    "brightness_measured": 0.53,
+    "saturation_measured": 0.51
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#fb59f0",
+     "#272711",
+     "#bf00b7",
+     "#f3fa2c"
+    ],
+    "brightness_measured": 0.61,
+    "saturation_measured": 0.66
+   }
+  ],
+  "b_clip_swatch": [
+   {
+    "colors": [
+     "#dcf8e2",
+     "#95bbef",
+     "#eac8fd",
+     "#fdf0d4",
+     "#c384ea"
+    ],
+    "brightness_measured": 0.83,
+    "saturation_measured": 0.301
+   },
+   {
+    "colors": [
+     "#fdf0d4",
+     "#eac8fd",
+     "#ccf9ff",
+     "#f3cbce",
+     "#82bfed"
+    ],
+    "brightness_measured": 0.87,
+    "saturation_measured": 0.211
+   },
+   {
+    "colors": [
+     "#285098",
+     "#8e836a",
+     "#561f7d",
+     "#cf2030",
+     "#bcba9e"
+    ],
+    "brightness_measured": 0.47,
+    "saturation_measured": 0.421
+   },
+   {
+    "colors": [
+     "#b9b9b9",
+     "#d0f9f0",
+     "#f37c54",
+     "#e7f8be",
+     "#75eabd"
+    ],
+    "brightness_measured": 0.831,
+    "saturation_measured": 0.3
+   },
+   {
+    "colors": [
+     "#272338",
+     "#012a38",
+     "#d4d4d4",
+     "#0d2c00",
+     "#2c2510"
+    ],
+    "brightness_measured": 0.29,
+    "saturation_measured": 0.15
+   },
+   {
+    "colors": [
+     "#0deafd",
+     "#0d2c00",
+     "#491212",
+     "#1e919d",
+     "#4e553d"
+    ],
+    "brightness_measured": 0.409,
+    "saturation_measured": 0.3
+   },
+   {
+    "colors": [
+     "#f1450c",
+     "#04966e",
+     "#cf2030",
+     "#461704",
+     "#3d3c25"
+    ],
+    "brightness_measured": 0.39,
+    "saturation_measured": 0.511
+   },
+   {
+    "colors": [
+     "#f1450c",
+     "#5f2d1c",
+     "#cf2030",
+     "#55533b",
+     "#b9b9b9"
+    ],
+    "brightness_measured": 0.47,
+    "saturation_measured": 0.42
+   },
+   {
+    "colors": [
+     "#08254f",
+     "#76102c",
+     "#f08021",
+     "#84e2fb",
+     "#115e45"
+    ],
+    "brightness_measured": 0.451,
+    "saturation_measured": 0.42
+   },
+   {
+    "colors": [
+     "#08254f",
+     "#a40c3d",
+     "#352114",
+     "#4b0f1c",
+     "#3c0263"
+    ],
+    "brightness_measured": 0.19,
+    "saturation_measured": 0.389
+   },
+   {
+    "colors": [
+     "#d8d6b9",
+     "#d0f9f0",
+     "#bdbe47",
+     "#7fa69d",
+     "#75eabd"
+    ],
+    "brightness_measured": 0.81,
+    "saturation_measured": 0.301
+   },
+   {
+    "colors": [
+     "#3588d1",
+     "#243ed2",
+     "#7f6555",
+     "#2c3c52",
+     "#5c6c83"
+    ],
+    "brightness_measured": 0.41,
+    "saturation_measured": 0.36
+   },
+   {
+    "colors": [
+     "#d4d4d4",
+     "#848484",
+     "#525252",
+     "#15273b",
+     "#3588d1"
+    ],
+    "brightness_measured": 0.49,
+    "saturation_measured": 0.12
+   },
+   {
+    "colors": [
+     "#381253",
+     "#70436b",
+     "#4a0e27",
+     "#ae7192",
+     "#f1cbd5"
+    ],
+    "brightness_measured": 0.41,
+    "saturation_measured": 0.3
+   },
+   {
+    "colors": [
+     "#e63da7",
+     "#fc9acf",
+     "#f53666",
+     "#762ca9",
+     "#ccb781"
+    ],
+    "brightness_measured": 0.59,
+    "saturation_measured": 0.602
+   },
+   {
+    "colors": [
+     "#d4d4d4",
+     "#1c3f4f",
+     "#272711",
+     "#0deafd",
+     "#4d6f80"
+    ],
+    "brightness_measured": 0.51,
+    "saturation_measured": 0.181
+   },
+   {
+    "colors": [
+     "#6a6a6a",
+     "#0d2c00",
+     "#d4d4d4",
+     "#08254f",
+     "#285098"
+    ],
+    "brightness_measured": 0.389,
+    "saturation_measured": 0.21
+   },
+   {
+    "colors": [
+     "#fdf0d4",
+     "#dd5853",
+     "#a01d26",
+     "#f6d15f",
+     "#4b0f1c"
+    ],
+    "brightness_measured": 0.571,
+    "saturation_measured": 0.45
+   },
+   {
+    "colors": [
+     "#628a96",
+     "#f1f1f1",
+     "#9e9e9e",
+     "#6a6a6a",
+     "#355767"
+    ],
+    "brightness_measured": 0.59,
+    "saturation_measured": 0.061
+   },
+   {
+    "colors": [
+     "#848484",
+     "#b9b9b9",
+     "#3b3b3b",
+     "#7ca4b0",
+     "#49707c"
+    ],
+    "brightness_measured": 0.53,
+    "saturation_measured": 0.06
+   },
+   {
+    "colors": [
+     "#352114",
+     "#012a38",
+     "#614f3b",
+     "#371e2b",
+     "#0deafd"
+    ],
+    "brightness_measured": 0.33,
+    "saturation_measured": 0.21
+   },
+   {
+    "colors": [
+     "#08254f",
+     "#c5d5f0",
+     "#f3cbce",
+     "#9e9e9e",
+     "#fdf0d4"
+    ],
+    "brightness_measured": 0.691,
+    "saturation_measured": 0.15
+   },
+   {
+    "colors": [
+     "#262626",
+     "#6a6a6a",
+     "#d4d4d4",
+     "#285098",
+     "#a20655"
+    ],
+    "brightness_measured": 0.429,
+    "saturation_measured": 0.21
+   },
+   {
+    "colors": [
+     "#285098",
+     "#f23387",
+     "#3588d1",
+     "#fad139",
+     "#f37c54"
+    ],
+    "brightness_measured": 0.59,
+    "saturation_measured": 0.6
+   },
+   {
+    "colors": [
+     "#848484",
+     "#525252",
+     "#d4623c",
+     "#efac4b",
+     "#f2cbc7"
+    ],
+    "brightness_measured": 0.61,
+    "saturation_measured": 0.27
+   },
+   {
+    "colors": [
+     "#217a43",
+     "#34b365",
+     "#6ff050",
+     "#0f4424",
+     "#d6fbc7"
+    ],
+    "brightness_measured": 0.63,
+    "saturation_measured": 0.51
+   },
+   {
+    "colors": [
+     "#222813",
+     "#3a1e1c",
+     "#fb59f0",
+     "#14a8eb",
+     "#bf00b7"
+    ],
+    "brightness_measured": 0.41,
+    "saturation_measured": 0.51
+   },
+   {
+    "colors": [
+     "#461704",
+     "#d5f9e9",
+     "#0deafd",
+     "#052b25",
+     "#f3cbce"
+    ],
+    "brightness_measured": 0.59,
+    "saturation_measured": 0.24
+   },
+   {
+    "colors": [
+     "#628a96",
+     "#fdf0d4",
+     "#f6d15f",
+     "#ced3ef",
+     "#84e2fb"
+    ],
+    "brightness_measured": 0.811,
+    "saturation_measured": 0.27
+   },
+   {
+    "colors": [
+     "#9e9e9e",
+     "#b09c68",
+     "#4d6f80",
+     "#012a38",
+     "#f6ce9e"
+    ],
+    "brightness_measured": 0.551,
+    "saturation_measured": 0.18
+   },
+   {
+    "colors": [
+     "#3b3b3b",
+     "#d4d4d4",
+     "#6a6a6a",
+     "#2eceb7",
+     "#12d470"
+    ],
+    "brightness_measured": 0.609,
+    "saturation_measured": 0.24
+   },
+   {
+    "colors": [
+     "#dbd981",
+     "#b4bca1",
+     "#c6fed3",
+     "#9bbed0",
+     "#a1a32c"
+    ],
+    "brightness_measured": 0.79,
+    "saturation_measured": 0.329
+   },
+   {
+    "colors": [
+     "#3b3b3b",
+     "#848484",
+     "#2d2135",
+     "#6d6780",
+     "#6b4a4d"
+    ],
+    "brightness_measured": 0.35,
+    "saturation_measured": 0.091
+   },
+   {
+    "colors": [
+     "#848484",
+     "#1b2916",
+     "#d4d4d4",
+     "#272338",
+     "#525252"
+    ],
+    "brightness_measured": 0.41,
+    "saturation_measured": 0.06
+   },
+   {
+    "colors": [
+     "#628a96",
+     "#f1f1f1",
+     "#bebd67",
+     "#355767",
+     "#d6afb2"
+    ],
+    "brightness_measured": 0.671,
+    "saturation_measured": 0.181
+   },
+   {
+    "colors": [
+     "#628a96",
+     "#6a6a6a",
+     "#f1f1f1",
+     "#262626",
+     "#355767"
+    ],
+    "brightness_measured": 0.491,
+    "saturation_measured": 0.061
+   },
+   {
+    "colors": [
+     "#08254f",
+     "#f5f2d5",
+     "#491212",
+     "#b6daec",
+     "#1b2916"
+    ],
+    "brightness_measured": 0.45,
+    "saturation_measured": 0.209
+   },
+   {
+    "colors": [
+     "#f1f1f1",
+     "#58a2ee",
+     "#1f68cc",
+     "#7a4432",
+     "#08254f"
+    ],
+    "brightness_measured": 0.511,
+    "saturation_measured": 0.329
+   },
+   {
+    "colors": [
+     "#4b0f1c",
+     "#902d54",
+     "#5a0d8e",
+     "#f08021",
+     "#27b60c"
+    ],
+    "brightness_measured": 0.41,
+    "saturation_measured": 0.63
+   },
+   {
+    "colors": [
+     "#7e413c",
+     "#b17560",
+     "#b230aa",
+     "#ad486c",
+     "#f3cbce"
+    ],
+    "brightness_measured": 0.53,
+    "saturation_measured": 0.389
+   }
+  ],
+  "c_gemini": [
+   {
+    "colors": [
+     "#353744",
+     "#7a7082",
+     "#a68087",
+     "#8e9a99",
+     "#cec5be"
+    ],
+    "brightness": 0.45,
+    "saturation": 0.25,
+    "brightness_measured": 0.544,
+    "saturation_measured": 0.091
+   },
+   {
+    "colors": [
+     "#4a536b",
+     "#736f87",
+     "#9e8d9c",
+     "#c4abaa",
+     "#ded1c8"
+    ],
+    "brightness": 0.52,
+    "saturation": 0.28,
+    "brightness_measured": 0.601,
+    "saturation_measured": 0.113
+   },
+   {
+    "colors": [
+     "#ffd700",
+     "#ff5e13",
+     "#ff1475",
+     "#fff5cc",
+     "#142580"
+    ],
+    "brightness": 0.82,
+    "saturation": 0.9,
+    "brightness_measured": 0.639,
+    "saturation_measured": 0.682
+   },
+   {
+    "colors": [
+     "#ffd000",
+     "#ff4b3e",
+     "#00f5d4",
+     "#fff07c",
+     "#7b2cbf"
+    ],
+    "brightness": 0.85,
+    "saturation": 0.9,
+    "brightness_measured": 0.724,
+    "saturation_measured": 0.735
+   },
+   {
+    "colors": [
+     "#273444",
+     "#4a5d6e",
+     "#7b8e9b",
+     "#9b95a8",
+     "#c2cbcf"
+    ],
+    "brightness": 0.48,
+    "saturation": 0.26,
+    "brightness_measured": 0.523,
+    "saturation_measured": 0.097
+   },
+   {
+    "colors": [
+     "#e8ece9",
+     "#c5d1cb",
+     "#a1b3b2",
+     "#7a8f94",
+     "#4c5e63"
+    ],
+    "brightness": 0.68,
+    "saturation": 0.18,
+    "brightness_measured": 0.688,
+    "saturation_measured": 0.06
+   },
+   {
+    "colors": [
+     "#1e0508",
+     "#6a0c12",
+     "#b71212",
+     "#ea3c10",
+     "#ff8811"
+    ],
+    "brightness": 0.42,
+    "saturation": 0.92,
+    "brightness_measured": 0.371,
+    "saturation_measured": 0.607
+   },
+   {
+    "colors": [
+     "#210203",
+     "#780000",
+     "#c1121f",
+     "#ff2a00",
+     "#ff6b00"
+    ],
+    "brightness": 0.48,
+    "saturation": 0.96,
+    "brightness_measured": 0.372,
+    "saturation_measured": 0.676
+   },
+   {
+    "colors": [
+     "#223344",
+     "#4a6572",
+     "#7e949b",
+     "#cdd88d",
+     "#f0eedb"
+    ],
+    "brightness": 0.52,
+    "saturation": 0.38,
+    "brightness_measured": 0.599,
+    "saturation_measured": 0.166
+   },
+   {
+    "colors": [
+     "#161b26",
+     "#3a4856",
+     "#6a7b82",
+     "#b8a452",
+     "#e3e7d3"
+    ],
+    "brightness": 0.42,
+    "saturation": 0.34,
+    "brightness_measured": 0.497,
+    "saturation_measured": 0.163
+   },
+   {
+    "colors": [
+     "#622347",
+     "#ba4e5c",
+     "#e2825b",
+     "#f4b382",
+     "#faebd0"
+    ],
+    "brightness": 0.68,
+    "saturation": 0.58,
+    "brightness_measured": 0.616,
+    "saturation_measured": 0.368
+   },
+   {
+    "colors": [
+     "#ffd166",
+     "#f4978e",
+     "#f08080",
+     "#a84262",
+     "#5c2751"
+    ],
+    "brightness": 0.68,
+    "saturation": 0.62,
+    "brightness_measured": 0.583,
+    "saturation_measured": 0.446
+   },
+   {
+    "colors": [
+     "#131a26",
+     "#283548",
+     "#4c5d73",
+     "#7e8b9b",
+     "#a48c82"
+    ],
+    "brightness": 0.38,
+    "saturation": 0.22,
+    "brightness_measured": 0.375,
+    "saturation_measured": 0.118
+   },
+   {
+    "colors": [
+     "#161c28",
+     "#2f3b4c",
+     "#56536b",
+     "#7d8b99",
+     "#b2a9b3"
+    ],
+    "brightness": 0.41,
+    "saturation": 0.24,
+    "brightness_measured": 0.397,
+    "saturation_measured": 0.104
+   },
+   {
+    "colors": [
+     "#fbe29f",
+     "#f6c28b",
+     "#b8a1c9",
+     "#62a8d1",
+     "#95d5b2"
+    ],
+    "brightness": 0.78,
+    "saturation": 0.52,
+    "brightness_measured": 0.776,
+    "saturation_measured": 0.311
+   },
+   {
+    "colors": [
+     "#5b6c8f",
+     "#b392ac",
+     "#f4a261",
+     "#ffe082",
+     "#81d4fa"
+    ],
+    "brightness": 0.72,
+    "saturation": 0.58,
+    "brightness_measured": 0.709,
+    "saturation_measured": 0.345
+   },
+   {
+    "colors": [
+     "#2b3a4a",
+     "#5c6f84",
+     "#9d8189",
+     "#d4a373",
+     "#f0ebe1"
+    ],
+    "brightness": 0.52,
+    "saturation": 0.34,
+    "brightness_measured": 0.581,
+    "saturation_measured": 0.155
+   },
+   {
+    "colors": [
+     "#4a5568",
+     "#8c6f78",
+     "#b88a68",
+     "#d4c2aa",
+     "#5e433c"
+    ],
+    "brightness": 0.52,
+    "saturation": 0.38,
+    "brightness_measured": 0.515,
+    "saturation_measured": 0.164
+   },
+   {
+    "colors": [
+     "#edf2f7",
+     "#c2d4dd",
+     "#8fa5b5",
+     "#5c6b73",
+     "#b5a8a6"
+    ],
+    "brightness": 0.72,
+    "saturation": 0.22,
+    "brightness_measured": 0.72,
+    "saturation_measured": 0.07
+   },
+   {
+    "colors": [
+     "#1e293b",
+     "#526e85",
+     "#8ca5b8",
+     "#c2d4e0",
+     "#f0f5fa"
+    ],
+    "brightness": 0.62,
+    "saturation": 0.28,
+    "brightness_measured": 0.616,
+    "saturation_measured": 0.109
+   },
+   {
+    "colors": [
+     "#23262d",
+     "#3d434f",
+     "#61606b",
+     "#88868c",
+     "#b8b4af"
+    ],
+    "brightness": 0.38,
+    "saturation": 0.15,
+    "brightness_measured": 0.429,
+    "saturation_measured": 0.053
+   },
+   {
+    "colors": [
+     "#191826",
+     "#373a4a",
+     "#5c536b",
+     "#7d8294",
+     "#c4c3be"
+    ],
+    "brightness": 0.38,
+    "saturation": 0.22,
+    "brightness_measured": 0.408,
+    "saturation_measured": 0.099
+   },
+   {
+    "colors": [
+     "#3a0ca3",
+     "#7209b7",
+     "#f72585",
+     "#4cc9f0",
+     "#ffb703"
+    ],
+    "brightness": 0.68,
+    "saturation": 0.92,
+    "brightness_measured": 0.53,
+    "saturation_measured": 0.762
+   },
+   {
+    "colors": [
+     "#ffe600",
+     "#ff1361",
+     "#a000ff",
+     "#00f5ff",
+     "#180036"
+    ],
+    "brightness": 0.78,
+    "saturation": 0.95,
+    "brightness_measured": 0.566,
+    "saturation_measured": 0.763
+   },
+   {
+    "colors": [
+     "#fbf4e6",
+     "#f3c299",
+     "#dd8e7b",
+     "#8fa48c",
+     "#54434f"
+    ],
+    "brightness": 0.68,
+    "saturation": 0.45,
+    "brightness_measured": 0.681,
+    "saturation_measured": 0.199
+   },
+   {
+    "colors": [
+     "#ffe8a3",
+     "#f7b267",
+     "#eb7154",
+     "#82b289",
+     "#4d826c"
+    ],
+    "brightness": 0.72,
+    "saturation": 0.65,
+    "brightness_measured": 0.701,
+    "saturation_measured": 0.399
+   },
+   {
+    "colors": [
+     "#0d131f",
+     "#221c35",
+     "#1c3b47",
+     "#475b63",
+     "#8c9da6"
+    ],
+    "brightness": 0.3,
+    "saturation": 0.35,
+    "brightness_measured": 0.284,
+    "saturation_measured": 0.115
+   },
+   {
+    "colors": [
+     "#0a0e17",
+     "#1d2b3a",
+     "#364858",
+     "#4d686f",
+     "#889fa5"
+    ],
+    "brightness": 0.32,
+    "saturation": 0.3,
+    "brightness_measured": 0.314,
+    "saturation_measured": 0.098
+   },
+   {
+    "colors": [
+     "#f6c85f",
+     "#7ec4cf",
+     "#f28e79",
+     "#a3d39c",
+     "#fff0ce"
+    ],
+    "brightness": 0.8,
+    "saturation": 0.6,
+    "brightness_measured": 0.805,
+    "saturation_measured": 0.357
+   },
+   {
+    "colors": [
+     "#fbd490",
+     "#f39b7f",
+     "#e07a5f",
+     "#78b0a0",
+     "#68a6ce"
+    ],
+    "brightness": 0.74,
+    "saturation": 0.58,
+    "brightness_measured": 0.709,
+    "saturation_measured": 0.359
+   },
+   {
+    "colors": [
+     "#ff2a85",
+     "#ff9100",
+     "#ffe600",
+     "#00f0ff",
+     "#9d00ff"
+    ],
+    "brightness": 0.88,
+    "saturation": 0.94,
+    "brightness_measured": 0.699,
+    "saturation_measured": 0.845
+   },
+   {
+    "colors": [
+     "#ff70a6",
+     "#ff9770",
+     "#ffd670",
+     "#70d6ff",
+     "#b87eff"
+    ],
+    "brightness": 0.88,
+    "saturation": 0.72,
+    "brightness_measured": 0.742,
+    "saturation_measured": 0.547
+   },
+   {
+    "colors": [
+     "#6e737c",
+     "#8d939e",
+     "#a8a5ab",
+     "#c4c5c8",
+     "#535861"
+    ],
+    "brightness": 0.55,
+    "saturation": 0.18,
+    "brightness_measured": 0.588,
+    "saturation_measured": 0.046
+   },
+   {
+    "colors": [
+     "#82888f",
+     "#b5aba1",
+     "#5b6770",
+     "#d2ccc4",
+     "#9e948a"
+    ],
+    "brightness": 0.58,
+    "saturation": 0.18,
+    "brightness_measured": 0.628,
+    "saturation_measured": 0.06
+   },
+   {
+    "colors": [
+     "#f6a5c0",
+     "#ffd269",
+     "#a7e07e",
+     "#f79489",
+     "#bde8d8"
+    ],
+    "brightness": 0.82,
+    "saturation": 0.65,
+    "brightness_measured": 0.812,
+    "saturation_measured": 0.41
+   },
+   {
+    "colors": [
+     "#ffd447",
+     "#ff6b8b",
+     "#ffa238",
+     "#6bc574",
+     "#70d6ff"
+    ],
+    "brightness": 0.88,
+    "saturation": 0.8,
+    "brightness_measured": 0.758,
+    "saturation_measured": 0.583
+   },
+   {
+    "colors": [
+     "#1e1f2b",
+     "#4a3b54",
+     "#844453",
+     "#4d6b6e",
+     "#8b949c"
+    ],
+    "brightness": 0.38,
+    "saturation": 0.34,
+    "brightness_measured": 0.361,
+    "saturation_measured": 0.145
+   },
+   {
+    "colors": [
+     "#111625",
+     "#432338",
+     "#852233",
+     "#596b65",
+     "#98a3b2"
+    ],
+    "brightness": 0.35,
+    "saturation": 0.42,
+    "brightness_measured": 0.333,
+    "saturation_measured": 0.188
+   },
+   {
+    "colors": [
+     "#fef08a",
+     "#fdba74",
+     "#a7f3d0",
+     "#7dd3fc",
+     "#c084fc"
+    ],
+    "brightness": 0.78,
+    "saturation": 0.65,
+    "brightness_measured": 0.822,
+    "saturation_measured": 0.463
+   },
+   {
+    "colors": [
+     "#1c2d42",
+     "#416778",
+     "#d97d41",
+     "#f2be5c",
+     "#fcf1dc"
+    ],
+    "brightness": 0.62,
+    "saturation": 0.58,
+    "brightness_measured": 0.593,
+    "saturation_measured": 0.311
+   }
+  ]
+ },
+ "affect": {
+  "a_affect_clip_vad": {
+   "grief": [
+    -0.28,
+    -0.11,
+    -0.38
+   ],
+   "grief2": [
+    -0.68,
+    -0.45,
+    -0.71
+   ],
+   "triumph": [
+    0.21,
+    0.92,
+    0.73
+   ],
+   "triumph2": [
+    0.13,
+    0.84,
+    0.75
+   ],
+   "calm": [
+    0.16,
+    -0.99,
+    -0.48
+   ],
+   "calm2": [
+    -0.17,
+    -0.93,
+    -0.36
+   ],
+   "rage": [
+    -0.56,
+    0.73,
+    -0.46
+   ],
+   "rage2": [
+    -0.61,
+    0.6,
+    0.43
+   ],
+   "anxious": [
+    -0.61,
+    -0.11,
+    -0.58
+   ],
+   "anxious2": [
+    -0.32,
+    0.39,
+    -0.26
+   ],
+   "love": [
+    -0.17,
+    0.45,
+    0.38
+   ],
+   "love2": [
+    0.09,
+    0.51,
+    0.32
+   ],
+   "lonely": [
+    -0.68,
+    -0.09,
+    -0.87
+   ],
+   "lonely2": [
+    -0.4,
+    -0.05,
+    -0.82
+   ],
+   "hope": [
+    0.1,
+    0.61,
+    -0.19
+   ],
+   "hope2": [
+    0.17,
+    0.6,
+    -0.76
+   ],
+   "homesick": [
+    -0.51,
+    -0.48,
+    -0.88
+   ],
+   "homesick2": [
+    -0.26,
+    0.53,
+    -0.51
+   ],
+   "wonder": [
+    -0.57,
+    -0.27,
+    -0.44
+   ],
+   "wonder2": [
+    -0.43,
+    -0.27,
+    -0.02
+   ],
+   "exhausted": [
+    -0.47,
+    -0.69,
+    -0.05
+   ],
+   "exhausted2": [
+    -0.37,
+    -0.87,
+    -0.15
+   ],
+   "excited": [
+    0.27,
+    0.85,
+    0.75
+   ],
+   "excited2": [
+    0.45,
+    0.77,
+    0.48
+   ],
+   "grateful": [
+    0.17,
+    0.08,
+    -0.26
+   ],
+   "grateful2": [
+    0.21,
+    0.37,
+    -0.67
+   ],
+   "fear": [
+    -0.31,
+    0.92,
+    -0.78
+   ],
+   "fear2": [
+    -0.42,
+    0.77,
+    -0.9
+   ],
+   "nostalgia": [
+    -0.2,
+    0.15,
+    -0.11
+   ],
+   "nostalgia2": [
+    0.06,
+    0.79,
+    0.33
+   ],
+   "playful": [
+    0.41,
+    0.23,
+    0.35
+   ],
+   "playful2": [
+    0.44,
+    0.52,
+    -0.49
+   ],
+   "neutral": [
+    -0.76,
+    0.27,
+    -0.36
+   ],
+   "neutral2": [
+    -0.11,
+    0.38,
+    -0.12
+   ],
+   "spring": [
+    -0.06,
+    0.09,
+    -0.76
+   ],
+   "spring2": [
+    0.27,
+    0.66,
+    -0.38
+   ],
+   "betrayed": [
+    -0.6,
+    0.29,
+    -0.77
+   ],
+   "betrayed2": [
+    -0.53,
+    0.65,
+    -0.36
+   ],
+   "proud": [
+    0.1,
+    0.62,
+    -0.46
+   ],
+   "proud2": [
+    0.15,
+    0.69,
+    -0.35
+   ]
+  },
+  "a_affect_gemini_vad": {
+   "grief": [
+    -0.75,
+    -0.35,
+    -0.55
+   ],
+   "grief2": [
+    -0.72,
+    -0.35,
+    -0.58
+   ],
+   "triumph": [
+    0.9,
+    0.85,
+    0.8
+   ],
+   "triumph2": [
+    0.88,
+    0.85,
+    0.72
+   ],
+   "calm": [
+    0.7,
+    -0.75,
+    0.3
+   ],
+   "calm2": [
+    0.75,
+    -0.75,
+    0.4
+   ],
+   "rage": [
+    -0.82,
+    0.85,
+    0.52
+   ],
+   "rage2": [
+    -0.75,
+    0.85,
+    0.35
+   ],
+   "anxious": [
+    -0.5,
+    0.55,
+    -0.35
+   ],
+   "anxious2": [
+    -0.65,
+    0.55,
+    -0.6
+   ],
+   "love": [
+    0.88,
+    0.32,
+    0.55
+   ],
+   "love2": [
+    0.82,
+    0.25,
+    0.65
+   ],
+   "lonely": [
+    -0.65,
+    -0.35,
+    -0.55
+   ],
+   "lonely2": [
+    -0.55,
+    -0.3,
+    -0.45
+   ],
+   "hope": [
+    0.65,
+    0.15,
+    0.35
+   ],
+   "hope2": [
+    0.65,
+    0.2,
+    0.4
+   ],
+   "homesick": [
+    -0.55,
+    -0.35,
+    -0.4
+   ],
+   "homesick2": [
+    -0.35,
+    -0.25,
+    -0.3
+   ],
+   "wonder": [
+    0.55,
+    -0.1,
+    0.25
+   ],
+   "wonder2": [
+    0.65,
+    -0.45,
+    0.15
+   ],
+   "exhausted": [
+    -0.5,
+    -0.65,
+    -0.4
+   ],
+   "exhausted2": [
+    -0.5,
+    -0.6,
+    -0.4
+   ],
+   "excited": [
+    0.8,
+    0.82,
+    0.6
+   ],
+   "excited2": [
+    0.88,
+    0.85,
+    0.72
+   ],
+   "grateful": [
+    0.75,
+    -0.25,
+    0.2
+   ],
+   "grateful2": [
+    0.8,
+    -0.1,
+    0.3
+   ],
+   "fear": [
+    -0.72,
+    0.65,
+    -0.68
+   ],
+   "fear2": [
+    -0.65,
+    0.42,
+    -0.58
+   ],
+   "nostalgia": [
+    0.65,
+    -0.15,
+    0.3
+   ],
+   "nostalgia2": [
+    0.75,
+    0.15,
+    0.45
+   ],
+   "playful": [
+    0.8,
+    0.7,
+    0.6
+   ],
+   "playful2": [
+    0.8,
+    0.35,
+    0.3
+   ],
+   "neutral": [
+    -0.1,
+    -0.45,
+    -0.15
+   ],
+   "neutral2": [
+    -0.15,
+    -0.5,
+    0.1
+   ],
+   "spring": [
+    0.72,
+    -0.15,
+    0.25
+   ],
+   "spring2": [
+    0.82,
+    0.38,
+    0.55
+   ],
+   "betrayed": [
+    -0.78,
+    0.25,
+    -0.45
+   ],
+   "betrayed2": [
+    -0.75,
+    0.42,
+    -0.48
+   ],
+   "proud": [
+    0.8,
+    0.4,
+    0.7
+   ],
+   "proud2": [
+    0.8,
+    0.52,
+    0.78
+   ]
+  }
+ }
+}

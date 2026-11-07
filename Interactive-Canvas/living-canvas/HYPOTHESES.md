@@ -119,3 +119,40 @@ The personas use synthetic voice, movement and gesture values until the webcam a
 - **What helped:** letting the mood set the scene's **light and weather** (Gemini writes it: "at night, one candle-lit window", "in full spring bloom, turquoise sky"). Spring turns turquoise, exam nerves get rain streaks, homesick gets snow and a moon.
 - **Most distinct: no scene at all.** Abstract frames (same painters and axes, no chapel) differ in color *and* form: grief grey slashes, triumph Kandinsky shapes, love Klimt mosaic.
 - **Blank canvas, two ways:** paths reveal the chapel in each visitor's mood (it emerges over the night), or lay down abstract mood paint. Brush-like ragged mask edges keep paths from looking like cut-out tubes on linen.
+
+## Feeling space D: color aura (2026-11-07)
+
+Skip paintings: map what a visitor says straight to a 5-color aura (palette, brightness, saturation) that could drive trail colors, swatches and the montage. Code: `experiments/space/aura.py`, `aura_color.py`; board: `experiments/space/out/aura_board.png`.
+
+**Setup.** The 40 statements in `feelings.json`, run locally on a Mac (CLIP on Apple GPU, Gemini on Vertex AI).
+- **a · affect → color rule.** Valence, arousal and dominance in [-1, 1] go through one fixed rule (after Valdez & Mehrabian 1994): lightness tracks valence (and falls a little with dominance), chroma tracks arousal, hue comes from the angle on the valence-arousal circle (pleasant + aroused = yellow-orange, unpleasant + aroused = red, unpleasant + calm = blue-violet, pleasant + calm = green-teal), and weak affect fades toward grey. Five shades around that color. Two ways to read the affect:
+  - `a_affect_clip`: CLIP ViT-H-14 text similarity to four anchor phrases per pole, scaled on 30 generic calibration sentences (not the test set).
+  - `a_affect_gemini`: Gemini (`gemini-3.8-flash`) rates valence, arousal and dominance with a response schema.
+- **b · CLIP vs color swatches** (`b_clip_swatch`). The same CLIP model ranks 580 solid swatches (an in-gamut LCh grid) against "the color of this feeling: …". Each swatch's mean similarity to the calibration sentences is subtracted (without this, a few swatches win everything), then the top 5 colors at least ΔE 15 apart are kept.
+- **c · Gemini palette** (`c_gemini`). Gemini returns 5 hex colors, brightness and saturation with a response schema.
+
+**Distance.** Palettes are matched color to color with the Hungarian algorithm on CIEDE2000 in CIELAB (D65), and the distance is the mean ΔE00 of matched pairs. It ignores color order; ~2 is barely visible, ~10 clearly different. `metrics.report_outputs` is unchanged; the extra columns sit alongside it.
+
+| Mapping | paraphrase_vs_random ↓ | opposite_vs_random ↑ | ΔE random pairs | ΔE paraphrases | ΔE same text twice | near-duplicate share ↓ |
+|---|---|---|---|---|---|---|
+| a · affect, CLIP anchors | 0.47 | 1.33 | 20.3 | 9.5 | 0 (deterministic) | 0.062 |
+| **a · affect, Gemini ratings** | **0.15** | **1.56** | 25.8 | 3.7 | 1.4 | 0.075 |
+| b · CLIP swatches (bias removed) | 0.86 | 0.91 | 29.2 | 25.1 | 0 | 0.000 |
+| b · CLIP swatches (raw) | 1.00 | 1.02 | 23.0 | 23.1 | 0 | 0.005 |
+| **c · Gemini palette** | 0.44 | 1.21 | 27.1 | 12.0 | 9.6 | 0.000 |
+
+Near-duplicate share = pairs of *different* feelings whose auras are within ΔE 5. As a swatch library, raw CLIP collapses like the painting library did (11 of 580 swatches win everything, hubness 7.95); removing the bias helps (27 unique top-1, hubness 4.59) but the picks are still close to random for meaning.
+
+**What worked**
+- **Gemini reads the feeling; CLIP doesn't.** Gemini's valence/arousal ratings are sensible and stable (same text twice: ΔE 1.4). CLIP's valence leans negative and noisy: "I'm fine. Just here." scored −0.76, first snow −0.57, so almost every CLIP aura comes out red or purple.
+- **Gemini palette is the best by eye.** Grief is grey-mauve, rage red to black, fear near-black with steel, spring pastel, playful neon, exhausted and neutral grey. No two feelings collide, and opposites separate (1.21).
+- **The affect rule wins on numbers but is monotone.** Each aura is one hue family, so love, hope, grateful, nostalgia, spring and proud all land on the same olive-yellow (7.5% near-duplicates). Its paraphrase score partly rewards compressing everything to three numbers.
+- **CLIP text-to-swatch doesn't work.** It is no better than random on paraphrases or opposites, with or without bias removal.
+
+**Recommendation.** Use the Gemini palette (c) for the aura, in the call the booth already makes, and have the same call return valence/arousal/dominance. When a palette fails validation, fall back to the affect rule (a), which is deterministic and always valid, and use its brightness and saturation to keep the trail readable.
+
+**Caveats**
+- **Malformed answers.** 9 of 89 Gemini palette calls (10%) broke the hex array at temperature 1.0 (one filled it with its own reasoning). Each was re-asked and passed. The booth needs the same strict check plus the fallback. The rating calls had no failures.
+- **Run-to-run variation.** The Gemini palette varies between runs (ΔE 9.6 on the same text, against 12.0 between paraphrases), so a visitor's aura is "a" palette for the feeling, not "the" palette.
+- **Screen, not verdict.** One Gemini model, 2 samples per statement, 40 statements. The blind human test on 12 feelings from #9 is not done.
+- **Not tested:** the NRC VAD lexicon (its download requires accepting terms of use), palettes taken from the nearest paintings (option (a) in #9; it inherits the painting hub problem), and other LLMs or temperatures.

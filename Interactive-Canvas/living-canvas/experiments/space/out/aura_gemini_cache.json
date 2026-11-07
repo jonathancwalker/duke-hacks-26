@@ -1,0 +1,1410 @@
+{
+ "_invalid": [
+  {
+   "answer": {
+    "brightness": 0.32,
+    "colors": [
+     "#1c1e24,#383242,#5e4d58,#6f7582,#aba69c],",
+     "brightness",
+     "saturation",
+     "colors",
+     "brightness"
+    ],
+    "saturation": 0.21
+   },
+   "key": "gemini-3.8-flash|palette|0|I haven't slept properly in days."
+  },
+  {
+   "answer": {
+    "brightness": 0.78,
+    "colors": [
+     "#3a0ca3','#7209b7','#f72585','#ffbe0b','#4cc9f0'],'brightness':0.78,'saturation':0.92}``` (Wait, schema says double quotes for all keys and strings). Let's fix quotes strictly. Single quotes are invalid JSON. Fixing strictly. Correct output: `{",
+     "colors",
+     "colors",
+     "brightness",
+     "saturation"
+    ],
+    "saturation": 0.92
+   },
+   "key": "gemini-3.8-flash|palette|0|I'm buzzing, this night is going to be amazing!"
+  },
+  {
+   "answer": {
+    "brightness": 0.78,
+    "colors": [
+     "#f9d77e','#f58a5b','#6eb5c0','#a3c985','#f2a29f'],",
+     "brightness",
+     "saturation",
+     "colors",
+     "brightness"
+    ],
+    "saturation": 0.65
+   },
+   "key": "gemini-3.8-flash|palette|0|This song reminds me of summers when I was a kid."
+  },
+  {
+   "answer": {
+    "brightness": 0.88,
+    "colors": [
+     "#ff2a8d yellow bright vibrant dance colors... wait, strictly hex codes: #ff2a8d, #ff7b00, #ffdd00, #76f013, #00e5ff is what I chose.",
+     "colors\": [\"#ff2a8d\", \"#ff7b00\", \"#ffdd00\", \"#76f013\", \"#00e5ff\"], \"brightness\": 0.88, \"saturation\": 0.92} -> Wait! DO NOT INCLUDE ANY EXTRA TEXT OUTSIDE. MUST BE VALID JSON! DO NOT GENERATE MARKDOWN OR COMMENTS. Output ONLY valid parseable JSON. Check prompt carefully: ",
+     "Only generate a valid, parseable JSON... Do not include any extra text outside of the JSON string.",
+     "So raw json directly. No ```json markdown. No \n or \t. ",
+     "Prompt: "
+    ],
+    "saturation": 0.92
+   },
+   "key": "gemini-3.8-flash|palette|0|I just want to dance and be silly."
+  },
+  {
+   "answer": {
+    "brightness": 0.48,
+    "colors": [
+     "#220303,#8a0303,#e60b0b,#ff4500,#ffb703],",
+     "brightness",
+     "saturation",
+     "colors",
+     "#220303"
+    ],
+    "saturation": 0.95
+   },
+   "key": "gemini-3.8-flash|palette|1|I am so angry I could scream."
+  },
+  {
+   "answer": {
+    "brightness": 0.38,
+    "colors": [
+     "#1a1e24,#3d3c47,#61626a,#8a6f73,#b3b0a6",
+     "brightness",
+     "syntax check...",
+     "WAIT, array items must be string hex codes like '#1a1e24'...",
+     "let's ensure correct JSON structure directly."
+    ],
+    "saturation": 0.22
+   },
+   "key": "gemini-3.8-flash|palette|1|I haven't slept properly in days."
+  },
+  {
+   "answer": {
+    "brightness": 0.28,
+    "colors": [
+     "#0a0e14','#1f2b37','#3e4c59','#5c3d4f','#8f3b47'],",
+     "brightness",
+     "brightness",
+     "saturation",
+     "saturation"
+    ],
+    "saturation": 0.34
+   },
+   "key": "gemini-3.8-flash|palette|1|The future honestly frightens me."
+  },
+  {
+   "answer": {
+    "brightness": 0.78,
+    "colors": [
+     "#fbe6c2 memory warmth? no, hex only: #fbe6c2, #f6c445, #f38d68, #78b7d0, #95c18a -> clean hexes: #fbe6c2, #f6c445, #f38d68, #78b7d0, #95c18a]} -> wait, keep clean: [",
+     "colors\":[\"#fbe6c2\",\"#f6c445\",\"#f38d68\",\"#78b7d0\",\"#95c18a\"],\"brightness\":0.78,\"saturation\":0.58}",
+     "wait, produce purely standard clean JSON. No markdown wrapper outside if requested, but prompt says 'Only generate a valid, parseable JSON.' 'Do not include any extra text outside of the JSON string.' -> Return raw JSON string. Let's make sure it's valid.",
+     "{\"colors\":[\"#fbe6c2\",\"#f6c445\",\"#f38d68\",\"#78b7d0\",\"#95c18a\"],\"brightness\":0.78,\"saturation\":0.58}",
+     "Done."
+    ],
+    "saturation": 0.58
+   },
+   "key": "gemini-3.8-flash|palette|1|It takes me back to being young with my friends."
+  },
+  {
+   "answer": {
+    "brightness": 0.82,
+    "colors": [
+     "#ffcf48','#ff70a6','#ff9770','#70d6ff','#81d882'],'brightness':0.82,'saturation':0.72}```Oops, strict JSON format with double quotes and no invalid tokens:```json{",
+     "wait, prompt says ",
+     "Only generate a valid, parseable JSON... Do not generate any control token (such as \n and \t) at any places. If a user requests multiple JSON, always return a single parseable JSON array. Do not include any extra text outside of the JSON string.",
+     "",
+     "Let's strictly construct the string:"
+    ],
+    "saturation": 0.72
+   },
+   "key": "gemini-3.8-flash|palette|1|Flowers everywhere, the sun is finally back."
+  }
+ ],
+ "gemini-3.8-flash|palette|0|Everyone I love is in this room right now.": {
+  "brightness": 0.68,
+  "colors": [
+   "#622347",
+   "#ba4e5c",
+   "#e2825b",
+   "#f4b382",
+   "#faebd0"
+  ],
+  "saturation": 0.58
+ },
+ "gemini-3.8-flash|palette|0|Everything is quiet and still, I'm at ease.": {
+  "brightness": 0.68,
+  "colors": [
+   "#e8ece9",
+   "#c5d1cb",
+   "#a1b3b2",
+   "#7a8f94",
+   "#4c5e63"
+  ],
+  "saturation": 0.18
+ },
+ "gemini-3.8-flash|palette|0|First snow of the year on the walk here.": {
+  "brightness": 0.72,
+  "colors": [
+   "#edf2f7",
+   "#c2d4dd",
+   "#8fa5b5",
+   "#5c6b73",
+   "#b5a8a6"
+  ],
+  "saturation": 0.22
+ },
+ "gemini-3.8-flash|palette|0|Flowers everywhere, the sun is finally back.": {
+  "brightness": 0.88,
+  "colors": [
+   "#ffd447",
+   "#ff6b8b",
+   "#ffa238",
+   "#6bc574",
+   "#70d6ff"
+  ],
+  "saturation": 0.8
+ },
+ "gemini-3.8-flash|palette|0|I am so angry I could scream.": {
+  "brightness": 0.48,
+  "colors": [
+   "#210203",
+   "#780000",
+   "#c1121f",
+   "#ff2a00",
+   "#ff6b00"
+  ],
+  "saturation": 0.96
+ },
+ "gemini-3.8-flash|palette|0|I feel alone even in this crowd.": {
+  "brightness": 0.38,
+  "colors": [
+   "#131a26",
+   "#283548",
+   "#4c5d73",
+   "#7e8b9b",
+   "#a48c82"
+  ],
+  "saturation": 0.22
+ },
+ "gemini-3.8-flash|palette|0|I feel goofy and light, like a kid again.": {
+  "brightness": 0.88,
+  "colors": [
+   "#ff70a6",
+   "#ff9770",
+   "#ffd670",
+   "#70d6ff",
+   "#b87eff"
+  ],
+  "saturation": 0.72
+ },
+ "gemini-3.8-flash|palette|0|I feel lucky for everything I have.": {
+  "brightness": 0.72,
+  "colors": [
+   "#ffe8a3",
+   "#f7b267",
+   "#eb7154",
+   "#82b289",
+   "#4d826c"
+  ],
+  "saturation": 0.65
+ },
+ "gemini-3.8-flash|palette|0|I feel peaceful and slow tonight.": {
+  "brightness": 0.48,
+  "colors": [
+   "#273444",
+   "#4a5d6e",
+   "#7b8e9b",
+   "#9b95a8",
+   "#c2cbcf"
+  ],
+  "saturation": 0.26
+ },
+ "gemini-3.8-flash|palette|0|I finally did the hard thing I've been working toward.": {
+  "brightness": 0.62,
+  "colors": [
+   "#1c2d42",
+   "#416778",
+   "#d97d41",
+   "#f2be5c",
+   "#fcf1dc"
+  ],
+  "saturation": 0.58
+ },
+ "gemini-3.8-flash|palette|0|I finished my thesis today.": {
+  "brightness": 0.78,
+  "colors": [
+   "#fef08a",
+   "#fdba74",
+   "#a7f3d0",
+   "#7dd3fc",
+   "#c084fc"
+  ],
+  "saturation": 0.65
+ },
+ "gemini-3.8-flash|palette|0|I haven't slept properly in days.": {
+  "brightness": 0.38,
+  "colors": [
+   "#191826",
+   "#373a4a",
+   "#5c536b",
+   "#7d8294",
+   "#c4c3be"
+  ],
+  "saturation": 0.22
+ },
+ "gemini-3.8-flash|palette|0|I just want to dance and be silly.": {
+  "brightness": 0.88,
+  "colors": [
+   "#ff2a85",
+   "#ff9100",
+   "#ffe600",
+   "#00f0ff",
+   "#9d00ff"
+  ],
+  "saturation": 0.94
+ },
+ "gemini-3.8-flash|palette|0|I lost my grandma recently and I miss her.": {
+  "brightness": 0.52,
+  "colors": [
+   "#4a536b",
+   "#736f87",
+   "#9e8d9c",
+   "#c4abaa",
+   "#ded1c8"
+  ],
+  "saturation": 0.28
+ },
+ "gemini-3.8-flash|palette|0|I miss home and my family far away.": {
+  "brightness": 0.52,
+  "colors": [
+   "#2b3a4a",
+   "#5c6f84",
+   "#9d8189",
+   "#d4a373",
+   "#f0ebe1"
+  ],
+  "saturation": 0.34
+ },
+ "gemini-3.8-flash|palette|0|I saw the snow start falling and just stopped to watch.": {
+  "brightness": 0.62,
+  "colors": [
+   "#1e293b",
+   "#526e85",
+   "#8ca5b8",
+   "#c2d4e0",
+   "#f0f5fa"
+  ],
+  "saturation": 0.28
+ },
+ "gemini-3.8-flash|palette|0|I think next year is going to be better.": {
+  "brightness": 0.78,
+  "colors": [
+   "#fbe29f",
+   "#f6c28b",
+   "#b8a1c9",
+   "#62a8d1",
+   "#95d5b2"
+  ],
+  "saturation": 0.52
+ },
+ "gemini-3.8-flash|palette|0|I wish I was back in my hometown.": {
+  "brightness": 0.52,
+  "colors": [
+   "#4a5568",
+   "#8c6f78",
+   "#b88a68",
+   "#d4c2aa",
+   "#5e433c"
+  ],
+  "saturation": 0.38
+ },
+ "gemini-3.8-flash|palette|0|I'm buzzing, this night is going to be amazing!": {
+  "brightness": 0.78,
+  "colors": [
+   "#ffe600",
+   "#ff1361",
+   "#a000ff",
+   "#00f5ff",
+   "#180036"
+  ],
+  "saturation": 0.95
+ },
+ "gemini-3.8-flash|palette|0|I'm fine. Just here.": {
+  "brightness": 0.55,
+  "colors": [
+   "#6e737c",
+   "#8d939e",
+   "#a8a5ab",
+   "#c4c5c8",
+   "#535861"
+  ],
+  "saturation": 0.18
+ },
+ "gemini-3.8-flash|palette|0|I'm furious about how things are going.": {
+  "brightness": 0.42,
+  "colors": [
+   "#1e0508",
+   "#6a0c12",
+   "#b71212",
+   "#ea3c10",
+   "#ff8811"
+  ],
+  "saturation": 0.92
+ },
+ "gemini-3.8-flash|palette|0|I'm just thankful to be here.": {
+  "brightness": 0.68,
+  "colors": [
+   "#fbf4e6",
+   "#f3c299",
+   "#dd8e7b",
+   "#8fa48c",
+   "#54434f"
+  ],
+  "saturation": 0.45
+ },
+ "gemini-3.8-flash|palette|0|I'm nervous about my exams next week.": {
+  "brightness": 0.52,
+  "colors": [
+   "#223344",
+   "#4a6572",
+   "#7e949b",
+   "#cdd88d",
+   "#f0eedb"
+  ],
+  "saturation": 0.38
+ },
+ "gemini-3.8-flash|palette|0|I'm scared about what's going to happen to us.": {
+  "brightness": 0.3,
+  "colors": [
+   "#0d131f",
+   "#221c35",
+   "#1c3b47",
+   "#475b63",
+   "#8c9da6"
+  ],
+  "saturation": 0.35
+ },
+ "gemini-3.8-flash|palette|0|I'm so tired, I've been working nonstop.": {
+  "brightness": 0.38,
+  "colors": [
+   "#23262d",
+   "#3d434f",
+   "#61606b",
+   "#88868c",
+   "#b8b4af"
+  ],
+  "saturation": 0.15
+ },
+ "gemini-3.8-flash|palette|0|I'm surrounded by the people who matter most to me.": {
+  "brightness": 0.68,
+  "colors": [
+   "#ffd166",
+   "#f4978e",
+   "#f08080",
+   "#a84262",
+   "#5c2751"
+  ],
+  "saturation": 0.62
+ },
+ "gemini-3.8-flash|palette|0|It takes me back to being young with my friends.": {
+  "brightness": 0.74,
+  "colors": [
+   "#FBD490",
+   "#F39B7F",
+   "#E07A5F",
+   "#78B0A0",
+   "#68A6CE"
+  ],
+  "saturation": 0.58
+ },
+ "gemini-3.8-flash|palette|0|My best friend lied to me.": {
+  "brightness": 0.38,
+  "colors": [
+   "#1e1f2b",
+   "#4a3b54",
+   "#844453",
+   "#4d6b6e",
+   "#8b949c"
+  ],
+  "saturation": 0.34
+ },
+ "gemini-3.8-flash|palette|0|My finals are coming and I can't stop worrying.": {
+  "brightness": 0.42,
+  "colors": [
+   "#161b26",
+   "#3a4856",
+   "#6a7b82",
+   "#b8a452",
+   "#e3e7d3"
+  ],
+  "saturation": 0.34
+ },
+ "gemini-3.8-flash|palette|0|My grandmother passed away last month.": {
+  "brightness": 0.45,
+  "colors": [
+   "#353744",
+   "#7a7082",
+   "#a68087",
+   "#8e9a99",
+   "#cec5be"
+  ],
+  "saturation": 0.25
+ },
+ "gemini-3.8-flash|palette|0|Nobody here really knows me.": {
+  "brightness": 0.41,
+  "colors": [
+   "#161c28",
+   "#2f3b4c",
+   "#56536b",
+   "#7d8b99",
+   "#b2a9b3"
+  ],
+  "saturation": 0.24
+ },
+ "gemini-3.8-flash|palette|0|Nothing special, it's a normal day.": {
+  "brightness": 0.58,
+  "colors": [
+   "#82888f",
+   "#b5aba1",
+   "#5b6770",
+   "#d2ccc4",
+   "#9e948a"
+  ],
+  "saturation": 0.18
+ },
+ "gemini-3.8-flash|palette|0|Our team just took the title, I can't believe it!": {
+  "brightness": 0.85,
+  "colors": [
+   "#ffd000",
+   "#ff4b3e",
+   "#00f5d4",
+   "#fff07c",
+   "#7b2cbf"
+  ],
+  "saturation": 0.9
+ },
+ "gemini-3.8-flash|palette|0|Someone I trusted went behind my back.": {
+  "brightness": 0.35,
+  "colors": [
+   "#111625",
+   "#432338",
+   "#852233",
+   "#596b65",
+   "#98a3b2"
+  ],
+  "saturation": 0.42
+ },
+ "gemini-3.8-flash|palette|0|The concert is about to start and I can't wait!": {
+  "brightness": 0.68,
+  "colors": [
+   "#3a0ca3",
+   "#7209b7",
+   "#f72585",
+   "#4cc9f0",
+   "#ffb703"
+  ],
+  "saturation": 0.92
+ },
+ "gemini-3.8-flash|palette|0|The future honestly frightens me.": {
+  "brightness": 0.32,
+  "colors": [
+   "#0a0e17",
+   "#1d2b3a",
+   "#364858",
+   "#4d686f",
+   "#889fa5"
+  ],
+  "saturation": 0.3
+ },
+ "gemini-3.8-flash|palette|0|The trees are blooming and it's warm out.": {
+  "brightness": 0.82,
+  "colors": [
+   "#F6A5C0",
+   "#FFD269",
+   "#A7E07E",
+   "#F79489",
+   "#BDE8D8"
+  ],
+  "saturation": 0.65
+ },
+ "gemini-3.8-flash|palette|0|Things are finally starting to look up.": {
+  "brightness": 0.72,
+  "colors": [
+   "#5b6c8f",
+   "#b392ac",
+   "#f4a261",
+   "#ffe082",
+   "#81d4fa"
+  ],
+  "saturation": 0.58
+ },
+ "gemini-3.8-flash|palette|0|This song reminds me of summers when I was a kid.": {
+  "brightness": 0.8,
+  "colors": [
+   "#f6c85f",
+   "#7ec4cf",
+   "#f28e79",
+   "#a3d39c",
+   "#fff0ce"
+  ],
+  "saturation": 0.6
+ },
+ "gemini-3.8-flash|palette|0|We won! We actually won the championship!": {
+  "brightness": 0.82,
+  "colors": [
+   "#FFD700",
+   "#FF5E13",
+   "#FF1475",
+   "#FFF5CC",
+   "#142580"
+  ],
+  "saturation": 0.9
+ },
+ "gemini-3.8-flash|palette|1|Everyone I love is in this room right now.": {
+  "brightness": 0.72,
+  "colors": [
+   "#7d3248",
+   "#c85a53",
+   "#f09a67",
+   "#fbd278",
+   "#fef0d6"
+  ],
+  "saturation": 0.65
+ },
+ "gemini-3.8-flash|palette|1|Everything is quiet and still, I'm at ease.": {
+  "brightness": 0.72,
+  "colors": [
+   "#e5ece9",
+   "#c2d1cd",
+   "#9cb2ad",
+   "#cbd1d8",
+   "#6a7b82"
+  ],
+  "saturation": 0.18
+ },
+ "gemini-3.8-flash|palette|1|First snow of the year on the walk here.": {
+  "brightness": 0.72,
+  "colors": [
+   "#f1f5f9",
+   "#c1d5e4",
+   "#829ab1",
+   "#485b70",
+   "#d8c2c7"
+  ],
+  "saturation": 0.28
+ },
+ "gemini-3.8-flash|palette|1|Flowers everywhere, the sun is finally back.": {
+  "brightness": 0.82,
+  "colors": [
+   "#FFD043",
+   "#FF7E67",
+   "#FF5C8A",
+   "#98CE00",
+   "#6ECBFF"
+  ],
+  "saturation": 0.78
+ },
+ "gemini-3.8-flash|palette|1|I am so angry I could scream.": {
+  "brightness": 0.48,
+  "colors": [
+   "#1c0303",
+   "#8f0b0b",
+   "#e61c0d",
+   "#ff5100",
+   "#ffd41f"
+  ],
+  "saturation": 0.95
+ },
+ "gemini-3.8-flash|palette|1|I feel alone even in this crowd.": {
+  "brightness": 0.45,
+  "colors": [
+   "#1b202e",
+   "#3b4856",
+   "#706e7b",
+   "#a2aebb",
+   "#d8dadf"
+  ],
+  "saturation": 0.22
+ },
+ "gemini-3.8-flash|palette|1|I feel goofy and light, like a kid again.": {
+  "brightness": 0.85,
+  "colors": [
+   "#FF6FA2",
+   "#FFD447",
+   "#48CAE4",
+   "#70E49B",
+   "#B77BFF"
+  ],
+  "saturation": 0.74
+ },
+ "gemini-3.8-flash|palette|1|I feel lucky for everything I have.": {
+  "brightness": 0.72,
+  "colors": [
+   "#faeed1",
+   "#f2ba49",
+   "#e88d67",
+   "#73a986",
+   "#b86b4a"
+  ],
+  "saturation": 0.58
+ },
+ "gemini-3.8-flash|palette|1|I feel peaceful and slow tonight.": {
+  "brightness": 0.58,
+  "colors": [
+   "#384856",
+   "#5f7485",
+   "#8b9ea7",
+   "#b3c0c8",
+   "#dedad4"
+  ],
+  "saturation": 0.22
+ },
+ "gemini-3.8-flash|palette|1|I finally did the hard thing I've been working toward.": {
+  "brightness": 0.56,
+  "colors": [
+   "#232b3e",
+   "#5c3d5e",
+   "#c25e40",
+   "#f2a65a",
+   "#fce4a6"
+  ],
+  "saturation": 0.68
+ },
+ "gemini-3.8-flash|palette|1|I finished my thesis today.": {
+  "brightness": 0.82,
+  "colors": [
+   "#FFE599",
+   "#F8A978",
+   "#C3B1E1",
+   "#98D8D8",
+   "#E2F0CB"
+  ],
+  "saturation": 0.58
+ },
+ "gemini-3.8-flash|palette|1|I haven't slept properly in days.": {
+  "brightness": 0.32,
+  "colors": [
+   "#181923",
+   "#343242",
+   "#535b66",
+   "#7e7a83",
+   "#b8b1a3"
+  ],
+  "saturation": 0.18
+ },
+ "gemini-3.8-flash|palette|1|I just want to dance and be silly.": {
+  "brightness": 0.85,
+  "colors": [
+   "#ff2a85",
+   "#ffea00",
+   "#00f5d4",
+   "#ff7b00",
+   "#7b2cbf"
+  ],
+  "saturation": 0.92
+ },
+ "gemini-3.8-flash|palette|1|I lost my grandma recently and I miss her.": {
+  "brightness": 0.52,
+  "colors": [
+   "#383644",
+   "#676378",
+   "#9c828d",
+   "#d1b4a5",
+   "#ebdcd3"
+  ],
+  "saturation": 0.28
+ },
+ "gemini-3.8-flash|palette|1|I miss home and my family far away.": {
+  "brightness": 0.52,
+  "colors": [
+   "#273248",
+   "#596178",
+   "#9a7e88",
+   "#d19a7e",
+   "#ecd9c6"
+  ],
+  "saturation": 0.36
+ },
+ "gemini-3.8-flash|palette|1|I saw the snow start falling and just stopped to watch.": {
+  "brightness": 0.62,
+  "colors": [
+   "#1e2a38",
+   "#546e7a",
+   "#9aaec4",
+   "#d2e3ed",
+   "#f4f8fb"
+  ],
+  "saturation": 0.28
+ },
+ "gemini-3.8-flash|palette|1|I think next year is going to be better.": {
+  "brightness": 0.82,
+  "colors": [
+   "#F89F82",
+   "#FFAEBC",
+   "#FEE2B3",
+   "#B4F8C8",
+   "#A0E7E5"
+  ],
+  "saturation": 0.58
+ },
+ "gemini-3.8-flash|palette|1|I wish I was back in my hometown.": {
+  "brightness": 0.58,
+  "colors": [
+   "#58677c",
+   "#9c7a76",
+   "#d19f6a",
+   "#b56f5a",
+   "#e2d2c1"
+  ],
+  "saturation": 0.42
+ },
+ "gemini-3.8-flash|palette|1|I'm buzzing, this night is going to be amazing!": {
+  "brightness": 0.78,
+  "colors": [
+   "#e2f705",
+   "#00f0ff",
+   "#ff007f",
+   "#ff5e3a",
+   "#7928ca"
+  ],
+  "saturation": 0.92
+ },
+ "gemini-3.8-flash|palette|1|I'm fine. Just here.": {
+  "brightness": 0.55,
+  "colors": [
+   "#4a525a",
+   "#7b8b98",
+   "#9d95a1",
+   "#b8b2a8",
+   "#c2c8cb"
+  ],
+  "saturation": 0.15
+ },
+ "gemini-3.8-flash|palette|1|I'm furious about how things are going.": {
+  "brightness": 0.44,
+  "colors": [
+   "#210202",
+   "#6e0b0b",
+   "#c70000",
+   "#ff2a00",
+   "#ff7300"
+  ],
+  "saturation": 0.95
+ },
+ "gemini-3.8-flash|palette|1|I'm just thankful to be here.": {
+  "brightness": 0.78,
+  "colors": [
+   "#fdf0d5",
+   "#f6c28b",
+   "#e8a598",
+   "#b8866a",
+   "#a3b899"
+  ],
+  "saturation": 0.45
+ },
+ "gemini-3.8-flash|palette|1|I'm nervous about my exams next week.": {
+  "brightness": 0.62,
+  "colors": [
+   "#F5ED9E",
+   "#9EB8C4",
+   "#768598",
+   "#8B7E9C",
+   "#414B5C"
+  ],
+  "saturation": 0.38
+ },
+ "gemini-3.8-flash|palette|1|I'm scared about what's going to happen to us.": {
+  "brightness": 0.32,
+  "colors": [
+   "#131821",
+   "#293644",
+   "#5c4a52",
+   "#8a7b82",
+   "#cdd5d1"
+  ],
+  "saturation": 0.24
+ },
+ "gemini-3.8-flash|palette|1|I'm so tired, I've been working nonstop.": {
+  "brightness": 0.38,
+  "colors": [
+   "#2b303a",
+   "#4a525d",
+   "#6c6874",
+   "#8f8b88",
+   "#b8b5b0"
+  ],
+  "saturation": 0.15
+ },
+ "gemini-3.8-flash|palette|1|I'm surrounded by the people who matter most to me.": {
+  "brightness": 0.72,
+  "colors": [
+   "#fce8d5",
+   "#e5a95b",
+   "#f19e8e",
+   "#de5b6d",
+   "#9a3b5a"
+  ],
+  "saturation": 0.65
+ },
+ "gemini-3.8-flash|palette|1|It takes me back to being young with my friends.": {
+  "brightness": 0.76,
+  "colors": [
+   "#ffd166",
+   "#f4978e",
+   "#f28482",
+   "#8ecae6",
+   "#84a59d"
+  ],
+  "saturation": 0.62
+ },
+ "gemini-3.8-flash|palette|1|My best friend lied to me.": {
+  "brightness": 0.35,
+  "colors": [
+   "#151c28",
+   "#3d4f5d",
+   "#6b3749",
+   "#847551",
+   "#9b9bb0"
+  ],
+  "saturation": 0.38
+ },
+ "gemini-3.8-flash|palette|1|My finals are coming and I can't stop worrying.": {
+  "brightness": 0.42,
+  "colors": [
+   "#162032",
+   "#3a4f66",
+   "#2e6f7e",
+   "#c2a632",
+   "#8295a8"
+  ],
+  "saturation": 0.48
+ },
+ "gemini-3.8-flash|palette|1|My grandmother passed away last month.": {
+  "brightness": 0.42,
+  "colors": [
+   "#1e1b24",
+   "#3b3f58",
+   "#6c6475",
+   "#9e8e93",
+   "#d6cbd0"
+  ],
+  "saturation": 0.22
+ },
+ "gemini-3.8-flash|palette|1|Nobody here really knows me.": {
+  "brightness": 0.42,
+  "colors": [
+   "#1c2230",
+   "#384358",
+   "#5f5d72",
+   "#8e9ea8",
+   "#c2b4a3"
+  ],
+  "saturation": 0.26
+ },
+ "gemini-3.8-flash|palette|1|Nothing special, it's a normal day.": {
+  "brightness": 0.6,
+  "colors": [
+   "#b0b7bd",
+   "#8f969b",
+   "#cfc8be",
+   "#a1988e",
+   "#6f7378"
+  ],
+  "saturation": 0.15
+ },
+ "gemini-3.8-flash|palette|1|Our team just took the title, I can't believe it!": {
+  "brightness": 0.84,
+  "colors": [
+   "#ffd000",
+   "#ff5925",
+   "#e8175d",
+   "#00d2ff",
+   "#fff385"
+  ],
+  "saturation": 0.88
+ },
+ "gemini-3.8-flash|palette|1|Someone I trusted went behind my back.": {
+  "brightness": 0.35,
+  "colors": [
+   "#111625",
+   "#43283b",
+   "#7b2d26",
+   "#8b8346",
+   "#818e97"
+  ],
+  "saturation": 0.42
+ },
+ "gemini-3.8-flash|palette|1|The concert is about to start and I can't wait!": {
+  "brightness": 0.65,
+  "colors": [
+   "#2b0938",
+   "#7b2cbf",
+   "#ff007f",
+   "#ff9e00",
+   "#00f5d4"
+  ],
+  "saturation": 0.95
+ },
+ "gemini-3.8-flash|palette|1|The future honestly frightens me.": {
+  "brightness": 0.28,
+  "colors": [
+   "#0b0f17",
+   "#1c2b36",
+   "#3a2d42",
+   "#5c6f84",
+   "#6ee7b7"
+  ],
+  "saturation": 0.38
+ },
+ "gemini-3.8-flash|palette|1|The trees are blooming and it's warm out.": {
+  "brightness": 0.82,
+  "colors": [
+   "#f7a8b8",
+   "#ffcf56",
+   "#8ed476",
+   "#fa896b",
+   "#fff2b2"
+  ],
+  "saturation": 0.68
+ },
+ "gemini-3.8-flash|palette|1|Things are finally starting to look up.": {
+  "brightness": 0.72,
+  "colors": [
+   "#4a6174",
+   "#7fa2ba",
+   "#cce1d2",
+   "#f9dd9b",
+   "#f2a379"
+  ],
+  "saturation": 0.54
+ },
+ "gemini-3.8-flash|palette|1|This song reminds me of summers when I was a kid.": {
+  "brightness": 0.82,
+  "colors": [
+   "#F7C844",
+   "#F89D63",
+   "#6EC5E9",
+   "#A8D672",
+   "#FDE8BB"
+  ],
+  "saturation": 0.68
+ },
+ "gemini-3.8-flash|palette|1|We won! We actually won the championship!": {
+  "brightness": 0.88,
+  "colors": [
+   "#FFBE0B",
+   "#FB5607",
+   "#FF006E",
+   "#3A86FF",
+   "#FFF3B0"
+  ],
+  "saturation": 0.92
+ },
+ "gemini-3.8-flash|vad|0|Everyone I love is in this room right now.": {
+  "arousal": 0.32,
+  "dominance": 0.55,
+  "valence": 0.88
+ },
+ "gemini-3.8-flash|vad|0|Everything is quiet and still, I'm at ease.": {
+  "arousal": -0.75,
+  "dominance": 0.4,
+  "valence": 0.75
+ },
+ "gemini-3.8-flash|vad|0|First snow of the year on the walk here.": {
+  "arousal": -0.1,
+  "dominance": 0.25,
+  "valence": 0.55
+ },
+ "gemini-3.8-flash|vad|0|Flowers everywhere, the sun is finally back.": {
+  "arousal": 0.38,
+  "dominance": 0.55,
+  "valence": 0.82
+ },
+ "gemini-3.8-flash|vad|0|I am so angry I could scream.": {
+  "arousal": 0.85,
+  "dominance": 0.35,
+  "valence": -0.75
+ },
+ "gemini-3.8-flash|vad|0|I feel alone even in this crowd.": {
+  "arousal": -0.35,
+  "dominance": -0.55,
+  "valence": -0.65
+ },
+ "gemini-3.8-flash|vad|0|I feel goofy and light, like a kid again.": {
+  "arousal": 0.35,
+  "dominance": 0.3,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|0|I feel lucky for everything I have.": {
+  "arousal": -0.1,
+  "dominance": 0.3,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|0|I feel peaceful and slow tonight.": {
+  "arousal": -0.75,
+  "dominance": 0.3,
+  "valence": 0.7
+ },
+ "gemini-3.8-flash|vad|0|I finally did the hard thing I've been working toward.": {
+  "arousal": 0.52,
+  "dominance": 0.78,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|0|I finished my thesis today.": {
+  "arousal": 0.4,
+  "dominance": 0.7,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|0|I haven't slept properly in days.": {
+  "arousal": -0.6,
+  "dominance": -0.4,
+  "valence": -0.5
+ },
+ "gemini-3.8-flash|vad|0|I just want to dance and be silly.": {
+  "arousal": 0.7,
+  "dominance": 0.6,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|0|I lost my grandma recently and I miss her.": {
+  "arousal": -0.35,
+  "dominance": -0.58,
+  "valence": -0.72
+ },
+ "gemini-3.8-flash|vad|0|I miss home and my family far away.": {
+  "arousal": -0.35,
+  "dominance": -0.4,
+  "valence": -0.55
+ },
+ "gemini-3.8-flash|vad|0|I saw the snow start falling and just stopped to watch.": {
+  "arousal": -0.45,
+  "dominance": 0.15,
+  "valence": 0.65
+ },
+ "gemini-3.8-flash|vad|0|I think next year is going to be better.": {
+  "arousal": 0.15,
+  "dominance": 0.35,
+  "valence": 0.65
+ },
+ "gemini-3.8-flash|vad|0|I wish I was back in my hometown.": {
+  "arousal": -0.25,
+  "dominance": -0.3,
+  "valence": -0.35
+ },
+ "gemini-3.8-flash|vad|0|I'm buzzing, this night is going to be amazing!": {
+  "arousal": 0.85,
+  "dominance": 0.72,
+  "valence": 0.88
+ },
+ "gemini-3.8-flash|vad|0|I'm fine. Just here.": {
+  "arousal": -0.45,
+  "dominance": -0.15,
+  "valence": -0.1
+ },
+ "gemini-3.8-flash|vad|0|I'm furious about how things are going.": {
+  "arousal": 0.85,
+  "dominance": 0.52,
+  "valence": -0.82
+ },
+ "gemini-3.8-flash|vad|0|I'm just thankful to be here.": {
+  "arousal": -0.25,
+  "dominance": 0.2,
+  "valence": 0.75
+ },
+ "gemini-3.8-flash|vad|0|I'm nervous about my exams next week.": {
+  "arousal": 0.55,
+  "dominance": -0.35,
+  "valence": -0.5
+ },
+ "gemini-3.8-flash|vad|0|I'm scared about what's going to happen to us.": {
+  "arousal": 0.65,
+  "dominance": -0.68,
+  "valence": -0.72
+ },
+ "gemini-3.8-flash|vad|0|I'm so tired, I've been working nonstop.": {
+  "arousal": -0.65,
+  "dominance": -0.4,
+  "valence": -0.5
+ },
+ "gemini-3.8-flash|vad|0|I'm surrounded by the people who matter most to me.": {
+  "arousal": 0.25,
+  "dominance": 0.65,
+  "valence": 0.82
+ },
+ "gemini-3.8-flash|vad|0|It takes me back to being young with my friends.": {
+  "arousal": 0.15,
+  "dominance": 0.45,
+  "valence": 0.75
+ },
+ "gemini-3.8-flash|vad|0|My best friend lied to me.": {
+  "arousal": 0.25,
+  "dominance": -0.45,
+  "valence": -0.78
+ },
+ "gemini-3.8-flash|vad|0|My finals are coming and I can't stop worrying.": {
+  "arousal": 0.55,
+  "dominance": -0.6,
+  "valence": -0.65
+ },
+ "gemini-3.8-flash|vad|0|My grandmother passed away last month.": {
+  "arousal": -0.35,
+  "dominance": -0.55,
+  "valence": -0.75
+ },
+ "gemini-3.8-flash|vad|0|Nobody here really knows me.": {
+  "arousal": -0.3,
+  "dominance": -0.45,
+  "valence": -0.55
+ },
+ "gemini-3.8-flash|vad|0|Nothing special, it's a normal day.": {
+  "arousal": -0.5,
+  "dominance": 0.1,
+  "valence": -0.15
+ },
+ "gemini-3.8-flash|vad|0|Our team just took the title, I can't believe it!": {
+  "arousal": 0.85,
+  "dominance": 0.72,
+  "valence": 0.88
+ },
+ "gemini-3.8-flash|vad|0|Someone I trusted went behind my back.": {
+  "arousal": 0.42,
+  "dominance": -0.48,
+  "valence": -0.75
+ },
+ "gemini-3.8-flash|vad|0|The concert is about to start and I can't wait!": {
+  "arousal": 0.82,
+  "dominance": 0.6,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|0|The future honestly frightens me.": {
+  "arousal": 0.42,
+  "dominance": -0.58,
+  "valence": -0.65
+ },
+ "gemini-3.8-flash|vad|0|The trees are blooming and it's warm out.": {
+  "arousal": -0.15,
+  "dominance": 0.25,
+  "valence": 0.72
+ },
+ "gemini-3.8-flash|vad|0|Things are finally starting to look up.": {
+  "arousal": 0.2,
+  "dominance": 0.4,
+  "valence": 0.65
+ },
+ "gemini-3.8-flash|vad|0|This song reminds me of summers when I was a kid.": {
+  "arousal": -0.15,
+  "dominance": 0.3,
+  "valence": 0.65
+ },
+ "gemini-3.8-flash|vad|0|We won! We actually won the championship!": {
+  "arousal": 0.85,
+  "dominance": 0.8,
+  "valence": 0.9
+ },
+ "gemini-3.8-flash|vad|1|Everyone I love is in this room right now.": {
+  "arousal": 0.4,
+  "dominance": 0.55,
+  "valence": 0.9
+ },
+ "gemini-3.8-flash|vad|1|Everything is quiet and still, I'm at ease.": {
+  "arousal": -0.75,
+  "dominance": 0.4,
+  "valence": 0.75
+ },
+ "gemini-3.8-flash|vad|1|First snow of the year on the walk here.": {
+  "arousal": -0.2,
+  "dominance": 0.2,
+  "valence": 0.55
+ },
+ "gemini-3.8-flash|vad|1|Flowers everywhere, the sun is finally back.": {
+  "arousal": 0.3,
+  "dominance": 0.5,
+  "valence": 0.82
+ },
+ "gemini-3.8-flash|vad|1|I am so angry I could scream.": {
+  "arousal": 0.85,
+  "dominance": 0.35,
+  "valence": -0.8
+ },
+ "gemini-3.8-flash|vad|1|I feel alone even in this crowd.": {
+  "arousal": -0.3,
+  "dominance": -0.5,
+  "valence": -0.65
+ },
+ "gemini-3.8-flash|vad|1|I feel goofy and light, like a kid again.": {
+  "arousal": 0.45,
+  "dominance": 0.5,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|1|I feel lucky for everything I have.": {
+  "arousal": -0.1,
+  "dominance": 0.4,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|1|I feel peaceful and slow tonight.": {
+  "arousal": -0.75,
+  "dominance": 0.3,
+  "valence": 0.7
+ },
+ "gemini-3.8-flash|vad|1|I finally did the hard thing I've been working toward.": {
+  "arousal": 0.45,
+  "dominance": 0.78,
+  "valence": 0.75
+ },
+ "gemini-3.8-flash|vad|1|I finished my thesis today.": {
+  "arousal": 0.45,
+  "dominance": 0.75,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|1|I haven't slept properly in days.": {
+  "arousal": -0.5,
+  "dominance": -0.4,
+  "valence": -0.6
+ },
+ "gemini-3.8-flash|vad|1|I just want to dance and be silly.": {
+  "arousal": 0.68,
+  "dominance": 0.62,
+  "valence": 0.82
+ },
+ "gemini-3.8-flash|vad|1|I lost my grandma recently and I miss her.": {
+  "arousal": -0.35,
+  "dominance": -0.6,
+  "valence": -0.75
+ },
+ "gemini-3.8-flash|vad|1|I miss home and my family far away.": {
+  "arousal": -0.25,
+  "dominance": -0.35,
+  "valence": -0.55
+ },
+ "gemini-3.8-flash|vad|1|I saw the snow start falling and just stopped to watch.": {
+  "arousal": -0.5,
+  "dominance": 0.15,
+  "valence": 0.65
+ },
+ "gemini-3.8-flash|vad|1|I think next year is going to be better.": {
+  "arousal": 0.15,
+  "dominance": 0.3,
+  "valence": 0.55
+ },
+ "gemini-3.8-flash|vad|1|I wish I was back in my hometown.": {
+  "arousal": -0.3,
+  "dominance": -0.3,
+  "valence": -0.35
+ },
+ "gemini-3.8-flash|vad|1|I'm buzzing, this night is going to be amazing!": {
+  "arousal": 0.85,
+  "dominance": 0.7,
+  "valence": 0.88
+ },
+ "gemini-3.8-flash|vad|1|I'm fine. Just here.": {
+  "arousal": -0.55,
+  "dominance": -0.12,
+  "valence": -0.08
+ },
+ "gemini-3.8-flash|vad|1|I'm furious about how things are going.": {
+  "arousal": 0.8,
+  "dominance": 0.35,
+  "valence": -0.75
+ },
+ "gemini-3.8-flash|vad|1|I'm just thankful to be here.": {
+  "arousal": -0.2,
+  "dominance": 0.2,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|1|I'm nervous about my exams next week.": {
+  "arousal": 0.5,
+  "dominance": -0.4,
+  "valence": -0.5
+ },
+ "gemini-3.8-flash|vad|1|I'm scared about what's going to happen to us.": {
+  "arousal": 0.65,
+  "dominance": -0.65,
+  "valence": -0.75
+ },
+ "gemini-3.8-flash|vad|1|I'm so tired, I've been working nonstop.": {
+  "arousal": -0.65,
+  "dominance": -0.35,
+  "valence": -0.45
+ },
+ "gemini-3.8-flash|vad|1|I'm surrounded by the people who matter most to me.": {
+  "arousal": 0.2,
+  "dominance": 0.65,
+  "valence": 0.85
+ },
+ "gemini-3.8-flash|vad|1|It takes me back to being young with my friends.": {
+  "arousal": -0.05,
+  "dominance": 0.35,
+  "valence": 0.72
+ },
+ "gemini-3.8-flash|vad|1|My best friend lied to me.": {
+  "arousal": 0.25,
+  "dominance": -0.45,
+  "valence": -0.75
+ },
+ "gemini-3.8-flash|vad|1|My finals are coming and I can't stop worrying.": {
+  "arousal": 0.6,
+  "dominance": -0.6,
+  "valence": -0.65
+ },
+ "gemini-3.8-flash|vad|1|My grandmother passed away last month.": {
+  "arousal": -0.35,
+  "dominance": -0.62,
+  "valence": -0.78
+ },
+ "gemini-3.8-flash|vad|1|Nobody here really knows me.": {
+  "arousal": -0.25,
+  "dominance": -0.4,
+  "valence": -0.55
+ },
+ "gemini-3.8-flash|vad|1|Nothing special, it's a normal day.": {
+  "arousal": -0.5,
+  "dominance": 0.1,
+  "valence": -0.1
+ },
+ "gemini-3.8-flash|vad|1|Our team just took the title, I can't believe it!": {
+  "arousal": 0.85,
+  "dominance": 0.75,
+  "valence": 0.85
+ },
+ "gemini-3.8-flash|vad|1|Someone I trusted went behind my back.": {
+  "arousal": 0.35,
+  "dominance": -0.45,
+  "valence": -0.78
+ },
+ "gemini-3.8-flash|vad|1|The concert is about to start and I can't wait!": {
+  "arousal": 0.82,
+  "dominance": 0.55,
+  "valence": 0.8
+ },
+ "gemini-3.8-flash|vad|1|The future honestly frightens me.": {
+  "arousal": 0.42,
+  "dominance": -0.58,
+  "valence": -0.68
+ },
+ "gemini-3.8-flash|vad|1|The trees are blooming and it's warm out.": {
+  "arousal": -0.15,
+  "dominance": 0.35,
+  "valence": 0.75
+ },
+ "gemini-3.8-flash|vad|1|Things are finally starting to look up.": {
+  "arousal": 0.2,
+  "dominance": 0.45,
+  "valence": 0.65
+ },
+ "gemini-3.8-flash|vad|1|This song reminds me of summers when I was a kid.": {
+  "arousal": -0.15,
+  "dominance": 0.35,
+  "valence": 0.65
+ },
+ "gemini-3.8-flash|vad|1|We won! We actually won the championship!": {
+  "arousal": 0.85,
+  "dominance": 0.8,
+  "valence": 0.9
+ }
+}

@@ -1,0 +1,100 @@
+[
+ {
+  "candidate": "a_affect_clip",
+  "paraphrase_vs_random": 0.466,
+  "opposite_vs_random": 1.334,
+  "dE_random": 20.3,
+  "dE_paraphrase": 9.5,
+  "dE_opposite": 27.1,
+  "within_palette_dE": 31.7,
+  "near_duplicate_share": 0.062
+ },
+ {
+  "candidate": "a_affect_gemini",
+  "paraphrase_vs_random": 0.145,
+  "opposite_vs_random": 1.56,
+  "dE_random": 25.8,
+  "dE_paraphrase": 3.7,
+  "dE_opposite": 40.3,
+  "within_palette_dE": 30.0,
+  "near_duplicate_share": 0.075,
+  "dE_repeat": 1.4,
+  "invalid_answer_rate": 0.0,
+  "invalid_answers": 0,
+  "gemini_calls": 80
+ },
+ {
+  "candidate": "b_clip_swatch",
+  "paraphrase_vs_random": 0.858,
+  "opposite_vs_random": 0.912,
+  "dE_random": 29.2,
+  "dE_paraphrase": 25.1,
+  "dE_opposite": 26.7,
+  "within_palette_dE": 36.7,
+  "near_duplicate_share": 0.0
+ },
+ {
+  "candidate": "b_clip_swatch_raw",
+  "paraphrase_vs_random": 1.004,
+  "opposite_vs_random": 1.016,
+  "dE_random": 23.0,
+  "dE_paraphrase": 23.1,
+  "dE_opposite": 23.3,
+  "within_palette_dE": 48.4,
+  "near_duplicate_share": 0.005
+ },
+ {
+  "candidate": "c_gemini",
+  "paraphrase_vs_random": 0.442,
+  "opposite_vs_random": 1.206,
+  "dE_random": 27.1,
+  "dE_paraphrase": 12.0,
+  "dE_opposite": 32.7,
+  "within_palette_dE": 34.7,
+  "near_duplicate_share": 0.0,
+  "dE_repeat": 9.6,
+  "invalid_answer_rate": 0.101,
+  "invalid_answers": 9,
+  "gemini_calls": 89
+ },
+ {
+  "candidate": "b_clip_swatch_raw (as swatch library)",
+  "coverage_top1": {
+   "unique": 11,
+   "of": 580,
+   "entropy": 0.315,
+   "max_share": 0.275
+  },
+  "coverage_top3": {
+   "unique": 28,
+   "of": 580,
+   "entropy": 0.445,
+   "max_share": 0.133
+  },
+  "hubness_k5": 7.954,
+  "paraphrase_overlap_at3": 0.283,
+  "paraphrase_vs_random": 0.931,
+  "opposite_vs_random": 1.013,
+  "n_swatches": 580
+ },
+ {
+  "candidate": "b_clip_swatch (as swatch library)",
+  "coverage_top1": {
+   "unique": 27,
+   "of": 580,
+   "entropy": 0.496,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 73,
+   "of": 580,
+   "entropy": 0.646,
+   "max_share": 0.05
+  },
+  "hubness_k5": 4.594,
+  "paraphrase_overlap_at3": 0.117,
+  "paraphrase_vs_random": 0.924,
+  "opposite_vs_random": 1.048,
+  "n_swatches": 580
+ }
+]
