@@ -20,11 +20,14 @@ Step up, talk and move for 10 seconds, and a shared painting changes with you.
    ```
 4. Open http://localhost:8790 in Chrome and press **Step up**.
 
+**Brush experiment:** open http://localhost:8790/brush instead. You paint with your hands, in the hand of the painters Gemini picks from what you say (36 paintings), with a light AI glaze over your strokes afterward. Built on `Shared-Canvas`.
+
 Stop the GPU when you're done (`gcloud compute instances stop ...`, same flags). You also need `experiments/.lab.json` with the lab URL and token; it's kept out of git, so ask the team for it.
 
 ## Folders
 
 - `booth/`: the booth page and server
+- `brush/`: the brush experiment page
 - `experiments/`: the GPU lab, experiments, and Google Cloud setup
 - `prototype/`, `artifact/`: early prototypes and explainer pages
 - `HYPOTHESES.md`: what we tried and what we learned
