@@ -26,10 +26,14 @@ def call(path, payload=None, timeout=115):
         return json.load(r)
 
 
-def run(exp_path):
+def run(exp_path, data_path=None):
     libs = sorted(f for f in os.listdir(os.path.join(HERE, "lab")) if f[:2].isdigit() and f.endswith(".py"))
     lib = "\n\n".join(open(os.path.join(HERE, "lab", f)).read() for f in libs)   # 00_lib.py, 01_*.py, ...
-    code = lib + "\n\n# ---- experiment ----\n" + open(exp_path).read()
+    data = ""
+    if data_path:   # local JSON the experiment reads as DATA (the lab can't see this machine's files)
+        with open(data_path) as f:
+            data = "\n\nimport json as _json\nDATA = _json.loads(" + repr(f.read()) + ")\n"
+    code = lib + data + "\n\n# ---- experiment ----\n" + open(exp_path).read()
     tag = os.path.splitext(os.path.basename(exp_path))[0]
     try:
         out = call("/exec", {"code": code})
@@ -52,5 +56,7 @@ def run(exp_path):
 if __name__ == "__main__":
     if sys.argv[1:] == ["--health"]:
         print(call("/health"))
+    elif len(sys.argv) == 4 and sys.argv[2] == "--data":
+        run(sys.argv[1], sys.argv[3])    # python3 lab.py lab/r4_mix.py --data lab/r4_readings.json
     else:
         run(sys.argv[1])

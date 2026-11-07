@@ -20,6 +20,8 @@ Step up, talk and move for 10 seconds, and a shared painting changes with you.
    ```
 4. Open http://localhost:8790 in Chrome and press **Step up**.
 
+By default each visitor becomes a mix of real paintings plus intensity (`BOOTH_PLACEMENT=hybrid`). Add `BOOTH_PLACEMENT=axes` to go back to energy / warmth / light only.
+
 Stop the GPU when you're done (`gcloud compute instances stop ...`, same flags). You also need `experiments/.lab.json` with the lab URL and token; it's kept out of git, so ask the team for it.
 
 ## Folders
