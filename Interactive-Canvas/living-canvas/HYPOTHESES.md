@@ -120,7 +120,7 @@ The personas use synthetic voice, movement and gesture values until the webcam a
 - **Most distinct: no scene at all.** Abstract frames (same painters and axes, no chapel) differ in color *and* form: grief grey slashes, triumph Kandinsky shapes, love Klimt mosaic.
 - **Blank canvas, two ways:** paths reveal the chapel in each visitor's mood (it emerges over the night), or lay down abstract mood paint. Brush-like ragged mask edges keep paths from looking like cut-out tubes on linen.
 
-## Spike #9: how feelings map to colors (2026-11-07, in progress)
+## Spike #9: how feelings map to colors (2026-11-07)
 
 **Question:** which of three mood-to-color mappings gives a palette that fits what a visitor said? Twelve test sentences (`experiments/lab/c1_feelings.json`), five colors per palette.
 
@@ -141,4 +141,33 @@ Run: `python3 lab.py lab/c1_color_map.py --data <feelings + lexicon sample>` (ab
 - **(b) fails at reading, not at coloring.** The lexicon averages words, and context words are pleasant: "grandmother", "family" and "home" make grief and homesick read as pleasant, so they come out teal and mint. An embedding version (ridge regression from CLIP text to lexicon VAD, held-out r = 0.64 / 0.44 / 0.54 for V / A / D) reads no better: calm comes out unpleasant, triumph neutral.
 - **(b′) shows the color rule's own limit.** With good VAD, moods in the same circumplex quadrant collapse together: grief, lonely, homesick and bored are all dark grey-blue; nervous, fury and afraid are all dark red. Love gets warm yellow, not pink.
 
-**Scores:** pending raters. Done when one mapping is chosen with its scores here.
+**Scores (1 rater, all 12 feelings, fit 1–5; a win is the top score for a feeling, split on ties):**
+
+| Mapping | Mean fit | Wins |
+|---|---|---|
+| **b′ VAD aura, Claude reads VAD** | **2.67** | **5.2** |
+| a Nearest paintings | 2.00 | 1.7 |
+| c CLIP swatches (debiased) | 1.83 | 2.8 |
+| b VAD aura, lexicon reads VAD | 1.83 | 2.3 |
+
+| Feeling | a | b | b′ | c |
+|---|---|---|---|---|
+| grief | 5 | 2 | 5 | 1 |
+| triumph | 1 | 1 | 1 | 1 |
+| nervous | 1 | 1 | 3 | 1 |
+| calm | 1 | 1 | 1 | 5 |
+| fury | 1 | 4 | 4 | 1 |
+| love | 1 | 1 | 1 | 5 |
+| homesick | 3 | 1 | 3 | 3 |
+| bored | 4 | 4 | 4 | 1 |
+| awe | 2 | 2 | 4 | 1 |
+| lonely | 3 | 1 | 4 | 1 |
+| hopeful | 1 | 1 | 1 | 1 |
+| afraid | 1 | 3 | 1 | 1 |
+
+**Chosen: the VAD aura (Valdez & Mehrabian brightness and saturation), with valence, arousal and dominance read by the language model instead of the lexicon.** It wins on both mean fit and wins. The booth already sends every visitor through Gemini, so asking it for three more numbers costs nothing. The lexicon version of the same rule scores lowest, so the reading matters as much as the color rule.
+
+**For #10 (mood palette):**
+- **The hue rule is the weak part.** Nothing fit triumph or hopeful (every mapping scored 1), and b′ lost calm and love to CLIP's swatches (5 vs 1): calm wants pale blue-lavender, love wants pink, but the circumplex gives them mint and yellow. Let the reader choose a hue too, or take the hue from debiased CLIP swatches and keep brightness and saturation from VAD.
+- **Same-quadrant moods collapse** (grief, lonely, bored; nervous, fury, afraid). A per-mood hue would separate them.
+- **Caveats:** one rater, 12 feelings, one palette per mapping. Absolute fit is low (best mean 2.67 of 5). More raters can still use the page; the results tab updates live.
