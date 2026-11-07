@@ -119,3 +119,26 @@ The personas use synthetic voice, movement and gesture values until the webcam a
 - **What helped:** letting the mood set the scene's **light and weather** (Gemini writes it: "at night, one candle-lit window", "in full spring bloom, turquoise sky"). Spring turns turquoise, exam nerves get rain streaks, homesick gets snow and a moon.
 - **Most distinct: no scene at all.** Abstract frames (same painters and axes, no chapel) differ in color *and* form: grief grey slashes, triumph Kandinsky shapes, love Klimt mosaic.
 - **Blank canvas, two ways:** paths reveal the chapel in each visitor's mood (it emerges over the night), or lay down abstract mood paint. Brush-like ragged mask edges keep paths from looking like cut-out tubes on linen.
+
+## Spike #9: how feelings map to colors (2026-11-07, in progress)
+
+**Question:** which of three mood-to-color mappings gives a palette that fits what a visitor said? Twelve test sentences (`experiments/lab/c1_feelings.json`), five colors per palette.
+
+| | Mapping | How |
+|---|---|---|
+| **a** | Nearest paintings | CLIP ViT-H text → top 3 of the 36 library paintings (debiased, below) → k-means of their pixels in Lab |
+| **b** | VAD aura | NRC VAD Lexicon v2.1 reads valence, arousal and dominance from the words. Valdez & Mehrabian (1994) inverted: brightness from pleasure, saturation from arousal; hue from the circumplex quadrant; dominance widens light-dark contrast (`experiments/color_vad.py`) |
+| **b′** | VAD aura, Claude reads VAD (control) | Same color rule, with VAD written by Claude from the sentence, as round 3's art director did. Separates "is the reading right?" from "is the color rule right?" |
+| **c** | CLIP swatches | 293 solid Lab swatches embedded with the IP-Adapter's image encoder, scored against the sentence, top 5 at ΔE ≥ 22 (debiased) |
+
+Run: `python3 lab.py lab/c1_color_map.py --data <feelings + lexicon sample>` (about 8 s on the L4), then `python3 color_vad.py <lexicon> lab/c1_feelings.json`. Palettes: `experiments/lab/c1_palettes.json`. The lexicon may not be redistributed, so it is not in git (free for non-commercial research; this project makes use of the NRC VAD Lexicon, created by Saif M. Mohammad at the National Research Council Canada).
+
+**Blind test:** [Feeling Swatches](https://claude.ai/artifact/DvsdXgxhWsTYtugqVeCptZ) (`artifact/feeling-swatches.html`) shows each sentence with the four palettes, shuffled per rater and unlabeled. Raters score each palette's fit 1–5. Results unlock after all 12 and show mean fit and wins per mapping.
+
+**What the palettes already show (before ratings):**
+- **CLIP hubs.** Raw CLIP put Friedrich's *Wanderer* in the top 3 for 8 of 12 feelings, and pale mint and cyan swatches near the top for nearly every sentence. Subtracting each painting's or swatch's mean similarity over 40 unrelated feelings fixes most of it: grief → Tanner, triumph → Goya and Delacroix, calm → Monet, love → Klimt; love's swatches go pink, nervous goes cyan and hot pink.
+- **(a) is muddy by construction.** The library is mostly old oil paintings, so pixel palettes are browns, ochres and greys whatever the feeling. The paintings themselves are right; their average colors carry little mood.
+- **(b) fails at reading, not at coloring.** The lexicon averages words, and context words are pleasant: "grandmother", "family" and "home" make grief and homesick read as pleasant, so they come out teal and mint. An embedding version (ridge regression from CLIP text to lexicon VAD, held-out r = 0.64 / 0.44 / 0.54 for V / A / D) reads no better: calm comes out unpleasant, triumph neutral.
+- **(b′) shows the color rule's own limit.** With good VAD, moods in the same circumplex quadrant collapse together: grief, lonely, homesick and bored are all dark grey-blue; nervous, fury and afraid are all dark red. Love gets warm yellow, not pink.
+
+**Scores:** pending raters. Done when one mapping is chosen with its scores here.

@@ -1,0 +1,579 @@
+{
+ "feelings": [
+  {
+   "id": "grief",
+   "vad": [
+    0.339,
+    -0.365,
+    -0.169
+   ],
+   "terms": [
+    "found out",
+    "grandmother",
+    "pass away"
+   ],
+   "aura": [
+    {
+     "hex": "#79bca4"
+    },
+    {
+     "hex": "#c1e4c9"
+    },
+    {
+     "hex": "#489088"
+    },
+    {
+     "hex": "#70d5da"
+    },
+    {
+     "hex": "#5e7159"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#48434a"
+    },
+    {
+     "hex": "#66666b"
+    },
+    {
+     "hex": "#2a2429"
+    },
+    {
+     "hex": "#5d5257"
+    },
+    {
+     "hex": "#141519"
+    }
+   ]
+  },
+  {
+   "id": "triumph",
+   "vad": [
+    0.635,
+    0.345,
+    0.642
+   ],
+   "terms": [
+    "championship",
+    "believe"
+   ],
+   "aura": [
+    {
+     "hex": "#d5af25"
+    },
+    {
+     "hex": "#fee7d1"
+    },
+    {
+     "hex": "#7b8404"
+    },
+    {
+     "hex": "#a1e14f"
+    },
+    {
+     "hex": "#8c5025"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#faaa31"
+    },
+    {
+     "hex": "#feeee5"
+    },
+    {
+     "hex": "#9a8202"
+    },
+    {
+     "hex": "#d0e137"
+    },
+    {
+     "hex": "#9e4e35"
+    }
+   ]
+  },
+  {
+   "id": "nervous",
+   "vad": [
+    0.071,
+    0.387,
+    -0.198
+   ],
+   "terms": [
+    "nervous",
+    "presentation",
+    "tomorrow"
+   ],
+   "aura": [
+    {
+     "hex": "#c2632b"
+    },
+    {
+     "hex": "#eb8f7e"
+    },
+    {
+     "hex": "#7b4c01"
+    },
+    {
+     "hex": "#b08f05"
+    },
+    {
+     "hex": "#6f282c"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#8c0319"
+    },
+    {
+     "hex": "#a74659"
+    },
+    {
+     "hex": "#421700"
+    },
+    {
+     "hex": "#814501"
+    },
+    {
+     "hex": "#2f0114"
+    }
+   ]
+  },
+  {
+   "id": "calm",
+   "vad": [
+    0.493,
+    -0.683,
+    -0.272
+   ],
+   "terms": [
+    "honestly",
+    "calm",
+    "slow",
+    "sunday",
+    "morning"
+   ],
+   "aura": [
+    {
+     "hex": "#a8d1c7"
+    },
+    {
+     "hex": "#dff6e9"
+    },
+    {
+     "hex": "#7fa6a4"
+    },
+    {
+     "hex": "#b5e8ef"
+    },
+    {
+     "hex": "#7b8a7d"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#add8c9"
+    },
+    {
+     "hex": "#dff6e6"
+    },
+    {
+     "hex": "#7ca6a1"
+    },
+    {
+     "hex": "#b9f2f7"
+    },
+    {
+     "hex": "#788576"
+    }
+   ]
+  },
+  {
+   "id": "fury",
+   "vad": [
+    -0.774,
+    0.805,
+    0.204
+   ],
+   "terms": [
+    "furious",
+    "landlord",
+    "kept",
+    "the whole",
+    "deposit"
+   ],
+   "aura": [
+    {
+     "hex": "#85011f"
+    },
+    {
+     "hex": "#ab4b63"
+    },
+    {
+     "hex": "#2f1101"
+    },
+    {
+     "hex": "#864202"
+    },
+    {
+     "hex": "#2f0017"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#84031d"
+    },
+    {
+     "hex": "#b34c65"
+    },
+    {
+     "hex": "#291001"
+    },
+    {
+     "hex": "#884401"
+    },
+    {
+     "hex": "#2f0016"
+    }
+   ]
+  },
+  {
+   "id": "love",
+   "vad": [
+    0.738,
+    -0.167,
+    0.074
+   ],
+   "terms": [
+    "in love",
+    "first",
+    "date",
+    "went",
+    "well"
+   ],
+   "aura": [
+    {
+     "hex": "#aadc8c"
+    },
+    {
+     "hex": "#eef6b7"
+    },
+    {
+     "hex": "#63af78"
+    },
+    {
+     "hex": "#73ffcf"
+    },
+    {
+     "hex": "#8b8554"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#ecc232"
+    },
+    {
+     "hex": "#feeee0"
+    },
+    {
+     "hex": "#949d12"
+    },
+    {
+     "hex": "#b1f357"
+    },
+    {
+     "hex": "#ad6a3b"
+    }
+   ]
+  },
+  {
+   "id": "homesick",
+   "vad": [
+    0.684,
+    -0.323,
+    0.116
+   ],
+   "terms": [
+    "miss",
+    "home",
+    "missing",
+    "family",
+    "tonight"
+   ],
+   "aura": [
+    {
+     "hex": "#a0dda5"
+    },
+    {
+     "hex": "#e2f8c8"
+    },
+    {
+     "hex": "#60ae8c"
+    },
+    {
+     "hex": "#7dfde6"
+    },
+    {
+     "hex": "#808760"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#6a6d7d"
+    },
+    {
+     "hex": "#8d94a0"
+    },
+    {
+     "hex": "#4c4755"
+    },
+    {
+     "hex": "#897c8c"
+    },
+    {
+     "hex": "#2e363d"
+    }
+   ]
+  },
+  {
+   "id": "bored",
+   "vad": [
+    -0.208,
+    -0.521,
+    -0.428
+   ],
+   "terms": [
+    "kind of",
+    "bored",
+    "nothing much",
+    "happening",
+    "today"
+   ],
+   "aura": [
+    {
+     "hex": "#77848f"
+    },
+    {
+     "hex": "#9fabb1"
+    },
+    {
+     "hex": "#575e69"
+    },
+    {
+     "hex": "#9394a4"
+    },
+    {
+     "hex": "#3f4a4d"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#7b8186"
+    },
+    {
+     "hex": "#a5abae"
+    },
+    {
+     "hex": "#56585e"
+    },
+    {
+     "hex": "#94949c"
+    },
+    {
+     "hex": "#3e4344"
+    }
+   ]
+  },
+  {
+   "id": "awe",
+   "vad": [
+    -0.059,
+    0.128,
+    -0.235
+   ],
+   "terms": [
+    "saw",
+    "northern lights",
+    "last night",
+    "awe"
+   ],
+   "aura": [
+    {
+     "hex": "#bb6052"
+    },
+    {
+     "hex": "#da9094"
+    },
+    {
+     "hex": "#804322"
+    },
+    {
+     "hex": "#bd833f"
+    },
+    {
+     "hex": "#622d3b"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#e9a221"
+    },
+    {
+     "hex": "#ffd0b2"
+    },
+    {
+     "hex": "#9b8804"
+    },
+    {
+     "hex": "#b6d024"
+    },
+    {
+     "hex": "#ab5c3e"
+    }
+   ]
+  },
+  {
+   "id": "lonely",
+   "vad": [
+    0.146,
+    -0.342,
+    -0.132
+   ],
+   "terms": [
+    "feel",
+    "lonely",
+    "crowded",
+    "room"
+   ],
+   "aura": [
+    {
+     "hex": "#5ea9a6"
+    },
+    {
+     "hex": "#a5d2c6"
+    },
+    {
+     "hex": "#377c85"
+    },
+    {
+     "hex": "#6dbdd7"
+    },
+    {
+     "hex": "#436053"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#5d5b64"
+    },
+    {
+     "hex": "#7d7f85"
+    },
+    {
+     "hex": "#3f3a41"
+    },
+    {
+     "hex": "#756b72"
+    },
+    {
+     "hex": "#272a2e"
+    }
+   ]
+  },
+  {
+   "id": "hopeful",
+   "vad": [
+    0.762,
+    -0.224,
+    0.218
+   ],
+   "terms": [
+    "hopeful",
+    "are",
+    "finally",
+    "turn around"
+   ],
+   "aura": [
+    {
+     "hex": "#a6dd93"
+    },
+    {
+     "hex": "#eaf7bc"
+    },
+    {
+     "hex": "#5fad7d"
+    },
+    {
+     "hex": "#7bffd8"
+    },
+    {
+     "hex": "#858455"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#c2b73e"
+    },
+    {
+     "hex": "#ffe2b8"
+    },
+    {
+     "hex": "#728f28"
+    },
+    {
+     "hex": "#8ce26f"
+    },
+    {
+     "hex": "#8c6030"
+    }
+   ]
+  },
+  {
+   "id": "afraid",
+   "vad": [
+    -0.668,
+    0.621,
+    -0.566
+   ],
+   "terms": [
+    "scared",
+    "test results"
+   ],
+   "aura": [
+    {
+     "hex": "#840323"
+    },
+    {
+     "hex": "#99465d"
+    },
+    {
+     "hex": "#421000"
+    },
+    {
+     "hex": "#843b00"
+    },
+    {
+     "hex": "#2e0118"
+    }
+   ],
+   "aura_claude": [
+    {
+     "hex": "#840126"
+    },
+    {
+     "hex": "#98445e"
+    },
+    {
+     "hex": "#460e00"
+    },
+    {
+     "hex": "#853900"
+    },
+    {
+     "hex": "#2e001a"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,207 @@
+<title>Feeling Swatches</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* Layout: one feeling per screen, its sentence as a big pull-quote, four unlabeled swatch strips stacked like paint chips, each with a 1–5 fit scale. Results unlock after all 12. */
+:root {
+  --bg: #f3f2ef; --paper: #fbfbfa; --ink: #1d1e22; --muted: #686a72; --rule: #d9d8d3;
+  --accent: #2f4fd8; --accent-ink: #ffffff; --chip-edge: rgba(0,0,0,.08);
+  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #16171a; --paper: #1f2024; --ink: #ecebe8; --muted: #9a9ca4; --rule: #34353a;
+  --accent: #8ea2ff; --accent-ink: #12131a; --chip-edge: rgba(255,255,255,.10); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #16171a; --paper: #1f2024; --ink: #ecebe8; --muted: #9a9ca4; --rule: #34353a;
+  --accent: #8ea2ff; --accent-ink: #12131a; --chip-edge: rgba(255,255,255,.10); color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 22px; }
+header { display: grid; gap: 6px; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 700 clamp(28px, 6vw, 40px)/1.05 var(--display); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+nav.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--rule); }
+nav.tabs button { font: 500 14px var(--body); background: none; border: 0; color: var(--muted); padding: 10px 12px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+nav.tabs button[aria-selected="true"] { color: var(--ink); border-color: var(--accent); }
+nav.tabs button:disabled { opacity: .45; cursor: not-allowed; }
+.progress { display: flex; gap: 4px; }
+.progress span { flex: 1; height: 4px; border-radius: 2px; background: var(--rule); }
+.progress span.done { background: var(--muted); }
+.progress span.here { background: var(--accent); }
+.quote { margin: 0; font: 500 clamp(22px, 4.6vw, 30px)/1.25 var(--display); text-wrap: balance; }
+.quote::before { content: "\201C"; } .quote::after { content: "\201D"; }
+.count { font: 400 13px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.chips { display: grid; gap: 14px; }
+.chip { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 12px; display: grid; gap: 10px; }
+.chip-head { display: flex; justify-content: space-between; align-items: baseline; }
+.chip-head b { font: 600 13px var(--mono); color: var(--muted); letter-spacing: .06em; }
+.strip { display: grid; grid-template-columns: repeat(5, 1fr); height: 64px; border-radius: 6px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--chip-edge); }
+.scale { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.scale small { color: var(--muted); font-size: 12px; }
+.scale button { font: 500 14px var(--mono); width: 40px; height: 34px; border-radius: 6px; border: 1px solid var(--rule); background: transparent; color: var(--ink); cursor: pointer; font-variant-numeric: tabular-nums; }
+.scale button:hover { border-color: var(--muted); }
+.scale button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+.btn { font: 600 14px var(--body); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.status { font-size: 13px; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+th { font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+td.num { font-family: var(--mono); }
+.scroll { overflow-x: auto; }
+.bar { height: 8px; border-radius: 4px; background: var(--accent); min-width: 2px; }
+.mini { display: grid; grid-template-columns: repeat(5, 12px); height: 14px; border-radius: 3px; overflow: hidden; }
+.win { font-weight: 600; }
+.note { color: var(--muted); font-size: 13px; max-width: 62ch; margin: 0; }
+h2 { font: 700 20px var(--display); margin: 8px 0 0; }
+@media (prefers-reduced-motion: no-preference) { .chip { transition: border-color .15s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Living Canvas · spike #9</span>
+    <h1>Which colors feel like this?</h1>
+    <p class="lede">Twelve things a visitor might say. Each comes with four palettes from different color mappings, in a random order and unlabeled. Rate how well each one fits the feeling. Go with your gut.</p>
+  </header>
+  <nav class="tabs" role="tablist">
+    <button id="tab-rate" role="tab" aria-selected="true">Rate</button>
+    <button id="tab-results" role="tab" aria-selected="false" disabled>Results</button>
+  </nav>
+  <section id="rate" class="wrap" style="padding:0;gap:18px">
+    <div class="progress" id="progress" aria-hidden="true"></div>
+    <div style="display:grid;gap:6px">
+      <span class="count" id="count"></span>
+      <p class="quote" id="quote"></p>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="nav">
+      <button class="btn" id="prev">Back</button>
+      <span class="status" id="status">Loading…</span>
+      <button class="btn primary" id="next">Next</button>
+    </div>
+  </section>
+  <section id="results" hidden></section>
+</div>
+
+<script>
+const DATA = {"feelings":[{"id":"grief","text":"I just found out my grandmother passed away","p":{"a":["#c8bfae","#7f7965","#574639","#311b2a","#241d1a"],"b":["#79bca4","#c1e4c9","#489088","#70d5da","#5e7159"],"b_claude":["#48434a","#66666b","#2a2429","#5d5257","#141519"],"c":["#003a7e","#003bad","#bfd6fa","#004816","#fac7d5"]}},{"id":"triumph","text":"We won the championship, I can't believe it!","p":{"a":["#1e1b17","#3f3322","#645641","#aca38a","#95724e"],"b":["#d5af25","#fee7d1","#7b8404","#a1e14f","#8c5025"],"b_claude":["#faaa31","#feeee5","#9a8202","#d0e137","#9e4e35"],"c":["#003a7e","#008025","#004e1b","#bd9b00","#cf2030"]}},{"id":"nervous","text":"so nervous about my presentation tomorrow","p":{"a":["#221e1e","#aa8f23","#6b5935","#b3b9c1","#4f6380"],"b":["#c2632b","#eb8f7e","#7b4c01","#b08f05","#6f282c"],"b_claude":["#8c0319","#a74659","#421700","#814501","#2f0114"],"c":["#00bcdf","#00b5ff","#007b9f","#ff55a1","#479aff"]}},{"id":"calm","text":"honestly just calm, slow Sunday morning","p":{"a":["#587a94","#5b7975","#7e7567","#bab9ac","#454740"],"b":["#a8d1c7","#dff6e9","#7fa6a4","#b5e8ef","#7b8a7d"],"b_claude":["#add8c9","#dff6e6","#7ca6a1","#b9f2f7","#788576"],"c":["#b9d1ff","#e3d3af","#809beb","#84a68b","#dbd981"]}},{"id":"fury","text":"I'm furious, my landlord kept the whole deposit","p":{"a":["#635844","#999889","#e9e2ca","#29211b","#3b5975"],"b":["#85011f","#ab4b63","#2f1101","#864202","#2f0017"],"b_claude":["#84031d","#b34c65","#291001","#884401","#2f0016"],"c":["#f6f6f6","#848484","#b4997c","#6fdfff","#632c00"]}},{"id":"love","text":"in love, our first date went really well","p":{"a":["#867440","#222523","#b2a14e","#686866","#b0ab96"],"b":["#aadc8c","#eef6b7","#63af78","#73ffcf","#8b8554"],"b_claude":["#ecc232","#feeee0","#949d12","#b1f357","#ad6a3b"],"c":["#ed6be2","#848484","#572f3c","#c8118d","#ffa4ff"]}},{"id":"homesick","text":"I miss home, missing my family tonight","p":{"a":["#353832","#311c2b","#7c7665","#c2bcad","#4c628a"],"b":["#a0dda5","#e2f8c8","#60ae8c","#7dfde6","#808760"],"b_claude":["#6a6d7d","#8d94a0","#4c4755","#897c8c","#2e363d"],"c":["#003a7e","#0045b1","#006fb6","#848484","#004816"]}},{"id":"bored","text":"kind of bored, nothing much happening today","p":{"a":["#a7a293","#333431","#cbc7b6","#626d6f","#816e4f"],"b":["#77848f","#9fabb1","#575e69","#9394a4","#3f4a4d"],"b_claude":["#7b8186","#a5abae","#56585e","#94949c","#3e4344"],"c":["#58a2ee","#3d3d1e","#102ba1","#00b756","#008348"]}},{"id":"awe","text":"I saw the northern lights last night and I'm still in awe","p":{"a":["#2a312d","#9c9f8e","#67644f","#5c7592","#36487c"],"b":["#bb6052","#da9094","#804322","#bd833f","#622d3b"],"b_claude":["#e9a221","#ffd0b2","#9b8804","#b6d024","#ab5c3e"],"c":["#004a00","#007d00","#004776","#48f18a","#00f6ff"]}},{"id":"lonely","text":"I feel lonely even in a crowded room","p":{"a":["#191d20","#bcc1cf","#555033","#808580","#3f526c"],"b":["#5ea9a6","#a5d2c6","#377c85","#6dbdd7","#436053"],"b_claude":["#5d5b64","#7d7f85","#3f3a41","#756b72","#272a2e"],"c":["#00ace3","#00dcff","#d9d6b0","#004250","#007c8f"]}},{"id":"hopeful","text":"hopeful, I think things are finally turning around","p":{"a":["#5c7a8d","#b7bcc9","#314036","#181d1b","#677756"],"b":["#a6dd93","#eaf7bc","#5fad7d","#7bffd8","#858455"],"b_claude":["#c2b73e","#ffe2b8","#728f28","#8ce26f","#8c6030"],"c":["#487361","#008348","#3d3d1e","#8ea484","#9da500"]}},{"id":"afraid","text":"scared of what my test results will say","p":{"a":["#5f5b5a","#976849","#b4bbc8","#1d1f25","#a78f22"],"b":["#840323","#99465d","#421000","#843b00","#2e0118"],"b_claude":["#840126","#98445e","#460e00","#853900","#2e001a"],"c":["#6fdfff","#00b9fc","#48f18a","#ff5dc2","#642d00"]}}]};
+const NAMES = { a: "Nearest paintings", b: "VAD aura (lexicon)", b_claude: "VAD aura (Claude reads VAD)", c: "CLIP swatches" };
+const KEYS = Object.keys(NAMES);
+const $ = s => document.querySelector(s);
+const S = { i: 0, scores: {}, uid: null, db: null, ref: null, all: [], saving: false, dirty: false };
+
+function rng(seed) { let h = 1779033703 ^ seed.length; for (const c of seed) { h = Math.imul(h ^ c.charCodeAt(0), 3432918353); h = h << 13 | h >>> 19; }
+  return () => { h = Math.imul(h ^ h >>> 16, 2246822507); h = Math.imul(h ^ h >>> 13, 3266489909); return ((h ^= h >>> 16) >>> 0) / 4294967296; }; }
+function order(fid) { const r = rng((S.uid || "anon") + ":" + fid), k = KEYS.slice();
+  for (let i = k.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [k[i], k[j]] = [k[j], k[i]]; } return k; }
+const rated = f => KEYS.every(k => S.scores[f.id]?.[k]);
+const doneCount = () => DATA.feelings.filter(rated).length;
+const strip = (cols, cls = "strip") => `<div class="${cls}">${cols.map(c => `<span style="background:${c}"></span>`).join("")}</div>`;
+
+function renderRate() {
+  const f = DATA.feelings[S.i];
+  $("#progress").innerHTML = DATA.feelings.map((g, j) => `<span class="${j === S.i ? "here" : rated(g) ? "done" : ""}"></span>`).join("");
+  $("#count").textContent = `Feeling ${S.i + 1} of ${DATA.feelings.length}`;
+  $("#quote").textContent = f.text;
+  $("#chips").innerHTML = order(f.id).map((k, n) => `
+    <div class="chip"><div class="chip-head"><b>PALETTE ${"ABCD"[n]}</b></div>
+      ${strip(f.p[k])}
+      <div class="scale" role="group" aria-label="Palette ${"ABCD"[n]} fit"><small>Doesn't fit</small>
+        ${[1,2,3,4,5].map(v => `<button id="s-${f.id}-${n}-${v}" data-k="${k}" data-v="${v}" aria-pressed="${S.scores[f.id]?.[k] === v}">${v}</button>`).join("")}
+      <small>Fits</small></div></div>`).join("");
+  $("#prev").disabled = S.i === 0;
+  const last = S.i === DATA.feelings.length - 1;
+  $("#next").textContent = last ? "See results" : "Next";
+  $("#next").disabled = !rated(f) || (last && doneCount() < DATA.feelings.length);
+  $("#tab-results").disabled = doneCount() < DATA.feelings.length;
+  status();
+}
+function status(msg) {
+  if (msg) return void ($("#status").textContent = msg);
+  const left = KEYS.filter(k => !S.scores[DATA.feelings[S.i].id]?.[k]).length;
+  $("#status").textContent = left ? `Rate ${left} more to continue` : S.db ? (S.saving || S.dirty ? "Saving…" : "Saved") : "Saved in this browser only";
+}
+$("#chips").addEventListener("click", e => {
+  const b = e.target.closest("button[data-k]"); if (!b) return;
+  const f = DATA.feelings[S.i]; (S.scores[f.id] ||= {})[b.dataset.k] = +b.dataset.v;
+  renderRate(); save();
+});
+$("#prev").onclick = () => { if (S.i > 0) { S.i--; renderRate(); } };
+$("#next").onclick = () => { if (S.i < DATA.feelings.length - 1) { S.i++; renderRate(); } else show("results"); };
+$("#tab-rate").onclick = () => show("rate");
+$("#tab-results").onclick = () => show("results");
+function show(t) {
+  $("#rate").hidden = t !== "rate"; $("#results").hidden = t !== "results";
+  $("#tab-rate").setAttribute("aria-selected", t === "rate"); $("#tab-results").setAttribute("aria-selected", t === "results");
+  if (t === "results") renderResults(); else renderRate();
+}
+
+async function save() {
+  try { localStorage.setItem("fs-scores", JSON.stringify(S.scores)); } catch {}
+  if (!S.ref) return;
+  S.dirty = true; if (S.saving) return;
+  while (S.dirty) {
+    S.dirty = false; S.saving = true; status();
+    try { await S.ref.set({ scores: S.scores, done: doneCount(), updated: Date.now() }); }
+    catch (e) { S.saving = false; status("Couldn't save your ratings. They're kept in this browser; reopen the page to try again."); return; }
+  }
+  S.saving = false; status();
+}
+
+function renderResults() {
+  const raters = S.all.length ? S.all : [{ scores: S.scores }];
+  const finished = raters.filter(r => DATA.feelings.every(f => KEYS.every(k => r.scores?.[f.id]?.[k])));
+  const use = finished.length ? finished : raters;
+  const sum = {}, n = {}, wins = {}; KEYS.forEach(k => { sum[k] = 0; n[k] = 0; wins[k] = 0; });
+  const per = {};
+  for (const f of DATA.feelings) { per[f.id] = {}; KEYS.forEach(k => per[f.id][k] = []); }
+  for (const r of use) for (const f of DATA.feelings) {
+    const s = r.scores?.[f.id]; if (!s || !KEYS.every(k => s[k])) continue;
+    const top = Math.max(...KEYS.map(k => s[k])), tops = KEYS.filter(k => s[k] === top);
+    KEYS.forEach(k => { sum[k] += s[k]; n[k]++; per[f.id][k].push(s[k]); });
+    tops.forEach(k => wins[k] += 1 / tops.length);
+  }
+  const mean = k => n[k] ? sum[k] / n[k] : 0, best = KEYS.slice().sort((x, y) => mean(y) - mean(x))[0];
+  const avg = a => a.length ? (a.reduce((x, y) => x + y, 0) / a.length) : 0;
+  $("#results").innerHTML = `
+    <h2>Scores so far</h2>
+    <p class="note">${use.length} rater${use.length === 1 ? "" : "s"} who finished all 12${S.db ? "" : " (only your own ratings: shared results need you signed in to claude.ai)"}. Mean fit is on the 1–5 scale. A win is the top-rated palette for one feeling from one rater, split on ties.</p>
+    <div class="scroll"><table><thead><tr><th>Mapping</th><th>Mean fit</th><th style="width:34%"></th><th>Wins</th></tr></thead><tbody>
+    ${KEYS.slice().sort((x, y) => mean(y) - mean(x)).map(k => `<tr><td class="${k === best ? "win" : ""}">${NAMES[k]}</td>
+      <td class="num">${mean(k).toFixed(2)}</td><td><div class="bar" style="width:${(mean(k) / 5 * 100).toFixed(1)}%"></div></td><td class="num">${wins[k].toFixed(1)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <h2>By feeling</h2>
+    <div class="scroll"><table><thead><tr><th>Feeling</th>${KEYS.map(k => `<th>${NAMES[k]}</th>`).join("")}</tr></thead><tbody>
+    ${DATA.feelings.map(f => { const m = KEYS.map(k => avg(per[f.id][k])), hi = Math.max(...m);
+      return `<tr><td>${f.id}</td>${KEYS.map((k, j) => `<td><div style="display:flex;gap:8px;align-items:center">${strip(f.p[k], "mini")}<span class="num ${m[j] === hi && hi ? "win" : ""}">${m[j] ? m[j].toFixed(1) : "–"}</span></div></td>`).join("")}</tr>`; }).join("")}
+    </tbody></table></div>`;
+}
+
+(function boot() {
+  try { S.scores = JSON.parse(localStorage.getItem("fs-scores") || "{}") || {}; } catch {}
+  const first = DATA.feelings.findIndex(f => !rated(f)); S.i = first < 0 ? 0 : first;
+  renderRate();
+  const timer = setTimeout(() => status(), 10000);
+  (async () => {
+    const [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+    if (!db || !user) { clearTimeout(timer); return status(); }
+    const uid = await user.id(); if (!uid) { clearTimeout(timer); return status(); }
+    S.db = db; S.uid = uid; S.ref = db.collection("ratings").doc(uid);
+    try {
+      const snap = await S.ref.get(); clearTimeout(timer);
+      if (snap.exists) { const mine = snap.data().scores || {}; for (const id in mine) S.scores[id] = { ...mine[id], ...(S.scores[id] || {}) }; }
+    } catch { clearTimeout(timer); }
+    const first2 = DATA.feelings.findIndex(f => !rated(f)); S.i = first2 < 0 ? 0 : first2;
+    renderRate(); if (Object.keys(S.scores).length) save();
+    db.collection("ratings").onSnapshot(q => { S.all = q.docs.map(d => d.data()); if (!$("#results").hidden) renderResults(); }, () => {});
+  })();
+})();
+</script>

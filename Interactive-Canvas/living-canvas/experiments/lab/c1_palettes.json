@@ -1,0 +1,418 @@
+{
+ "mappings": {
+  "a": "nearest paintings (CLIP, debiased) -> k-means of their pixels",
+  "b": "VAD aura, VAD read by the NRC lexicon",
+  "b_claude": "VAD aura, VAD read by Claude (control)",
+  "c": "CLIP vs color swatches (debiased)"
+ },
+ "feelings": [
+  {
+   "id": "grief",
+   "text": "I just found out my grandmother passed away",
+   "palettes": {
+    "a": [
+     "#c8bfae",
+     "#7f7965",
+     "#574639",
+     "#311b2a",
+     "#241d1a"
+    ],
+    "b": [
+     "#79bca4",
+     "#c1e4c9",
+     "#489088",
+     "#70d5da",
+     "#5e7159"
+    ],
+    "b_claude": [
+     "#48434a",
+     "#66666b",
+     "#2a2429",
+     "#5d5257",
+     "#141519"
+    ],
+    "c": [
+     "#003a7e",
+     "#003bad",
+     "#bfd6fa",
+     "#004816",
+     "#fac7d5"
+    ]
+   }
+  },
+  {
+   "id": "triumph",
+   "text": "We won the championship, I can't believe it!",
+   "palettes": {
+    "a": [
+     "#1e1b17",
+     "#3f3322",
+     "#645641",
+     "#aca38a",
+     "#95724e"
+    ],
+    "b": [
+     "#d5af25",
+     "#fee7d1",
+     "#7b8404",
+     "#a1e14f",
+     "#8c5025"
+    ],
+    "b_claude": [
+     "#faaa31",
+     "#feeee5",
+     "#9a8202",
+     "#d0e137",
+     "#9e4e35"
+    ],
+    "c": [
+     "#003a7e",
+     "#008025",
+     "#004e1b",
+     "#bd9b00",
+     "#cf2030"
+    ]
+   }
+  },
+  {
+   "id": "nervous",
+   "text": "so nervous about my presentation tomorrow",
+   "palettes": {
+    "a": [
+     "#221e1e",
+     "#aa8f23",
+     "#6b5935",
+     "#b3b9c1",
+     "#4f6380"
+    ],
+    "b": [
+     "#c2632b",
+     "#eb8f7e",
+     "#7b4c01",
+     "#b08f05",
+     "#6f282c"
+    ],
+    "b_claude": [
+     "#8c0319",
+     "#a74659",
+     "#421700",
+     "#814501",
+     "#2f0114"
+    ],
+    "c": [
+     "#00bcdf",
+     "#00b5ff",
+     "#007b9f",
+     "#ff55a1",
+     "#479aff"
+    ]
+   }
+  },
+  {
+   "id": "calm",
+   "text": "honestly just calm, slow Sunday morning",
+   "palettes": {
+    "a": [
+     "#587a94",
+     "#5b7975",
+     "#7e7567",
+     "#bab9ac",
+     "#454740"
+    ],
+    "b": [
+     "#a8d1c7",
+     "#dff6e9",
+     "#7fa6a4",
+     "#b5e8ef",
+     "#7b8a7d"
+    ],
+    "b_claude": [
+     "#add8c9",
+     "#dff6e6",
+     "#7ca6a1",
+     "#b9f2f7",
+     "#788576"
+    ],
+    "c": [
+     "#b9d1ff",
+     "#e3d3af",
+     "#809beb",
+     "#84a68b",
+     "#dbd981"
+    ]
+   }
+  },
+  {
+   "id": "fury",
+   "text": "I'm furious, my landlord kept the whole deposit",
+   "palettes": {
+    "a": [
+     "#635844",
+     "#999889",
+     "#e9e2ca",
+     "#29211b",
+     "#3b5975"
+    ],
+    "b": [
+     "#85011f",
+     "#ab4b63",
+     "#2f1101",
+     "#864202",
+     "#2f0017"
+    ],
+    "b_claude": [
+     "#84031d",
+     "#b34c65",
+     "#291001",
+     "#884401",
+     "#2f0016"
+    ],
+    "c": [
+     "#f6f6f6",
+     "#848484",
+     "#b4997c",
+     "#6fdfff",
+     "#632c00"
+    ]
+   }
+  },
+  {
+   "id": "love",
+   "text": "in love, our first date went really well",
+   "palettes": {
+    "a": [
+     "#867440",
+     "#222523",
+     "#b2a14e",
+     "#686866",
+     "#b0ab96"
+    ],
+    "b": [
+     "#aadc8c",
+     "#eef6b7",
+     "#63af78",
+     "#73ffcf",
+     "#8b8554"
+    ],
+    "b_claude": [
+     "#ecc232",
+     "#feeee0",
+     "#949d12",
+     "#b1f357",
+     "#ad6a3b"
+    ],
+    "c": [
+     "#ed6be2",
+     "#848484",
+     "#572f3c",
+     "#c8118d",
+     "#ffa4ff"
+    ]
+   }
+  },
+  {
+   "id": "homesick",
+   "text": "I miss home, missing my family tonight",
+   "palettes": {
+    "a": [
+     "#353832",
+     "#311c2b",
+     "#7c7665",
+     "#c2bcad",
+     "#4c628a"
+    ],
+    "b": [
+     "#a0dda5",
+     "#e2f8c8",
+     "#60ae8c",
+     "#7dfde6",
+     "#808760"
+    ],
+    "b_claude": [
+     "#6a6d7d",
+     "#8d94a0",
+     "#4c4755",
+     "#897c8c",
+     "#2e363d"
+    ],
+    "c": [
+     "#003a7e",
+     "#0045b1",
+     "#006fb6",
+     "#848484",
+     "#004816"
+    ]
+   }
+  },
+  {
+   "id": "bored",
+   "text": "kind of bored, nothing much happening today",
+   "palettes": {
+    "a": [
+     "#a7a293",
+     "#333431",
+     "#cbc7b6",
+     "#626d6f",
+     "#816e4f"
+    ],
+    "b": [
+     "#77848f",
+     "#9fabb1",
+     "#575e69",
+     "#9394a4",
+     "#3f4a4d"
+    ],
+    "b_claude": [
+     "#7b8186",
+     "#a5abae",
+     "#56585e",
+     "#94949c",
+     "#3e4344"
+    ],
+    "c": [
+     "#58a2ee",
+     "#3d3d1e",
+     "#102ba1",
+     "#00b756",
+     "#008348"
+    ]
+   }
+  },
+  {
+   "id": "awe",
+   "text": "I saw the northern lights last night and I'm still in awe",
+   "palettes": {
+    "a": [
+     "#2a312d",
+     "#9c9f8e",
+     "#67644f",
+     "#5c7592",
+     "#36487c"
+    ],
+    "b": [
+     "#bb6052",
+     "#da9094",
+     "#804322",
+     "#bd833f",
+     "#622d3b"
+    ],
+    "b_claude": [
+     "#e9a221",
+     "#ffd0b2",
+     "#9b8804",
+     "#b6d024",
+     "#ab5c3e"
+    ],
+    "c": [
+     "#004a00",
+     "#007d00",
+     "#004776",
+     "#48f18a",
+     "#00f6ff"
+    ]
+   }
+  },
+  {
+   "id": "lonely",
+   "text": "I feel lonely even in a crowded room",
+   "palettes": {
+    "a": [
+     "#191d20",
+     "#bcc1cf",
+     "#555033",
+     "#808580",
+     "#3f526c"
+    ],
+    "b": [
+     "#5ea9a6",
+     "#a5d2c6",
+     "#377c85",
+     "#6dbdd7",
+     "#436053"
+    ],
+    "b_claude": [
+     "#5d5b64",
+     "#7d7f85",
+     "#3f3a41",
+     "#756b72",
+     "#272a2e"
+    ],
+    "c": [
+     "#00ace3",
+     "#00dcff",
+     "#d9d6b0",
+     "#004250",
+     "#007c8f"
+    ]
+   }
+  },
+  {
+   "id": "hopeful",
+   "text": "hopeful, I think things are finally turning around",
+   "palettes": {
+    "a": [
+     "#5c7a8d",
+     "#b7bcc9",
+     "#314036",
+     "#181d1b",
+     "#677756"
+    ],
+    "b": [
+     "#a6dd93",
+     "#eaf7bc",
+     "#5fad7d",
+     "#7bffd8",
+     "#858455"
+    ],
+    "b_claude": [
+     "#c2b73e",
+     "#ffe2b8",
+     "#728f28",
+     "#8ce26f",
+     "#8c6030"
+    ],
+    "c": [
+     "#487361",
+     "#008348",
+     "#3d3d1e",
+     "#8ea484",
+     "#9da500"
+    ]
+   }
+  },
+  {
+   "id": "afraid",
+   "text": "scared of what my test results will say",
+   "palettes": {
+    "a": [
+     "#5f5b5a",
+     "#976849",
+     "#b4bbc8",
+     "#1d1f25",
+     "#a78f22"
+    ],
+    "b": [
+     "#840323",
+     "#99465d",
+     "#421000",
+     "#843b00",
+     "#2e0118"
+    ],
+    "b_claude": [
+     "#840126",
+     "#98445e",
+     "#460e00",
+     "#853900",
+     "#2e001a"
+    ],
+    "c": [
+     "#6fdfff",
+     "#00b9fc",
+     "#48f18a",
+     "#ff5dc2",
+     "#642d00"
+    ]
+   }
+  }
+ ]
+}
