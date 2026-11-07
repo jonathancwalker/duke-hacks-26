@@ -59,7 +59,7 @@ export async function trace(sec, look, tipsAt) {
         const x = h.x + (p.x - h.x) * .5, y = h.y + (p.y - h.y) * .5;           // light smoothing
         const prev = h.s[h.s.length - 1];
         if (!prev || Math.hypot(x - prev.x, y - prev.y) > W / 400) {
-          h.s.push({ x, y });
+          h.s.push({ x, y, t });
           const c = colors[Math.floor(n++ / 14) % colors.length];
           const a = prev || { x, y };
           tctx.lineCap = tctx.lineJoin = 'round'; tctx.strokeStyle = c;
@@ -83,17 +83,33 @@ function dot(x, y, r) {
   cctx.beginPath(); cctx.arc(x, y, r, 0, Math.PI * 2); cctx.stroke();
 }
 
+// Voice loudness (envelope, 0..1 over the talking moment) stretched across the drawing: f = 0 at the first drawn point,
+// 1 at the last. Quiet talk gives a faint reveal, loud talk a strong one. No envelope: full strength. Squared because a
+// piece's core and bristles stack and saturate fast; this keeps the visible opacity roughly following the voice.
+const FAINT = .05;
+function loudness(envelope, f) {
+  if (!envelope?.length) return 1;
+  const x = Math.max(0, Math.min(1, f)) * (envelope.length - 1), i = Math.floor(x), j = Math.min(envelope.length - 1, i + 1);
+  const v = envelope[i] + (envelope[j] - envelope[i]) * (x - i);
+  return FAINT + (1 - FAINT) * v * v;
+}
+
 // The mood frame shows through a soft mask built along the path in the order it was drawn. Each short piece of path
-// adds about two-thirds opacity with ragged bristle edges, so crossings come through fully.
-export async function reveal(strokes, vibe, width) {
+// adds about two-thirds opacity (scaled by the voice's loudness at that moment) with ragged bristle edges, so
+// crossings come through fully.
+export async function reveal(strokes, vibe, width, envelope) {
   const { W, H, base } = S;
   const mask = mk(), soft = mk(), layer = mk(), m = mask.getContext('2d'), sc = soft.getContext('2d'), lc = layer.getContext('2d');
   m.lineCap = m.lineJoin = 'round'; m.strokeStyle = '#fff';
+  const ts = strokes.flat().map(p => p.t), tFirst = Math.min(...ts), span = Math.max(...ts) - tFirst || 1;
   const pieces = [];
   for (const s of strokes) {
     const bristles = Array.from({ length: 9 }, () => ({ dx: (Math.random() - .5) * width * .9, dy: (Math.random() - .5) * width * .9,
                                                        w: width * (.08 + Math.random() * .14), a: .35 + Math.random() * .4 }));
-    for (let i = 0; i < Math.max(1, s.length - 1); i += 10) pieces.push({ pts: s.slice(i, i + 11), bristles });
+    for (let i = 0; i < Math.max(1, s.length - 1); i += 10) {
+      const pts = s.slice(i, i + 11);
+      pieces.push({ pts, bristles, k: loudness(envelope, (pts[pts.length >> 1].t - tFirst) / span) });
+    }
   }
   const line = (pts, dx, dy) => { m.beginPath(); m.moveTo(pts[0].x + dx, pts[0].y + dy);
     for (const q of pts.length > 1 ? pts.slice(1) : pts) m.lineTo(q.x + dx, q.y + dy); m.stroke(); };
@@ -104,9 +120,9 @@ export async function reveal(strokes, vibe, width) {
     const want = Math.round(ease(f) * pieces.length);
     let tip = null;
     while (drawn < want) {
-      const { pts, bristles } = pieces[drawn++];
-      m.globalAlpha = .65; m.lineWidth = width * .75; line(pts, 0, 0);
-      for (const b of bristles) { m.globalAlpha = b.a; m.lineWidth = b.w; line(pts, b.dx, b.dy); }
+      const { pts, bristles, k } = pieces[drawn++];
+      m.globalAlpha = .65 * k; m.lineWidth = width * .75; line(pts, 0, 0);
+      for (const b of bristles) { m.globalAlpha = b.a * k; m.lineWidth = b.w; line(pts, b.dx, b.dy); }
       tip = pts[pts.length - 1];
     }
     sc.clearRect(0, 0, W, H); sc.filter = `blur(${Math.max(1, Math.round(W / 350))}px)`; sc.drawImage(mask, 0, 0); sc.filter = 'none';
