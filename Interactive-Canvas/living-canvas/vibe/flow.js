@@ -3,7 +3,7 @@
 // warmth and light), and that repainting is revealed only along their path. Crossings show the mood more strongly.
 // This module is the visit state machine: speak -> brush -> trace -> reveal -> commit, plus start modes and Simulate.
 import { S, $, video, sleep, say, bar, loadImg } from './state.js';
-import { fetchBase, fetchBrush, fetchRender } from './api.js';
+import { fetchEvent, fetchBase, fetchBrush, fetchRender } from './api.js';
 import { listen } from './audio.js';
 import { startCamera, readTips, resetTips } from './hand.js';
 import { startPose, trackMoves, moveScore } from './move.js';
@@ -19,15 +19,16 @@ async function reset() {
   document.querySelectorAll('.modes button').forEach(b => b.classList.toggle('on', b.dataset.mode === S.start));
   setTrailBlend();
   try {
+    S.event = S.event || await fetchEvent();          // the event's question, scene and closing (events/*.json)
     let img = null;
     if (S.start === 'chapel') {
-      say('Preparing the underpainting…', 'a calm, pale chapel for tonight’s visitors to paint into');
+      say('Preparing the underpainting…', 'a calm, pale underpainting for tonight’s visitors to paint into');
       img = await loadImg((await fetchBase()).image);
       S.W = img.naturalWidth; S.H = img.naturalHeight;
     }
     startCanvas(img);
     S.visitors = 0; $('#count').textContent = ''; fit();
-    say('Step up, say how you feel, then trace a path in the air.', 'Your mood repaints the canvas only where your hand went.');
+    say(S.event.question, 'Step up and answer out loud, then trace a path in the air. Your mood repaints the canvas only where your hand went.');
   } catch (e) { say('The GPU lab is not answering.', String(e.message || e)); }
   S.busy = false; setButtons();
 }
@@ -41,7 +42,7 @@ async function visit(sim) {
     if (sim) { heard = sim.heard; laban = sim.laban; say(`“${heard.feeling}”`, `a pretend visitor, ${sim.voice}`); await sleep(900); }
     else {
       await startCamera(); await startPose(); video.classList.add('on');
-      say('How are you feeling right now?', 'Say it out loud, any way you like.');
+      say(S.event.question, 'Say it out loud, any way you like.');
       const moves = trackMoves();
       try { heard = await listen(SPEAK_S); } finally { laban = moves(); }
     }
@@ -66,6 +67,7 @@ async function visit(sim) {
     say('Your vibe, painted.', `${d.reason}`);
     await reveal(strokes, vibe, look.width, texture, heard.envelope);
     S.visitors++; $('#count').textContent = `${S.visitors} visitor${S.visitors > 1 ? 's' : ''} tonight`;
+    say(S.event.closing, `${d.reason}`);
     await sleep(2500);
     say('Next visitor: step up.', 'Each visit repaints only the path its hands drew.');
   } catch (e) {
