@@ -37,7 +37,7 @@ async function visit(sim) {
   S.busy = true; setButtons();
   try {
     let heard;
-    if (sim) { heard = sim.heard; say(`“${heard.feeling}”`, 'a pretend visitor'); await sleep(900); }
+    if (sim) { heard = sim.heard; say(`“${heard.feeling}”`, `a pretend visitor, ${sim.voice}`); await sleep(900); }
     else {
       await startCamera(); video.classList.add('on');
       say('How are you feeling right now?', 'Say it out loud, any way you like.');
@@ -60,7 +60,7 @@ async function visit(sim) {
     say('Mixing your paint…', `after ${names}`); bar(0);
     const vibe = await painting;
     say('Your vibe, painted.', `${d.reason}`);
-    await reveal(strokes, vibe, look.width);
+    await reveal(strokes, vibe, look.width, heard.envelope);
     S.visitors++; $('#count').textContent = `${S.visitors} visitor${S.visitors > 1 ? 's' : ''} tonight`;
     await sleep(2500);
     say('Next visitor: step up.', 'Each visit repaints only the path its hands drew.');
@@ -69,7 +69,10 @@ async function visit(sim) {
   } finally { S.busy = false; setButtons(); bar(0); video.classList.remove('on'); }
 }
 
-// A pretend visitor: a scripted feeling and a looping path, so the room can be tested without a camera.
+// A pretend visitor: a scripted feeling, a voice loudness shape and a looping path, so the room can be tested without
+// a camera or mic. Shapes are 0..1 over the talking moment; each of 24 steps gets a little syllable jitter.
+const VOICES = { 'quiet then loud': f => .15 + .85 * f, 'loud then quiet': f => 1 - .85 * f,
+                 'swelling': f => .2 + .8 * Math.sin(Math.PI * f), 'steady': () => .9 };
 const FEELINGS = [
   ['I just found out my grandmother passed away', .2], ['We won the championship, I can’t believe it!', .95],
   ['so nervous about my presentation tomorrow', .7], ['honestly just calm, slow Sunday morning', .15],
@@ -80,7 +83,9 @@ function simVisitor() {
   const a = 1 + Math.random() * 2, b = 1 + Math.random() * 2, ph = Math.random() * 6, cx = .3 + Math.random() * .4, cy = .35 + Math.random() * .3;
   const path = f => [{ key: 'sim', x: S.W * (cx + .28 * Math.sin(a * 6.28 * f + ph)), y: S.H * (cy + .3 * Math.sin(b * 6.28 * f)),
     fist: f > .4 && f < .55 }];   // a fist mid-trace lifts the pen, so the path is two separate shapes
-  return { heard: { feeling, arousal }, path };
+  const voices = Object.keys(VOICES), voice = voices[Math.floor(Math.random() * voices.length)];
+  const envelope = Array.from({ length: 24 }, (_, i) => VOICES[voice](i / 23) * (.85 + .15 * Math.random()));
+  return { heard: { feeling, arousal, envelope }, path, voice };
 }
 
 function setButtons() { $('#go').disabled = $('#sim').disabled = $('#reset').disabled = S.busy || !S.base; if (!S.base) $('#reset').disabled = S.busy; }
