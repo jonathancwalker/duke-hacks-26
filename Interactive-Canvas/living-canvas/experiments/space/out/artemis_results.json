@@ -1,0 +1,3887 @@
+{
+ "summary_mean_sd": {
+  "baseline": {
+   "top1_unique": [
+    25.6,
+    3.072
+   ],
+   "top1_max_share": [
+    0.14,
+    0.037
+   ],
+   "top3_unique": [
+    67.0,
+    2.608
+   ],
+   "top3_entropy": [
+    0.587,
+    0.014
+   ],
+   "hubness_k5": [
+    7.138,
+    1.915
+   ],
+   "paraphrase_overlap_at3": [
+    0.253,
+    0.049
+   ],
+   "paraphrase_vs_random": [
+    0.792,
+    0.03
+   ],
+   "opposite_vs_random": [
+    1.04,
+    0.019
+   ],
+   "emotion_hit_at3": [
+    0.415,
+    0.044
+   ]
+  },
+  "A-emo": {
+   "top1_unique": [
+    30.0,
+    1.265
+   ],
+   "top1_max_share": [
+    0.105,
+    0.029
+   ],
+   "top3_unique": [
+    77.6,
+    3.2
+   ],
+   "top3_entropy": [
+    0.626,
+    0.009
+   ],
+   "hubness_k5": [
+    4.454,
+    0.54
+   ],
+   "paraphrase_overlap_at3": [
+    0.23,
+    0.027
+   ],
+   "paraphrase_vs_random": [
+    0.804,
+    0.023
+   ],
+   "opposite_vs_random": [
+    1.035,
+    0.002
+   ],
+   "emotion_hit_at3": [
+    0.48,
+    0.044
+   ]
+  },
+  "A-emo8": {
+   "top1_unique": [
+    30.2,
+    1.833
+   ],
+   "top1_max_share": [
+    0.095,
+    0.019
+   ],
+   "top3_unique": [
+    81.2,
+    2.561
+   ],
+   "top3_entropy": [
+    0.637,
+    0.005
+   ],
+   "hubness_k5": [
+    3.853,
+    0.177
+   ],
+   "paraphrase_overlap_at3": [
+    0.273,
+    0.017
+   ],
+   "paraphrase_vs_random": [
+    0.754,
+    0.04
+   ],
+   "opposite_vs_random": [
+    1.033,
+    0.004
+   ],
+   "emotion_hit_at3": [
+    0.498,
+    0.05
+   ]
+  },
+  "A-emo8-mlp": {
+   "top1_unique": [
+    32.2,
+    1.939
+   ],
+   "top1_max_share": [
+    0.085,
+    0.012
+   ],
+   "top3_unique": [
+    86.2,
+    3.655
+   ],
+   "top3_entropy": [
+    0.65,
+    0.007
+   ],
+   "hubness_k5": [
+    3.412,
+    0.248
+   ],
+   "paraphrase_overlap_at3": [
+    0.247,
+    0.038
+   ],
+   "paraphrase_vs_random": [
+    0.783,
+    0.046
+   ],
+   "opposite_vs_random": [
+    1.022,
+    0.005
+   ],
+   "emotion_hit_at3": [
+    0.483,
+    0.024
+   ]
+  },
+  "A-emo+clip": {
+   "top1_unique": [
+    30.2,
+    1.327
+   ],
+   "top1_max_share": [
+    0.1,
+    0.022
+   ],
+   "top3_unique": [
+    75.8,
+    2.227
+   ],
+   "top3_entropy": [
+    0.625,
+    0.007
+   ],
+   "hubness_k5": [
+    4.242,
+    0.526
+   ],
+   "paraphrase_overlap_at3": [
+    0.23,
+    0.037
+   ],
+   "paraphrase_vs_random": [
+    0.83,
+    0.045
+   ],
+   "opposite_vs_random": [
+    1.018,
+    0.008
+   ],
+   "emotion_hit_at3": [
+    0.537,
+    0.037
+   ]
+  },
+  "A-emo-js": {
+   "top1_unique": [
+    29.8,
+    1.47
+   ],
+   "top1_max_share": [
+    0.1,
+    0.016
+   ],
+   "top3_unique": [
+    76.0,
+    1.897
+   ],
+   "top3_entropy": [
+    0.626,
+    0.004
+   ],
+   "hubness_k5": [
+    3.994,
+    0.19
+   ],
+   "paraphrase_overlap_at3": [
+    0.287,
+    0.033
+   ],
+   "paraphrase_vs_random": [
+    0.716,
+    0.024
+   ],
+   "opposite_vs_random": [
+    1.043,
+    0.005
+   ],
+   "emotion_hit_at3": [
+    0.497,
+    0.065
+   ]
+  },
+  "A-human": {
+   "top1_unique": [
+    32.2,
+    1.47
+   ],
+   "top1_max_share": [
+    0.095,
+    0.019
+   ],
+   "top3_unique": [
+    84.0,
+    1.095
+   ],
+   "top3_entropy": [
+    0.644,
+    0.004
+   ],
+   "hubness_k5": [
+    3.446,
+    0.303
+   ],
+   "paraphrase_overlap_at3": [
+    0.21,
+    0.044
+   ],
+   "paraphrase_vs_random": [
+    0.806,
+    0.026
+   ],
+   "opposite_vs_random": [
+    1.025,
+    0.004
+   ],
+   "emotion_hit_at3": [
+    0.608,
+    0.014
+   ]
+  },
+  "A-human8": {
+   "top1_unique": [
+    33.2,
+    1.166
+   ],
+   "top1_max_share": [
+    0.105,
+    0.01
+   ],
+   "top3_unique": [
+    84.0,
+    3.033
+   ],
+   "top3_entropy": [
+    0.644,
+    0.007
+   ],
+   "hubness_k5": [
+    3.696,
+    0.314
+   ],
+   "paraphrase_overlap_at3": [
+    0.227,
+    0.048
+   ],
+   "paraphrase_vs_random": [
+    0.774,
+    0.035
+   ],
+   "opposite_vs_random": [
+    1.028,
+    0.004
+   ],
+   "emotion_hit_at3": [
+    0.74,
+    0.012
+   ]
+  },
+  "B-proj": {
+   "top1_unique": [
+    36.8,
+    0.748
+   ],
+   "top1_max_share": [
+    0.05,
+    0.0
+   ],
+   "top3_unique": [
+    100.0,
+    5.02
+   ],
+   "top3_entropy": [
+    0.679,
+    0.009
+   ],
+   "hubness_k5": [
+    2.863,
+    0.22
+   ],
+   "paraphrase_overlap_at3": [
+    0.09,
+    0.056
+   ],
+   "paraphrase_vs_random": [
+    0.918,
+    0.036
+   ],
+   "opposite_vs_random": [
+    1.004,
+    0.009
+   ],
+   "emotion_hit_at3": [
+    0.332,
+    0.056
+   ]
+  },
+  "B-proj-emo3": {
+   "top1_unique": [
+    36.0,
+    0.894
+   ],
+   "top1_max_share": [
+    0.05,
+    0.0
+   ],
+   "top3_unique": [
+    99.6,
+    2.417
+   ],
+   "top3_entropy": [
+    0.679,
+    0.005
+   ],
+   "hubness_k5": [
+    2.652,
+    0.243
+   ],
+   "paraphrase_overlap_at3": [
+    0.103,
+    0.02
+   ],
+   "paraphrase_vs_random": [
+    0.909,
+    0.022
+   ],
+   "opposite_vs_random": [
+    1.007,
+    0.007
+   ],
+   "emotion_hit_at3": [
+    0.357,
+    0.022
+   ]
+  },
+  "C-utt": {
+   "top1_unique": [
+    24.6,
+    2.577
+   ],
+   "top1_max_share": [
+    0.185,
+    0.068
+   ],
+   "top3_unique": [
+    53.2,
+    7.167
+   ],
+   "top3_entropy": [
+    0.538,
+    0.027
+   ],
+   "hubness_k5": [
+    8.837,
+    1.131
+   ],
+   "paraphrase_overlap_at3": [
+    0.317,
+    0.069
+   ],
+   "paraphrase_vs_random": [
+    0.758,
+    0.03
+   ],
+   "opposite_vs_random": [
+    1.034,
+    0.021
+   ],
+   "emotion_hit_at3": [
+    0.365,
+    0.035
+   ]
+  }
+ },
+ "rows_by_split": {
+  "baseline": [
+   {
+    "candidate": "baseline",
+    "coverage_top1": {
+     "unique": 23,
+     "of": 800,
+     "entropy": 0.43,
+     "max_share": 0.15
+    },
+    "coverage_top3": {
+     "unique": 67,
+     "of": 800,
+     "entropy": 0.587,
+     "max_share": 0.1
+    },
+    "hubness_k5": 7.485,
+    "paraphrase_overlap_at3": 0.233,
+    "paraphrase_vs_random": 0.809,
+    "opposite_vs_random": 1.059,
+    "library": 800,
+    "emotion_hit_at3": 0.475
+   },
+   {
+    "candidate": "baseline",
+    "coverage_top1": {
+     "unique": 24,
+     "of": 800,
+     "entropy": 0.432,
+     "max_share": 0.2
+    },
+    "coverage_top3": {
+     "unique": 66,
+     "of": 800,
+     "entropy": 0.564,
+     "max_share": 0.142
+    },
+    "hubness_k5": 10.503,
+    "paraphrase_overlap_at3": 0.333,
+    "paraphrase_vs_random": 0.739,
+    "opposite_vs_random": 1.026,
+    "library": 800,
+    "emotion_hit_at3": 0.375
+   },
+   {
+    "candidate": "baseline",
+    "coverage_top1": {
+     "unique": 23,
+     "of": 800,
+     "entropy": 0.434,
+     "max_share": 0.15
+    },
+    "coverage_top3": {
+     "unique": 63,
+     "of": 800,
+     "entropy": 0.581,
+     "max_share": 0.083
+    },
+    "hubness_k5": 7.075,
+    "paraphrase_overlap_at3": 0.267,
+    "paraphrase_vs_random": 0.784,
+    "opposite_vs_random": 1.065,
+    "library": 800,
+    "emotion_hit_at3": 0.367
+   },
+   {
+    "candidate": "baseline",
+    "coverage_top1": {
+     "unique": 27,
+     "of": 800,
+     "entropy": 0.475,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 68,
+     "of": 800,
+     "entropy": 0.598,
+     "max_share": 0.058
+    },
+    "hubness_k5": 4.968,
+    "paraphrase_overlap_at3": 0.25,
+    "paraphrase_vs_random": 0.804,
+    "opposite_vs_random": 1.017,
+    "library": 800,
+    "emotion_hit_at3": 0.4
+   },
+   {
+    "candidate": "baseline",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.498,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 71,
+     "of": 800,
+     "entropy": 0.604,
+     "max_share": 0.058
+    },
+    "hubness_k5": 5.661,
+    "paraphrase_overlap_at3": 0.183,
+    "paraphrase_vs_random": 0.825,
+    "opposite_vs_random": 1.032,
+    "library": 800,
+    "emotion_hit_at3": 0.458
+   }
+  ],
+  "A-emo": [
+   {
+    "candidate": "A-emo",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.503,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 74,
+     "of": 800,
+     "entropy": 0.615,
+     "max_share": 0.05
+    },
+    "hubness_k5": 4.967,
+    "paraphrase_overlap_at3": 0.2,
+    "paraphrase_vs_random": 0.825,
+    "opposite_vs_random": 1.038,
+    "library": 800,
+    "emotion_hit_at3": 0.408
+   },
+   {
+    "candidate": "A-emo",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.501,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 77,
+     "of": 800,
+     "entropy": 0.629,
+     "max_share": 0.05
+    },
+    "hubness_k5": 4.287,
+    "paraphrase_overlap_at3": 0.267,
+    "paraphrase_vs_random": 0.791,
+    "opposite_vs_random": 1.032,
+    "library": 800,
+    "emotion_hit_at3": 0.475
+   },
+   {
+    "candidate": "A-emo",
+    "coverage_top1": {
+     "unique": 29,
+     "of": 800,
+     "entropy": 0.48,
+     "max_share": 0.125
+    },
+    "coverage_top3": {
+     "unique": 83,
+     "of": 800,
+     "entropy": 0.639,
+     "max_share": 0.05
+    },
+    "hubness_k5": 3.81,
+    "paraphrase_overlap_at3": 0.2,
+    "paraphrase_vs_random": 0.769,
+    "opposite_vs_random": 1.032,
+    "library": 800,
+    "emotion_hit_at3": 0.467
+   },
+   {
+    "candidate": "A-emo",
+    "coverage_top1": {
+     "unique": 28,
+     "of": 800,
+     "entropy": 0.473,
+     "max_share": 0.15
+    },
+    "coverage_top3": {
+     "unique": 75,
+     "of": 800,
+     "entropy": 0.617,
+     "max_share": 0.067
+    },
+    "hubness_k5": 5.199,
+    "paraphrase_overlap_at3": 0.233,
+    "paraphrase_vs_random": 0.804,
+    "opposite_vs_random": 1.037,
+    "library": 800,
+    "emotion_hit_at3": 0.517
+   },
+   {
+    "candidate": "A-emo",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.5,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 79,
+     "of": 800,
+     "entropy": 0.63,
+     "max_share": 0.05
+    },
+    "hubness_k5": 4.008,
+    "paraphrase_overlap_at3": 0.25,
+    "paraphrase_vs_random": 0.833,
+    "opposite_vs_random": 1.034,
+    "library": 800,
+    "emotion_hit_at3": 0.533
+   }
+  ],
+  "A-emo8": [
+   {
+    "candidate": "A-emo8",
+    "coverage_top1": {
+     "unique": 32,
+     "of": 800,
+     "entropy": 0.508,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 79,
+     "of": 800,
+     "entropy": 0.629,
+     "max_share": 0.05
+    },
+    "hubness_k5": 4.163,
+    "paraphrase_overlap_at3": 0.267,
+    "paraphrase_vs_random": 0.806,
+    "opposite_vs_random": 1.029,
+    "library": 800,
+    "emotion_hit_at3": 0.408
+   },
+   {
+    "candidate": "A-emo8",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.501,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 78,
+     "of": 800,
+     "entropy": 0.636,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.671,
+    "paraphrase_overlap_at3": 0.3,
+    "paraphrase_vs_random": 0.727,
+    "opposite_vs_random": 1.03,
+    "library": 800,
+    "emotion_hit_at3": 0.525
+   },
+   {
+    "candidate": "A-emo8",
+    "coverage_top1": {
+     "unique": 28,
+     "of": 800,
+     "entropy": 0.476,
+     "max_share": 0.125
+    },
+    "coverage_top3": {
+     "unique": 85,
+     "of": 800,
+     "entropy": 0.643,
+     "max_share": 0.05
+    },
+    "hubness_k5": 3.731,
+    "paraphrase_overlap_at3": 0.283,
+    "paraphrase_vs_random": 0.694,
+    "opposite_vs_random": 1.032,
+    "library": 800,
+    "emotion_hit_at3": 0.483
+   },
+   {
+    "candidate": "A-emo8",
+    "coverage_top1": {
+     "unique": 28,
+     "of": 800,
+     "entropy": 0.479,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 81,
+     "of": 800,
+     "entropy": 0.637,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.93,
+    "paraphrase_overlap_at3": 0.267,
+    "paraphrase_vs_random": 0.764,
+    "opposite_vs_random": 1.036,
+    "library": 800,
+    "emotion_hit_at3": 0.525
+   },
+   {
+    "candidate": "A-emo8",
+    "coverage_top1": {
+     "unique": 32,
+     "of": 800,
+     "entropy": 0.505,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 83,
+     "of": 800,
+     "entropy": 0.641,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.772,
+    "paraphrase_overlap_at3": 0.25,
+    "paraphrase_vs_random": 0.781,
+    "opposite_vs_random": 1.039,
+    "library": 800,
+    "emotion_hit_at3": 0.55
+   }
+  ],
+  "A-emo8-mlp": [
+   {
+    "candidate": "A-emo8-mlp",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.5,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 80,
+     "of": 800,
+     "entropy": 0.638,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.391,
+    "paraphrase_overlap_at3": 0.267,
+    "paraphrase_vs_random": 0.757,
+    "opposite_vs_random": 1.031,
+    "library": 800,
+    "emotion_hit_at3": 0.483
+   },
+   {
+    "candidate": "A-emo8-mlp",
+    "coverage_top1": {
+     "unique": 29,
+     "of": 800,
+     "entropy": 0.493,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 91,
+     "of": 800,
+     "entropy": 0.659,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.218,
+    "paraphrase_overlap_at3": 0.2,
+    "paraphrase_vs_random": 0.849,
+    "opposite_vs_random": 1.017,
+    "library": 800,
+    "emotion_hit_at3": 0.45
+   },
+   {
+    "candidate": "A-emo8-mlp",
+    "coverage_top1": {
+     "unique": 34,
+     "of": 800,
+     "entropy": 0.516,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 85,
+     "of": 800,
+     "entropy": 0.645,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.887,
+    "paraphrase_overlap_at3": 0.283,
+    "paraphrase_vs_random": 0.713,
+    "opposite_vs_random": 1.024,
+    "library": 800,
+    "emotion_hit_at3": 0.525
+   },
+   {
+    "candidate": "A-emo8-mlp",
+    "coverage_top1": {
+     "unique": 33,
+     "of": 800,
+     "entropy": 0.514,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 88,
+     "of": 800,
+     "entropy": 0.652,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.214,
+    "paraphrase_overlap_at3": 0.2,
+    "paraphrase_vs_random": 0.805,
+    "opposite_vs_random": 1.019,
+    "library": 800,
+    "emotion_hit_at3": 0.475
+   },
+   {
+    "candidate": "A-emo8-mlp",
+    "coverage_top1": {
+     "unique": 34,
+     "of": 800,
+     "entropy": 0.519,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 87,
+     "of": 800,
+     "entropy": 0.654,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.35,
+    "paraphrase_overlap_at3": 0.283,
+    "paraphrase_vs_random": 0.789,
+    "opposite_vs_random": 1.021,
+    "library": 800,
+    "emotion_hit_at3": 0.483
+   }
+  ],
+  "A-emo+clip": [
+   {
+    "candidate": "A-emo+clip",
+    "coverage_top1": {
+     "unique": 32,
+     "of": 800,
+     "entropy": 0.506,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 74,
+     "of": 800,
+     "entropy": 0.623,
+     "max_share": 0.05
+    },
+    "hubness_k5": 4.003,
+    "paraphrase_overlap_at3": 0.283,
+    "paraphrase_vs_random": 0.842,
+    "opposite_vs_random": 1.009,
+    "library": 800,
+    "emotion_hit_at3": 0.517
+   },
+   {
+    "candidate": "A-emo+clip",
+    "coverage_top1": {
+     "unique": 28,
+     "of": 800,
+     "entropy": 0.475,
+     "max_share": 0.125
+    },
+    "coverage_top3": {
+     "unique": 74,
+     "of": 800,
+     "entropy": 0.618,
+     "max_share": 0.067
+    },
+    "hubness_k5": 5.156,
+    "paraphrase_overlap_at3": 0.267,
+    "paraphrase_vs_random": 0.745,
+    "opposite_vs_random": 1.033,
+    "library": 800,
+    "emotion_hit_at3": 0.533
+   },
+   {
+    "candidate": "A-emo+clip",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.501,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 74,
+     "of": 800,
+     "entropy": 0.617,
+     "max_share": 0.05
+    },
+    "hubness_k5": 4.472,
+    "paraphrase_overlap_at3": 0.2,
+    "paraphrase_vs_random": 0.859,
+    "opposite_vs_random": 1.014,
+    "library": 800,
+    "emotion_hit_at3": 0.483
+   },
+   {
+    "candidate": "A-emo+clip",
+    "coverage_top1": {
+     "unique": 30,
+     "of": 800,
+     "entropy": 0.493,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 79,
+     "of": 800,
+     "entropy": 0.636,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.67,
+    "paraphrase_overlap_at3": 0.2,
+    "paraphrase_vs_random": 0.872,
+    "opposite_vs_random": 1.014,
+    "library": 800,
+    "emotion_hit_at3": 0.558
+   },
+   {
+    "candidate": "A-emo+clip",
+    "coverage_top1": {
+     "unique": 30,
+     "of": 800,
+     "entropy": 0.491,
+     "max_share": 0.125
+    },
+    "coverage_top3": {
+     "unique": 78,
+     "of": 800,
+     "entropy": 0.63,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.91,
+    "paraphrase_overlap_at3": 0.2,
+    "paraphrase_vs_random": 0.831,
+    "opposite_vs_random": 1.019,
+    "library": 800,
+    "emotion_hit_at3": 0.592
+   }
+  ],
+  "A-emo-js": [
+   {
+    "candidate": "A-emo-js",
+    "coverage_top1": {
+     "unique": 32,
+     "of": 800,
+     "entropy": 0.508,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 76,
+     "of": 800,
+     "entropy": 0.621,
+     "max_share": 0.058
+    },
+    "hubness_k5": 4.319,
+    "paraphrase_overlap_at3": 0.3,
+    "paraphrase_vs_random": 0.736,
+    "opposite_vs_random": 1.043,
+    "library": 800,
+    "emotion_hit_at3": 0.383
+   },
+   {
+    "candidate": "A-emo-js",
+    "coverage_top1": {
+     "unique": 29,
+     "of": 800,
+     "entropy": 0.49,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 74,
+     "of": 800,
+     "entropy": 0.626,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.979,
+    "paraphrase_overlap_at3": 0.317,
+    "paraphrase_vs_random": 0.712,
+    "opposite_vs_random": 1.038,
+    "library": 800,
+    "emotion_hit_at3": 0.542
+   },
+   {
+    "candidate": "A-emo-js",
+    "coverage_top1": {
+     "unique": 29,
+     "of": 800,
+     "entropy": 0.484,
+     "max_share": 0.125
+    },
+    "coverage_top3": {
+     "unique": 77,
+     "of": 800,
+     "entropy": 0.627,
+     "max_share": 0.05
+    },
+    "hubness_k5": 3.884,
+    "paraphrase_overlap_at3": 0.317,
+    "paraphrase_vs_random": 0.67,
+    "opposite_vs_random": 1.039,
+    "library": 800,
+    "emotion_hit_at3": 0.467
+   },
+   {
+    "candidate": "A-emo-js",
+    "coverage_top1": {
+     "unique": 28,
+     "of": 800,
+     "entropy": 0.479,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 74,
+     "of": 800,
+     "entropy": 0.621,
+     "max_share": 0.05
+    },
+    "hubness_k5": 4.04,
+    "paraphrase_overlap_at3": 0.267,
+    "paraphrase_vs_random": 0.735,
+    "opposite_vs_random": 1.044,
+    "library": 800,
+    "emotion_hit_at3": 0.533
+   },
+   {
+    "candidate": "A-emo-js",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.496,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 79,
+     "of": 800,
+     "entropy": 0.633,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.749,
+    "paraphrase_overlap_at3": 0.233,
+    "paraphrase_vs_random": 0.726,
+    "opposite_vs_random": 1.051,
+    "library": 800,
+    "emotion_hit_at3": 0.558
+   }
+  ],
+  "A-human": [
+   {
+    "candidate": "A-human",
+    "coverage_top1": {
+     "unique": 32,
+     "of": 800,
+     "entropy": 0.501,
+     "max_share": 0.125
+    },
+    "coverage_top3": {
+     "unique": 85,
+     "of": 800,
+     "entropy": 0.645,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.342,
+    "paraphrase_overlap_at3": 0.217,
+    "paraphrase_vs_random": 0.821,
+    "opposite_vs_random": 1.024,
+    "library": 800,
+    "emotion_hit_at3": 0.633
+   },
+   {
+    "candidate": "A-human",
+    "coverage_top1": {
+     "unique": 35,
+     "of": 800,
+     "entropy": 0.524,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 84,
+     "of": 800,
+     "entropy": 0.647,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.017,
+    "paraphrase_overlap_at3": 0.283,
+    "paraphrase_vs_random": 0.762,
+    "opposite_vs_random": 1.018,
+    "library": 800,
+    "emotion_hit_at3": 0.608
+   },
+   {
+    "candidate": "A-human",
+    "coverage_top1": {
+     "unique": 32,
+     "of": 800,
+     "entropy": 0.505,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 82,
+     "of": 800,
+     "entropy": 0.637,
+     "max_share": 0.05
+    },
+    "hubness_k5": 3.938,
+    "paraphrase_overlap_at3": 0.217,
+    "paraphrase_vs_random": 0.792,
+    "opposite_vs_random": 1.029,
+    "library": 800,
+    "emotion_hit_at3": 0.6
+   },
+   {
+    "candidate": "A-human",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.501,
+     "max_share": 0.075
+    },
+    "coverage_top3": {
+     "unique": 85,
+     "of": 800,
+     "entropy": 0.645,
+     "max_share": 0.042
+    },
+    "hubness_k5": 3.573,
+    "paraphrase_overlap_at3": 0.183,
+    "paraphrase_vs_random": 0.82,
+    "opposite_vs_random": 1.025,
+    "library": 800,
+    "emotion_hit_at3": 0.592
+   },
+   {
+    "candidate": "A-human",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.5,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 84,
+     "of": 800,
+     "entropy": 0.647,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.36,
+    "paraphrase_overlap_at3": 0.15,
+    "paraphrase_vs_random": 0.834,
+    "opposite_vs_random": 1.028,
+    "library": 800,
+    "emotion_hit_at3": 0.608
+   }
+  ],
+  "A-human8": [
+   {
+    "candidate": "A-human8",
+    "coverage_top1": {
+     "unique": 33,
+     "of": 800,
+     "entropy": 0.508,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 80,
+     "of": 800,
+     "entropy": 0.634,
+     "max_share": 0.05
+    },
+    "hubness_k5": 4.128,
+    "paraphrase_overlap_at3": 0.3,
+    "paraphrase_vs_random": 0.74,
+    "opposite_vs_random": 1.029,
+    "library": 800,
+    "emotion_hit_at3": 0.758
+   },
+   {
+    "candidate": "A-human8",
+    "coverage_top1": {
+     "unique": 34,
+     "of": 800,
+     "entropy": 0.516,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 88,
+     "of": 800,
+     "entropy": 0.653,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.359,
+    "paraphrase_overlap_at3": 0.25,
+    "paraphrase_vs_random": 0.771,
+    "opposite_vs_random": 1.021,
+    "library": 800,
+    "emotion_hit_at3": 0.733
+   },
+   {
+    "candidate": "A-human8",
+    "coverage_top1": {
+     "unique": 31,
+     "of": 800,
+     "entropy": 0.492,
+     "max_share": 0.125
+    },
+    "coverage_top3": {
+     "unique": 83,
+     "of": 800,
+     "entropy": 0.639,
+     "max_share": 0.05
+    },
+    "hubness_k5": 4.0,
+    "paraphrase_overlap_at3": 0.233,
+    "paraphrase_vs_random": 0.732,
+    "opposite_vs_random": 1.033,
+    "library": 800,
+    "emotion_hit_at3": 0.733
+   },
+   {
+    "candidate": "A-human8",
+    "coverage_top1": {
+     "unique": 34,
+     "of": 800,
+     "entropy": 0.516,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 82,
+     "of": 800,
+     "entropy": 0.642,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.398,
+    "paraphrase_overlap_at3": 0.167,
+    "paraphrase_vs_random": 0.806,
+    "opposite_vs_random": 1.026,
+    "library": 800,
+    "emotion_hit_at3": 0.75
+   },
+   {
+    "candidate": "A-human8",
+    "coverage_top1": {
+     "unique": 34,
+     "of": 800,
+     "entropy": 0.516,
+     "max_share": 0.1
+    },
+    "coverage_top3": {
+     "unique": 87,
+     "of": 800,
+     "entropy": 0.651,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.595,
+    "paraphrase_overlap_at3": 0.183,
+    "paraphrase_vs_random": 0.82,
+    "opposite_vs_random": 1.029,
+    "library": 800,
+    "emotion_hit_at3": 0.725
+   }
+  ],
+  "B-proj": [
+   {
+    "candidate": "B-proj",
+    "coverage_top1": {
+     "unique": 37,
+     "of": 800,
+     "entropy": 0.536,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 95,
+     "of": 800,
+     "entropy": 0.669,
+     "max_share": 0.033
+    },
+    "hubness_k5": 2.621,
+    "paraphrase_overlap_at3": 0.183,
+    "paraphrase_vs_random": 0.863,
+    "opposite_vs_random": 1.0,
+    "library": 800,
+    "emotion_hit_at3": 0.383
+   },
+   {
+    "candidate": "B-proj",
+    "coverage_top1": {
+     "unique": 36,
+     "of": 800,
+     "entropy": 0.531,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 100,
+     "of": 800,
+     "entropy": 0.679,
+     "max_share": 0.033
+    },
+    "hubness_k5": 2.984,
+    "paraphrase_overlap_at3": 0.1,
+    "paraphrase_vs_random": 0.899,
+    "opposite_vs_random": 0.994,
+    "library": 800,
+    "emotion_hit_at3": 0.392
+   },
+   {
+    "candidate": "B-proj",
+    "coverage_top1": {
+     "unique": 37,
+     "of": 800,
+     "entropy": 0.536,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 104,
+     "of": 800,
+     "entropy": 0.686,
+     "max_share": 0.025
+    },
+    "hubness_k5": 2.613,
+    "paraphrase_overlap_at3": 0.05,
+    "paraphrase_vs_random": 0.954,
+    "opposite_vs_random": 1.003,
+    "library": 800,
+    "emotion_hit_at3": 0.283
+   },
+   {
+    "candidate": "B-proj",
+    "coverage_top1": {
+     "unique": 38,
+     "of": 800,
+     "entropy": 0.541,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 94,
+     "of": 800,
+     "entropy": 0.668,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.185,
+    "paraphrase_overlap_at3": 0.1,
+    "paraphrase_vs_random": 0.913,
+    "opposite_vs_random": 1.021,
+    "library": 800,
+    "emotion_hit_at3": 0.25
+   },
+   {
+    "candidate": "B-proj",
+    "coverage_top1": {
+     "unique": 36,
+     "of": 800,
+     "entropy": 0.531,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 107,
+     "of": 800,
+     "entropy": 0.691,
+     "max_share": 0.033
+    },
+    "hubness_k5": 2.914,
+    "paraphrase_overlap_at3": 0.017,
+    "paraphrase_vs_random": 0.962,
+    "opposite_vs_random": 1.004,
+    "library": 800,
+    "emotion_hit_at3": 0.35
+   }
+  ],
+  "B-proj-emo3": [
+   {
+    "candidate": "B-proj-emo3",
+    "coverage_top1": {
+     "unique": 37,
+     "of": 800,
+     "entropy": 0.536,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 100,
+     "of": 800,
+     "entropy": 0.681,
+     "max_share": 0.025
+    },
+    "hubness_k5": 2.385,
+    "paraphrase_overlap_at3": 0.117,
+    "paraphrase_vs_random": 0.876,
+    "opposite_vs_random": 1.009,
+    "library": 800,
+    "emotion_hit_at3": 0.358
+   },
+   {
+    "candidate": "B-proj-emo3",
+    "coverage_top1": {
+     "unique": 37,
+     "of": 800,
+     "entropy": 0.536,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 101,
+     "of": 800,
+     "entropy": 0.68,
+     "max_share": 0.025
+    },
+    "hubness_k5": 2.742,
+    "paraphrase_overlap_at3": 0.083,
+    "paraphrase_vs_random": 0.937,
+    "opposite_vs_random": 0.994,
+    "library": 800,
+    "emotion_hit_at3": 0.383
+   },
+   {
+    "candidate": "B-proj-emo3",
+    "coverage_top1": {
+     "unique": 36,
+     "of": 800,
+     "entropy": 0.531,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 100,
+     "of": 800,
+     "entropy": 0.68,
+     "max_share": 0.025
+    },
+    "hubness_k5": 2.617,
+    "paraphrase_overlap_at3": 0.1,
+    "paraphrase_vs_random": 0.918,
+    "opposite_vs_random": 1.016,
+    "library": 800,
+    "emotion_hit_at3": 0.367
+   },
+   {
+    "candidate": "B-proj-emo3",
+    "coverage_top1": {
+     "unique": 35,
+     "of": 800,
+     "entropy": 0.526,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 95,
+     "of": 800,
+     "entropy": 0.669,
+     "max_share": 0.033
+    },
+    "hubness_k5": 3.068,
+    "paraphrase_overlap_at3": 0.133,
+    "paraphrase_vs_random": 0.891,
+    "opposite_vs_random": 1.004,
+    "library": 800,
+    "emotion_hit_at3": 0.358
+   },
+   {
+    "candidate": "B-proj-emo3",
+    "coverage_top1": {
+     "unique": 35,
+     "of": 800,
+     "entropy": 0.526,
+     "max_share": 0.05
+    },
+    "coverage_top3": {
+     "unique": 102,
+     "of": 800,
+     "entropy": 0.684,
+     "max_share": 0.025
+    },
+    "hubness_k5": 2.447,
+    "paraphrase_overlap_at3": 0.083,
+    "paraphrase_vs_random": 0.922,
+    "opposite_vs_random": 1.01,
+    "library": 800,
+    "emotion_hit_at3": 0.317
+   }
+  ],
+  "C-utt": [
+   {
+    "candidate": "C-utt",
+    "coverage_top1": {
+     "unique": 21,
+     "of": 800,
+     "entropy": 0.426,
+     "max_share": 0.125
+    },
+    "coverage_top3": {
+     "unique": 42,
+     "of": 800,
+     "entropy": 0.499,
+     "max_share": 0.125
+    },
+    "hubness_k5": 9.435,
+    "paraphrase_overlap_at3": 0.333,
+    "paraphrase_vs_random": 0.799,
+    "opposite_vs_random": 0.994,
+    "library": 800,
+    "emotion_hit_at3": 0.325
+   },
+   {
+    "candidate": "C-utt",
+    "coverage_top1": {
+     "unique": 22,
+     "of": 800,
+     "entropy": 0.397,
+     "max_share": 0.3
+    },
+    "coverage_top3": {
+     "unique": 57,
+     "of": 800,
+     "entropy": 0.553,
+     "max_share": 0.142
+    },
+    "hubness_k5": 9.747,
+    "paraphrase_overlap_at3": 0.267,
+    "paraphrase_vs_random": 0.765,
+    "opposite_vs_random": 1.056,
+    "library": 800,
+    "emotion_hit_at3": 0.425
+   },
+   {
+    "candidate": "C-utt",
+    "coverage_top1": {
+     "unique": 27,
+     "of": 800,
+     "entropy": 0.45,
+     "max_share": 0.225
+    },
+    "coverage_top3": {
+     "unique": 63,
+     "of": 800,
+     "entropy": 0.577,
+     "max_share": 0.083
+    },
+    "hubness_k5": 6.84,
+    "paraphrase_overlap_at3": 0.217,
+    "paraphrase_vs_random": 0.758,
+    "opposite_vs_random": 1.043,
+    "library": 800,
+    "emotion_hit_at3": 0.35
+   },
+   {
+    "candidate": "C-utt",
+    "coverage_top1": {
+     "unique": 26,
+     "of": 800,
+     "entropy": 0.46,
+     "max_share": 0.15
+    },
+    "coverage_top3": {
+     "unique": 55,
+     "of": 800,
+     "entropy": 0.542,
+     "max_share": 0.117
+    },
+    "hubness_k5": 9.823,
+    "paraphrase_overlap_at3": 0.417,
+    "paraphrase_vs_random": 0.705,
+    "opposite_vs_random": 1.037,
+    "library": 800,
+    "emotion_hit_at3": 0.342
+   },
+   {
+    "candidate": "C-utt",
+    "coverage_top1": {
+     "unique": 27,
+     "of": 800,
+     "entropy": 0.469,
+     "max_share": 0.125
+    },
+    "coverage_top3": {
+     "unique": 49,
+     "of": 800,
+     "entropy": 0.52,
+     "max_share": 0.142
+    },
+    "hubness_k5": 8.342,
+    "paraphrase_overlap_at3": 0.35,
+    "paraphrase_vs_random": 0.764,
+    "opposite_vs_random": 1.042,
+    "library": 800,
+    "emotion_hit_at3": 0.383
+   }
+  ]
+ },
+ "emotion_hit_chance": 0.288875,
+ "n_paintings": 13147,
+ "n_library": 800,
+ "n_train": 12347,
+ "n_explanations": 74768,
+ "n_splits": 5,
+ "image_head_curve": {
+  "3086": 0.474,
+  "6173": 0.458,
+  "12347": 0.446
+ },
+ "tv_linear": 0.44616830348968506,
+ "tv_mlp": 0.46519631147384644,
+ "tv_prior": 0.5260555744171143,
+ "text_head_argmax": {
+  "grief": "sadness",
+  "grief2": "sadness",
+  "triumph": "excitement",
+  "triumph2": "excitement",
+  "calm": "contentment",
+  "calm2": "contentment",
+  "rage": "excitement",
+  "rage2": "fear",
+  "anxious": "excitement",
+  "anxious2": "fear",
+  "love": "contentment",
+  "love2": "contentment",
+  "lonely": "sadness",
+  "lonely2": "sadness",
+  "hope": "excitement",
+  "hope2": "excitement",
+  "homesick": "sadness",
+  "homesick2": "contentment",
+  "wonder": "contentment",
+  "wonder2": "contentment",
+  "exhausted": "sadness",
+  "exhausted2": "contentment",
+  "excited": "excitement",
+  "excited2": "excitement",
+  "grateful": "contentment",
+  "grateful2": "contentment",
+  "fear": "fear",
+  "fear2": "fear",
+  "nostalgia": "amusement",
+  "nostalgia2": "excitement",
+  "playful": "amusement",
+  "playful2": "amusement",
+  "neutral": "sadness",
+  "neutral2": "contentment",
+  "spring": "contentment",
+  "spring2": "contentment",
+  "betrayed": "sadness",
+  "betrayed2": "sadness",
+  "proud": "contentment",
+  "proud2": "sadness"
+ },
+ "latency_ms": {
+  "baseline": 9.1,
+  "A-emo": 8.4,
+  "B-proj": 8.4,
+  "C-utt": 8.4
+ },
+ "picks_split0": {
+  "baseline": {
+   "grief": [
+    "paul-feeley_ios-1957",
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "jan-toorop_women-at-the-sea"
+   ],
+   "grief2": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "paul-feeley_ios-1957",
+    "georgios-jakobides_first-steps-1892"
+   ],
+   "triumph": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "josef-herman_snooker-players-1982",
+    "francisco-bayeu-y-subias_la-feliz-uni-n-de-espa-a-y-parma-impulsa-las-ciencias-y-las-artes-1788"
+   ],
+   "triumph2": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "jacob-jordaens_psyche-hosted-on-olympus-1652",
+    "hans-baldung_the-seven-ages-of-woman"
+   ],
+   "calm": [
+    "john-atkinson-grimshaw_a-lane-in-headingley-leeds-1881",
+    "felix-vallotton_autumn-crocuses-1900",
+    "horace-pippin_cabin-in-the-cotton-iii-1944"
+   ],
+   "calm2": [
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "felix-vallotton_autumn-crocuses-1900",
+    "john-miller_coconut-beach"
+   ],
+   "rage": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "william-turner_the-fifth-plague-of-egypt",
+    "paul-feeley_ios-1957"
+   ],
+   "rage2": [
+    "marsden-hartley_valley-road-1920",
+    "william-turner_the-bass-rock-for-the-provincial-antiquities-of-scotland",
+    "ivan-aivazovsky_hurricane-on-a-sea-1899"
+   ],
+   "anxious": [
+    "lucian-freud_small-portait",
+    "pierre-auguste-renoir_posthumous-portrait-of-frederic-bazille",
+    "lucian-freud_alice-costelloe"
+   ],
+   "anxious2": [
+    "valentin-serov_portrait-of-adelaida-simonovich-1889",
+    "pierre-auguste-renoir_posthumous-portrait-of-frederic-bazille",
+    "lucian-freud_small-portait"
+   ],
+   "love": [
+    "pierre-bonnard_claude-terrasse-at-the-piano",
+    "edmund-charles-tarbell_across-the-room-1899",
+    "zinaida-serebriakova_terrace-in-collioure-1930"
+   ],
+   "love2": [
+    "jacob-jordaens_psyche-hosted-on-olympus-1652",
+    "hans-baldung_the-seven-ages-of-woman",
+    "francesco-hayez_the-seventh-crusade-against-jerusalem"
+   ],
+   "lonely": [
+    "konstantin-vasilyev_parade-in-the-1941",
+    "william-turner_the-exile-and-the-snail",
+    "william-james-glackens_the-drive-central-park-1905"
+   ],
+   "lonely2": [
+    "edward-hopper_sun-in-an-empty-room",
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "philip-wilson-steer_young-woman-at-the-beach"
+   ],
+   "hope": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "philip-wilson-steer_young-woman-at-the-beach",
+    "valentin-serov_portrait-of-adelaida-simonovich-1889"
+   ],
+   "hope2": [
+    "paul-feeley_ios-1957",
+    "nicholas-roerich_ridge-approaches-to-everest-1936",
+    "edward-hopper_sun-in-an-empty-room"
+   ],
+   "homesick": [
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "horace-pippin_cabin-in-the-cotton-iii-1944",
+    "georgios-jakobides_first-steps-1892"
+   ],
+   "homesick2": [
+    "ernst-ludwig-kirchner_red-elisabeth-riverbank-berlin-1913",
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "volodymyr-orlovsky_the-sunny-day"
+   ],
+   "wonder": [
+    "gustave-courbet_snow-1874",
+    "mikhail-vrubel_yard-at-winter",
+    "charles-reiffel_the-mill-in-winter"
+   ],
+   "wonder2": [
+    "gustave-courbet_snow-1874",
+    "charles-reiffel_the-mill-in-winter",
+    "vasily-surikov_rooftops-in-winter"
+   ],
+   "exhausted": [
+    "adriaen-brouwer_a-boor-asleep",
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "egon-schiele_wally-with-a-red-blouse"
+   ],
+   "exhausted2": [
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "pierre-bonnard_claude-terrasse-at-the-piano",
+    "balthus_the-golden-fruit-1956"
+   ],
+   "excited": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "luigi-russolo_memories-of-a-night-1911",
+    "juan-gris_photograph-of-the-guitar-1918"
+   ],
+   "excited2": [
+    "jacob-jordaens_psyche-hosted-on-olympus-1652",
+    "robert-julian-onderdonk_bluebonnets-at-late-afternoon-near-la-grange-1918",
+    "edmund-dulac_elves-and-fairies-illustration-for-the-tempest"
+   ],
+   "grateful": [
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "horace-pippin_cabin-in-the-cotton-iii-1944",
+    "james-tissot_a-little-nimrod"
+   ],
+   "grateful2": [
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "paul-feeley_ios-1957",
+    "felix-vallotton_autumn-crocuses-1900"
+   ],
+   "fear": [
+    "alfred-stevens_maria-magdalena-1887",
+    "nikolaos-gyzis_after-the-memorial-service-1883",
+    "kay-nielsen_in-the-midst-of-the-gloomy-thick-wood"
+   ],
+   "fear2": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "amadeo-de-souza-cardoso_untitled-portrait-of-paul-alexander-1917",
+    "paul-feeley_ios-1957"
+   ],
+   "nostalgia": [
+    "philip-wilson-steer_young-woman-at-the-beach",
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "nikolay-bogdanov-belsky_two-girls-on-a-footbridge"
+   ],
+   "nostalgia2": [
+    "adriaen-brouwer_smallholders-playing-cards",
+    "sir-lawrence-alma-tadema_a-coign-of-vantage-1895",
+    "georgios-jakobides_first-steps-1892"
+   ],
+   "playful": [
+    "edgar-degas_two-dancers-in-the-foyer",
+    "adolphe-joseph-thomas-monticelli_an-evening-at-the-paiva",
+    "konstantin-somov_how-dressed-in-the-old-days-lady-and-cavalier"
+   ],
+   "playful2": [
+    "hans-hofmann_the-mannequin-1946",
+    "paul-feeley_ios-1957",
+    "amadeo-de-souza-cardoso_untitled-portrait-of-paul-alexander-1917"
+   ],
+   "neutral": [
+    "lucian-freud_small-portait",
+    "alfred-stevens_maria-magdalena-1887",
+    "moise-kisling_young-girl-with-long-hair-1942"
+   ],
+   "neutral2": [
+    "philip-wilson-steer_young-woman-at-the-beach",
+    "paul-feeley_ios-1957",
+    "william-turner_the-exile-and-the-snail"
+   ],
+   "spring": [
+    "robert-julian-onderdonk_sunlight-after-rain-1921",
+    "wu-guanzhong_love-in-fangzhuang-2002",
+    "ferdinand-hodler_the-small-plantane-1890"
+   ],
+   "spring2": [
+    "maria-primachenko_blue-eyed-flowers-1983",
+    "maria-primachenko_i-give-this-bouquet-of-stars-where-children-are-1982",
+    "kateryna-bilokur_field-of-the-collective-farm-1949"
+   ],
+   "betrayed": [
+    "paul-feeley_ios-1957",
+    "sir-lawrence-alma-tadema_a-coign-of-vantage-1895",
+    "philip-wilson-steer_young-woman-at-the-beach"
+   ],
+   "betrayed2": [
+    "paul-feeley_ios-1957",
+    "philip-wilson-steer_young-woman-at-the-beach",
+    "felix-vallotton_the-ham-1918"
+   ],
+   "proud": [
+    "paul-feeley_ios-1957",
+    "konstantin-vasilyev_parade-in-the-1941",
+    "edouard-manet_the-bullfight-1864"
+   ],
+   "proud2": [
+    "paul-feeley_ios-1957",
+    "nicholas-roerich_ridge-approaches-to-everest-1936",
+    "felix-vallotton_the-ham-1918"
+   ]
+  },
+  "A-emo": {
+   "grief": [
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "jean-david_woman-with-braids-yemenite-1934",
+    "viktor-vasnetsov_playmates-1878"
+   ],
+   "grief2": [
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "jean-david_woman-with-braids-yemenite-1934",
+    "michelangelo_study-for-christ-on-the-cross-with-mourners-1548"
+   ],
+   "triumph": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "childe-hassam_flags-fifth-avenue"
+   ],
+   "triumph2": [
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "childe-hassam_flags-fifth-avenue",
+    "konstantin-korovin_paris-saint-denis-arc"
+   ],
+   "calm": [
+    "gustav-klimt_amalie-zuckerkandl-1918",
+    "willard-metcalf_tea-on-the-porch",
+    "giovanni-boldini_spring"
+   ],
+   "calm2": [
+    "gino-severini_paris-the-seine-the-barges-of-the-louvre",
+    "gustav-klimt_amalie-zuckerkandl-1918",
+    "richard-gerstl_orchard-1907"
+   ],
+   "rage": [
+    "philip-guston_to-fellini-1958",
+    "john-hoyland_30-7-75-1975",
+    "roy-lichtenstein_standing-rib-1962"
+   ],
+   "rage2": [
+    "henryk-siemiradzki_prince-alexander-nevsky-in-gold-horde",
+    "francesco-hayez_the-seventh-crusade-against-jerusalem",
+    "utagawa-kuniyoshi_design-the-struggle"
+   ],
+   "anxious": [
+    "andy-warhol_front-and-back",
+    "agnes-martin_morning-star-1962",
+    "agnes-martin_happy-holiday-1999"
+   ],
+   "anxious2": [
+    "richard-diebenkorn_untitled-m",
+    "roy-lichtenstein_standing-rib-1962",
+    "philip-guston_to-fellini-1958"
+   ],
+   "love": [
+    "raphael-kirchner_players",
+    "paul-gauguin_tahitian-landscape-1897",
+    "janos-mattis-teutsch_light-landscape-1917"
+   ],
+   "love2": [
+    "theodoros-stamos_archimandrite-1960",
+    "kenzo-okada_white-and-brown-1972",
+    "jose-guerrero_comienzo-azul"
+   ],
+   "lonely": [
+    "jean-david_woman-with-braids-yemenite-1934",
+    "moise-kisling_young-girl-with-long-hair-1942",
+    "rembrandt_the-blindness-of-tobit-1629"
+   ],
+   "lonely2": [
+    "agnes-martin_happy-holiday-1999",
+    "agnes-martin_morning-star-1962",
+    "agnes-martin_mountain-i-1966"
+   ],
+   "hope": [
+    "philip-guston_to-fellini-1958",
+    "georges-braque_the-sideboard-1920",
+    "francis-picabia_edtaonisl-ecclesiastic"
+   ],
+   "hope2": [
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "childe-hassam_flags-fifth-avenue",
+    "maria-primachenko_maiden-and-cossack-enjoying-a-ride-on-horseback-1982"
+   ],
+   "homesick": [
+    "jan-toorop_women-at-the-sea",
+    "pierre-auguste-renoir_posthumous-portrait-of-frederic-bazille",
+    "nicolae-tonitza_the-field"
+   ],
+   "homesick2": [
+    "jose-guerrero_comienzo-azul",
+    "cy-twombly_hero-and-leandro-a-painting-in-four-parts-part-i",
+    "kenzo-okada_white-and-brown-1972"
+   ],
+   "wonder": [
+    "kateryna-bilokur_field-of-the-collective-farm-1949",
+    "theo-van-rysselberghe_levant-isle",
+    "david-burliuk_landscape-with-blue-mountain"
+   ],
+   "wonder2": [
+    "maurice-prendergast_venice-the-little-bridge",
+    "raphael-kirchner_players",
+    "william-james-glackens_the-drive-central-park-1905"
+   ],
+   "exhausted": [
+    "agnes-martin_morning-star-1962",
+    "toyen_a-girl-with-the-rosehips",
+    "theodoros-stamos_archimandrite-1960"
+   ],
+   "exhausted2": [
+    "vasily-polenov_left-hand-with-the-index-finger",
+    "kenzo-okada_white-and-brown-1972",
+    "john-hoppner_arthur-wellesley-1st-duke-of-wellington"
+   ],
+   "excited": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "jules-cheret_casino-de-paris-camille-st-fani-1891"
+   ],
+   "excited2": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "childe-hassam_flags-fifth-avenue"
+   ],
+   "grateful": [
+    "albrecht-durer_river-landscape",
+    "albrecht-durer_the-choir-of-the-groote-kerk-in-bergen-op-zoon",
+    "william-shayer_carthorses-and-rustics-by-a-stream-1840"
+   ],
+   "grateful2": [
+    "agnes-martin_happy-holiday-1999",
+    "andy-warhol_front-and-back",
+    "kenzo-okada_white-and-brown-1972"
+   ],
+   "fear": [
+    "edward-burne-jones_guinevere-rescued-by-lancelot",
+    "francesco-hayez_the-seventh-crusade-against-jerusalem",
+    "edouard-manet_battle-of-kearsage-and-alabama-1864"
+   ],
+   "fear2": [
+    "vincent-van-gogh_studies-for-figures-carrying-bundles-of-wood-1885",
+    "jean-degottex_horsph-re",
+    "leonardo-da-vinci_study-of-proportion"
+   ],
+   "nostalgia": [
+    "martiros-saryan_mules-laden-with-hay-1910",
+    "aldemir-martins_yellow-cat-and-flowers-2002",
+    "henri-de-toulouse-lautrec_edmee-lescot-in-spanish-dancer-edmee-lescot-have-a-spanish-dancer"
+   ],
+   "nostalgia2": [
+    "edgar-degas_two-dancers-in-the-foyer",
+    "maurice-prendergast_the-bathers",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914"
+   ],
+   "playful": [
+    "terry-frost_zebra-1972",
+    "boris-kustodiev_english-polovoy-and-polshkiper-1924",
+    "edouard-manet_young-man-in-the-costume-of-a-majo-1863"
+   ],
+   "playful2": [
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "terry-frost_zebra-1972",
+    "martiros-saryan_mules-laden-with-hay-1910"
+   ],
+   "neutral": [
+    "kathe-kollwitz_outbreak-1908",
+    "kay-nielsen_in-the-midst-of-the-gloomy-thick-wood",
+    "nikolai-ge_the-head-of-john-the-apostle"
+   ],
+   "neutral2": [
+    "gene-davis_halifax-1969",
+    "agnes-martin_morning-star-1962",
+    "vasily-polenov_left-hand-with-the-index-finger"
+   ],
+   "spring": [
+    "richard-gerstl_orchard-1907",
+    "childe-hassam_street-in-portsmouth",
+    "gustav-klimt_amalie-zuckerkandl-1918"
+   ],
+   "spring2": [
+    "gustav-klimt_amalie-zuckerkandl-1918",
+    "richard-gerstl_orchard-1907",
+    "konstantin-somov_spring"
+   ],
+   "betrayed": [
+    "jean-david_woman-with-braids-yemenite-1934",
+    "berthe-morisot_calvary-after-veronese",
+    "rembrandt_the-blindness-of-tobit-1629"
+   ],
+   "betrayed2": [
+    "leonardo-da-vinci_head-of-a-man",
+    "rembrandt_the-blindness-of-tobit-1629",
+    "andrei-ryabushkin_sadko-a-wealthy-guest-of-novgorod-illustration-for-the-book-russian-epic-heroes"
+   ],
+   "proud": [
+    "friedel-dzubas_tundra-ii-1962",
+    "agnes-martin_morning-star-1962",
+    "agnes-martin_happy-holiday-1999"
+   ],
+   "proud2": [
+    "theodoros-stamos_archimandrite-1960",
+    "toyen_a-girl-with-the-rosehips",
+    "agnes-martin_morning-star-1962"
+   ]
+  },
+  "A-emo8": {
+   "grief": [
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "jean-david_woman-with-braids-yemenite-1934",
+    "viktor-vasnetsov_playmates-1878"
+   ],
+   "grief2": [
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "jean-david_woman-with-braids-yemenite-1934",
+    "michelangelo_study-for-christ-on-the-cross-with-mourners-1548"
+   ],
+   "triumph": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc"
+   ],
+   "triumph2": [
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc",
+    "childe-hassam_flags-fifth-avenue"
+   ],
+   "calm": [
+    "giovanni-boldini_spring",
+    "edward-hopper_first-branch-of-the-white-river-vermont",
+    "konstantin-somov_spring"
+   ],
+   "calm2": [
+    "konstantin-somov_spring",
+    "giovanni-boldini_spring",
+    "edward-hopper_first-branch-of-the-white-river-vermont"
+   ],
+   "rage": [
+    "utagawa-kuniyoshi_design-the-struggle",
+    "rembrandt_the-polish-rider-1655",
+    "edouard-manet_the-bullfight-1864"
+   ],
+   "rage2": [
+    "henryk-siemiradzki_prince-alexander-nevsky-in-gold-horde",
+    "francesco-hayez_the-seventh-crusade-against-jerusalem",
+    "utagawa-kuniyoshi_design-the-struggle"
+   ],
+   "anxious": [
+    "lovis-corinth_salome-1900",
+    "jan-steen_parrot-cage",
+    "henri-de-toulouse-lautrec_at-the-bar-picton-rue-scribe-1896"
+   ],
+   "anxious2": [
+    "fyodor-bronnikov_mosaicists-before-the-court-three-in-venice-in-the-second-half-of-the-xvi-century",
+    "francesco-hayez_the-seventh-crusade-against-jerusalem",
+    "rembrandt_the-polish-rider-1655"
+   ],
+   "love": [
+    "willard-metcalf_poppy-garden",
+    "william-james-glackens_the-drive-central-park-1905",
+    "john-singer-sargent_simplon-pass-the-tease-1911"
+   ],
+   "love2": [
+    "sir-lawrence-alma-tadema_shy",
+    "raoul-dufy_men-fishing-1907",
+    "edgar-degas_two-dancers-in-the-foyer"
+   ],
+   "lonely": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "jean-david_woman-with-braids-yemenite-1934",
+    "francesco-hayez_valenza-gradenigo-before-the-inquisitor"
+   ],
+   "lonely2": [
+    "lovis-corinth_salome-1900",
+    "james-tissot_a-little-nimrod",
+    "william-merritt-chase_the-turkish-page"
+   ],
+   "hope": [
+    "konstantin-korovin_paris-saint-denis-arc",
+    "klavdy-lebedev_assembly-of-peter-i",
+    "henri-rousseau_scout-attacked-by-a-tiger-1904"
+   ],
+   "hope2": [
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc",
+    "childe-hassam_flags-fifth-avenue"
+   ],
+   "homesick": [
+    "jean-francois-millet_peasand-spreading-manure-1855",
+    "gwen-john_woman-sewing-at-a-window",
+    "viktor-vasnetsov_playmates-1878"
+   ],
+   "homesick2": [
+    "james-mcneill-whistler_the-last-of-old-westminster",
+    "vilmos-aba-novak_daylabourers-with-wheelbarrows-1927",
+    "giovanni-boldini_still-life-with-rose"
+   ],
+   "wonder": [
+    "kateryna-bilokur_field-of-the-collective-farm-1949",
+    "david-burliuk_landscape-with-blue-mountain",
+    "theo-van-rysselberghe_levant-isle"
+   ],
+   "wonder2": [
+    "willard-metcalf_poppy-garden",
+    "william-james-glackens_the-drive-central-park-1905",
+    "juan-gris_photograph-of-the-guitar-1918"
+   ],
+   "exhausted": [
+    "aubrey-beardsley_coiffing",
+    "amedeo-modigliani_head-of-a-girl",
+    "henri-de-toulouse-lautrec_aristide-bruant-on-his-bicycle-1892"
+   ],
+   "exhausted2": [
+    "sergey-solomko_place-de-la-republic-and-of-happyness",
+    "francesco-hayez_portrait-of-a-venetian-woman",
+    "john-singer-sargent_man-seated-by-a-stream-1912"
+   ],
+   "excited": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc"
+   ],
+   "excited2": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc"
+   ],
+   "grateful": [
+    "santiago-rusinol_landmark-1892",
+    "alfred-sisley_a-village-street-in-winter-1893",
+    "alfred-sisley_high-waters-at-moret-sur-loing-1879"
+   ],
+   "grateful2": [
+    "maxime-maufra_beuzec-concq-in-concarneau-1911",
+    "william-james-glackens_the-drive-central-park-1905",
+    "maurice-prendergast_venice-the-little-bridge"
+   ],
+   "fear": [
+    "edward-burne-jones_guinevere-rescued-by-lancelot",
+    "edouard-manet_battle-of-kearsage-and-alabama-1864",
+    "francesco-hayez_the-seventh-crusade-against-jerusalem"
+   ],
+   "fear2": [
+    "william-turner_the-fifth-plague-of-egypt",
+    "victor-hugo_planet-1866",
+    "edouard-manet_battle-of-kearsage-and-alabama-1864"
+   ],
+   "nostalgia": [
+    "aldemir-martins_yellow-cat-and-flowers-2002",
+    "martiros-saryan_mules-laden-with-hay-1910",
+    "henri-de-toulouse-lautrec_edmee-lescot-in-spanish-dancer-edmee-lescot-have-a-spanish-dancer"
+   ],
+   "nostalgia2": [
+    "edgar-degas_two-dancers-in-the-foyer",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "maria-primachenko_maiden-and-cossack-enjoying-a-ride-on-horseback-1982"
+   ],
+   "playful": [
+    "boris-kustodiev_english-polovoy-and-polshkiper-1924",
+    "terry-frost_zebra-1972",
+    "edouard-manet_young-man-in-the-costume-of-a-majo-1863"
+   ],
+   "playful2": [
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "terry-frost_zebra-1972",
+    "martiros-saryan_mules-laden-with-hay-1910"
+   ],
+   "neutral": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "gustave-dore_two-hundred-knights-attack-twenty-thousand-saracens",
+    "vasily-surikov_portrait-of-mother-1894"
+   ],
+   "neutral2": [
+    "childe-hassam_the-butterfly",
+    "ilya-repin_portrait-of-the-artist-v-s-svarog-1915",
+    "konstantin-somov_how-dressed-in-the-old-days-lady-and-cavalier"
+   ],
+   "spring": [
+    "john-miller_coconut-beach",
+    "konstantin-somov_spring",
+    "giovanni-boldini_spring"
+   ],
+   "spring2": [
+    "konstantin-somov_spring",
+    "edward-hopper_first-branch-of-the-white-river-vermont",
+    "john-miller_coconut-beach"
+   ],
+   "betrayed": [
+    "rogier-van-der-weyden_deposition-1435",
+    "berthe-morisot_calvary-after-veronese",
+    "jean-david_woman-with-braids-yemenite-1934"
+   ],
+   "betrayed2": [
+    "masaccio_martyrdom-of-san-giovanni-battista-1426",
+    "rembrandt_the-blindness-of-tobit-1629",
+    "lucian-freud_head-of-an-irishman"
+   ],
+   "proud": [
+    "henri-matisse_red-fish-in-interior",
+    "childe-hassam_the-butterfly",
+    "henri-de-toulouse-lautrec_madame-e-tapie-de-celeyran-in-a-garden-1896"
+   ],
+   "proud2": [
+    "valentin-serov_portrait-of-yelena-oliv-1905",
+    "moise-kisling_waiting-1917",
+    "vilmos-aba-novak_daylabourers-with-wheelbarrows-1927"
+   ]
+  },
+  "A-emo8-mlp": {
+   "grief": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "gustave-dore_astonishment-of-the-crusaders-at-the-wealth-of-the-east",
+    "robert-campin_mourning-trinity-throne-of-god-1435"
+   ],
+   "grief2": [
+    "gustave-dore_astonishment-of-the-crusaders-at-the-wealth-of-the-east",
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "robert-campin_mourning-trinity-throne-of-god-1435"
+   ],
+   "triumph": [
+    "odilon-redon_flower-clouds-1903",
+    "burhan-dogancay_bonjour-marilyn-2009",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990"
+   ],
+   "triumph2": [
+    "odilon-redon_flower-clouds-1903",
+    "childe-hassam_flags-fifth-avenue",
+    "fra-angelico_mystic-wheel-the-vision-of-ezekiel-1452"
+   ],
+   "calm": [
+    "giovanni-boldini_spring",
+    "berthe-morisot_the-fable",
+    "john-miller_coconut-beach"
+   ],
+   "calm2": [
+    "john-miller_coconut-beach",
+    "giovanni-boldini_spring",
+    "gustave-loiseau_fecamp"
+   ],
+   "rage": [
+    "utagawa-kuniyoshi_design-the-struggle",
+    "rembrandt_the-polish-rider-1655",
+    "suzanne-valadon_mother-and-daughter-after-the-bath-ii-1908"
+   ],
+   "rage2": [
+    "utagawa-kuniyoshi_design-the-struggle",
+    "vincent-van-gogh_two-diggers-among-trees-1889",
+    "pavel-svinyin_an-indian-with-a-scalp"
+   ],
+   "anxious": [
+    "henri-rousseau_scout-attacked-by-a-tiger-1904",
+    "leon-bakst_costume-design-for-the-master-of-ceremonies-from-sleeping-beauty-1921",
+    "ilka-gedo_self-portrait-with-a-strawhat-1984"
+   ],
+   "anxious2": [
+    "pavel-svinyin_an-indian-with-a-scalp",
+    "sam-francis_reefs-1955",
+    "cy-twombly_hero-and-leandro-a-painting-in-four-parts-part-i"
+   ],
+   "love": [
+    "childe-hassam_gloucester",
+    "winslow-homer_hudson-river",
+    "ito-jakuchu_one-hundred-dogs-1799"
+   ],
+   "love2": [
+    "ernst-ludwig-kirchner_red-elisabeth-riverbank-berlin-1913",
+    "sir-lawrence-alma-tadema_lesbia-weeping-over-a-sparrow-1866",
+    "jean-leon-gerome_portrait-of-eduoard-delessert"
+   ],
+   "lonely": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "robert-campin_mourning-trinity-throne-of-god-1435",
+    "john-singer-sargent_flotsam-and-jetsam-1908"
+   ],
+   "lonely2": [
+    "cornelis-norbertus-gysbrechts_still-life-with-self-portrait-1663",
+    "amedeo-modigliani_portrait-of-pardy",
+    "moise-kisling_waiting-1917"
+   ],
+   "hope": [
+    "pyotr-konchalovsky_torpedo-boats",
+    "utagawa-kuniyoshi_woman-doing-her-laundry-in-the-river",
+    "aubrey-beardsley_excalibur-in-the-lake"
+   ],
+   "hope2": [
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "raphael-kirchner_players",
+    "pyotr-konchalovsky_torpedo-boats"
+   ],
+   "homesick": [
+    "viktor-vasnetsov_playmates-1878",
+    "konstantin-korovin_roses-evening-1908",
+    "valentin-serov_artist-k-korovin-on-the-river-bank-1905"
+   ],
+   "homesick2": [
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "ernst-ludwig-kirchner_red-elisabeth-riverbank-berlin-1913",
+    "valentin-serov_portrait-of-yelena-oliv-1905"
+   ],
+   "wonder": [
+    "willard-metcalf_poppy-garden",
+    "david-burliuk_landscape-with-blue-mountain",
+    "childe-hassam_gloucester"
+   ],
+   "wonder2": [
+    "ito-jakuchu_one-hundred-dogs-1799",
+    "francis-picabia_port-of-saint-tropez-evening-effect",
+    "winslow-homer_hudson-river"
+   ],
+   "exhausted": [
+    "aubrey-beardsley_coiffing",
+    "camille-corot_a-seated-italian-from-paeigno-facing-front",
+    "rembrandt_the-pancake-woman-1635"
+   ],
+   "exhausted2": [
+    "john-hoppner_arthur-wellesley-1st-duke-of-wellington",
+    "gabriel-metsu_the-cittern-player",
+    "jean-leon-gerome_portrait-of-eduoard-delessert"
+   ],
+   "excited": [
+    "odilon-redon_flower-clouds-1903",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "richard-hamilton_fashion-plate-1970"
+   ],
+   "excited2": [
+    "odilon-redon_flower-clouds-1903",
+    "burhan-dogancay_bonjour-marilyn-2009",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990"
+   ],
+   "grateful": [
+    "alfred-sisley_high-waters-at-moret-sur-loing-1879",
+    "ilya-repin_leisure-1882",
+    "theo-van-rysselberghe_denise-marechal-1892"
+   ],
+   "grateful2": [
+    "ito-jakuchu_one-hundred-dogs-1799",
+    "francis-picabia_port-of-saint-tropez-evening-effect",
+    "raphael-kirchner_players"
+   ],
+   "fear": [
+    "gustave-dore_two-hundred-knights-attack-twenty-thousand-saracens",
+    "kathe-kollwitz_outbreak-1908",
+    "john-singer-sargent_the-hermit-1908"
+   ],
+   "fear2": [
+    "gustave-dore_two-hundred-knights-attack-twenty-thousand-saracens",
+    "gustave-dore_death-of-samson-1866",
+    "maerten-van-heemskerck_the-infanticide-in-bethlehem"
+   ],
+   "nostalgia": [
+    "maria-primachenko_maiden-and-cossack-enjoying-a-ride-on-horseback-1982",
+    "martiros-saryan_mules-laden-with-hay-1910",
+    "boris-kustodiev_english-polovoy-and-polshkiper-1924"
+   ],
+   "nostalgia2": [
+    "ivan-bilibin_sadko-1903",
+    "utagawa-kuniyoshi_woman-doing-her-laundry-in-the-river",
+    "maria-primachenko_maiden-and-cossack-enjoying-a-ride-on-horseback-1982"
+   ],
+   "playful": [
+    "boris-kustodiev_english-polovoy-and-polshkiper-1924",
+    "adolphe-joseph-thomas-monticelli_an-evening-at-the-paiva",
+    "marc-chagall_gathering-of-peasants"
+   ],
+   "playful2": [
+    "adolphe-joseph-thomas-monticelli_an-evening-at-the-paiva",
+    "marc-chagall_gathering-of-peasants",
+    "maria-primachenko_maiden-and-cossack-enjoying-a-ride-on-horseback-1982"
+   ],
+   "neutral": [
+    "georgios-jakobides_the-insatiable-1884",
+    "spyros-papaloukas_houses",
+    "pablo-picasso_the-luncheon-on-the-grass-1961"
+   ],
+   "neutral2": [
+    "konstantin-makovsky_girl-with-jug",
+    "endre-balint_still-life-with-fish-1946",
+    "gerrit-dou_trumpet-player-in-front-of-a-banquet-1665"
+   ],
+   "spring": [
+    "miklos-barabas_in-the-atelier-r-za-teleki-1838",
+    "john-miller_coconut-beach",
+    "ferdinand-hodler_the-small-plantane-1890"
+   ],
+   "spring2": [
+    "john-miller_coconut-beach",
+    "willard-metcalf_poppy-garden",
+    "volodymyr-orlovsky_the-sunny-day"
+   ],
+   "betrayed": [
+    "masaccio_martyrdom-of-san-giovanni-battista-1426",
+    "robert-campin_mourning-trinity-throne-of-god-1435",
+    "ernst-ludwig-kirchner_head-of-a-sick-man"
+   ],
+   "betrayed2": [
+    "masaccio_martyrdom-of-san-giovanni-battista-1426",
+    "christen-kobke_portrait-of-adolphine-k-bke-sister-of-the-artist-1832",
+    "berthe-morisot_calvary-after-veronese"
+   ],
+   "proud": [
+    "henri-matisse_red-fish-in-interior",
+    "konstantin-makovsky_girl-with-jug",
+    "ito-jakuchu_one-hundred-dogs-1799"
+   ],
+   "proud2": [
+    "paul-gauguin_nevermore-1897",
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "ernst-ludwig-kirchner_red-elisabeth-riverbank-berlin-1913"
+   ]
+  },
+  "A-emo+clip": {
+   "grief": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "jan-toorop_women-at-the-sea",
+    "jean-david_woman-with-braids-yemenite-1934"
+   ],
+   "grief2": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "jean-david_woman-with-braids-yemenite-1934",
+    "lucian-freud_small-portait"
+   ],
+   "triumph": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "josef-herman_snooker-players-1982",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914"
+   ],
+   "triumph2": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "konstantin-korovin_paris-saint-denis-arc",
+    "maria-primachenko_maiden-and-cossack-enjoying-a-ride-on-horseback-1982"
+   ],
+   "calm": [
+    "john-miller_coconut-beach",
+    "felix-vallotton_autumn-crocuses-1900",
+    "horace-pippin_cabin-in-the-cotton-iii-1944"
+   ],
+   "calm2": [
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "john-miller_coconut-beach",
+    "felix-vallotton_autumn-crocuses-1900"
+   ],
+   "rage": [
+    "kazimir-malevich_woodcutter",
+    "edouard-manet_the-bullfight-1864",
+    "luigi-russolo_memories-of-a-night-1911"
+   ],
+   "rage2": [
+    "ivan-aivazovsky_hurricane-on-a-sea-1899",
+    "william-turner_the-fifth-plague-of-egypt",
+    "edvard-munch_adam-and-eve-1918"
+   ],
+   "anxious": [
+    "lucian-freud_alice-costelloe",
+    "andre-derain_the-dancer",
+    "amadeo-de-souza-cardoso_untitled-portrait-of-paul-alexander-1917"
+   ],
+   "anxious2": [
+    "francesco-hayez_the-seventh-crusade-against-jerusalem",
+    "edouard-manet_battle-of-kearsage-and-alabama-1864",
+    "edouard-manet_the-bullfight-1864"
+   ],
+   "love": [
+    "sir-lawrence-alma-tadema_unwelcome-confidences-1902",
+    "zinaida-serebriakova_terrace-in-collioure-1930",
+    "adriaen-van-ostade_feasting-peasants-in-a-tavern"
+   ],
+   "love2": [
+    "adriaen-van-ostade_feasting-peasants-in-a-tavern",
+    "wu-guanzhong_love-in-fangzhuang-2002",
+    "william-james-glackens_the-drive-central-park-1905"
+   ],
+   "lonely": [
+    "joseph-wright_widow-of-an-indian-chief-1785",
+    "lucian-freud_small-portait",
+    "alfred-stevens_maria-magdalena-1887"
+   ],
+   "lonely2": [
+    "james-tissot_a-little-nimrod",
+    "arkhip-kuindzhi_trunks-of-trees",
+    "john-singer-sargent_the-hermit-1908"
+   ],
+   "hope": [
+    "konstantin-korovin_paris-saint-denis-arc",
+    "ernst-ludwig-kirchner_red-elisabeth-riverbank-berlin-1913",
+    "childe-hassam_flags-fifth-avenue"
+   ],
+   "hope2": [
+    "richard-pousette-dart_by-the-sea",
+    "janos-mattis-teutsch_light-landscape-1917",
+    "childe-hassam_flags-fifth-avenue"
+   ],
+   "homesick": [
+    "jan-toorop_women-at-the-sea",
+    "viktor-vasnetsov_playmates-1878",
+    "victor-borisov-musatov_on-a-balcony-1899"
+   ],
+   "homesick2": [
+    "ernst-ludwig-kirchner_red-elisabeth-riverbank-berlin-1913",
+    "james-mcneill-whistler_the-last-of-old-westminster",
+    "childe-hassam_marche-st-pierre-montmartre"
+   ],
+   "wonder": [
+    "claude-monet_view-of-argenteuil-in-the-snow",
+    "mikhail-vrubel_yard-at-winter",
+    "charles-reiffel_the-mill-in-winter"
+   ],
+   "wonder2": [
+    "charles-reiffel_the-mill-in-winter",
+    "claude-monet_view-of-argenteuil-in-the-snow",
+    "mikhail-vrubel_yard-at-winter"
+   ],
+   "exhausted": [
+    "adriaen-brouwer_a-boor-asleep",
+    "moise-kisling_waiting-1917",
+    "lucian-freud_small-portait"
+   ],
+   "exhausted2": [
+    "pierre-auguste-renoir_camille-monet-reading-1872",
+    "ford-madox-brown_at-the-grain-harvest",
+    "pierre-bonnard_claude-terrasse-at-the-piano"
+   ],
+   "excited": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "konstantin-korovin_paris-saint-denis-arc",
+    "juan-gris_photograph-of-the-guitar-1918"
+   ],
+   "excited2": [
+    "konstantin-korovin_paris-saint-denis-arc",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "juan-gris_photograph-of-the-guitar-1918"
+   ],
+   "grateful": [
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "horace-pippin_cabin-in-the-cotton-iii-1944",
+    "nicolae-grigorescu_on-a-peak"
+   ],
+   "grateful2": [
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "william-james-glackens_the-drive-central-park-1905",
+    "winslow-homer_hudson-river"
+   ],
+   "fear": [
+    "edward-burne-jones_guinevere-rescued-by-lancelot",
+    "edouard-manet_battle-of-kearsage-and-alabama-1864",
+    "nikolaos-gyzis_after-the-memorial-service-1883"
+   ],
+   "fear2": [
+    "william-turner_the-fifth-plague-of-egypt",
+    "olivier-debre_composition-abstraite-1978",
+    "albert-bloch_figures-in-silver-light-study"
+   ],
+   "nostalgia": [
+    "maurice-prendergast_may-party-also-known-as-may-day-central-park",
+    "sir-lawrence-alma-tadema_a-coign-of-vantage-1895",
+    "lucas-cranach-the-elder_diana-and-actaeon"
+   ],
+   "nostalgia2": [
+    "edgar-degas_two-dancers-in-the-foyer",
+    "maurice-prendergast_may-party-also-known-as-may-day-central-park",
+    "sir-lawrence-alma-tadema_a-coign-of-vantage-1895"
+   ],
+   "playful": [
+    "henri-de-toulouse-lautrec_edmee-lescot-in-spanish-dancer-edmee-lescot-have-a-spanish-dancer",
+    "adolphe-joseph-thomas-monticelli_an-evening-at-the-paiva",
+    "edgar-degas_two-dancers-in-the-foyer"
+   ],
+   "playful2": [
+    "jean-helion_mannequinerie-en-solde-1978",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "amadeo-de-souza-cardoso_untitled-portrait-of-paul-alexander-1917"
+   ],
+   "neutral": [
+    "lucian-freud_small-portait",
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "joseph-wright_widow-of-an-indian-chief-1785"
+   ],
+   "neutral2": [
+    "lucas-cranach-the-elder_diana-and-actaeon",
+    "jean-helion_mannequinerie-en-solde-1978",
+    "sir-lawrence-alma-tadema_a-coign-of-vantage-1895"
+   ],
+   "spring": [
+    "richard-gerstl_orchard-1907",
+    "ferdinand-hodler_the-small-plantane-1890",
+    "konstantin-somov_spring"
+   ],
+   "spring2": [
+    "kateryna-bilokur_field-of-the-collective-farm-1949",
+    "childe-hassam_laurel-on-the-ledges",
+    "maria-primachenko_blue-eyed-flowers-1983"
+   ],
+   "betrayed": [
+    "lucian-freud_small-portait",
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "jean-david_woman-with-braids-yemenite-1934"
+   ],
+   "betrayed2": [
+    "masaccio_martyrdom-of-san-giovanni-battista-1426",
+    "lucian-freud_small-portait",
+    "james-tissot_a-little-nimrod"
+   ],
+   "proud": [
+    "georges-braque_the-green-napkin-1943",
+    "lucas-cranach-the-elder_diana-and-actaeon",
+    "paul-feeley_ios-1957"
+   ],
+   "proud2": [
+    "ernst-ludwig-kirchner_red-elisabeth-riverbank-berlin-1913",
+    "wu-guanzhong_love-in-fangzhuang-2002",
+    "constantin-stahi_portrait-of-a-girl-1873"
+   ]
+  },
+  "A-emo-js": {
+   "grief": [
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "jean-david_woman-with-braids-yemenite-1934",
+    "viktor-vasnetsov_playmates-1878"
+   ],
+   "grief2": [
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "jean-david_woman-with-braids-yemenite-1934",
+    "viktor-vasnetsov_playmates-1878"
+   ],
+   "triumph": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc"
+   ],
+   "triumph2": [
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc",
+    "childe-hassam_flags-fifth-avenue"
+   ],
+   "calm": [
+    "giovanni-boldini_spring",
+    "edward-hopper_first-branch-of-the-white-river-vermont",
+    "konstantin-somov_spring"
+   ],
+   "calm2": [
+    "konstantin-somov_spring",
+    "giovanni-boldini_spring",
+    "edward-hopper_first-branch-of-the-white-river-vermont"
+   ],
+   "rage": [
+    "utagawa-kuniyoshi_design-the-struggle",
+    "fyodor-bronnikov_mosaicists-before-the-court-three-in-venice-in-the-second-half-of-the-xvi-century",
+    "rembrandt_the-polish-rider-1655"
+   ],
+   "rage2": [
+    "victor-hugo_planet-1866",
+    "hans-memling_triptych-of-earthly-vanity-and-divine-salvation",
+    "william-turner_the-fifth-plague-of-egypt"
+   ],
+   "anxious": [
+    "edgar-degas_two-dancers-in-the-foyer",
+    "jan-steen_parrot-cage",
+    "william-hogarth_after-outdoor-scene"
+   ],
+   "anxious2": [
+    "francesco-hayez_the-seventh-crusade-against-jerusalem",
+    "fyodor-bronnikov_mosaicists-before-the-court-three-in-venice-in-the-second-half-of-the-xvi-century",
+    "wilhelm-kotarbinski_the-evening-silence"
+   ],
+   "love": [
+    "willard-metcalf_poppy-garden",
+    "william-james-glackens_the-drive-central-park-1905",
+    "john-singer-sargent_simplon-pass-the-tease-1911"
+   ],
+   "love2": [
+    "sir-lawrence-alma-tadema_shy",
+    "edgar-degas_two-dancers-in-the-foyer",
+    "raoul-dufy_men-fishing-1907"
+   ],
+   "lonely": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "jean-david_woman-with-braids-yemenite-1934",
+    "victor-borisov-musatov_on-a-balcony-1899"
+   ],
+   "lonely2": [
+    "lovis-corinth_salome-1900",
+    "james-tissot_a-little-nimrod",
+    "william-merritt-chase_the-turkish-page"
+   ],
+   "hope": [
+    "konstantin-korovin_paris-saint-denis-arc",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "henri-rousseau_scout-attacked-by-a-tiger-1904"
+   ],
+   "hope2": [
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc",
+    "childe-hassam_flags-fifth-avenue"
+   ],
+   "homesick": [
+    "jean-francois-millet_peasand-spreading-manure-1855",
+    "gwen-john_woman-sewing-at-a-window",
+    "viktor-vasnetsov_playmates-1878"
+   ],
+   "homesick2": [
+    "james-mcneill-whistler_the-last-of-old-westminster",
+    "giovanni-boldini_still-life-with-rose",
+    "edgar-degas_torso-of-a-dancer"
+   ],
+   "wonder": [
+    "kateryna-bilokur_field-of-the-collective-farm-1949",
+    "david-burliuk_landscape-with-blue-mountain",
+    "theo-van-rysselberghe_levant-isle"
+   ],
+   "wonder2": [
+    "willard-metcalf_poppy-garden",
+    "william-james-glackens_the-drive-central-park-1905",
+    "juan-gris_photograph-of-the-guitar-1918"
+   ],
+   "exhausted": [
+    "aubrey-beardsley_coiffing",
+    "amedeo-modigliani_head-of-a-girl",
+    "henri-de-toulouse-lautrec_aristide-bruant-on-his-bicycle-1892"
+   ],
+   "exhausted2": [
+    "john-singer-sargent_man-seated-by-a-stream-1912",
+    "francesco-hayez_portrait-of-a-venetian-woman",
+    "sergey-solomko_place-de-la-republic-and-of-happyness"
+   ],
+   "excited": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc"
+   ],
+   "excited2": [
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "konstantin-korovin_paris-saint-denis-arc"
+   ],
+   "grateful": [
+    "santiago-rusinol_landmark-1892",
+    "alfred-sisley_high-waters-at-moret-sur-loing-1879",
+    "alfred-sisley_a-village-street-in-winter-1893"
+   ],
+   "grateful2": [
+    "maxime-maufra_beuzec-concq-in-concarneau-1911",
+    "william-james-glackens_the-drive-central-park-1905",
+    "childe-hassam_end-of-the-trolley-line-oak-park-illinois"
+   ],
+   "fear": [
+    "edward-burne-jones_guinevere-rescued-by-lancelot",
+    "edouard-manet_battle-of-kearsage-and-alabama-1864",
+    "wilhelm-kotarbinski_the-evening-silence"
+   ],
+   "fear2": [
+    "victor-hugo_planet-1866",
+    "william-turner_the-fifth-plague-of-egypt",
+    "edouard-manet_battle-of-kearsage-and-alabama-1864"
+   ],
+   "nostalgia": [
+    "aldemir-martins_yellow-cat-and-flowers-2002",
+    "martiros-saryan_mules-laden-with-hay-1910",
+    "henri-de-toulouse-lautrec_edmee-lescot-in-spanish-dancer-edmee-lescot-have-a-spanish-dancer"
+   ],
+   "nostalgia2": [
+    "edgar-degas_two-dancers-in-the-foyer",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "maria-primachenko_maiden-and-cossack-enjoying-a-ride-on-horseback-1982"
+   ],
+   "playful": [
+    "boris-kustodiev_english-polovoy-and-polshkiper-1924",
+    "terry-frost_zebra-1972",
+    "edouard-manet_young-man-in-the-costume-of-a-majo-1863"
+   ],
+   "playful2": [
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "terry-frost_zebra-1972",
+    "martiros-saryan_mules-laden-with-hay-1910"
+   ],
+   "neutral": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "vasily-surikov_portrait-of-mother-1894",
+    "gustave-dore_two-hundred-knights-attack-twenty-thousand-saracens"
+   ],
+   "neutral2": [
+    "ilya-repin_portrait-of-the-artist-v-s-svarog-1915",
+    "childe-hassam_the-butterfly",
+    "konstantin-somov_how-dressed-in-the-old-days-lady-and-cavalier"
+   ],
+   "spring": [
+    "john-miller_coconut-beach",
+    "konstantin-somov_spring",
+    "giovanni-boldini_spring"
+   ],
+   "spring2": [
+    "edward-hopper_first-branch-of-the-white-river-vermont",
+    "konstantin-somov_spring",
+    "john-miller_coconut-beach"
+   ],
+   "betrayed": [
+    "lucian-freud_small-portait",
+    "rogier-van-der-weyden_deposition-1435",
+    "jean-david_woman-with-braids-yemenite-1934"
+   ],
+   "betrayed2": [
+    "masaccio_martyrdom-of-san-giovanni-battista-1426",
+    "rogier-van-der-weyden_deposition-1435",
+    "rembrandt_the-blindness-of-tobit-1629"
+   ],
+   "proud": [
+    "henri-de-toulouse-lautrec_madame-e-tapie-de-celeyran-in-a-garden-1896",
+    "henri-matisse_red-fish-in-interior",
+    "childe-hassam_the-butterfly"
+   ],
+   "proud2": [
+    "valentin-serov_portrait-of-yelena-oliv-1905",
+    "moise-kisling_waiting-1917",
+    "pablo-picasso_brasserie-on-monmartre"
+   ]
+  },
+  "A-human": {
+   "grief": [
+    "michelangelo_study-for-christ-on-the-cross-with-mourners-1548",
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "adriaen-van-ostade_interior-of-a-tavern"
+   ],
+   "grief2": [
+    "michelangelo_study-for-christ-on-the-cross-with-mourners-1548",
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "adriaen-van-ostade_interior-of-a-tavern"
+   ],
+   "triumph": [
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "paul-gauguin_tahitian-landscape-1897",
+    "andre-derain_the-dancer"
+   ],
+   "triumph2": [
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "paul-gauguin_tahitian-landscape-1897",
+    "claude-monet_view-of-argenteuil-in-the-snow"
+   ],
+   "calm": [
+    "volodymyr-orlovsky_the-sunny-day",
+    "rudolf-von-alt_the-main-square-in-bratislava-1843",
+    "volodymyr-orlovsky_vicinity-of-kiev-over-the-dnieper-1884"
+   ],
+   "calm2": [
+    "eugene-boudin_canel-near-dordrecht-1884",
+    "william-shayer_carthorses-and-rustics-by-a-stream-1840",
+    "john-french-sloan_fishing-port-gloucester-1916"
+   ],
+   "rage": [
+    "gene-davis_halifax-1969",
+    "fernand-leger_woman-with-flower-portrait-study-1920",
+    "maerten-van-heemskerck_the-infanticide-in-bethlehem"
+   ],
+   "rage2": [
+    "ernst-ludwig-kirchner_head-of-a-sick-man",
+    "adriaen-brouwer_smallholders-playing-cards",
+    "leon-bakst_costume-design-for-the-master-of-ceremonies-from-sleeping-beauty-1921"
+   ],
+   "anxious": [
+    "milton-resnick_bruno-1982",
+    "leonardo-da-vinci_study-for-madonna-and-child-with-st-anne",
+    "agnolo-bronzino_piero-de-medici-il-gottoso"
+   ],
+   "anxious2": [
+    "vincent-van-gogh_studies-for-figures-carrying-bundles-of-wood-1885",
+    "william-scott_sennen-1950",
+    "milton-resnick_bruno-1982"
+   ],
+   "love": [
+    "charles-reiffel_the-mill-in-winter",
+    "paul-bril_landscape-with-mercury-and-argus-1606",
+    "mario-nuzzi_vase-and-flowers"
+   ],
+   "love2": [
+    "henri-fantin-latour_diana",
+    "kazimir-malevich_woodcutter",
+    "edgar-degas_reclining-nude"
+   ],
+   "lonely": [
+    "adriaen-van-ostade_interior-of-a-tavern",
+    "jury-annenkov_portrait-of-poet-anna-akhmatova-1921",
+    "toyen_a-starry-eyed-girl-with-a-flower-1939"
+   ],
+   "lonely2": [
+    "richard-diebenkorn_untitled-m",
+    "leonardo-da-vinci_study-for-madonna-and-child-with-st-anne",
+    "milton-resnick_bruno-1982"
+   ],
+   "hope": [
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "vasily-polenov_over-the-old-cairo-1882",
+    "nikolay-bogdanov-belsky_on-the-raid"
+   ],
+   "hope2": [
+    "claude-monet_view-of-argenteuil-in-the-snow",
+    "paul-gauguin_tahitian-landscape-1897",
+    "john-singer-sargent_nude-egyptian-girl-1891"
+   ],
+   "homesick": [
+    "edward-hopper_sun-in-an-empty-room",
+    "aubrey-beardsley_excalibur-in-the-lake",
+    "camille-corot_coulommiers-the-garden-of-m-preschez-1868"
+   ],
+   "homesick2": [
+    "jean-leon-gerome_portrait-of-eduoard-delessert",
+    "odilon-redon_he-falls-head-first-into-the-abyss-plate-17-1896",
+    "vasily-tropinin_the-lacemaker"
+   ],
+   "wonder": [
+    "nicolae-grigorescu_on-a-peak",
+    "childe-hassam_clouds-also-known-as-rain-clouds-over-oregon-desert",
+    "armand-guillaumin_plateau-bromont-at-pontgibaud-puy-de-d-me-1890"
+   ],
+   "wonder2": [
+    "paul-bril_landscape-with-mercury-and-argus-1606",
+    "mario-nuzzi_vase-and-flowers",
+    "childe-hassam_clouds-also-known-as-rain-clouds-over-oregon-desert"
+   ],
+   "exhausted": [
+    "boris-kustodiev_general-and-palace-porter-1924",
+    "agnolo-bronzino_piero-de-medici-il-gottoso",
+    "georges-braque_woman-with-a-guitar-1913"
+   ],
+   "exhausted2": [
+    "nicholas-roerich_ridge-approaches-to-everest-1936",
+    "gino-severini_paris-the-seine-the-barges-of-the-louvre",
+    "theo-van-rysselberghe_denise-marechal-1892"
+   ],
+   "excited": [
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "andre-derain_the-dancer",
+    "paul-gauguin_tahitian-landscape-1897"
+   ],
+   "excited2": [
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "paul-gauguin_tahitian-landscape-1897",
+    "andre-derain_the-dancer"
+   ],
+   "grateful": [
+    "hans-holbein-the-younger_study-for-the-family-portrait-of-thomas-more",
+    "paul-gauguin_fisherman-and-bathers-on-the-aven-1888",
+    "valentin-serov_artist-k-korovin-on-the-river-bank-1905"
+   ],
+   "grateful2": [
+    "edgar-degas_reclining-nude",
+    "kazimir-malevich_woodcutter",
+    "guido-reni_sibylle-1636"
+   ],
+   "fear": [
+    "josefa-de-obidos_transverbera-o-de-santa-teresa-1672",
+    "pierre-daura_untitled-montmartre-1917",
+    "konstantin-korovin_okhotino-september-1915"
+   ],
+   "fear2": [
+    "salvador-dali_the-rotting-bird",
+    "gustave-dore_death-of-samson-1866",
+    "hans-memling_triptych-of-earthly-vanity-and-divine-salvation"
+   ],
+   "nostalgia": [
+    "john-singer-sargent_simplon-pass-the-tease-1911",
+    "henri-de-toulouse-lautrec_aristide-bruant-on-his-bicycle-1892",
+    "william-adolphe-bouguereau_leveil-heart-1892"
+   ],
+   "nostalgia2": [
+    "edgar-degas_torso-of-a-dancer",
+    "janos-mattis-teutsch_light-landscape-1917",
+    "aubrey-beardsley_how-king-mark-and-sir-dinadan-heard-sir-palomides-ii"
+   ],
+   "playful": [
+    "konrad-witz_king-solomon-and-the-queen-of-sheba",
+    "ito-jakuchu_one-hundred-dogs-1799",
+    "henri-de-toulouse-lautrec_edmee-lescot-in-spanish-dancer-edmee-lescot-have-a-spanish-dancer"
+   ],
+   "playful2": [
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "konrad-witz_king-solomon-and-the-queen-of-sheba",
+    "maria-primachenko_i-give-this-bouquet-of-stars-where-children-are-1982"
+   ],
+   "neutral": [
+    "jury-annenkov_portrait-of-poet-anna-akhmatova-1921",
+    "boris-kustodiev_paris-at-night-1909",
+    "albert-bloch_figures-in-silver-light-study"
+   ],
+   "neutral2": [
+    "dan-christensen_crayola-1982",
+    "andy-warhol_front-and-back",
+    "boris-kustodiev_sketch-1917"
+   ],
+   "spring": [
+    "volodymyr-orlovsky_the-sunny-day",
+    "johan-hendrik-weissenbruch_view-of-haarlem-1848",
+    "pyotr-konchalovsky_still-life-with-red-gladioli-1915"
+   ],
+   "spring2": [
+    "edouard-vuillard_romain-coolus-writer-in-la-revuew-blanche",
+    "johan-hendrik-weissenbruch_view-of-haarlem-1848",
+    "volodymyr-orlovsky_the-sunny-day"
+   ],
+   "betrayed": [
+    "adriaen-van-ostade_interior-of-a-tavern",
+    "michelangelo_study-for-christ-on-the-cross-with-mourners-1548",
+    "lucian-freud_small-portait"
+   ],
+   "betrayed2": [
+    "katsushika-hokusai_a-bride-is-on-her-way-with-her-maid",
+    "istvan-farkas_self-portrait-1932",
+    "egon-schiele_kneeling-young-man-1908"
+   ],
+   "proud": [
+    "henri-fantin-latour_diana",
+    "alma-woodsey-thomas_red-violet-nursery-viewed-from-above-1970",
+    "boris-kustodiev_portrait-of-t-f-davydova-1912"
+   ],
+   "proud2": [
+    "istvan-farkas_self-portrait-1932",
+    "egon-schiele_kneeling-young-man-1908",
+    "jean-leon-gerome_portrait-of-eduoard-delessert"
+   ]
+  },
+  "A-human8": {
+   "grief": [
+    "michelangelo_study-for-christ-on-the-cross-with-mourners-1548",
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "kay-nielsen_in-the-midst-of-the-gloomy-thick-wood"
+   ],
+   "grief2": [
+    "michelangelo_study-for-christ-on-the-cross-with-mourners-1548",
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "kay-nielsen_in-the-midst-of-the-gloomy-thick-wood"
+   ],
+   "triumph": [
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "paul-gauguin_tahitian-landscape-1897",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990"
+   ],
+   "triumph2": [
+    "paul-gauguin_tahitian-landscape-1897",
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "claude-monet_view-of-argenteuil-in-the-snow"
+   ],
+   "calm": [
+    "claude-monet_the-moreno-garden-at-bordighera",
+    "volodymyr-orlovsky_the-sunny-day",
+    "volodymyr-orlovsky_vicinity-of-kiev-over-the-dnieper-1884"
+   ],
+   "calm2": [
+    "rudolf-von-alt_the-main-square-in-bratislava-1843",
+    "pyotr-konchalovsky_still-life-with-red-gladioli-1915",
+    "frederic-bazille_woman-in-moorish-costume"
+   ],
+   "rage": [
+    "adriaen-brouwer_smallholders-playing-cards",
+    "andrea-mantegna_trumpet-players-1506",
+    "leon-bakst_costume-design-for-the-master-of-ceremonies-from-sleeping-beauty-1921"
+   ],
+   "rage2": [
+    "ernst-ludwig-kirchner_head-of-a-sick-man",
+    "adriaen-brouwer_smallholders-playing-cards",
+    "leon-bakst_costume-design-for-the-master-of-ceremonies-from-sleeping-beauty-1921"
+   ],
+   "anxious": [
+    "james-tissot_sunday-morning",
+    "theodoros-stamos_archimandrite-1960",
+    "georgios-jakobides_first-steps-1892"
+   ],
+   "anxious2": [
+    "fyodor-bronnikov_mosaicists-before-the-court-three-in-venice-in-the-second-half-of-the-xvi-century",
+    "masaccio_martyrdom-of-san-giovanni-battista-1426",
+    "adriaen-brouwer_smallholders-playing-cards"
+   ],
+   "love": [
+    "paul-bril_landscape-with-mercury-and-argus-1606",
+    "mario-nuzzi_vase-and-flowers",
+    "childe-hassam_clouds-also-known-as-rain-clouds-over-oregon-desert"
+   ],
+   "love2": [
+    "konstantin-makovsky_portrait-of-princess-m-orlova-davydova",
+    "auguste-herbin_le-massif-du-canigou-1923",
+    "rembrandt_musical-allegory-1626"
+   ],
+   "lonely": [
+    "michelangelo_study-for-christ-on-the-cross-with-mourners-1548",
+    "nikolaos-gyzis_after-the-memorial-service-1883",
+    "grigoriy-myasoyedov_portrait-of-old-woman"
+   ],
+   "lonely2": [
+    "jean-francois-millet_peasand-spreading-manure-1855",
+    "pierre-auguste-renoir_posthumous-portrait-of-frederic-bazille",
+    "anna-ostroumova-lebedeva_chain-bridge-in-st-petersburg-1903"
+   ],
+   "hope": [
+    "claude-monet_view-of-argenteuil-in-the-snow",
+    "paul-gauguin_tahitian-landscape-1897",
+    "edgar-degas_torso-of-a-dancer"
+   ],
+   "hope2": [
+    "claude-monet_view-of-argenteuil-in-the-snow",
+    "paul-gauguin_tahitian-landscape-1897",
+    "john-miller_coconut-beach"
+   ],
+   "homesick": [
+    "benozzo-gozzoli_funeral-of-st-augustine-1465",
+    "james-mcneill-whistler_arrangement-in-black-no-2-portrait-of-mrs-louis-huth-1873",
+    "berthe-morisot_young-girl-and-the-budgie"
+   ],
+   "homesick2": [
+    "paul-gauguin_a-little-washerman-1887",
+    "henri-martin_street-in-the-village",
+    "georges-braque_the-window-shade"
+   ],
+   "wonder": [
+    "nicolae-grigorescu_on-a-peak",
+    "mario-nuzzi_vase-and-flowers",
+    "toyen_a-girl-with-the-rosehips"
+   ],
+   "wonder2": [
+    "paul-bril_landscape-with-mercury-and-argus-1606",
+    "nicolae-grigorescu_on-a-peak",
+    "childe-hassam_clouds-also-known-as-rain-clouds-over-oregon-desert"
+   ],
+   "exhausted": [
+    "pyotr-konchalovsky_portrait-of-constantin-andreyevich-trenev-1941",
+    "edouard-vuillard_my-mother",
+    "spyros-papaloukas_houses"
+   ],
+   "exhausted2": [
+    "anthony-van-dyck_portrait-of-a-noble-genoese-lady-1627",
+    "childe-hassam_gloucester",
+    "childe-hassam_laurel-on-the-ledges"
+   ],
+   "excited": [
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "paul-gauguin_tahitian-landscape-1897",
+    "claude-monet_view-of-argenteuil-in-the-snow"
+   ],
+   "excited2": [
+    "jose-gutierrez-solana_the-ramp-at-puerto-chico",
+    "paul-gauguin_tahitian-landscape-1897",
+    "claude-monet_view-of-argenteuil-in-the-snow"
+   ],
+   "grateful": [
+    "hans-memling_standing-virgin-and-child",
+    "giovanni-bellini_naked-young-woman-in-front-of-the-mirror",
+    "theo-van-rysselberghe_the-sisters-of-the-painter-schlobach-1884"
+   ],
+   "grateful2": [
+    "john-miller_coconut-beach",
+    "philip-wilson-steer_young-woman-at-the-beach",
+    "theo-van-rysselberghe_levant-isle"
+   ],
+   "fear": [
+    "josefa-de-obidos_transverbera-o-de-santa-teresa-1672",
+    "konstantin-korovin_okhotino-september-1915",
+    "henri-rousseau_scout-attacked-by-a-tiger-1904"
+   ],
+   "fear2": [
+    "henri-rousseau_scout-attacked-by-a-tiger-1904",
+    "josefa-de-obidos_transverbera-o-de-santa-teresa-1672",
+    "ernst-ludwig-kirchner_head-of-a-sick-man"
+   ],
+   "nostalgia": [
+    "william-adolphe-bouguereau_leveil-heart-1892",
+    "henri-de-toulouse-lautrec_aristide-bruant-on-his-bicycle-1892",
+    "john-singer-sargent_simplon-pass-the-tease-1911"
+   ],
+   "nostalgia2": [
+    "edgar-degas_torso-of-a-dancer",
+    "janos-mattis-teutsch_light-landscape-1917",
+    "aubrey-beardsley_how-king-mark-and-sir-dinadan-heard-sir-palomides-ii"
+   ],
+   "playful": [
+    "konrad-witz_king-solomon-and-the-queen-of-sheba",
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "david-burliuk_cossack-mamai-1912"
+   ],
+   "playful2": [
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "konrad-witz_king-solomon-and-the-queen-of-sheba",
+    "maria-primachenko_i-give-this-bouquet-of-stars-where-children-are-1982"
+   ],
+   "neutral": [
+    "konstantin-korovin_okhotino-september-1915",
+    "nikolaos-gyzis_after-the-memorial-service-1883",
+    "rembrandt_the-blindness-of-tobit-1629"
+   ],
+   "neutral2": [
+    "giovanni-boldini_spring",
+    "henri-matisse_open-window-etretat-1920",
+    "francis-picabia_port-of-saint-tropez-evening-effect"
+   ],
+   "spring": [
+    "volodymyr-orlovsky_the-sunny-day",
+    "horace-pippin_cabin-in-the-cotton-iii-1944",
+    "gustave-loiseau_fecamp"
+   ],
+   "spring2": [
+    "gustave-loiseau_fecamp",
+    "rudolf-von-alt_the-main-square-in-bratislava-1843",
+    "edouard-vuillard_romain-coolus-writer-in-la-revuew-blanche"
+   ],
+   "betrayed": [
+    "michelangelo_study-for-christ-on-the-cross-with-mourners-1548",
+    "lucian-freud_small-portait",
+    "nikolaos-gyzis_after-the-memorial-service-1883"
+   ],
+   "betrayed2": [
+    "robert-campin_mourning-trinity-throne-of-god-1435",
+    "jan-toorop_candle-factory",
+    "martiros-saryan_a-meeting-pushkin-with-carriage-carrying-the-body-of-griboyedov-1936"
+   ],
+   "proud": [
+    "santiago-rusinol_landmark-1892",
+    "henri-matisse_open-window-etretat-1920",
+    "roger-fry_carpentras-provence-1930"
+   ],
+   "proud2": [
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "caspar-david-friedrich_landscape-with-a-male-figure",
+    "berthe-morisot_young-girl-and-the-budgie"
+   ]
+  },
+  "B-proj": {
+   "grief": [
+    "vasily-surikov_portrait-of-mother-1894",
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "jury-annenkov_portrait-of-poet-anna-akhmatova-1921"
+   ],
+   "grief2": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "vasily-surikov_portrait-of-mother-1894",
+    "jury-annenkov_portrait-of-poet-anna-akhmatova-1921"
+   ],
+   "triumph": [
+    "henryk-siemiradzki_prince-alexander-nevsky-in-gold-horde",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "peter-paul-rubens_truce-between-romans-and-sabinians"
+   ],
+   "triumph2": [
+    "henryk-siemiradzki_prince-alexander-nevsky-in-gold-horde",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "peter-paul-rubens_truce-between-romans-and-sabinians"
+   ],
+   "calm": [
+    "childe-hassam_on-the-balcony",
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "pierre-daura_untitled-montmartre-1917"
+   ],
+   "calm2": [
+    "amedeo-modigliani_head-of-a-girl",
+    "max-beckmann_woman-with-parrot-1946",
+    "pierre-auguste-renoir_posthumous-portrait-of-frederic-bazille"
+   ],
+   "rage": [
+    "katsushika-hokusai_baku",
+    "utagawa-kuniyoshi_design-the-struggle",
+    "jacob-jordaens_psyche-hosted-on-olympus-1652"
+   ],
+   "rage2": [
+    "ilka-gedo_self-portrait-with-a-strawhat-1984",
+    "sam-francis_reefs-1955",
+    "ivan-aivazovsky_hurricane-on-a-sea-1899"
+   ],
+   "anxious": [
+    "lucian-freud_small-portait",
+    "benjamin-west_mr-john-williams-1766",
+    "pierre-auguste-renoir_posthumous-portrait-of-frederic-bazille"
+   ],
+   "anxious2": [
+    "jacob-jordaens_psyche-hosted-on-olympus-1652",
+    "pierre-auguste-renoir_posthumous-portrait-of-frederic-bazille",
+    "peter-paul-rubens_truce-between-romans-and-sabinians"
+   ],
+   "love": [
+    "pierre-bonnard_claude-terrasse-at-the-piano",
+    "olexandr-archipenko_female-nude-frauenakt",
+    "gustave-dore_her-friends-were-eager-to-see-the-splendors-of-her-house"
+   ],
+   "love2": [
+    "francisco-bayeu-y-subias_la-feliz-uni-n-de-espa-a-y-parma-impulsa-las-ciencias-y-las-artes-1788",
+    "jacob-jordaens_psyche-hosted-on-olympus-1652",
+    "alfred-kubin_the-emperor-of-china-1910"
+   ],
+   "lonely": [
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "camille-pissarro_afternoon-the-dunquesne-basin-dieppe-low-tide-1902",
+    "vladimir-borovikovsky_intercession-of-the-blessed-virgin-mary"
+   ],
+   "lonely2": [
+    "jean-metzinger_la-femme-au-cheval-1912",
+    "giovanni-bellini_naked-young-woman-in-front-of-the-mirror",
+    "raphael_st-john-the-baptist-in-the-desert-1520"
+   ],
+   "hope": [
+    "john-crome_a-sandy-bank-1820",
+    "henry-herbert-la-thangue_a-ligurian-gulf-1920",
+    "andrea-mantegna_trumpet-players-1506"
+   ],
+   "hope2": [
+    "ben-nicholson_pisa-as-intended-1967",
+    "isaac-levitan_landscape-near-bordiguera-1890",
+    "john-singer-sargent_campo-dei-gesuiti"
+   ],
+   "homesick": [
+    "camille-corot_coulommiers-the-garden-of-m-preschez-1868",
+    "ivan-aivazovsky_ox-train-on-the-steppe",
+    "ivan-aivazovsky_view-on-crimea"
+   ],
+   "homesick2": [
+    "vasily-polenov_over-the-old-cairo-1882",
+    "abraham-manievich_unfinished-painting",
+    "pierre-auguste-renoir_windmill"
+   ],
+   "wonder": [
+    "gustave-courbet_snow-1874",
+    "claude-monet_view-of-argenteuil-in-the-snow",
+    "gustave-loiseau_willows-in-fog-1915"
+   ],
+   "wonder2": [
+    "charles-reiffel_the-mill-in-winter",
+    "gustave-courbet_snow-1874",
+    "kay-nielsen_in-the-midst-of-the-gloomy-thick-wood"
+   ],
+   "exhausted": [
+    "spyros-papaloukas_houses",
+    "childe-hassam_marche-st-pierre-montmartre",
+    "fyodor-vasilyev_logs-by-the-road-1869"
+   ],
+   "exhausted2": [
+    "jan-van-eyck_virgin-and-child-with-st-michael-st-catherine-and-a-donor-1437",
+    "paul-gauguin_nevermore-1897",
+    "victor-borisov-musatov_on-a-balcony-1899"
+   ],
+   "excited": [
+    "francisco-bayeu-y-subias_la-feliz-uni-n-de-espa-a-y-parma-impulsa-las-ciencias-y-las-artes-1788",
+    "peter-paul-rubens_education-of-marie-de-medici-1624",
+    "klavdy-lebedev_assembly-of-peter-i"
+   ],
+   "excited2": [
+    "jacob-jordaens_psyche-hosted-on-olympus-1652",
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "francisco-bayeu-y-subias_la-feliz-uni-n-de-espa-a-y-parma-impulsa-las-ciencias-y-las-artes-1788"
+   ],
+   "grateful": [
+    "alfred-sisley_a-normandy-farm",
+    "gino-severini_paris-the-seine-the-barges-of-the-louvre",
+    "gustave-loiseau_port-pinche-at-the-turn-of-the-seine-1900"
+   ],
+   "grateful2": [
+    "utagawa-kuniyoshi_woman-doing-her-laundry-in-the-river",
+    "henri-de-toulouse-lautrec_edmee-lescot-in-spanish-dancer-edmee-lescot-have-a-spanish-dancer",
+    "jan-matejko_jan-olbracht"
+   ],
+   "fear": [
+    "luigi-russolo_memories-of-a-night-1911",
+    "cima-da-conegliano_st-jerome-in-the-desert",
+    "jacopo-pontormo_study-of-nude-1518"
+   ],
+   "fear2": [
+    "jacopo-pontormo_study-of-nude-1518",
+    "egon-schiele_wally-with-a-red-blouse",
+    "theo-van-rysselberghe_denise-marechal-1892"
+   ],
+   "nostalgia": [
+    "john-miller_coconut-beach",
+    "robert-goodnough_kilroy-was-here",
+    "janos-mattis-teutsch_light-landscape-1917"
+   ],
+   "nostalgia2": [
+    "paula-modersohn-becker_three-children-with-goat-in-the-birch-forest",
+    "josefa-de-obidos_transverbera-o-de-santa-teresa-1672",
+    "bartolome-esteban-murillo_two-peasant-boys-and-a-negro-boy-1660"
+   ],
+   "playful": [
+    "henri-de-toulouse-lautrec_edmee-lescot-in-spanish-dancer-edmee-lescot-have-a-spanish-dancer",
+    "augustus-john_the-girl-on-the-cliff-1936",
+    "adolphe-joseph-thomas-monticelli_an-evening-at-the-paiva"
+   ],
+   "playful2": [
+    "adriaen-van-ostade_interior-of-a-tavern",
+    "egon-schiele_wally-with-a-red-blouse",
+    "amedeo-modigliani_anna-hanka-zborowska-1917"
+   ],
+   "neutral": [
+    "raphael_st-john-the-baptist-in-the-desert-1520",
+    "henri-matisse_woman-with-oriental-dress-1919",
+    "amedeo-modigliani_head-of-a-girl"
+   ],
+   "neutral2": [
+    "august-macke_afternoon-in-the-garden",
+    "johan-hendrik-weissenbruch_view-of-haarlem-1848",
+    "william-james-glackens_the-drive-central-park-1905"
+   ],
+   "spring": [
+    "david-burliuk_landscape-with-blue-mountain",
+    "childe-hassam_laurel-on-the-ledges",
+    "gustave-loiseau_willows-in-fog-1915"
+   ],
+   "spring2": [
+    "kateryna-bilokur_field-of-the-collective-farm-1949",
+    "childe-hassam_laurel-on-the-ledges",
+    "mario-nuzzi_vase-and-flowers"
+   ],
+   "betrayed": [
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "zinaida-serebriakova_portrait-of-v-m-dukelsky-1920",
+    "orest-kiprensky_portrait-of-ivan-petrovich-wolfe-1811"
+   ],
+   "betrayed2": [
+    "nicolae-tonitza_the-field",
+    "gheorghe-tattarescu_peisaj-cu-arbore-fr-nt",
+    "vincent-van-gogh_two-diggers-among-trees-1889"
+   ],
+   "proud": [
+    "leonardo-da-vinci_study-of-proportion",
+    "patrick-heron_the-long-table-with-fruit-1949",
+    "juan-gris_still-life-with-oil-lamp-1912"
+   ],
+   "proud2": [
+    "mykola-pymonenko_kiev-station",
+    "pierre-auguste-renoir_windmill",
+    "maxime-maufra_the-entrance-to-harbour-sauzon-1905"
+   ]
+  },
+  "B-proj-emo3": {
+   "grief": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "vasily-surikov_portrait-of-mother-1894",
+    "henri-de-toulouse-lautrec_madame-e-tapie-de-celeyran-in-a-garden-1896"
+   ],
+   "grief2": [
+    "grigoriy-myasoyedov_portrait-of-old-woman",
+    "vasily-surikov_portrait-of-mother-1894",
+    "jury-annenkov_portrait-of-poet-anna-akhmatova-1921"
+   ],
+   "triumph": [
+    "henryk-siemiradzki_prince-alexander-nevsky-in-gold-horde",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "peter-paul-rubens_truce-between-romans-and-sabinians"
+   ],
+   "triumph2": [
+    "henryk-siemiradzki_prince-alexander-nevsky-in-gold-horde",
+    "nzante-spee_dernier-championat-mondial-de-boxe-1990",
+    "adriaen-brouwer_smallholders-playing-cards"
+   ],
+   "calm": [
+    "childe-hassam_on-the-balcony",
+    "victor-borisov-musatov_on-a-balcony-1899",
+    "pierre-daura_untitled-montmartre-1917"
+   ],
+   "calm2": [
+    "anna-ostroumova-lebedeva_fontanka-1922",
+    "agnes-martin_mountain-i-1966",
+    "aleksey-antropov_portrait-of-catherine-ii-the-great"
+   ],
+   "rage": [
+    "katsushika-hokusai_baku",
+    "agnes-martin_stars-1963",
+    "kazimir-malevich_woodcutter"
+   ],
+   "rage2": [
+    "burhan-dogancay_bonjour-marilyn-2009",
+    "jean-david_head-portrait",
+    "burhan-dogancay_new-york-face-2000"
+   ],
+   "anxious": [
+    "lucian-freud_small-portait",
+    "jury-annenkov_portrait-of-poet-anna-akhmatova-1921",
+    "lucian-freud_alice-costelloe"
+   ],
+   "anxious2": [
+    "pierre-auguste-renoir_posthumous-portrait-of-frederic-bazille",
+    "kay-nielsen_in-the-midst-of-the-gloomy-thick-wood",
+    "alma-woodsey-thomas_red-violet-nursery-viewed-from-above-1970"
+   ],
+   "love": [
+    "pierre-bonnard_claude-terrasse-at-the-piano",
+    "olexandr-archipenko_female-nude-frauenakt",
+    "pieter-de-hooch_interior-with-figures"
+   ],
+   "love2": [
+    "francesco-hayez_the-seventh-crusade-against-jerusalem",
+    "francisco-bayeu-y-subias_la-feliz-uni-n-de-espa-a-y-parma-impulsa-las-ciencias-y-las-artes-1788",
+    "jacob-jordaens_psyche-hosted-on-olympus-1652"
+   ],
+   "lonely": [
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "leonardo-da-vinci_study-of-five-grotesque-heads",
+    "agnes-martin_happy-holiday-1999"
+   ],
+   "lonely2": [
+    "agnolo-bronzino_piero-de-medici-il-gottoso",
+    "martiros-saryan_village-makravank-1902",
+    "jean-metzinger_la-femme-au-cheval-1912"
+   ],
+   "hope": [
+    "rembrandt_baerte-martens-wife-of-herman-doomer",
+    "henry-herbert-la-thangue_a-ligurian-gulf-1920",
+    "lucian-freud_alice-costelloe"
+   ],
+   "hope2": [
+    "ben-nicholson_pisa-as-intended-1967",
+    "isaac-levitan_landscape-near-bordiguera-1890",
+    "pierre-daura_untitled-montmartre-1917"
+   ],
+   "homesick": [
+    "ivan-aivazovsky_ox-train-on-the-steppe",
+    "camille-corot_coulommiers-the-garden-of-m-preschez-1868",
+    "ivan-aivazovsky_view-on-crimea"
+   ],
+   "homesick2": [
+    "vasily-polenov_over-the-old-cairo-1882",
+    "johan-hendrik-weissenbruch_view-of-haarlem-1848",
+    "andrea-mantegna_trumpet-players-1506"
+   ],
+   "wonder": [
+    "gustave-courbet_snow-1874",
+    "claude-monet_view-of-argenteuil-in-the-snow",
+    "samuel-mutzner_peisaj-cu-turm-de-oi-1940"
+   ],
+   "wonder2": [
+    "felix-vallotton_autumn-crocuses-1900",
+    "gustave-courbet_snow-1874",
+    "claude-monet_view-of-argenteuil-in-the-snow"
+   ],
+   "exhausted": [
+    "fyodor-vasilyev_logs-by-the-road-1869",
+    "andrei-ryabushkin_sadko-a-wealthy-guest-of-novgorod-illustration-for-the-book-russian-epic-heroes",
+    "andre-derain_the-dancer"
+   ],
+   "exhausted2": [
+    "ford-madox-brown_at-the-grain-harvest",
+    "william-merritt-chase_sailboat-at-anchor",
+    "balthus_the-golden-fruit-1956"
+   ],
+   "excited": [
+    "boris-kustodiev_paris-at-night-1909",
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "francisco-bayeu-y-subias_la-feliz-uni-n-de-espa-a-y-parma-impulsa-las-ciencias-y-las-artes-1788"
+   ],
+   "excited2": [
+    "luigi-russolo_memories-of-a-night-1911",
+    "edmund-dulac_elves-and-fairies-illustration-for-the-tempest",
+    "jules-cheret_casino-de-paris-camille-st-fani-1891"
+   ],
+   "grateful": [
+    "alfred-sisley_a-normandy-farm",
+    "gustave-loiseau_port-pinche-at-the-turn-of-the-seine-1900",
+    "raphael-kirchner_players"
+   ],
+   "grateful2": [
+    "adriaen-brouwer_smallholders-playing-cards",
+    "marc-chagall_gathering-of-peasants",
+    "edvard-munch_children-in-the-street-1915"
+   ],
+   "fear": [
+    "luigi-russolo_memories-of-a-night-1911",
+    "cima-da-conegliano_st-jerome-in-the-desert",
+    "amedee-ozenfant_pacifique-iii"
+   ],
+   "fear2": [
+    "lucian-freud_solicitors-head",
+    "theo-van-rysselberghe_denise-marechal-1892",
+    "katsushika-hokusai_baku"
+   ],
+   "nostalgia": [
+    "henri-edmond-cross_land-by-the-sea",
+    "felix-vallotton_autumn-crocuses-1900",
+    "janos-mattis-teutsch_light-landscape-1917"
+   ],
+   "nostalgia2": [
+    "paula-modersohn-becker_three-children-with-goat-in-the-birch-forest",
+    "gheorghe-tattarescu_peisaj-cu-arbore-fr-nt",
+    "josefa-de-obidos_transverbera-o-de-santa-teresa-1672"
+   ],
+   "playful": [
+    "henri-de-toulouse-lautrec_edmee-lescot-in-spanish-dancer-edmee-lescot-have-a-spanish-dancer",
+    "leon-bakst_spectre-de-la-rose-1911",
+    "augustus-john_the-girl-on-the-cliff-1936"
+   ],
+   "playful2": [
+    "amedeo-modigliani_anna-hanka-zborowska-1917",
+    "amedeo-modigliani_head-of-a-girl",
+    "joseph-wright_dressing-the-kitten"
+   ],
+   "neutral": [
+    "anthony-van-dyck_portrait-of-a-noble-genoese-lady-1627",
+    "henri-matisse_woman-with-oriental-dress-1919",
+    "lucian-freud_solicitors-head"
+   ],
+   "neutral2": [
+    "august-macke_afternoon-in-the-garden",
+    "gwen-john_woman-sewing-at-a-window",
+    "william-james-glackens_the-drive-central-park-1905"
+   ],
+   "spring": [
+    "victor-borisov-musatov_spring-sun",
+    "gustave-loiseau_willows-in-fog-1915",
+    "robert-julian-onderdonk_sunlight-after-rain-1921"
+   ],
+   "spring2": [
+    "kateryna-bilokur_field-of-the-collective-farm-1949",
+    "martin-schongauer_study-of-peonies",
+    "henri-fantin-latour_flowers-chrysanthemums-1876"
+   ],
+   "betrayed": [
+    "francisco-de-zurbaran_appearance-of-st-peter-to-st-peter-nolasco-1629",
+    "hans-memling_triptych-of-earthly-vanity-and-divine-salvation",
+    "alma-woodsey-thomas_red-violet-nursery-viewed-from-above-1970"
+   ],
+   "betrayed2": [
+    "nicolae-tonitza_the-field",
+    "adriaen-brouwer_smallholders-playing-cards",
+    "edwin-henry-landseer_sir-francis-burdett"
+   ],
+   "proud": [
+    "leonardo-da-vinci_study-of-proportion",
+    "fernand-leger_woman-with-flower-portrait-study-1920",
+    "patrick-heron_the-long-table-with-fruit-1949"
+   ],
+   "proud2": [
+    "albrecht-durer_river-landscape",
+    "martiros-saryan_village-makravank-1902",
+    "isaac-levitan_landscape-near-bordiguera-1890"
+   ]
+  },
+  "C-utt": {
+   "grief": [
+    "theo-van-rysselberghe_portrait-of-madame-goldner-max-and-her-daughter-juliette",
+    "aubrey-beardsley_excalibur-in-the-lake",
+    "benozzo-gozzoli_funeral-of-st-augustine-1465"
+   ],
+   "grief2": [
+    "theo-van-rysselberghe_portrait-of-madame-goldner-max-and-her-daughter-juliette",
+    "benozzo-gozzoli_funeral-of-st-augustine-1465",
+    "aubrey-beardsley_excalibur-in-the-lake"
+   ],
+   "triumph": [
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "adriaen-brouwer_smallholders-playing-cards",
+    "henri-fantin-latour_diana"
+   ],
+   "triumph2": [
+    "jan-steen_parrot-cage",
+    "henri-fantin-latour_diana",
+    "isaac-levitan_landscape-near-bordiguera-1890"
+   ],
+   "calm": [
+    "gino-severini_paris-the-seine-the-barges-of-the-louvre",
+    "theodor-severin-kittelsen_st-hans-paa-lauvlia",
+    "charles-reiffel_the-mill-in-winter"
+   ],
+   "calm2": [
+    "dan-christensen_crayola-1982",
+    "agnes-martin_mountain-i-1966",
+    "theodor-severin-kittelsen_st-hans-paa-lauvlia"
+   ],
+   "rage": [
+    "leonardo-da-vinci_study-for-madonna-and-child-with-st-anne",
+    "katsushika-hokusai_a-bride-is-on-her-way-with-her-maid",
+    "isaac-levitan_landscape-near-bordiguera-1890"
+   ],
+   "rage2": [
+    "leonardo-da-vinci_head-of-a-man",
+    "camille-corot_fisherman-boating-along-a-wooded-landscape",
+    "kathe-kollwitz_outbreak-1908"
+   ],
+   "anxious": [
+    "leonardo-da-vinci_study-for-madonna-and-child-with-st-anne",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "isaac-levitan_landscape-near-bordiguera-1890"
+   ],
+   "anxious2": [
+    "isaac-levitan_landscape-near-bordiguera-1890",
+    "francis-picabia_edtaonisl-ecclesiastic",
+    "jacopo-pontormo_study-of-nude-1518"
+   ],
+   "love": [
+    "theodor-severin-kittelsen_st-hans-paa-lauvlia",
+    "edward-hopper_sun-in-an-empty-room",
+    "francis-picabia_edtaonisl-ecclesiastic"
+   ],
+   "love2": [
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "benozzo-gozzoli_funeral-of-st-augustine-1465",
+    "agnes-martin_mountain-i-1966"
+   ],
+   "lonely": [
+    "theodor-severin-kittelsen_st-hans-paa-lauvlia",
+    "camille-corot_fisherman-boating-along-a-wooded-landscape",
+    "albert-bloch_figures-in-silver-light-study"
+   ],
+   "lonely2": [
+    "agnes-martin_mountain-i-1966",
+    "leonardo-da-vinci_study-for-madonna-and-child-with-st-anne",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918"
+   ],
+   "hope": [
+    "dan-christensen_crayola-1982",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "john-miller_coconut-beach"
+   ],
+   "hope2": [
+    "leonardo-da-vinci_study-for-madonna-and-child-with-st-anne",
+    "dan-christensen_crayola-1982",
+    "francis-picabia_edtaonisl-ecclesiastic"
+   ],
+   "homesick": [
+    "benozzo-gozzoli_funeral-of-st-augustine-1465",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "theodor-severin-kittelsen_st-hans-paa-lauvlia"
+   ],
+   "homesick2": [
+    "john-miller_coconut-beach",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "konstantin-korovin_autumn-landscape-1909"
+   ],
+   "wonder": [
+    "gustave-courbet_snow-1874",
+    "gustave-loiseau_the-pont-henri-iv-notre-dame-de-paris-in-the-snow-1920",
+    "charles-reiffel_the-mill-in-winter"
+   ],
+   "wonder2": [
+    "gustave-courbet_snow-1874",
+    "charles-reiffel_the-mill-in-winter",
+    "gustave-loiseau_the-pont-henri-iv-notre-dame-de-paris-in-the-snow-1920"
+   ],
+   "exhausted": [
+    "ilya-repin_leisure-1882",
+    "francis-picabia_edtaonisl-ecclesiastic",
+    "isaac-levitan_landscape-near-bordiguera-1890"
+   ],
+   "exhausted2": [
+    "ilya-repin_leisure-1882",
+    "camille-corot_fisherman-boating-along-a-wooded-landscape",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918"
+   ],
+   "excited": [
+    "jules-cheret_casino-de-paris-camille-st-fani-1891",
+    "thomas-eakins_elizabeth-at-the-piano",
+    "john-miller_coconut-beach"
+   ],
+   "excited2": [
+    "francis-picabia_edtaonisl-ecclesiastic",
+    "john-miller_coconut-beach",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918"
+   ],
+   "grateful": [
+    "theodor-severin-kittelsen_st-hans-paa-lauvlia",
+    "dan-christensen_crayola-1982",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918"
+   ],
+   "grateful2": [
+    "agnes-martin_mountain-i-1966",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "francis-picabia_edtaonisl-ecclesiastic"
+   ],
+   "fear": [
+    "leonardo-da-vinci_study-for-madonna-and-child-with-st-anne",
+    "katsushika-hokusai_a-bride-is-on-her-way-with-her-maid",
+    "isaac-levitan_landscape-near-bordiguera-1890"
+   ],
+   "fear2": [
+    "isaac-levitan_landscape-near-bordiguera-1890",
+    "agnes-martin_mountain-i-1966",
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918"
+   ],
+   "nostalgia": [
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "john-miller_coconut-beach",
+    "konstantin-korovin_autumn-landscape-1909"
+   ],
+   "nostalgia2": [
+    "william-blake_sketch-for-satan-watching-the-endearments-of-adam-and-eve",
+    "felix-vallotton_the-matterhorn-matterhorn-1892",
+    "theo-van-doesburg_two-dogs-1899"
+   ],
+   "playful": [
+    "leon-bakst_spectre-de-la-rose-1911",
+    "boris-kustodiev_village-holiday-autumn-holiday-in-the-village-1914",
+    "sam-francis_reefs-1955"
+   ],
+   "playful2": [
+    "joseph-wright_dressing-the-kitten",
+    "barnett-newman_dionysius-1949",
+    "henri-fantin-latour_diana"
+   ],
+   "neutral": [
+    "agnes-martin_mountain-i-1966",
+    "isaac-levitan_landscape-near-bordiguera-1890",
+    "theodor-severin-kittelsen_st-hans-paa-lauvlia"
+   ],
+   "neutral2": [
+    "leonardo-da-vinci_study-for-madonna-and-child-with-st-anne",
+    "dan-christensen_crayola-1982",
+    "isaac-levitan_landscape-near-bordiguera-1890"
+   ],
+   "spring": [
+    "konstantin-korovin_autumn-landscape-1909",
+    "willard-metcalf_poppy-garden",
+    "robert-julian-onderdonk_sunlight-after-rain-1921"
+   ],
+   "spring2": [
+    "giovanni-boldini_still-life-with-rose",
+    "willard-metcalf_poppy-garden",
+    "stefan-luchian_white-roses"
+   ],
+   "betrayed": [
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "william-blake_sketch-for-satan-watching-the-endearments-of-adam-and-eve",
+    "theo-van-doesburg_two-dogs-1899"
+   ],
+   "betrayed2": [
+    "heorhiy-narbut_100-karbovanets-of-the-ukrainian-state-revers-1918",
+    "isaac-levitan_landscape-near-bordiguera-1890",
+    "leonardo-da-vinci_study-for-madonna-and-child-with-st-anne"
+   ],
+   "proud": [
+    "isaac-levitan_landscape-near-bordiguera-1890",
+    "boris-kustodiev_general-and-palace-porter-1924",
+    "francis-picabia_edtaonisl-ecclesiastic"
+   ],
+   "proud2": [
+    "isaac-levitan_landscape-near-bordiguera-1890",
+    "francis-picabia_edtaonisl-ecclesiastic",
+    "henri-fantin-latour_diana"
+   ]
+  }
+ }
+}

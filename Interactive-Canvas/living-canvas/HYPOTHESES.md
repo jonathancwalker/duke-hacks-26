@@ -119,3 +119,69 @@ The personas use synthetic voice, movement and gesture values until the webcam a
 - **What helped:** letting the mood set the scene's **light and weather** (Gemini writes it: "at night, one candle-lit window", "in full spring bloom, turquoise sky"). Spring turns turquoise, exam nerves get rain streaks, homesick gets snow and a moon.
 - **Most distinct: no scene at all.** Abstract frames (same painters and axes, no chapel) differ in color *and* form: grief grey slashes, triumph Kandinsky shapes, love Klimt mosaic.
 - **Blank canvas, two ways:** paths reveal the chapel in each visitor's mood (it emerges over the night), or lay down abstract mood paint. Brush-like ragged mask edges keep paths from looking like cut-out tubes on linen.
+
+## Feeling space C: ArtEmis-trained feeling space (2026-11-07)
+
+**Question:** can people's emotional reactions to real paintings (ArtEmis) give a space where a visitor's words land on paintings that *feel* the same, without collapsing onto a few hubs?
+
+**Setup** (`experiments/space/artemis_*.py`, run locally on an M4 Max, MPS, no GPU VM)
+- **Data:** ArtEmis v0 (Achlioptas et al. 2021): 454,684 emotion labels and written explanations on 80,031 WikiArt paintings, 9 emotions. Images come from Hugging Face `Artificio/WikiArt` (103K rows), joined on artist and title: 48,534 paintings match. Only the 27 densest parquet row groups were fetched, giving 13,147 paintings and 74,768 explanations (~400 MB cache outside the repo).
+- **Encoder:** `laion/CLIP-ViT-H-14-laion2B-s32B-b79K`, both towers, frozen. The image side is the IP-Adapter's encoder, so every pick stays usable as a style reference.
+- **Library:** 800 paintings held out of all training. 5 random train/library splits; every number below is the mean ± sd over them.
+- **Designs:**
+  - **baseline:** today's method, "a painting that feels {text}" cosine vs. painting image embeds.
+  - **A-emo:** two linear heads predict the 9-way ArtEmis emotion distribution, one from the image embed and one from an explanation's text embed. A painting scores by Σ p_text(e)·log(q_img(e) / library mean q(e)).
+  - **A-emo8:** A-emo with the catch-all "something else" dropped on the text side.
+  - **A-emo8-mlp:** A-emo8 with an MLP image head.
+  - **A-emo+clip:** A-emo8 z-score + 0.5 × baseline z-score.
+  - **A-emo-js:** Jensen–Shannon distance between the two distributions.
+  - **A-human / A-human8:** the library painting's own ArtEmis votes in place of the image head.
+  - **B-proj:** 1024→256 linear projections trained contrastively on (explanation, painting) pairs plus an emotion side-loss, library centred. **B-proj-emo3** gives the emotion loss a weight of 3.
+  - **C-utt:** no image model; the visitor's words vs. the human explanations written for each library painting.
+- **New metric, alongside the shared ones:** `emotion_hit_at3` is the share of top-3 picks whose majority ArtEmis emotion is one expected for the feeling (map in `artemis_02_space.py`). Chance is 0.29.
+
+**Results** (40 feelings; library 800 per split; mean ± sd over 5 splits; `out/artemis_results.json`)
+
+| candidate | library | top-1 unique /40 | top-1 max share | top-3 unique /120 | hubness k5 | paraphrase overlap@3 | paraphrase vs random | opposite vs random | emotion hit@3 |
+|---|---|---|---|---|---|---|---|---|---|
+| baseline | 800 | 25.6±3.1 | 0.14±0.04 | 67.0±2.6 | 7.1±1.9 | 0.25±0.05 | 0.79±0.03 | 1.04±0.02 | 0.41±0.04 |
+| A-emo | 800 | 30.0±1.3 | 0.10±0.03 | 77.6±3.2 | 4.5±0.5 | 0.23±0.03 | 0.80±0.02 | 1.03±0.00 | 0.48±0.04 |
+| A-emo8 | 800 | 30.2±1.8 | 0.10±0.02 | 81.2±2.6 | 3.9±0.2 | 0.27±0.02 | 0.75±0.04 | 1.03±0.00 | 0.50±0.05 |
+| A-emo8-mlp | 800 | 32.2±1.9 | 0.09±0.01 | 86.2±3.7 | 3.4±0.2 | 0.25±0.04 | 0.78±0.05 | 1.02±0.01 | 0.48±0.02 |
+| A-emo+clip | 800 | 30.2±1.3 | 0.10±0.02 | 75.8±2.2 | 4.2±0.5 | 0.23±0.04 | 0.83±0.04 | 1.02±0.01 | 0.54±0.04 |
+| A-emo-js | 800 | 29.8±1.5 | 0.10±0.02 | 76.0±1.9 | 4.0±0.2 | 0.29±0.03 | 0.72±0.02 | 1.04±0.01 | 0.50±0.07 |
+| A-human | 800 | 32.2±1.5 | 0.10±0.02 | 84.0±1.1 | 3.4±0.3 | 0.21±0.04 | 0.81±0.03 | 1.02±0.00 | 0.61±0.01 |
+| A-human8 | 800 | 33.2±1.2 | 0.10±0.01 | 84.0±3.0 | 3.7±0.3 | 0.23±0.05 | 0.77±0.04 | 1.03±0.00 | 0.74±0.01 |
+| B-proj | 800 | 36.8±0.7 | 0.05±0.00 | 100.0±5.0 | 2.9±0.2 | 0.09±0.06 | 0.92±0.04 | 1.00±0.01 | 0.33±0.06 |
+| B-proj-emo3 | 800 | 36.0±0.9 | 0.05±0.00 | 99.6±2.4 | 2.7±0.2 | 0.10±0.02 | 0.91±0.02 | 1.01±0.01 | 0.36±0.02 |
+| C-utt | 800 | 24.6±2.6 | 0.18±0.07 | 53.2±7.2 | 8.8±1.1 | 0.32±0.07 | 0.76±0.03 | 1.03±0.02 | 0.36±0.04 |
+
+Every design answers one visitor query in under 10 ms on the Mac (CLIP text encode plus scoring 800 paintings), far under the 300 ms budget. Board: `experiments/space/out/artemis_board.png` (12 feelings, top 3, baseline vs. A-emo+clip vs. A-human8, split 0).
+
+**What worked**
+- **Routing through ArtEmis emotions cuts collapse.** Compared with the baseline, the A designs have about half the hubness (7.1 to 3.4–4.5), a lower top-1 max share (0.14 to 0.10) and 10–20 more distinct top-3 picks. They also land more often on paintings people felt the right way: emotion hit 0.48–0.54 vs. 0.41 (chance 0.29). Paraphrase consistency stays about the same.
+- **Dropping "something else" on the text side helps a little.** A visitor always feels something: hubness 4.5 to 3.9, emotion hit 0.48 to 0.50.
+- **Known human votes beat a predicted image emotion.** A-human8 reaches 0.74 emotion hit (partly circular, see caveats). If the library is drawn from ArtEmis's 80K annotated paintings, no image head is needed: the votes are a lookup table.
+- **The image head is the weak link and still improving.** Its TV distance to held-out human votes is 0.474, 0.458 and 0.446 at 3K, 6K and 12K training paintings, vs. 0.526 for "always predict the average". All 48K joined paintings would likely help more.
+
+**What didn't**
+- **B (contrastive explanation→painting) spreads picks but loses feeling.** It has the best coverage, but paraphrase overlap is 0.09 and emotion hit 0.33, near chance. Explanations mostly describe *what is in* the painting ("the woman looks tired"), so the projection learns subject, not feeling. A stronger emotion loss didn't fix it.
+- **C (match against human explanations) collapses as badly as the baseline.** Hubness is 8.8, though it has the best paraphrase overlap (0.32). Long, wordy explanation sets act as hubs.
+- **The text head reads some feelings wrong.** ArtEmis rarely uses anger or disgust, so "rage" maps to excitement or fear and "anxious" to excitement or fear. "Wonder" maps to contentment, not awe, and "proud" to contentment or sadness. The 9 ArtEmis emotions are reactions to art, not a visitor's state, so grief vs. lonely or calm vs. grateful are indistinguishable by design.
+- **On the board, A-emo+clip still picks by subject** for scene-like feelings (wonder gets snow, as in the baseline). A-human8 picks by feeling but looks noisier.
+
+**Caveats**
+- `emotion_hit_at3` uses the same human votes that A-human scores with (the majority label of each library painting). For A-human it measures text-head quality given perfect painting emotions; it is not an independent check. For the other designs it is independent: library paintings are never trained on.
+- The feeling→emotion map is a judgment call (e.g. hope → contentment, awe or excitement).
+- The library is a random WikiArt sample (Artificio subset), not the lab's 36 famous paintings. Not tested on that library.
+- Collapse metrics from an 800-item library aren't directly comparable to the 36-item lab library: hubness skew grows with library size.
+- The join between ArtEmis names and WikiArt titles is heuristic (artist slug plus title slug, trailing years stripped, ambiguous titles dropped); some mismatches are possible.
+- Not tested: a blind human check on boards, more training data, fine-tuning CLIP, prompt templates on the text side, or a mix with thread A's recentring or thread D's color aura.
+
+**Data and terms:** ArtEmis is distributed through a Google Form that accepts the ArtEmis Terms of Use (non-commercial research and education only; the authors give no warranty). The data was obtained that way by a team member. The ArtEmis CSV, images, embeddings and trained heads stay in a local cache (`~/.cache/living-canvas/artemis`) and are never committed. WikiArt images: `Artificio/WikiArt` on Hugging Face has no stated license, and WikiArt itself allows non-commercial research use only. ArtELingo (the Hugging Face copy) is unusable: its data files now return 404.
+
+**Recommendation:** for the booth, use the emotion route, not a learned joint space:
+- Build the painting library from ArtEmis-annotated WikiArt paintings and score with their human emotion votes (A-human8).
+- Use A-emo+clip only for paintings outside ArtEmis.
+- Keep Gemini (or a small keyword list) for anger, anxiety and pride, which the ArtEmis text head handles poorly.
+- Confirm on blind boards before switching.
