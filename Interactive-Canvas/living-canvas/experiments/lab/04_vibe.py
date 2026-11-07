@@ -27,16 +27,16 @@ def vibe_point(weights, energy=0.5, warmth=0.0, light=0.0):
     return v / v.norm() * MEAN_NORM
 
 
-def vibe_frame(weights, energy=0.5, warmth=0.0, light=0.0, atmosphere="", mode="scene", seed=7):
-    """mode 'scene': the chapel in the visitor's light and weather, aligned to the base. 'abstract': no scene."""
+def vibe_frame(weights, energy=0.5, warmth=0.0, light=0.0, atmosphere="", mode="scene", seed=7, scene=SCENE):
+    """mode 'scene': the event's scene in the visitor's light and weather, aligned to the base. 'abstract': no scene."""
     ip = vibe_point(weights, energy, warmth, light)
     if mode == "abstract":
         return render2(cond=_cond(ABSTRACT), ip=ip, ip_scale=style_only(VIBE_STYLE), seed=seed, cn_scale=0.0, cn_end=1.0)
-    text = f"{SCENE}, {atmosphere.strip()}" if atmosphere and atmosphere.strip() else SCENE
+    text = f"{scene}, {atmosphere.strip()}" if atmosphere and atmosphere.strip() else scene
     return render2(cond=_cond(text), ip=ip, ip_scale=style_only(VIBE_STYLE), seed=seed, **ART_CN)
 
 
-def base_frame(seed=7):
+def base_frame(seed=7, scene=SCENE):
     """The starting underpainting: calm and pale, same scene and seed as every vibe frame."""
-    return render2(cond=_cond(SCENE), ip=art_point({"energy": -0.6, "temperature": 0.1, "value": 0.6}),
+    return render2(cond=_cond(scene), ip=art_point({"energy": -0.6, "temperature": 0.1, "value": 0.6}),
                    ip_scale=style_only(VIBE_STYLE), seed=seed, **ART_CN)
