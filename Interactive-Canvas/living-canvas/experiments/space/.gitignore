@@ -1,0 +1,6 @@
+cache/
+__pycache__/
+out/*
+!out/*.png
+!out/*.json
+!out/*.md

@@ -1,0 +1,2732 @@
+[
+ {
+  "candidate": "36 \u00b7 - \u00b7 random (reference)",
+  "coverage_top1": {
+   "unique": 23,
+   "of": 36,
+   "entropy": 0.823,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 33,
+   "of": 36,
+   "entropy": 0.937,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.744,
+  "paraphrase_overlap_at3": 0.117,
+  "paraphrase_vs_random": 1.022,
+  "opposite_vs_random": 0.947,
+  "top1_entropy_vs_picks": 0.823,
+  "rand_overlap_at3": 0.092,
+  "top_hub": "Seurat (4/40)",
+  "library": "36",
+  "text": "-",
+  "method": "random (reference)",
+  "para_lift_at3": 0.025
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 9,
+   "of": 36,
+   "entropy": 0.437,
+   "max_share": 0.55
+  },
+  "coverage_top3": {
+   "unique": 21,
+   "of": 36,
+   "entropy": 0.713,
+   "max_share": 0.225
+  },
+  "hubness_k5": 1.84,
+  "paraphrase_overlap_at3": 0.533,
+  "paraphrase_vs_random": 0.672,
+  "opposite_vs_random": 0.911,
+  "top1_entropy_vs_picks": 0.437,
+  "rand_overlap_at3": 0.295,
+  "top_hub": "Friedrich (22/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "cosine",
+  "para_lift_at3": 0.238
+ },
+ {
+  "candidate": "36 \u00b7 raw \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 15,
+   "of": 36,
+   "entropy": 0.562,
+   "max_share": 0.45
+  },
+  "coverage_top3": {
+   "unique": 22,
+   "of": 36,
+   "entropy": 0.742,
+   "max_share": 0.208
+  },
+  "hubness_k5": 1.766,
+  "paraphrase_overlap_at3": 0.467,
+  "paraphrase_vs_random": 0.776,
+  "opposite_vs_random": 1.017,
+  "top1_entropy_vs_picks": 0.562,
+  "rand_overlap_at3": 0.258,
+  "top_hub": "Friedrich (18/40)",
+  "library": "36",
+  "text": "raw",
+  "method": "cosine",
+  "para_lift_at3": 0.209
+ },
+ {
+  "candidate": "36 \u00b7 evokes \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 11,
+   "of": 36,
+   "entropy": 0.538,
+   "max_share": 0.35
+  },
+  "coverage_top3": {
+   "unique": 21,
+   "of": 36,
+   "entropy": 0.669,
+   "max_share": 0.233
+  },
+  "hubness_k5": 2.109,
+  "paraphrase_overlap_at3": 0.517,
+  "paraphrase_vs_random": 0.715,
+  "opposite_vs_random": 0.912,
+  "top1_entropy_vs_picks": 0.538,
+  "rand_overlap_at3": 0.363,
+  "top_hub": "Whistler (14/40)",
+  "library": "36",
+  "text": "evokes",
+  "method": "cosine",
+  "para_lift_at3": 0.154
+ },
+ {
+  "candidate": "36 \u00b7 mood \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 14,
+   "of": 36,
+   "entropy": 0.588,
+   "max_share": 0.35
+  },
+  "coverage_top3": {
+   "unique": 22,
+   "of": 36,
+   "entropy": 0.718,
+   "max_share": 0.225
+  },
+  "hubness_k5": 1.592,
+  "paraphrase_overlap_at3": 0.433,
+  "paraphrase_vs_random": 0.733,
+  "opposite_vs_random": 0.971,
+  "top1_entropy_vs_picks": 0.588,
+  "rand_overlap_at3": 0.303,
+  "top_hub": "Friedrich (14/40)",
+  "library": "36",
+  "text": "mood",
+  "method": "cosine",
+  "para_lift_at3": 0.13
+ },
+ {
+  "candidate": "36 \u00b7 emotion \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 10,
+   "of": 36,
+   "entropy": 0.393,
+   "max_share": 0.625
+  },
+  "coverage_top3": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.693,
+   "max_share": 0.258
+  },
+  "hubness_k5": 2.156,
+  "paraphrase_overlap_at3": 0.533,
+  "paraphrase_vs_random": 0.735,
+  "opposite_vs_random": 0.968,
+  "top1_entropy_vs_picks": 0.393,
+  "rand_overlap_at3": 0.325,
+  "top_hub": "Munch (25/40)",
+  "library": "36",
+  "text": "emotion",
+  "method": "cosine",
+  "para_lift_at3": 0.208
+ },
+ {
+  "candidate": "36 \u00b7 atmosphere \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 10,
+   "of": 36,
+   "entropy": 0.523,
+   "max_share": 0.375
+  },
+  "coverage_top3": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.633,
+   "max_share": 0.267
+  },
+  "hubness_k5": 2.038,
+  "paraphrase_overlap_at3": 0.567,
+  "paraphrase_vs_random": 0.767,
+  "opposite_vs_random": 0.999,
+  "top1_entropy_vs_picks": 0.523,
+  "rand_overlap_at3": 0.422,
+  "top_hub": "Monet (15/40)",
+  "library": "36",
+  "text": "atmosphere",
+  "method": "cosine",
+  "para_lift_at3": 0.145
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 10,
+   "of": 36,
+   "entropy": 0.52,
+   "max_share": 0.3
+  },
+  "coverage_top3": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.678,
+   "max_share": 0.208
+  },
+  "hubness_k5": 1.878,
+  "paraphrase_overlap_at3": 0.55,
+  "paraphrase_vs_random": 0.732,
+  "opposite_vs_random": 0.963,
+  "top1_entropy_vs_picks": 0.52,
+  "rand_overlap_at3": 0.324,
+  "top_hub": "Friedrich (12/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "cosine",
+  "para_lift_at3": 0.226
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 center_img",
+  "coverage_top1": {
+   "unique": 9,
+   "of": 36,
+   "entropy": 0.409,
+   "max_share": 0.6
+  },
+  "coverage_top3": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.678,
+   "max_share": 0.225
+  },
+  "hubness_k5": 1.886,
+  "paraphrase_overlap_at3": 0.517,
+  "paraphrase_vs_random": 0.758,
+  "opposite_vs_random": 0.942,
+  "top1_entropy_vs_picks": 0.409,
+  "rand_overlap_at3": 0.318,
+  "top_hub": "Friedrich (24/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "center_img",
+  "para_lift_at3": 0.199
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 17,
+   "of": 36,
+   "entropy": 0.733,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 27,
+   "of": 36,
+   "entropy": 0.813,
+   "max_share": 0.125
+  },
+  "hubness_k5": 1.248,
+  "paraphrase_overlap_at3": 0.35,
+  "paraphrase_vs_random": 0.741,
+  "opposite_vs_random": 0.911,
+  "top1_entropy_vs_picks": 0.733,
+  "rand_overlap_at3": 0.177,
+  "top_hub": "Renoir (6/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "center_both",
+  "para_lift_at3": 0.173
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 center_both_query*",
+  "coverage_top1": {
+   "unique": 24,
+   "of": 36,
+   "entropy": 0.854,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 35,
+   "of": 36,
+   "entropy": 0.96,
+   "max_share": 0.058
+  },
+  "hubness_k5": 0.222,
+  "paraphrase_overlap_at3": 0.317,
+  "paraphrase_vs_random": 0.762,
+  "opposite_vs_random": 1.008,
+  "top1_entropy_vs_picks": 0.854,
+  "rand_overlap_at3": 0.081,
+  "top_hub": "Tanner (4/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "center_both_query*",
+  "para_lift_at3": 0.236
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 gap_shift",
+  "coverage_top1": {
+   "unique": 10,
+   "of": 36,
+   "entropy": 0.61,
+   "max_share": 0.225
+  },
+  "coverage_top3": {
+   "unique": 16,
+   "of": 36,
+   "entropy": 0.649,
+   "max_share": 0.208
+  },
+  "hubness_k5": 1.834,
+  "paraphrase_overlap_at3": 0.533,
+  "paraphrase_vs_random": 0.758,
+  "opposite_vs_random": 0.93,
+  "top1_entropy_vs_picks": 0.61,
+  "rand_overlap_at3": 0.343,
+  "top_hub": "Van Gogh (9/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "gap_shift",
+  "para_lift_at3": 0.19
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 whiten8",
+  "coverage_top1": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.728,
+   "max_share": 0.225
+  },
+  "coverage_top3": {
+   "unique": 27,
+   "of": 36,
+   "entropy": 0.816,
+   "max_share": 0.108
+  },
+  "hubness_k5": 1.145,
+  "paraphrase_overlap_at3": 0.383,
+  "paraphrase_vs_random": 0.726,
+  "opposite_vs_random": 0.945,
+  "top1_entropy_vs_picks": 0.728,
+  "rand_overlap_at3": 0.164,
+  "top_hub": "Van Gogh (9/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "whiten8",
+  "para_lift_at3": 0.219
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 whiten16",
+  "coverage_top1": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.73,
+   "max_share": 0.2
+  },
+  "coverage_top3": {
+   "unique": 28,
+   "of": 36,
+   "entropy": 0.822,
+   "max_share": 0.133
+  },
+  "hubness_k5": 1.509,
+  "paraphrase_overlap_at3": 0.383,
+  "paraphrase_vs_random": 0.751,
+  "opposite_vs_random": 0.917,
+  "top1_entropy_vs_picks": 0.73,
+  "rand_overlap_at3": 0.182,
+  "top_hub": "Van Gogh (8/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "whiten16",
+  "para_lift_at3": 0.201
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 whiten32",
+  "coverage_top1": {
+   "unique": 13,
+   "of": 36,
+   "entropy": 0.661,
+   "max_share": 0.175
+  },
+  "coverage_top3": {
+   "unique": 27,
+   "of": 36,
+   "entropy": 0.822,
+   "max_share": 0.125
+  },
+  "hubness_k5": 1.17,
+  "paraphrase_overlap_at3": 0.35,
+  "paraphrase_vs_random": 0.772,
+  "opposite_vs_random": 0.982,
+  "top1_entropy_vs_picks": 0.661,
+  "rand_overlap_at3": 0.172,
+  "top_hub": "Van Gogh (7/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "whiten32",
+  "para_lift_at3": 0.178
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 csls",
+  "coverage_top1": {
+   "unique": 16,
+   "of": 36,
+   "entropy": 0.672,
+   "max_share": 0.275
+  },
+  "coverage_top3": {
+   "unique": 24,
+   "of": 36,
+   "entropy": 0.793,
+   "max_share": 0.158
+  },
+  "hubness_k5": 1.769,
+  "paraphrase_overlap_at3": 0.433,
+  "paraphrase_vs_random": 0.7,
+  "opposite_vs_random": 0.937,
+  "top1_entropy_vs_picks": 0.672,
+  "rand_overlap_at3": 0.205,
+  "top_hub": "Friedrich (11/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "csls",
+  "para_lift_at3": 0.228
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 15,
+   "of": 36,
+   "entropy": 0.709,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 28,
+   "of": 36,
+   "entropy": 0.829,
+   "max_share": 0.108
+  },
+  "hubness_k5": 1.452,
+  "paraphrase_overlap_at3": 0.35,
+  "paraphrase_vs_random": 0.771,
+  "opposite_vs_random": 0.877,
+  "top1_entropy_vs_picks": 0.709,
+  "rand_overlap_at3": 0.173,
+  "top_hub": "Van Gogh (5/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "zscore",
+  "para_lift_at3": 0.177
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 center_both+csls",
+  "coverage_top1": {
+   "unique": 15,
+   "of": 36,
+   "entropy": 0.713,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 27,
+   "of": 36,
+   "entropy": 0.818,
+   "max_share": 0.117
+  },
+  "hubness_k5": 1.457,
+  "paraphrase_overlap_at3": 0.383,
+  "paraphrase_vs_random": 0.774,
+  "opposite_vs_random": 0.923,
+  "top1_entropy_vs_picks": 0.713,
+  "rand_overlap_at3": 0.186,
+  "top_hub": "Van Gogh (5/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "center_both+csls",
+  "para_lift_at3": 0.197
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 14,
+   "of": 36,
+   "entropy": 0.687,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 28,
+   "of": 36,
+   "entropy": 0.817,
+   "max_share": 0.133
+  },
+  "hubness_k5": 1.509,
+  "paraphrase_overlap_at3": 0.35,
+  "paraphrase_vs_random": 0.795,
+  "opposite_vs_random": 0.898,
+  "top1_entropy_vs_picks": 0.687,
+  "rand_overlap_at3": 0.188,
+  "top_hub": "Van Gogh (6/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.162
+ },
+ {
+  "candidate": "36 \u00b7 baseline \u00b7 whiten16+zscore",
+  "coverage_top1": {
+   "unique": 15,
+   "of": 36,
+   "entropy": 0.681,
+   "max_share": 0.225
+  },
+  "coverage_top3": {
+   "unique": 25,
+   "of": 36,
+   "entropy": 0.79,
+   "max_share": 0.167
+  },
+  "hubness_k5": 1.796,
+  "paraphrase_overlap_at3": 0.433,
+  "paraphrase_vs_random": 0.787,
+  "opposite_vs_random": 0.932,
+  "top1_entropy_vs_picks": 0.681,
+  "rand_overlap_at3": 0.226,
+  "top_hub": "Caillebotte (9/40)",
+  "library": "36",
+  "text": "baseline",
+  "method": "whiten16+zscore",
+  "para_lift_at3": 0.207
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 center_img",
+  "coverage_top1": {
+   "unique": 11,
+   "of": 36,
+   "entropy": 0.532,
+   "max_share": 0.3
+  },
+  "coverage_top3": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.679,
+   "max_share": 0.2
+  },
+  "hubness_k5": 1.856,
+  "paraphrase_overlap_at3": 0.55,
+  "paraphrase_vs_random": 0.726,
+  "opposite_vs_random": 0.957,
+  "top1_entropy_vs_picks": 0.532,
+  "rand_overlap_at3": 0.325,
+  "top_hub": "Friedrich (12/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "center_img",
+  "para_lift_at3": 0.225
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.763,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 32,
+   "of": 36,
+   "entropy": 0.898,
+   "max_share": 0.1
+  },
+  "hubness_k5": 1.031,
+  "paraphrase_overlap_at3": 0.35,
+  "paraphrase_vs_random": 0.806,
+  "opposite_vs_random": 0.927,
+  "top1_entropy_vs_picks": 0.763,
+  "rand_overlap_at3": 0.127,
+  "top_hub": "Tanner (6/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "center_both",
+  "para_lift_at3": 0.223
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 center_both_query*",
+  "coverage_top1": {
+   "unique": 23,
+   "of": 36,
+   "entropy": 0.848,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 36,
+   "of": 36,
+   "entropy": 0.97,
+   "max_share": 0.05
+  },
+  "hubness_k5": 0.559,
+  "paraphrase_overlap_at3": 0.3,
+  "paraphrase_vs_random": 0.766,
+  "opposite_vs_random": 0.948,
+  "top1_entropy_vs_picks": 0.848,
+  "rand_overlap_at3": 0.075,
+  "top_hub": "Tanner (4/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "center_both_query*",
+  "para_lift_at3": 0.225
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 gap_shift",
+  "coverage_top1": {
+   "unique": 9,
+   "of": 36,
+   "entropy": 0.582,
+   "max_share": 0.175
+  },
+  "coverage_top3": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.672,
+   "max_share": 0.217
+  },
+  "hubness_k5": 1.794,
+  "paraphrase_overlap_at3": 0.55,
+  "paraphrase_vs_random": 0.717,
+  "opposite_vs_random": 0.953,
+  "top1_entropy_vs_picks": 0.582,
+  "rand_overlap_at3": 0.336,
+  "top_hub": "Monet (7/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "gap_shift",
+  "para_lift_at3": 0.214
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 whiten8",
+  "coverage_top1": {
+   "unique": 17,
+   "of": 36,
+   "entropy": 0.751,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 28,
+   "of": 36,
+   "entropy": 0.841,
+   "max_share": 0.133
+  },
+  "hubness_k5": 0.928,
+  "paraphrase_overlap_at3": 0.333,
+  "paraphrase_vs_random": 0.8,
+  "opposite_vs_random": 0.982,
+  "top1_entropy_vs_picks": 0.751,
+  "rand_overlap_at3": 0.159,
+  "top_hub": "Delacroix (5/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "whiten8",
+  "para_lift_at3": 0.174
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 whiten16",
+  "coverage_top1": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.781,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 32,
+   "of": 36,
+   "entropy": 0.889,
+   "max_share": 0.108
+  },
+  "hubness_k5": 1.306,
+  "paraphrase_overlap_at3": 0.267,
+  "paraphrase_vs_random": 0.781,
+  "opposite_vs_random": 0.962,
+  "top1_entropy_vs_picks": 0.781,
+  "rand_overlap_at3": 0.127,
+  "top_hub": "Renoir (5/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "whiten16",
+  "para_lift_at3": 0.14
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 whiten32",
+  "coverage_top1": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.767,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 32,
+   "of": 36,
+   "entropy": 0.886,
+   "max_share": 0.125
+  },
+  "hubness_k5": 1.242,
+  "paraphrase_overlap_at3": 0.267,
+  "paraphrase_vs_random": 0.769,
+  "opposite_vs_random": 0.977,
+  "top1_entropy_vs_picks": 0.767,
+  "rand_overlap_at3": 0.133,
+  "top_hub": "Bruegel (5/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "whiten32",
+  "para_lift_at3": 0.134
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 csls",
+  "coverage_top1": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.739,
+   "max_share": 0.175
+  },
+  "coverage_top3": {
+   "unique": 24,
+   "of": 36,
+   "entropy": 0.813,
+   "max_share": 0.133
+  },
+  "hubness_k5": 1.337,
+  "paraphrase_overlap_at3": 0.45,
+  "paraphrase_vs_random": 0.697,
+  "opposite_vs_random": 0.917,
+  "top1_entropy_vs_picks": 0.739,
+  "rand_overlap_at3": 0.173,
+  "top_hub": "Tanner (7/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "csls",
+  "para_lift_at3": 0.277
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 21,
+   "of": 36,
+   "entropy": 0.796,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 31,
+   "of": 36,
+   "entropy": 0.892,
+   "max_share": 0.108
+  },
+  "hubness_k5": 0.862,
+  "paraphrase_overlap_at3": 0.333,
+  "paraphrase_vs_random": 0.76,
+  "opposite_vs_random": 0.888,
+  "top1_entropy_vs_picks": 0.796,
+  "rand_overlap_at3": 0.127,
+  "top_hub": "Tanner (6/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "zscore",
+  "para_lift_at3": 0.206
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 center_both+csls",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 36,
+   "entropy": 0.79,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 32,
+   "of": 36,
+   "entropy": 0.894,
+   "max_share": 0.1
+  },
+  "hubness_k5": 0.894,
+  "paraphrase_overlap_at3": 0.333,
+  "paraphrase_vs_random": 0.814,
+  "opposite_vs_random": 0.951,
+  "top1_entropy_vs_picks": 0.79,
+  "rand_overlap_at3": 0.135,
+  "top_hub": "Tanner (5/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "center_both+csls",
+  "para_lift_at3": 0.198
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 36,
+   "entropy": 0.776,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 32,
+   "of": 36,
+   "entropy": 0.884,
+   "max_share": 0.092
+  },
+  "hubness_k5": 0.912,
+  "paraphrase_overlap_at3": 0.317,
+  "paraphrase_vs_random": 0.803,
+  "opposite_vs_random": 0.964,
+  "top1_entropy_vs_picks": 0.776,
+  "rand_overlap_at3": 0.145,
+  "top_hub": "Rembrandt (5/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.172
+ },
+ {
+  "candidate": "36 \u00b7 ensemble \u00b7 whiten16+zscore",
+  "coverage_top1": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.761,
+   "max_share": 0.175
+  },
+  "coverage_top3": {
+   "unique": 30,
+   "of": 36,
+   "entropy": 0.857,
+   "max_share": 0.117
+  },
+  "hubness_k5": 1.366,
+  "paraphrase_overlap_at3": 0.417,
+  "paraphrase_vs_random": 0.753,
+  "opposite_vs_random": 0.959,
+  "top1_entropy_vs_picks": 0.761,
+  "rand_overlap_at3": 0.147,
+  "top_hub": "Caillebotte (7/40)",
+  "library": "36",
+  "text": "ensemble",
+  "method": "whiten16+zscore",
+  "para_lift_at3": 0.27
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 center_img",
+  "coverage_top1": {
+   "unique": 9,
+   "of": 36,
+   "entropy": 0.409,
+   "max_share": 0.6
+  },
+  "coverage_top3": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.678,
+   "max_share": 0.225
+  },
+  "hubness_k5": 1.886,
+  "paraphrase_overlap_at3": 0.517,
+  "paraphrase_vs_random": 0.758,
+  "opposite_vs_random": 0.942,
+  "top1_entropy_vs_picks": 0.409,
+  "rand_overlap_at3": 0.318,
+  "top_hub": "Friedrich (24/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "center_img",
+  "para_lift_at3": 0.199
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 24,
+   "of": 36,
+   "entropy": 0.854,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 35,
+   "of": 36,
+   "entropy": 0.943,
+   "max_share": 0.075
+  },
+  "hubness_k5": 0.386,
+  "paraphrase_overlap_at3": 0.333,
+  "paraphrase_vs_random": 0.758,
+  "opposite_vs_random": 0.974,
+  "top1_entropy_vs_picks": 0.854,
+  "rand_overlap_at3": 0.096,
+  "top_hub": "Tanner (4/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "center_both",
+  "para_lift_at3": 0.237
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 center_both_query*",
+  "coverage_top1": {
+   "unique": 24,
+   "of": 36,
+   "entropy": 0.854,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 35,
+   "of": 36,
+   "entropy": 0.96,
+   "max_share": 0.058
+  },
+  "hubness_k5": 0.222,
+  "paraphrase_overlap_at3": 0.317,
+  "paraphrase_vs_random": 0.762,
+  "opposite_vs_random": 1.008,
+  "top1_entropy_vs_picks": 0.854,
+  "rand_overlap_at3": 0.081,
+  "top_hub": "Tanner (4/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "center_both_query*",
+  "para_lift_at3": 0.236
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 gap_shift",
+  "coverage_top1": {
+   "unique": 10,
+   "of": 36,
+   "entropy": 0.57,
+   "max_share": 0.225
+  },
+  "coverage_top3": {
+   "unique": 17,
+   "of": 36,
+   "entropy": 0.675,
+   "max_share": 0.2
+  },
+  "hubness_k5": 1.715,
+  "paraphrase_overlap_at3": 0.5,
+  "paraphrase_vs_random": 0.724,
+  "opposite_vs_random": 1.03,
+  "top1_entropy_vs_picks": 0.57,
+  "rand_overlap_at3": 0.314,
+  "top_hub": "Munch (9/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "gap_shift",
+  "para_lift_at3": 0.186
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 whiten8",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 36,
+   "entropy": 0.762,
+   "max_share": 0.175
+  },
+  "coverage_top3": {
+   "unique": 33,
+   "of": 36,
+   "entropy": 0.912,
+   "max_share": 0.075
+  },
+  "hubness_k5": 0.724,
+  "paraphrase_overlap_at3": 0.317,
+  "paraphrase_vs_random": 0.725,
+  "opposite_vs_random": 0.998,
+  "top1_entropy_vs_picks": 0.762,
+  "rand_overlap_at3": 0.112,
+  "top_hub": "Tanner (7/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "whiten8",
+  "para_lift_at3": 0.205
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 whiten16",
+  "coverage_top1": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.768,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 33,
+   "of": 36,
+   "entropy": 0.916,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.634,
+  "paraphrase_overlap_at3": 0.267,
+  "paraphrase_vs_random": 0.772,
+  "opposite_vs_random": 0.936,
+  "top1_entropy_vs_picks": 0.768,
+  "rand_overlap_at3": 0.114,
+  "top_hub": "Goya (6/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "whiten16",
+  "para_lift_at3": 0.153
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 whiten32",
+  "coverage_top1": {
+   "unique": 17,
+   "of": 36,
+   "entropy": 0.759,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 33,
+   "of": 36,
+   "entropy": 0.901,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.515,
+  "paraphrase_overlap_at3": 0.4,
+  "paraphrase_vs_random": 0.768,
+  "opposite_vs_random": 0.982,
+  "top1_entropy_vs_picks": 0.759,
+  "rand_overlap_at3": 0.116,
+  "top_hub": "Renoir (5/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "whiten32",
+  "para_lift_at3": 0.284
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 csls",
+  "coverage_top1": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.773,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 26,
+   "of": 36,
+   "entropy": 0.832,
+   "max_share": 0.108
+  },
+  "hubness_k5": 1.461,
+  "paraphrase_overlap_at3": 0.367,
+  "paraphrase_vs_random": 0.702,
+  "opposite_vs_random": 1.0,
+  "top1_entropy_vs_picks": 0.773,
+  "rand_overlap_at3": 0.166,
+  "top_hub": "Friedrich (5/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "csls",
+  "para_lift_at3": 0.201
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.773,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 33,
+   "of": 36,
+   "entropy": 0.919,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.691,
+  "paraphrase_overlap_at3": 0.417,
+  "paraphrase_vs_random": 0.747,
+  "opposite_vs_random": 1.0,
+  "top1_entropy_vs_picks": 0.773,
+  "rand_overlap_at3": 0.112,
+  "top_hub": "Bruegel (4/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "zscore",
+  "para_lift_at3": 0.305
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 center_both+csls",
+  "coverage_top1": {
+   "unique": 24,
+   "of": 36,
+   "entropy": 0.854,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 35,
+   "of": 36,
+   "entropy": 0.94,
+   "max_share": 0.075
+  },
+  "hubness_k5": 0.6,
+  "paraphrase_overlap_at3": 0.333,
+  "paraphrase_vs_random": 0.718,
+  "opposite_vs_random": 1.009,
+  "top1_entropy_vs_picks": 0.854,
+  "rand_overlap_at3": 0.102,
+  "top_hub": "Tanner (4/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "center_both+csls",
+  "para_lift_at3": 0.231
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 21,
+   "of": 36,
+   "entropy": 0.812,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 35,
+   "of": 36,
+   "entropy": 0.933,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.843,
+  "paraphrase_overlap_at3": 0.383,
+  "paraphrase_vs_random": 0.711,
+  "opposite_vs_random": 1.002,
+  "top1_entropy_vs_picks": 0.812,
+  "rand_overlap_at3": 0.104,
+  "top_hub": "Monet (4/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.279
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent \u00b7 whiten16+zscore",
+  "coverage_top1": {
+   "unique": 21,
+   "of": 36,
+   "entropy": 0.812,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 31,
+   "of": 36,
+   "entropy": 0.914,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.67,
+  "paraphrase_overlap_at3": 0.333,
+  "paraphrase_vs_random": 0.751,
+  "opposite_vs_random": 0.909,
+  "top1_entropy_vs_picks": 0.812,
+  "rand_overlap_at3": 0.106,
+  "top_hub": "Van Gogh (4/40)",
+  "library": "36",
+  "text": "baseline/Rsent",
+  "method": "whiten16+zscore",
+  "para_lift_at3": 0.227
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 center_img",
+  "coverage_top1": {
+   "unique": 11,
+   "of": 36,
+   "entropy": 0.532,
+   "max_share": 0.3
+  },
+  "coverage_top3": {
+   "unique": 18,
+   "of": 36,
+   "entropy": 0.679,
+   "max_share": 0.2
+  },
+  "hubness_k5": 1.856,
+  "paraphrase_overlap_at3": 0.55,
+  "paraphrase_vs_random": 0.726,
+  "opposite_vs_random": 0.957,
+  "top1_entropy_vs_picks": 0.532,
+  "rand_overlap_at3": 0.325,
+  "top_hub": "Friedrich (12/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "center_img",
+  "para_lift_at3": 0.225
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 36,
+   "entropy": 0.795,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 36,
+   "of": 36,
+   "entropy": 0.947,
+   "max_share": 0.083
+  },
+  "hubness_k5": 1.005,
+  "paraphrase_overlap_at3": 0.333,
+  "paraphrase_vs_random": 0.783,
+  "opposite_vs_random": 0.985,
+  "top1_entropy_vs_picks": 0.795,
+  "rand_overlap_at3": 0.102,
+  "top_hub": "Tanner (6/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "center_both",
+  "para_lift_at3": 0.231
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 center_both_query*",
+  "coverage_top1": {
+   "unique": 23,
+   "of": 36,
+   "entropy": 0.848,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 36,
+   "of": 36,
+   "entropy": 0.97,
+   "max_share": 0.05
+  },
+  "hubness_k5": 0.559,
+  "paraphrase_overlap_at3": 0.3,
+  "paraphrase_vs_random": 0.766,
+  "opposite_vs_random": 0.948,
+  "top1_entropy_vs_picks": 0.848,
+  "rand_overlap_at3": 0.075,
+  "top_hub": "Tanner (4/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "center_both_query*",
+  "para_lift_at3": 0.225
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 gap_shift",
+  "coverage_top1": {
+   "unique": 10,
+   "of": 36,
+   "entropy": 0.572,
+   "max_share": 0.25
+  },
+  "coverage_top3": {
+   "unique": 16,
+   "of": 36,
+   "entropy": 0.652,
+   "max_share": 0.2
+  },
+  "hubness_k5": 1.692,
+  "paraphrase_overlap_at3": 0.5,
+  "paraphrase_vs_random": 0.674,
+  "opposite_vs_random": 0.934,
+  "top1_entropy_vs_picks": 0.572,
+  "rand_overlap_at3": 0.355,
+  "top_hub": "Monet (10/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "gap_shift",
+  "para_lift_at3": 0.145
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 whiten8",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 36,
+   "entropy": 0.772,
+   "max_share": 0.175
+  },
+  "coverage_top3": {
+   "unique": 32,
+   "of": 36,
+   "entropy": 0.912,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.671,
+  "paraphrase_overlap_at3": 0.3,
+  "paraphrase_vs_random": 0.786,
+  "opposite_vs_random": 1.001,
+  "top1_entropy_vs_picks": 0.772,
+  "rand_overlap_at3": 0.113,
+  "top_hub": "Tanner (7/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "whiten8",
+  "para_lift_at3": 0.187
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 whiten16",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 36,
+   "entropy": 0.789,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 34,
+   "of": 36,
+   "entropy": 0.93,
+   "max_share": 0.075
+  },
+  "hubness_k5": 0.423,
+  "paraphrase_overlap_at3": 0.3,
+  "paraphrase_vs_random": 0.775,
+  "opposite_vs_random": 0.923,
+  "top1_entropy_vs_picks": 0.789,
+  "rand_overlap_at3": 0.103,
+  "top_hub": "Goya (6/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "whiten16",
+  "para_lift_at3": 0.197
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 whiten32",
+  "coverage_top1": {
+   "unique": 21,
+   "of": 36,
+   "entropy": 0.8,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 33,
+   "of": 36,
+   "entropy": 0.907,
+   "max_share": 0.092
+  },
+  "hubness_k5": 0.925,
+  "paraphrase_overlap_at3": 0.383,
+  "paraphrase_vs_random": 0.739,
+  "opposite_vs_random": 0.978,
+  "top1_entropy_vs_picks": 0.8,
+  "rand_overlap_at3": 0.112,
+  "top_hub": "Renoir (5/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "whiten32",
+  "para_lift_at3": 0.271
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 csls",
+  "coverage_top1": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.765,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 26,
+   "of": 36,
+   "entropy": 0.824,
+   "max_share": 0.158
+  },
+  "hubness_k5": 1.564,
+  "paraphrase_overlap_at3": 0.383,
+  "paraphrase_vs_random": 0.726,
+  "opposite_vs_random": 0.974,
+  "top1_entropy_vs_picks": 0.765,
+  "rand_overlap_at3": 0.174,
+  "top_hub": "Tanner (6/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "csls",
+  "para_lift_at3": 0.209
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 36,
+   "entropy": 0.791,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 35,
+   "of": 36,
+   "entropy": 0.93,
+   "max_share": 0.083
+  },
+  "hubness_k5": 1.102,
+  "paraphrase_overlap_at3": 0.283,
+  "paraphrase_vs_random": 0.778,
+  "opposite_vs_random": 0.975,
+  "top1_entropy_vs_picks": 0.791,
+  "rand_overlap_at3": 0.111,
+  "top_hub": "Tanner (6/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "zscore",
+  "para_lift_at3": 0.172
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 center_both+csls",
+  "coverage_top1": {
+   "unique": 21,
+   "of": 36,
+   "entropy": 0.808,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 36,
+   "of": 36,
+   "entropy": 0.937,
+   "max_share": 0.075
+  },
+  "hubness_k5": 0.996,
+  "paraphrase_overlap_at3": 0.35,
+  "paraphrase_vs_random": 0.769,
+  "opposite_vs_random": 1.01,
+  "top1_entropy_vs_picks": 0.808,
+  "rand_overlap_at3": 0.106,
+  "top_hub": "Tanner (5/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "center_both+csls",
+  "para_lift_at3": 0.244
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.769,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 36,
+   "of": 36,
+   "entropy": 0.936,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.998,
+  "paraphrase_overlap_at3": 0.283,
+  "paraphrase_vs_random": 0.747,
+  "opposite_vs_random": 0.985,
+  "top1_entropy_vs_picks": 0.769,
+  "rand_overlap_at3": 0.107,
+  "top_hub": "Tanner (6/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.176
+ },
+ {
+  "candidate": "36 \u00b7 ensemble/Rsent \u00b7 whiten16+zscore",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 36,
+   "entropy": 0.798,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 33,
+   "of": 36,
+   "entropy": 0.912,
+   "max_share": 0.075
+  },
+  "hubness_k5": 0.686,
+  "paraphrase_overlap_at3": 0.283,
+  "paraphrase_vs_random": 0.795,
+  "opposite_vs_random": 0.927,
+  "top1_entropy_vs_picks": 0.798,
+  "rand_overlap_at3": 0.118,
+  "top_hub": "Goya (4/40)",
+  "library": "36",
+  "text": "ensemble/Rsent",
+  "method": "whiten16+zscore",
+  "para_lift_at3": 0.165
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent-A \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 21,
+   "of": 36,
+   "entropy": 0.8,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 33,
+   "of": 36,
+   "entropy": 0.927,
+   "max_share": 0.083
+  },
+  "hubness_k5": 1.093,
+  "paraphrase_overlap_at3": 0.367,
+  "paraphrase_vs_random": 0.723,
+  "opposite_vs_random": 1.027,
+  "top1_entropy_vs_picks": 0.8,
+  "rand_overlap_at3": 0.107,
+  "top_hub": "Tanner (5/40)",
+  "library": "36",
+  "text": "baseline/Rsent-A",
+  "method": "center_both",
+  "para_lift_at3": 0.26
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent-A \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 36,
+   "entropy": 0.796,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 32,
+   "of": 36,
+   "entropy": 0.92,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.834,
+  "paraphrase_overlap_at3": 0.383,
+  "paraphrase_vs_random": 0.72,
+  "opposite_vs_random": 1.01,
+  "top1_entropy_vs_picks": 0.796,
+  "rand_overlap_at3": 0.106,
+  "top_hub": "Fan Kuan (5/40)",
+  "library": "36",
+  "text": "baseline/Rsent-A",
+  "method": "zscore",
+  "para_lift_at3": 0.277
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent-A \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.795,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 31,
+   "of": 36,
+   "entropy": 0.904,
+   "max_share": 0.083
+  },
+  "hubness_k5": 0.844,
+  "paraphrase_overlap_at3": 0.333,
+  "paraphrase_vs_random": 0.716,
+  "opposite_vs_random": 1.013,
+  "top1_entropy_vs_picks": 0.795,
+  "rand_overlap_at3": 0.118,
+  "top_hub": "Bruegel (4/40)",
+  "library": "36",
+  "text": "baseline/Rsent-A",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.215
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent-B \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 24,
+   "of": 36,
+   "entropy": 0.854,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 34,
+   "of": 36,
+   "entropy": 0.937,
+   "max_share": 0.075
+  },
+  "hubness_k5": 0.228,
+  "paraphrase_overlap_at3": 0.317,
+  "paraphrase_vs_random": 0.738,
+  "opposite_vs_random": 0.973,
+  "top1_entropy_vs_picks": 0.854,
+  "rand_overlap_at3": 0.1,
+  "top_hub": "Tanner (4/40)",
+  "library": "36",
+  "text": "baseline/Rsent-B",
+  "method": "center_both",
+  "para_lift_at3": 0.217
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent-B \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 19,
+   "of": 36,
+   "entropy": 0.777,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 32,
+   "of": 36,
+   "entropy": 0.908,
+   "max_share": 0.075
+  },
+  "hubness_k5": 0.478,
+  "paraphrase_overlap_at3": 0.35,
+  "paraphrase_vs_random": 0.741,
+  "opposite_vs_random": 0.951,
+  "top1_entropy_vs_picks": 0.777,
+  "rand_overlap_at3": 0.112,
+  "top_hub": "Renoir (6/40)",
+  "library": "36",
+  "text": "baseline/Rsent-B",
+  "method": "zscore",
+  "para_lift_at3": 0.238
+ },
+ {
+  "candidate": "36 \u00b7 baseline/Rsent-B \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 17,
+   "of": 36,
+   "entropy": 0.74,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 33,
+   "of": 36,
+   "entropy": 0.91,
+   "max_share": 0.108
+  },
+  "hubness_k5": 0.85,
+  "paraphrase_overlap_at3": 0.317,
+  "paraphrase_vs_random": 0.743,
+  "opposite_vs_random": 1.022,
+  "top1_entropy_vs_picks": 0.74,
+  "rand_overlap_at3": 0.11,
+  "top_hub": "Renoir (6/40)",
+  "library": "36",
+  "text": "baseline/Rsent-B",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.207
+ },
+ {
+  "candidate": "305 \u00b7 - \u00b7 random (reference)",
+  "coverage_top1": {
+   "unique": 37,
+   "of": 305,
+   "entropy": 0.627,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 99,
+   "of": 305,
+   "entropy": 0.795,
+   "max_share": 0.017
+  },
+  "hubness_k5": 1.08,
+  "paraphrase_overlap_at3": 0.0,
+  "paraphrase_vs_random": 1.006,
+  "opposite_vs_random": 1.0,
+  "top1_entropy_vs_picks": 0.972,
+  "rand_overlap_at3": 0.013,
+  "top_hub": "Turner (2/40)",
+  "library": "305",
+  "text": "-",
+  "method": "random (reference)",
+  "para_lift_at3": -0.013
+ },
+ {
+  "candidate": "305 \u00b7 baseline \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 17,
+   "of": 305,
+   "entropy": 0.422,
+   "max_share": 0.275
+  },
+  "coverage_top3": {
+   "unique": 40,
+   "of": 305,
+   "entropy": 0.561,
+   "max_share": 0.158
+  },
+  "hubness_k5": 6.258,
+  "paraphrase_overlap_at3": 0.367,
+  "paraphrase_vs_random": 0.72,
+  "opposite_vs_random": 1.038,
+  "top1_entropy_vs_picks": 0.654,
+  "rand_overlap_at3": 0.169,
+  "top_hub": "Friedrich (11/40)",
+  "library": "305",
+  "text": "baseline",
+  "method": "cosine",
+  "para_lift_at3": 0.198
+ },
+ {
+  "candidate": "305 \u00b7 baseline \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 34,
+   "of": 305,
+   "entropy": 0.609,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 79,
+   "of": 305,
+   "entropy": 0.744,
+   "max_share": 0.033
+  },
+  "hubness_k5": 2.212,
+  "paraphrase_overlap_at3": 0.133,
+  "paraphrase_vs_random": 0.815,
+  "opposite_vs_random": 0.998,
+  "top1_entropy_vs_picks": 0.944,
+  "rand_overlap_at3": 0.031,
+  "top_hub": "Tanner (2/40)",
+  "library": "305",
+  "text": "baseline",
+  "method": "center_both",
+  "para_lift_at3": 0.102
+ },
+ {
+  "candidate": "305 \u00b7 baseline \u00b7 whiten16",
+  "coverage_top1": {
+   "unique": 28,
+   "of": 305,
+   "entropy": 0.564,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 59,
+   "of": 305,
+   "entropy": 0.676,
+   "max_share": 0.058
+  },
+  "hubness_k5": 3.534,
+  "paraphrase_overlap_at3": 0.2,
+  "paraphrase_vs_random": 0.819,
+  "opposite_vs_random": 1.026,
+  "top1_entropy_vs_picks": 0.874,
+  "rand_overlap_at3": 0.052,
+  "top_hub": "Claude Monet (4/40)",
+  "library": "305",
+  "text": "baseline",
+  "method": "whiten16",
+  "para_lift_at3": 0.148
+ },
+ {
+  "candidate": "305 \u00b7 baseline \u00b7 whiten64",
+  "coverage_top1": {
+   "unique": 30,
+   "of": 305,
+   "entropy": 0.57,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 71,
+   "of": 305,
+   "entropy": 0.704,
+   "max_share": 0.075
+  },
+  "hubness_k5": 3.825,
+  "paraphrase_overlap_at3": 0.283,
+  "paraphrase_vs_random": 0.781,
+  "opposite_vs_random": 0.974,
+  "top1_entropy_vs_picks": 0.884,
+  "rand_overlap_at3": 0.046,
+  "top_hub": "Tanner (4/40)",
+  "library": "305",
+  "text": "baseline",
+  "method": "whiten64",
+  "para_lift_at3": 0.237
+ },
+ {
+  "candidate": "305 \u00b7 baseline \u00b7 csls",
+  "coverage_top1": {
+   "unique": 28,
+   "of": 305,
+   "entropy": 0.559,
+   "max_share": 0.125
+  },
+  "coverage_top3": {
+   "unique": 60,
+   "of": 305,
+   "entropy": 0.677,
+   "max_share": 0.067
+  },
+  "hubness_k5": 3.582,
+  "paraphrase_overlap_at3": 0.233,
+  "paraphrase_vs_random": 0.82,
+  "opposite_vs_random": 0.994,
+  "top1_entropy_vs_picks": 0.867,
+  "rand_overlap_at3": 0.056,
+  "top_hub": "Friedrich (5/40)",
+  "library": "305",
+  "text": "baseline",
+  "method": "csls",
+  "para_lift_at3": 0.177
+ },
+ {
+  "candidate": "305 \u00b7 baseline \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 34,
+   "of": 305,
+   "entropy": 0.609,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 73,
+   "of": 305,
+   "entropy": 0.724,
+   "max_share": 0.042
+  },
+  "hubness_k5": 2.376,
+  "paraphrase_overlap_at3": 0.133,
+  "paraphrase_vs_random": 0.832,
+  "opposite_vs_random": 0.981,
+  "top1_entropy_vs_picks": 0.944,
+  "rand_overlap_at3": 0.032,
+  "top_hub": "Van Gogh (2/40)",
+  "library": "305",
+  "text": "baseline",
+  "method": "zscore",
+  "para_lift_at3": 0.101
+ },
+ {
+  "candidate": "305 \u00b7 baseline \u00b7 center_both+csls",
+  "coverage_top1": {
+   "unique": 37,
+   "of": 305,
+   "entropy": 0.627,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 80,
+   "of": 305,
+   "entropy": 0.745,
+   "max_share": 0.042
+  },
+  "hubness_k5": 2.017,
+  "paraphrase_overlap_at3": 0.15,
+  "paraphrase_vs_random": 0.842,
+  "opposite_vs_random": 0.981,
+  "top1_entropy_vs_picks": 0.972,
+  "rand_overlap_at3": 0.028,
+  "top_hub": "Paul Cezanne (2/40)",
+  "library": "305",
+  "text": "baseline",
+  "method": "center_both+csls",
+  "para_lift_at3": 0.122
+ },
+ {
+  "candidate": "305 \u00b7 baseline \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 26,
+   "of": 305,
+   "entropy": 0.535,
+   "max_share": 0.15
+  },
+  "coverage_top3": {
+   "unique": 74,
+   "of": 305,
+   "entropy": 0.711,
+   "max_share": 0.067
+  },
+  "hubness_k5": 3.448,
+  "paraphrase_overlap_at3": 0.183,
+  "paraphrase_vs_random": 0.828,
+  "opposite_vs_random": 0.938,
+  "top1_entropy_vs_picks": 0.83,
+  "rand_overlap_at3": 0.041,
+  "top_hub": "Nicholas Roerich (6/40)",
+  "library": "305",
+  "text": "baseline",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.142
+ },
+ {
+  "candidate": "305 \u00b7 baseline \u00b7 whiten64+zscore",
+  "coverage_top1": {
+   "unique": 26,
+   "of": 305,
+   "entropy": 0.527,
+   "max_share": 0.2
+  },
+  "coverage_top3": {
+   "unique": 66,
+   "of": 305,
+   "entropy": 0.682,
+   "max_share": 0.092
+  },
+  "hubness_k5": 4.538,
+  "paraphrase_overlap_at3": 0.267,
+  "paraphrase_vs_random": 0.788,
+  "opposite_vs_random": 0.985,
+  "top1_entropy_vs_picks": 0.818,
+  "rand_overlap_at3": 0.056,
+  "top_hub": "Camille Pissarro (8/40)",
+  "library": "305",
+  "text": "baseline",
+  "method": "whiten64+zscore",
+  "para_lift_at3": 0.211
+ },
+ {
+  "candidate": "305 \u00b7 ensemble \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 305,
+   "entropy": 0.472,
+   "max_share": 0.2
+  },
+  "coverage_top3": {
+   "unique": 37,
+   "of": 305,
+   "entropy": 0.535,
+   "max_share": 0.167
+  },
+  "hubness_k5": 6.088,
+  "paraphrase_overlap_at3": 0.383,
+  "paraphrase_vs_random": 0.722,
+  "opposite_vs_random": 0.993,
+  "top1_entropy_vs_picks": 0.732,
+  "rand_overlap_at3": 0.185,
+  "top_hub": "Munch (8/40)",
+  "library": "305",
+  "text": "ensemble",
+  "method": "cosine",
+  "para_lift_at3": 0.198
+ },
+ {
+  "candidate": "305 \u00b7 ensemble \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 33,
+   "of": 305,
+   "entropy": 0.6,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 82,
+   "of": 305,
+   "entropy": 0.75,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.761,
+  "paraphrase_overlap_at3": 0.167,
+  "paraphrase_vs_random": 0.832,
+  "opposite_vs_random": 0.978,
+  "top1_entropy_vs_picks": 0.931,
+  "rand_overlap_at3": 0.024,
+  "top_hub": "Rembrandt (3/40)",
+  "library": "305",
+  "text": "ensemble",
+  "method": "center_both",
+  "para_lift_at3": 0.143
+ },
+ {
+  "candidate": "305 \u00b7 ensemble \u00b7 whiten16",
+  "coverage_top1": {
+   "unique": 34,
+   "of": 305,
+   "entropy": 0.606,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 79,
+   "of": 305,
+   "entropy": 0.734,
+   "max_share": 0.067
+  },
+  "hubness_k5": 3.204,
+  "paraphrase_overlap_at3": 0.133,
+  "paraphrase_vs_random": 0.898,
+  "opposite_vs_random": 0.959,
+  "top1_entropy_vs_picks": 0.94,
+  "rand_overlap_at3": 0.032,
+  "top_hub": "Boris Kustodiev (3/40)",
+  "library": "305",
+  "text": "ensemble",
+  "method": "whiten16",
+  "para_lift_at3": 0.101
+ },
+ {
+  "candidate": "305 \u00b7 ensemble \u00b7 whiten64",
+  "coverage_top1": {
+   "unique": 30,
+   "of": 305,
+   "entropy": 0.577,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 73,
+   "of": 305,
+   "entropy": 0.728,
+   "max_share": 0.042
+  },
+  "hubness_k5": 1.829,
+  "paraphrase_overlap_at3": 0.167,
+  "paraphrase_vs_random": 0.849,
+  "opposite_vs_random": 0.996,
+  "top1_entropy_vs_picks": 0.895,
+  "rand_overlap_at3": 0.03,
+  "top_hub": "Pyotr Konchalovsky (3/40)",
+  "library": "305",
+  "text": "ensemble",
+  "method": "whiten64",
+  "para_lift_at3": 0.137
+ },
+ {
+  "candidate": "305 \u00b7 ensemble \u00b7 csls",
+  "coverage_top1": {
+   "unique": 29,
+   "of": 305,
+   "entropy": 0.574,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 65,
+   "of": 305,
+   "entropy": 0.694,
+   "max_share": 0.067
+  },
+  "hubness_k5": 3.242,
+  "paraphrase_overlap_at3": 0.183,
+  "paraphrase_vs_random": 0.791,
+  "opposite_vs_random": 0.958,
+  "top1_entropy_vs_picks": 0.89,
+  "rand_overlap_at3": 0.05,
+  "top_hub": "Tanner (3/40)",
+  "library": "305",
+  "text": "ensemble",
+  "method": "csls",
+  "para_lift_at3": 0.133
+ },
+ {
+  "candidate": "305 \u00b7 ensemble \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 32,
+   "of": 305,
+   "entropy": 0.59,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 86,
+   "of": 305,
+   "entropy": 0.762,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.703,
+  "paraphrase_overlap_at3": 0.15,
+  "paraphrase_vs_random": 0.857,
+  "opposite_vs_random": 0.972,
+  "top1_entropy_vs_picks": 0.914,
+  "rand_overlap_at3": 0.02,
+  "top_hub": "Tanner (3/40)",
+  "library": "305",
+  "text": "ensemble",
+  "method": "zscore",
+  "para_lift_at3": 0.13
+ },
+ {
+  "candidate": "305 \u00b7 ensemble \u00b7 center_both+csls",
+  "coverage_top1": {
+   "unique": 34,
+   "of": 305,
+   "entropy": 0.606,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 84,
+   "of": 305,
+   "entropy": 0.756,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.771,
+  "paraphrase_overlap_at3": 0.133,
+  "paraphrase_vs_random": 0.844,
+  "opposite_vs_random": 0.977,
+  "top1_entropy_vs_picks": 0.94,
+  "rand_overlap_at3": 0.02,
+  "top_hub": "Nicholas Roerich (3/40)",
+  "library": "305",
+  "text": "ensemble",
+  "method": "center_both+csls",
+  "para_lift_at3": 0.113
+ },
+ {
+  "candidate": "305 \u00b7 ensemble \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 32,
+   "of": 305,
+   "entropy": 0.588,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 81,
+   "of": 305,
+   "entropy": 0.744,
+   "max_share": 0.05
+  },
+  "hubness_k5": 2.411,
+  "paraphrase_overlap_at3": 0.133,
+  "paraphrase_vs_random": 0.856,
+  "opposite_vs_random": 0.942,
+  "top1_entropy_vs_picks": 0.912,
+  "rand_overlap_at3": 0.024,
+  "top_hub": "Nicholas Roerich (4/40)",
+  "library": "305",
+  "text": "ensemble",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.109
+ },
+ {
+  "candidate": "305 \u00b7 ensemble \u00b7 whiten64+zscore",
+  "coverage_top1": {
+   "unique": 30,
+   "of": 305,
+   "entropy": 0.576,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 81,
+   "of": 305,
+   "entropy": 0.746,
+   "max_share": 0.042
+  },
+  "hubness_k5": 2.308,
+  "paraphrase_overlap_at3": 0.167,
+  "paraphrase_vs_random": 0.808,
+  "opposite_vs_random": 0.972,
+  "top1_entropy_vs_picks": 0.893,
+  "rand_overlap_at3": 0.021,
+  "top_hub": "Nicholas Roerich (4/40)",
+  "library": "305",
+  "text": "ensemble",
+  "method": "whiten64+zscore",
+  "para_lift_at3": 0.146
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 17,
+   "of": 305,
+   "entropy": 0.422,
+   "max_share": 0.275
+  },
+  "coverage_top3": {
+   "unique": 40,
+   "of": 305,
+   "entropy": 0.561,
+   "max_share": 0.158
+  },
+  "hubness_k5": 6.258,
+  "paraphrase_overlap_at3": 0.367,
+  "paraphrase_vs_random": 0.72,
+  "opposite_vs_random": 1.038,
+  "top1_entropy_vs_picks": 0.654,
+  "rand_overlap_at3": 0.169,
+  "top_hub": "Friedrich (11/40)",
+  "library": "305",
+  "text": "baseline/Rsent",
+  "method": "cosine",
+  "para_lift_at3": 0.198
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 35,
+   "of": 305,
+   "entropy": 0.615,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 81,
+   "of": 305,
+   "entropy": 0.749,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.561,
+  "paraphrase_overlap_at3": 0.183,
+  "paraphrase_vs_random": 0.844,
+  "opposite_vs_random": 0.989,
+  "top1_entropy_vs_picks": 0.953,
+  "rand_overlap_at3": 0.024,
+  "top_hub": "Rembrandt (2/40)",
+  "library": "305",
+  "text": "baseline/Rsent",
+  "method": "center_both",
+  "para_lift_at3": 0.159
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent \u00b7 whiten16",
+  "coverage_top1": {
+   "unique": 32,
+   "of": 305,
+   "entropy": 0.594,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 90,
+   "of": 305,
+   "entropy": 0.768,
+   "max_share": 0.033
+  },
+  "hubness_k5": 2.009,
+  "paraphrase_overlap_at3": 0.117,
+  "paraphrase_vs_random": 0.818,
+  "opposite_vs_random": 1.021,
+  "top1_entropy_vs_picks": 0.921,
+  "rand_overlap_at3": 0.01,
+  "top_hub": "Salvador Dali (3/40)",
+  "library": "305",
+  "text": "baseline/Rsent",
+  "method": "whiten16",
+  "para_lift_at3": 0.107
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent \u00b7 whiten64",
+  "coverage_top1": {
+   "unique": 34,
+   "of": 305,
+   "entropy": 0.609,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 84,
+   "of": 305,
+   "entropy": 0.754,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.586,
+  "paraphrase_overlap_at3": 0.133,
+  "paraphrase_vs_random": 0.884,
+  "opposite_vs_random": 0.994,
+  "top1_entropy_vs_picks": 0.944,
+  "rand_overlap_at3": 0.024,
+  "top_hub": "Tanner (2/40)",
+  "library": "305",
+  "text": "baseline/Rsent",
+  "method": "whiten64",
+  "para_lift_at3": 0.109
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent \u00b7 csls",
+  "coverage_top1": {
+   "unique": 29,
+   "of": 305,
+   "entropy": 0.574,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 65,
+   "of": 305,
+   "entropy": 0.698,
+   "max_share": 0.058
+  },
+  "hubness_k5": 3.503,
+  "paraphrase_overlap_at3": 0.217,
+  "paraphrase_vs_random": 0.802,
+  "opposite_vs_random": 0.964,
+  "top1_entropy_vs_picks": 0.89,
+  "rand_overlap_at3": 0.039,
+  "top_hub": "Friedrich (3/40)",
+  "library": "305",
+  "text": "baseline/Rsent",
+  "method": "csls",
+  "para_lift_at3": 0.178
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 35,
+   "of": 305,
+   "entropy": 0.615,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 91,
+   "of": 305,
+   "entropy": 0.775,
+   "max_share": 0.025
+  },
+  "hubness_k5": 1.666,
+  "paraphrase_overlap_at3": 0.1,
+  "paraphrase_vs_random": 0.918,
+  "opposite_vs_random": 0.994,
+  "top1_entropy_vs_picks": 0.953,
+  "rand_overlap_at3": 0.015,
+  "top_hub": "Munch (2/40)",
+  "library": "305",
+  "text": "baseline/Rsent",
+  "method": "zscore",
+  "para_lift_at3": 0.085
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent \u00b7 center_both+csls",
+  "coverage_top1": {
+   "unique": 33,
+   "of": 305,
+   "entropy": 0.602,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 82,
+   "of": 305,
+   "entropy": 0.755,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.65,
+  "paraphrase_overlap_at3": 0.167,
+  "paraphrase_vs_random": 0.84,
+  "opposite_vs_random": 0.991,
+  "top1_entropy_vs_picks": 0.934,
+  "rand_overlap_at3": 0.024,
+  "top_hub": "Rembrandt (2/40)",
+  "library": "305",
+  "text": "baseline/Rsent",
+  "method": "center_both+csls",
+  "para_lift_at3": 0.143
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 35,
+   "of": 305,
+   "entropy": 0.615,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 89,
+   "of": 305,
+   "entropy": 0.772,
+   "max_share": 0.025
+  },
+  "hubness_k5": 1.608,
+  "paraphrase_overlap_at3": 0.167,
+  "paraphrase_vs_random": 0.862,
+  "opposite_vs_random": 1.007,
+  "top1_entropy_vs_picks": 0.953,
+  "rand_overlap_at3": 0.015,
+  "top_hub": "Munch (2/40)",
+  "library": "305",
+  "text": "baseline/Rsent",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.152
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent \u00b7 whiten64+zscore",
+  "coverage_top1": {
+   "unique": 37,
+   "of": 305,
+   "entropy": 0.627,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 85,
+   "of": 305,
+   "entropy": 0.76,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.856,
+  "paraphrase_overlap_at3": 0.167,
+  "paraphrase_vs_random": 0.874,
+  "opposite_vs_random": 1.007,
+  "top1_entropy_vs_picks": 0.972,
+  "rand_overlap_at3": 0.018,
+  "top_hub": "Munch (2/40)",
+  "library": "305",
+  "text": "baseline/Rsent",
+  "method": "whiten64+zscore",
+  "para_lift_at3": 0.149
+ },
+ {
+  "candidate": "305 \u00b7 ensemble/Rsent \u00b7 cosine",
+  "coverage_top1": {
+   "unique": 20,
+   "of": 305,
+   "entropy": 0.472,
+   "max_share": 0.2
+  },
+  "coverage_top3": {
+   "unique": 37,
+   "of": 305,
+   "entropy": 0.535,
+   "max_share": 0.167
+  },
+  "hubness_k5": 6.088,
+  "paraphrase_overlap_at3": 0.383,
+  "paraphrase_vs_random": 0.722,
+  "opposite_vs_random": 0.993,
+  "top1_entropy_vs_picks": 0.732,
+  "rand_overlap_at3": 0.185,
+  "top_hub": "Munch (8/40)",
+  "library": "305",
+  "text": "ensemble/Rsent",
+  "method": "cosine",
+  "para_lift_at3": 0.198
+ },
+ {
+  "candidate": "305 \u00b7 ensemble/Rsent \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 33,
+   "of": 305,
+   "entropy": 0.6,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 81,
+   "of": 305,
+   "entropy": 0.747,
+   "max_share": 0.042
+  },
+  "hubness_k5": 1.704,
+  "paraphrase_overlap_at3": 0.183,
+  "paraphrase_vs_random": 0.818,
+  "opposite_vs_random": 0.986,
+  "top1_entropy_vs_picks": 0.931,
+  "rand_overlap_at3": 0.026,
+  "top_hub": "Ivan Shishkin (3/40)",
+  "library": "305",
+  "text": "ensemble/Rsent",
+  "method": "center_both",
+  "para_lift_at3": 0.157
+ },
+ {
+  "candidate": "305 \u00b7 ensemble/Rsent \u00b7 whiten16",
+  "coverage_top1": {
+   "unique": 37,
+   "of": 305,
+   "entropy": 0.624,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 94,
+   "of": 305,
+   "entropy": 0.778,
+   "max_share": 0.033
+  },
+  "hubness_k5": 2.022,
+  "paraphrase_overlap_at3": 0.067,
+  "paraphrase_vs_random": 0.876,
+  "opposite_vs_random": 1.009,
+  "top1_entropy_vs_picks": 0.968,
+  "rand_overlap_at3": 0.011,
+  "top_hub": "Pyotr Konchalovsky (3/40)",
+  "library": "305",
+  "text": "ensemble/Rsent",
+  "method": "whiten16",
+  "para_lift_at3": 0.056
+ },
+ {
+  "candidate": "305 \u00b7 ensemble/Rsent \u00b7 whiten64",
+  "coverage_top1": {
+   "unique": 37,
+   "of": 305,
+   "entropy": 0.627,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 88,
+   "of": 305,
+   "entropy": 0.767,
+   "max_share": 0.025
+  },
+  "hubness_k5": 1.575,
+  "paraphrase_overlap_at3": 0.133,
+  "paraphrase_vs_random": 0.863,
+  "opposite_vs_random": 0.955,
+  "top1_entropy_vs_picks": 0.972,
+  "rand_overlap_at3": 0.021,
+  "top_hub": "Ivan Shishkin (2/40)",
+  "library": "305",
+  "text": "ensemble/Rsent",
+  "method": "whiten64",
+  "para_lift_at3": 0.112
+ },
+ {
+  "candidate": "305 \u00b7 ensemble/Rsent \u00b7 csls",
+  "coverage_top1": {
+   "unique": 29,
+   "of": 305,
+   "entropy": 0.572,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 64,
+   "of": 305,
+   "entropy": 0.689,
+   "max_share": 0.058
+  },
+  "hubness_k5": 3.364,
+  "paraphrase_overlap_at3": 0.2,
+  "paraphrase_vs_random": 0.813,
+  "opposite_vs_random": 0.946,
+  "top1_entropy_vs_picks": 0.887,
+  "rand_overlap_at3": 0.055,
+  "top_hub": "Munch (4/40)",
+  "library": "305",
+  "text": "ensemble/Rsent",
+  "method": "csls",
+  "para_lift_at3": 0.145
+ },
+ {
+  "candidate": "305 \u00b7 ensemble/Rsent \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 38,
+   "of": 305,
+   "entropy": 0.633,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 89,
+   "of": 305,
+   "entropy": 0.769,
+   "max_share": 0.025
+  },
+  "hubness_k5": 1.41,
+  "paraphrase_overlap_at3": 0.2,
+  "paraphrase_vs_random": 0.855,
+  "opposite_vs_random": 1.003,
+  "top1_entropy_vs_picks": 0.981,
+  "rand_overlap_at3": 0.015,
+  "top_hub": "Ivan Shishkin (2/40)",
+  "library": "305",
+  "text": "ensemble/Rsent",
+  "method": "zscore",
+  "para_lift_at3": 0.185
+ },
+ {
+  "candidate": "305 \u00b7 ensemble/Rsent \u00b7 center_both+csls",
+  "coverage_top1": {
+   "unique": 33,
+   "of": 305,
+   "entropy": 0.6,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 84,
+   "of": 305,
+   "entropy": 0.758,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.494,
+  "paraphrase_overlap_at3": 0.183,
+  "paraphrase_vs_random": 0.817,
+  "opposite_vs_random": 1.0,
+  "top1_entropy_vs_picks": 0.931,
+  "rand_overlap_at3": 0.02,
+  "top_hub": "Ilya Repin (3/40)",
+  "library": "305",
+  "text": "ensemble/Rsent",
+  "method": "center_both+csls",
+  "para_lift_at3": 0.163
+ },
+ {
+  "candidate": "305 \u00b7 ensemble/Rsent \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 33,
+   "of": 305,
+   "entropy": 0.602,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 87,
+   "of": 305,
+   "entropy": 0.764,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.471,
+  "paraphrase_overlap_at3": 0.183,
+  "paraphrase_vs_random": 0.818,
+  "opposite_vs_random": 1.008,
+  "top1_entropy_vs_picks": 0.934,
+  "rand_overlap_at3": 0.018,
+  "top_hub": "Camille Pissarro (2/40)",
+  "library": "305",
+  "text": "ensemble/Rsent",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.165
+ },
+ {
+  "candidate": "305 \u00b7 ensemble/Rsent \u00b7 whiten64+zscore",
+  "coverage_top1": {
+   "unique": 32,
+   "of": 305,
+   "entropy": 0.594,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 88,
+   "of": 305,
+   "entropy": 0.764,
+   "max_share": 0.042
+  },
+  "hubness_k5": 1.733,
+  "paraphrase_overlap_at3": 0.1,
+  "paraphrase_vs_random": 0.883,
+  "opposite_vs_random": 0.975,
+  "top1_entropy_vs_picks": 0.921,
+  "rand_overlap_at3": 0.021,
+  "top_hub": "Munch (3/40)",
+  "library": "305",
+  "text": "ensemble/Rsent",
+  "method": "whiten64+zscore",
+  "para_lift_at3": 0.079
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent-A \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 34,
+   "of": 305,
+   "entropy": 0.609,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 80,
+   "of": 305,
+   "entropy": 0.75,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.752,
+  "paraphrase_overlap_at3": 0.167,
+  "paraphrase_vs_random": 0.84,
+  "opposite_vs_random": 0.994,
+  "top1_entropy_vs_picks": 0.944,
+  "rand_overlap_at3": 0.023,
+  "top_hub": "Rembrandt (2/40)",
+  "library": "305",
+  "text": "baseline/Rsent-A",
+  "method": "center_both",
+  "para_lift_at3": 0.144
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent-A \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 32,
+   "of": 305,
+   "entropy": 0.594,
+   "max_share": 0.075
+  },
+  "coverage_top3": {
+   "unique": 84,
+   "of": 305,
+   "entropy": 0.756,
+   "max_share": 0.042
+  },
+  "hubness_k5": 1.702,
+  "paraphrase_overlap_at3": 0.15,
+  "paraphrase_vs_random": 0.863,
+  "opposite_vs_random": 1.01,
+  "top1_entropy_vs_picks": 0.921,
+  "rand_overlap_at3": 0.023,
+  "top_hub": "John Singer Sargent (3/40)",
+  "library": "305",
+  "text": "baseline/Rsent-A",
+  "method": "zscore",
+  "para_lift_at3": 0.127
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent-A \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 30,
+   "of": 305,
+   "entropy": 0.576,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 77,
+   "of": 305,
+   "entropy": 0.733,
+   "max_share": 0.042
+  },
+  "hubness_k5": 2.129,
+  "paraphrase_overlap_at3": 0.2,
+  "paraphrase_vs_random": 0.86,
+  "opposite_vs_random": 1.015,
+  "top1_entropy_vs_picks": 0.893,
+  "rand_overlap_at3": 0.037,
+  "top_hub": "Camille Pissarro (4/40)",
+  "library": "305",
+  "text": "baseline/Rsent-A",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.163
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent-B \u00b7 center_both",
+  "coverage_top1": {
+   "unique": 36,
+   "of": 305,
+   "entropy": 0.621,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 82,
+   "of": 305,
+   "entropy": 0.753,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.735,
+  "paraphrase_overlap_at3": 0.2,
+  "paraphrase_vs_random": 0.84,
+  "opposite_vs_random": 0.987,
+  "top1_entropy_vs_picks": 0.962,
+  "rand_overlap_at3": 0.024,
+  "top_hub": "Rembrandt (2/40)",
+  "library": "305",
+  "text": "baseline/Rsent-B",
+  "method": "center_both",
+  "para_lift_at3": 0.176
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent-B \u00b7 zscore",
+  "coverage_top1": {
+   "unique": 36,
+   "of": 305,
+   "entropy": 0.621,
+   "max_share": 0.05
+  },
+  "coverage_top3": {
+   "unique": 90,
+   "of": 305,
+   "entropy": 0.771,
+   "max_share": 0.033
+  },
+  "hubness_k5": 1.653,
+  "paraphrase_overlap_at3": 0.083,
+  "paraphrase_vs_random": 0.888,
+  "opposite_vs_random": 0.976,
+  "top1_entropy_vs_picks": 0.962,
+  "rand_overlap_at3": 0.022,
+  "top_hub": "Claude Monet (2/40)",
+  "library": "305",
+  "text": "baseline/Rsent-B",
+  "method": "zscore",
+  "para_lift_at3": 0.061
+ },
+ {
+  "candidate": "305 \u00b7 baseline/Rsent-B \u00b7 center_both+zscore",
+  "coverage_top1": {
+   "unique": 33,
+   "of": 305,
+   "entropy": 0.594,
+   "max_share": 0.1
+  },
+  "coverage_top3": {
+   "unique": 85,
+   "of": 305,
+   "entropy": 0.755,
+   "max_share": 0.042
+  },
+  "hubness_k5": 1.949,
+  "paraphrase_overlap_at3": 0.2,
+  "paraphrase_vs_random": 0.835,
+  "opposite_vs_random": 1.009,
+  "top1_entropy_vs_picks": 0.921,
+  "rand_overlap_at3": 0.023,
+  "top_hub": "Claude Monet (4/40)",
+  "library": "305",
+  "text": "baseline/Rsent-B",
+  "method": "center_both+zscore",
+  "para_lift_at3": 0.177
+ }
+]

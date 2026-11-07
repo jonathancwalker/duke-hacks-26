@@ -119,3 +119,70 @@ The personas use synthetic voice, movement and gesture values until the webcam a
 - **What helped:** letting the mood set the scene's **light and weather** (Gemini writes it: "at night, one candle-lit window", "in full spring bloom, turquoise sky"). Spring turns turquoise, exam nerves get rain streaks, homesick gets snow and a moon.
 - **Most distinct: no scene at all.** Abstract frames (same painters and axes, no chapel) differ in color *and* form: grief grey slashes, triumph Kandinsky shapes, love Klimt mosaic.
 - **Blank canvas, two ways:** paths reveal the chapel in each visitor's mood (it emerges over the night), or lay down abstract mood paint. Brush-like ragged mask edges keep paths from looking like cut-out tubes on linen.
+
+## Feeling space A: repair CLIP matching (2026-11-07)
+
+**Question:** can CLIP text→painting matching stop collapsing onto a few hub paintings without an LLM picking painters?
+
+**Setup** (`experiments/space/clip_*.py`, run on a Mac with MPS, no GPU VM):
+- Both towers of `laion/CLIP-ViT-H-14-laion2B-s32B-b79K`. The image tower is the IP-Adapter's encoder family, and the embeds are the same projected `image_embeds` the lab's `clip_image` returns.
+- Libraries: the lab's 36 paintings from Wikimedia Commons, and the same 36 plus 269 WikiArt paintings, for 305 in all. The WikiArt subset is stratified by style from `huggan/wikiart` via the datasets-server rows API, with only the kept images downloaded (148 MB).
+- Test set: the shared 40 statements in `feelings.json`, scored with `metrics.report_scores` (unchanged).
+- Every score matrix is globally rescaled to the baseline's spread before scoring, which leaves rankings unchanged. `topk_dist` uses a fixed temperature, so without this the pair metrics would reward a method's score scale rather than its picks.
+- New metrics, kept in `clip_run.py`:
+  - **para lift@3:** paraphrase top-3 overlap minus the overlap of random non-paraphrase pairs. Agreement that comes free from everyone landing on the same hub doesn't count.
+  - **top1 ent/picks:** top-1 entropy normalised by log(min(40, N)), so the 36- and 305-painting libraries compare.
+- Fixes need a reference text bank. Two hand-written banks, both separate from the test statements:
+  - **Rwords:** 78 emotion words.
+  - **Rsent:** 50 visitor-style sentences on mixed and neutral topics, standing in for a log of past visitors.
+- Full table: `experiments/space/out/clip_results.md`. Board: `experiments/space/out/clip_board.png`.
+
+| library | prompt / ref bank | method | top1 unique | top1 ent/picks | max share | hubness k5 | para overlap@3 | para lift@3 | para/rand | opp/rand | biggest hub |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 36 | – | random scores (reference) | 23 | 0.82 | 0.10 | 0.74 | 0.12 | 0.03 | 1.02 | 0.95 | – |
+| 36 | "a painting that feels …" | **cosine (today)** | 9 | 0.44 | 0.55 | 1.84 | 0.53 | 0.24 | 0.67 | 0.91 | Friedrich 22/40 |
+| 36 | "the mood of this artwork is like: …" | cosine | 14 | 0.59 | 0.35 | 1.59 | 0.43 | 0.13 | 0.73 | 0.97 | Friedrich 14/40 |
+| 36 | "an artwork expressing this emotion: …" | cosine | 10 | 0.39 | 0.62 | 2.16 | 0.53 | 0.21 | 0.73 | 0.97 | Munch 25/40 |
+| 36 | 5-prompt ensemble | cosine | 10 | 0.52 | 0.30 | 1.88 | 0.55 | 0.23 | 0.73 | 0.96 | Friedrich 12/40 |
+| 36 | today's prompt | center images only | 9 | 0.41 | 0.60 | 1.89 | 0.52 | 0.20 | 0.76 | 0.94 | Friedrich 24/40 |
+| 36 | today's / Rsent | modality-gap shift | 10 | 0.57 | 0.23 | 1.72 | 0.50 | 0.19 | 0.72 | 1.03 | Munch 9/40 |
+| 36 | today's / Rsent | whiten (16 PCs of library) | 19 | 0.77 | 0.15 | 0.63 | 0.27 | 0.15 | 0.77 | 0.94 | Goya 6/40 |
+| 36 | today's / Rsent | CSLS hub penalty | 19 | 0.77 | 0.12 | 1.46 | 0.37 | 0.20 | 0.70 | 1.00 | Friedrich 5/40 |
+| 36 | today's / Rsent | per-painting z-score | 18 | 0.77 | 0.10 | 0.69 | 0.42 | 0.30 | 0.75 | 1.00 | Bruegel 4/40 |
+| 36 | today's / Rwords | center both | 17 | 0.73 | 0.15 | 1.25 | 0.35 | 0.17 | 0.74 | 0.91 | Renoir 6/40 |
+| 36 | today's / **Rsent** | **center both** | 24 | 0.85 | 0.10 | 0.39 | 0.33 | 0.24 | 0.76 | 0.97 | Tanner 4/40 |
+| 36 | today's / Rsent half A · half B | center both | 21 · 24 | 0.80 · 0.85 | 0.12 · 0.10 | 1.09 · 0.23 | 0.37 · 0.32 | 0.26 · 0.22 | 0.72 · 0.74 | 1.03 · 0.97 | – |
+| 36 | today's / Rsent | center both + z-score | 21 | 0.81 | 0.10 | 0.84 | 0.38 | 0.28 | 0.71 | 1.00 | Monet 4/40 |
+| 36 | today's / Rsent half A · half B | center both + z-score | 19 · 17 | 0.80 · 0.74 | 0.10 · 0.15 | 0.84 · 0.85 | 0.33 · 0.32 | 0.21 · 0.21 | 0.72 · 0.74 | 1.01 · 1.02 | – |
+| 36 | today's / the 40 test statements* | center both | 24 | 0.85 | 0.10 | 0.22 | 0.32 | 0.24 | 0.76 | 1.01 | Tanner 4/40 |
+| 305 | – | random scores (reference) | 37 | 0.97 | 0.05 | 1.08 | 0.00 | -0.01 | 1.01 | 1.00 | – |
+| 305 | today's prompt | cosine | 17 | 0.65 | 0.28 | 6.26 | 0.37 | 0.20 | 0.72 | 1.04 | Friedrich 11/40 |
+| 305 | today's / **Rsent** | **center both** | 35 | 0.95 | 0.05 | 1.56 | 0.18 | 0.16 | 0.84 | 0.99 | Rembrandt 2/40 |
+| 305 | today's / Rsent | center both + z-score | 35 | 0.95 | 0.05 | 1.61 | 0.17 | 0.15 | 0.86 | 1.01 | Munch 2/40 |
+
+\* Transductive: centred on the test statements themselves. It's only an upper bound; a booth would use a running mean of the night's visitors.
+
+**What worked**
+- **Centring both clouds is the repair.** Subtract the library's mean image embedding from each painting, and the mean of a bank of visitor-style sentences from each text, before cosine.
+  - On 36 paintings: top-1 picks go from 9 to 24 distinct paintings, the biggest hub from 22/40 to 4/40, and hubness from 1.84 to 0.39 (random scores give 0.74).
+  - Paraphrase lift holds at 0.24, the same as today. The fix removes collapse without losing the agreement that wasn't coming from hubs.
+- **The reference bank matters more than the method.** The same centring with emotion *words* only reaches 17 distinct picks. With visitor *sentences* it matches the transductive upper bound. This held on each half of the sentence bank (25 sentences each).
+- **Simplest is best.** Per-painting z-scores, CSLS and whitening reach similar spread. Stacking z-score on centring didn't hold up on the split halves (lift 0.21 on both halves vs 0.28 on the full bank).
+
+**What didn't**
+- **Prompt templates and ensembles only move the hub.** "Emotion" wording sends 25/40 to The Scream, and "mood" wording sends 14/40 to Friedrich.
+- **Image-only centring and the modality-gap shift barely help.** Neither removes the direction all visitor sentences share, and centring the text side is what made the difference.
+- **Nothing separates opposites.** opp/rand stays 0.91–1.04 for every method, so grief and triumph pick paintings no farther apart than random pairs. CLIP's text side encodes topic more than valence. This is the case for a trained feeling space (C) or an LLM step.
+- **A bigger library alone doesn't fix collapse.** On 305 paintings plain cosine still sends 11/40 to Friedrich and hubness rises to 6.26. With centring it spreads well (35 distinct, max 2/40).
+  - Exact top-3 paraphrase overlap drops (lift 0.16), partly because more near-equivalent paintings compete.
+  - The board shows WikiArt's black-and-white Doré engravings and sketches winning rage, fear and anxious. They're bad style sources for the IP-Adapter, so a larger library needs curation (colour paintings only).
+
+**Caveats**
+- **Numbers are a screen.** 40 statements and 20 paraphrase pairs, so differences under ~0.05 in lift are noise. The human check on `out/clip_board.png` comes next.
+- **Subject still beats feeling.** "Alone even in this crowd" picks crowd scenes, and "first snow" picks snow scenes.
+- **The sentence bank was written by hand** while the test set was visible. A real visitor log is the honest version.
+- **The WikiArt slice is narrow.** The datasets-server only indexes the first 11,320 rows, which are sorted by artist: 23 named artists plus "Unknown", 15 styles, heavy on Impressionism and Realism.
+- **Encoder equivalence not checked.** I didn't confirm that the IP-Adapter's own encoder weights (`h94/IP-Adapter` `models/image_encoder`) produce identical embeds to the LAION image tower; both are OpenCLIP ViT-H-14.
+- **Input differs from production.** Today's production text is Gemini's temperament line, not the raw visitor sentence scored here.
+
+Reproduce (from `experiments/space/`): `uv run --no-project --with numpy python -I clip_wikiart.py`, then `uv run --no-project --with torch,transformers,pillow,numpy python -I clip_run.py` and the same for `clip_board.py`.
