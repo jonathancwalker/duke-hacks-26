@@ -1,5 +1,21 @@
-// Listening: Web Speech transcript plus mic loudness -> { feeling, arousal }.
+// Listening: Web Speech transcript plus mic loudness -> { feeling, arousal, envelope }.
 import { bar, meter, lin, frame, sleep } from './state.js';
+
+const ENV_BINS = 24;
+
+// Loudness over the talking moment (per-frame dB levels) -> ENV_BINS values in 0..1 relative to the visitor's own peak,
+// so quiet-then-loud rises whatever the mic gain. Each bin keeps its loudest frame, which bridges the gaps between
+// syllables. null when no frame was voiced (the path then keeps full strength).
+export function envelope(levels) {
+  if (!levels.some(d => d > -50)) return null;
+  const n = levels.length, bins = Array.from({ length: ENV_BINS }, (_, i) => {
+    const a = Math.floor(i * n / ENV_BINS), b = Math.max(a + 1, Math.floor((i + 1) * n / ENV_BINS));
+    return lin(Math.max(...levels.slice(a, b)), -55, -20);
+  });
+  const smooth = bins.map((v, i) => (bins[Math.max(0, i - 1)] + 2 * v + bins[Math.min(ENV_BINS - 1, i + 1)]) / 4);
+  const peak = Math.max(...smooth);
+  return smooth.map(v => v / peak);
+}
 
 export async function listen(sec) {
   let text = '', interim = '', rec = null, ended = Promise.resolve();
@@ -28,5 +44,5 @@ export async function listen(sec) {
   stream?.getTracks().forEach(t => t.stop()); ac?.close();
   const voiced = levels.filter(d => d > -50).sort((a, b) => a - b);
   const p90 = voiced.length ? voiced[Math.floor(voiced.length * .9)] : -60;
-  return { feeling: (text + interim).trim(), arousal: voiced.length > 10 ? lin(p90, -41, -25) : 0.3 };
+  return { feeling: (text + interim).trim(), arousal: voiced.length > 10 ? lin(p90, -41, -25) : 0.3, envelope: envelope(levels) };
 }

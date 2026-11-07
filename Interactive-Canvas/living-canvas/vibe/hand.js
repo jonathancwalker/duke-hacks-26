@@ -20,10 +20,15 @@ const toCanvas = lm => ({ x: lin(1 - lm.x, .1, .9) * S.W, y: lin(lm.y, .1, .9) *
 // Call at the start of each trace.
 export function resetTips() { lastT = -1; }
 
-// [{ key, x, y }] index fingertips, one per visible hand; null when there is no new camera frame (keep strokes open).
+// Closed fist: the index fingertip (8) is curled in nearer the wrist (0) than its middle knuckle (6). Pointing keeps it out.
+const fromWrist = (lm, j) => Math.hypot(lm[j].x - lm[0].x, lm[j].y - lm[0].y, lm[j].z - lm[0].z);
+const isFist = lm => fromWrist(lm, 8) < fromWrist(lm, 6);
+
+// [{ key, x, y, fist }] index fingertips, one per visible hand; null when there is no new camera frame (keep strokes open).
+// fist: true lifts the pen (the cursor still moves, nothing is recorded).
 export function readTips() {
   if (!(hands && video.readyState >= 2 && video.currentTime !== lastT)) return null;
   lastT = video.currentTime;
   const r = hands.detectForVideo(video, performance.now());
-  return r.landmarks.map((lm, i) => ({ key: r.handednesses?.[i]?.[0]?.categoryName || 'h' + i, ...toCanvas(lm[8]) }));
+  return r.landmarks.map((lm, i) => ({ key: r.handednesses?.[i]?.[0]?.categoryName || 'h' + i, ...toCanvas(lm[8]), fist: isFist(lm) }));
 }

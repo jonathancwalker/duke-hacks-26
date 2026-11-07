@@ -40,7 +40,8 @@ export const setTrailBlend = () => { trail.style.mixBlendMode = blankStart() ? '
 
 export const clearTrail = () => tctx.clearRect(0, 0, S.W, S.H);
 
-// Trace for sec seconds. tipsAt(f) -> [{ key, x, y }] or null (no new frame), f in 0..1. Returns strokes of points.
+// Trace for sec seconds. tipsAt(f) -> [{ key, x, y, fist }] or null (no new frame), f in 0..1. Returns strokes of points.
+// A fist lifts the pen: the cursor keeps moving but records nothing, and opening the hand starts a new stroke.
 export async function trace(sec, look, tipsAt) {
   const { W, H } = S;
   const strokes = [], live = {}, width = look.width, colors = look.palette.map(c => glow(c));
@@ -55,11 +56,13 @@ export async function trace(sec, look, tipsAt) {
       for (const k of Object.keys(live)) if (!tips.some(p => p.key === k)) delete live[k];   // hand left: stroke ends
       for (const p of tips) {
         let h = live[p.key];
-        if (!h) { h = live[p.key] = { x: p.x, y: p.y, s: [] }; strokes.push(h.s); }
+        if (!h) h = live[p.key] = { x: p.x, y: p.y, s: null };
+        if (p.fist) h.s = null;                                                 // pen up
+        else if (!h.s) strokes.push(h.s = []);                                  // pen down: a new stroke
         const x = h.x + (p.x - h.x) * .5, y = h.y + (p.y - h.y) * .5;           // light smoothing
-        const prev = h.s[h.s.length - 1];
-        if (!prev || Math.hypot(x - prev.x, y - prev.y) > W / 400) {
-          h.s.push({ x, y });
+        const prev = h.s?.[h.s.length - 1];
+        if (h.s && (!prev || Math.hypot(x - prev.x, y - prev.y) > W / 400)) {
+          h.s.push({ x, y, t });
           const c = colors[Math.floor(n++ / 14) % colors.length];
           const a = prev || { x, y };
           tctx.lineCap = tctx.lineJoin = 'round'; tctx.strokeStyle = c;
@@ -71,15 +74,15 @@ export async function trace(sec, look, tipsAt) {
         h.x = x; h.y = y;
       }
     }
-    for (const h of Object.values(live)) dot(h.x, h.y, width / 2);
+    for (const h of Object.values(live)) dot(h.x, h.y, width / 2, !h.s);
     await frame();
   }
   cctx.clearRect(0, 0, W, H);
   return strokes.filter(s => s.length);
 }
 
-function dot(x, y, r) {
-  cctx.globalAlpha = .9; cctx.strokeStyle = '#fff'; cctx.lineWidth = S.W / 500;
+function dot(x, y, r, up) {
+  cctx.globalAlpha = up ? .35 : .9; cctx.strokeStyle = '#fff'; cctx.lineWidth = S.W / 500;   // faint while the pen is up
   cctx.beginPath(); cctx.arc(x, y, r, 0, Math.PI * 2); cctx.stroke();
 }
 
@@ -100,19 +103,35 @@ function evenly(s, step) {
   return out;
 }
 
+// Voice loudness (envelope, 0..1 over the talking moment) stretched across the drawing: f = 0 at the first drawn point,
+// 1 at the last. Quiet talk gives a faint reveal, loud talk a strong one. No envelope: full strength. Squared because a
+// piece's core and bristles stack and saturate fast; this keeps the visible opacity roughly following the voice.
+const FAINT = .05;
+function loudness(envelope, f) {
+  if (!envelope?.length) return 1;
+  const x = Math.max(0, Math.min(1, f)) * (envelope.length - 1), i = Math.floor(x), j = Math.min(envelope.length - 1, i + 1);
+  const v = envelope[i] + (envelope[j] - envelope[i]) * (x - i);
+  return FAINT + (1 - FAINT) * v * v;
+}
+
 // The mood frame shows through a soft mask built along the path in the order it was drawn. Each short piece of path
-// adds about two-thirds opacity with bristle edges, so crossings come through fully. texture (0..1, from movement
-// while talking) sets the edges for the whole visit: 0 = soft, blurred; 1 = ragged, splayed bristles.
-export async function reveal(strokes, vibe, width, texture = .35) {
+// adds about two-thirds opacity (scaled by the voice's loudness at that moment) with bristle edges, so crossings come
+// through fully. texture (0..1, from movement while talking) sets the edges for the whole visit: 0 = soft, blurred;
+// 1 = ragged, splayed bristles. envelope (voice loudness while talking) sets the strength along the path.
+export async function reveal(strokes, vibe, width, texture = .35, envelope) {
   const { W, H, base } = S;
   const mask = mk(), soft = mk(), layer = mk(), m = mask.getContext('2d'), sc = soft.getContext('2d'), lc = layer.getContext('2d');
   m.lineCap = m.lineJoin = 'round'; m.strokeStyle = '#fff';
-  const pieces = [], k = texture, spread = width * (.7 + .7 * k);
+  const ts = strokes.flat().map(p => p.t), tFirst = Math.min(...ts), span = Math.max(...ts) - tFirst || 1;
+  const pieces = [], tk = texture, spread = width * (.7 + .7 * tk);
   for (const raw of strokes) {
     const s = evenly(raw, W / 150);       // pieces cover the same length however fast the hand moved
-    const bristles = Array.from({ length: Math.round(5 + 15 * k) }, () => ({ dx: (Math.random() - .5) * spread, dy: (Math.random() - .5) * spread,
-                                                       w: width * (.18 - .12 * k) * (.5 + Math.random()), a: .55 - .2 * k + (Math.random() - .5) * (.2 + .5 * k) }));
-    for (let i = 0; i < Math.max(1, s.length - 1); i += 10) pieces.push({ pts: s.slice(i, i + 11), bristles });
+    const bristles = Array.from({ length: Math.round(5 + 15 * tk) }, () => ({ dx: (Math.random() - .5) * spread, dy: (Math.random() - .5) * spread,
+                                                       w: width * (.18 - .12 * tk) * (.5 + Math.random()), a: .55 - .2 * tk + (Math.random() - .5) * (.2 + .5 * tk) }));
+    for (let i = 0; i < Math.max(1, s.length - 1); i += 10) {
+      const pts = s.slice(i, i + 11);
+      pieces.push({ pts, bristles, k: loudness(envelope, (pts[pts.length >> 1].t - tFirst) / span) });
+    }
   }
   const line = (pts, dx, dy) => { m.beginPath(); m.moveTo(pts[0].x + dx, pts[0].y + dy);
     for (const q of pts.length > 1 ? pts.slice(1) : pts) m.lineTo(q.x + dx, q.y + dy); m.stroke(); };
@@ -123,9 +142,9 @@ export async function reveal(strokes, vibe, width, texture = .35) {
     const want = Math.round(ease(f) * pieces.length);
     let tip = null;
     while (drawn < want) {
-      const { pts, bristles } = pieces[drawn++];
-      m.globalAlpha = .65; m.lineWidth = width * (.85 - .35 * texture); line(pts, 0, 0);
-      for (const b of bristles) { m.globalAlpha = b.a; m.lineWidth = b.w; line(pts, b.dx, b.dy); }
+      const { pts, bristles, k } = pieces[drawn++];
+      m.globalAlpha = .65 * k; m.lineWidth = width * (.85 - .35 * texture); line(pts, 0, 0);
+      for (const b of bristles) { m.globalAlpha = b.a * k; m.lineWidth = b.w; line(pts, b.dx, b.dy); }
       tip = pts[pts.length - 1];
     }
     sc.clearRect(0, 0, W, H); sc.filter = `blur(${Math.max(1, Math.round(W / 350 * (3 - 2.6 * texture)))}px)`; sc.drawImage(mask, 0, 0); sc.filter = 'none';
