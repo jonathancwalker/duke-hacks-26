@@ -497,6 +497,7 @@ def brush_direct(v):
             "style": BRUSH_STYLE.get(lead["brush"], "monet"), "palette": palette,
             "warmth": clamp(d.get("warmth", 0)), "light": clamp(d.get("light", 0)),
             "atmosphere": atmosphere if reading_is_safe(atmosphere) else "",
+            "reading": reading[:90],
             "artists": [{"name": a["name"], "weight": a["weight"], "brush": a["brush"]} for a in arts], "source": d.get("source")}
 
 
@@ -570,6 +571,85 @@ def vibe_render(v):
     return {**r, "seconds": round(time.time() - t0, 2)}
 
 
+# ---------------------------------------------------------------- saved visits (vibe paint)
+# Tonight's visits live in booth/visits/current/: NNNN.json plus NNNN-mood.jpg and NNNN-canvas.jpg. The page rebuilds
+# from them on load, so a reload or crash loses nothing. Reset moves the folder aside (visits/night-<time>/), never
+# deletes it. Visitors' spoken words are not stored.
+VISITS = os.path.join(HERE, "visits")
+TONIGHT = os.path.join(VISITS, "current")
+_VISITS_LOCK = threading.Lock()
+_IMG = {"image/jpeg": "jpg", "image/png": "png"}
+
+
+def _save_img(data_url, path_noext):
+    m = re.fullmatch(r"data:(image/(?:jpeg|png));base64,(.+)", data_url or "", re.S)
+    if not m:
+        return None
+    path = f"{path_noext}.{_IMG[m[1]]}"
+    with open(path, "wb") as f:
+        f.write(base64.b64decode(m[2]))
+    return os.path.basename(path)
+
+
+def _num(x):
+    return round(x, 2) if isinstance(x, float) else x
+
+
+def visit_save(v):
+    """Store one finished visit. Images are written first and the JSON last (atomically), so a crash never leaves a
+    visit that points at missing files."""
+    strokes = [[{k: _num(val) for k, val in p.items() if isinstance(val, (int, float, str)) and not isinstance(val, bool)}
+                for p in s[:5000] if isinstance(p, dict)] for s in (v.get("strokes") or [])[:50] if isinstance(s, list)]
+    with _VISITS_LOCK:
+        os.makedirs(TONIGHT, exist_ok=True)
+        n = 1 + max([int(f[:4]) for f in os.listdir(TONIGHT) if re.fullmatch(r"\d{4}\.json", f)] or [0])
+        vid = f"{n:04d}"
+        rec = {"id": vid, "t": time.strftime("%Y-%m-%dT%H:%M:%S"),
+               "name": str(v.get("name") or "")[:60] or None,
+               "reading": str(v.get("reading") or "")[:90],
+               "painters": v.get("painters") or [], "presence": v.get("presence"),
+               "start": v.get("start") if v.get("start") in ("chapel", "blank", "abstract") else None,
+               "strokes": strokes,
+               "mood": _save_img(v.get("mood"), os.path.join(TONIGHT, f"{vid}-mood")),
+               "canvas": _save_img(v.get("canvas"), os.path.join(TONIGHT, f"{vid}-canvas"))}
+        tmp = os.path.join(TONIGHT, f"{vid}.json.tmp")
+        with open(tmp, "w") as f:
+            json.dump(rec, f)
+        os.replace(tmp, os.path.join(TONIGHT, f"{vid}.json"))
+    return {"id": vid}
+
+
+def visits_list():
+    """Tonight's visits, oldest first. Image fields become URLs the page can load."""
+    if not os.path.isdir(TONIGHT):
+        return []
+    out = []
+    for f in sorted(os.listdir(TONIGHT)):
+        if re.fullmatch(r"\d{4}\.json", f):
+            try:
+                with open(os.path.join(TONIGHT, f)) as fh:
+                    rec = json.load(fh)
+            except (OSError, ValueError) as e:
+                print(f"[booth] skipping unreadable visit {f}: {e}", file=sys.stderr)
+                continue
+            for k in ("mood", "canvas"):
+                if rec.get(k):
+                    rec[k] = f"/visits/{rec[k]}"
+            out.append(rec)
+    return out
+
+
+def visits_clear():
+    """Start a new night: tonight's folder is moved aside, not deleted."""
+    with _VISITS_LOCK:
+        if os.path.isdir(TONIGHT) and os.listdir(TONIGHT):
+            dest, i = os.path.join(VISITS, time.strftime("night-%Y%m%d-%H%M%S")), 1
+            while os.path.exists(dest + (f"-{i}" if i > 1 else "")):
+                i += 1
+            os.replace(TONIGHT, dest + (f"-{i}" if i > 1 else ""))
+    return {"ok": True}
+
+
 # ---------------------------------------------------------------- HTTP
 class Handler(BaseHTTPRequestHandler):
     def _send(self, code, body, ctype="application/json"):
@@ -594,6 +674,12 @@ class Handler(BaseHTTPRequestHandler):
                 with open(p, "rb") as f:
                     ctype = "text/javascript" if m[2] == "js" else "text/css"
                     return self._send(200, f.read(), ctype + "; charset=utf-8")
+        m = re.fullmatch(r"/visits/(\d{4}-(?:mood|canvas)\.(jpg|png))", self.path.split("?")[0])
+        if m and os.path.isfile(os.path.join(TONIGHT, m[1])):
+            with open(os.path.join(TONIGHT, m[1]), "rb") as f:
+                return self._send(200, f.read(), "image/jpeg" if m[2] == "jpg" else "image/png")
+        if self.path == "/api/visits":
+            return self._send(200, visits_list())
         if self.path.split("?")[0] == "/api/event":    # the active event: BOOTH_EVENT, or ?event=<name>
             name = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get("event", [None])[0]
             try:
@@ -626,6 +712,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, vibe_base(payload))
             if self.path == "/api/vibe/render":
                 return self._send(200, vibe_render(payload))
+            if self.path == "/api/visits":
+                return self._send(200, visit_save(payload))
+            if self.path == "/api/visits/clear":
+                return self._send(200, visits_clear())
             if self.path == "/api/reset":
                 lab_exec("booth_reset(); show(booth_current(), 'crowd')")
                 return self._send(200, {"ok": True})

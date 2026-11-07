@@ -3,7 +3,7 @@
 // warmth and light), and that repainting is revealed only along their path. Crossings show the mood more strongly.
 // This module is the visit state machine: speak -> brush -> trace -> reveal -> commit, plus start modes and Simulate.
 import { S, $, video, sleep, say, bar, loadImg } from './state.js';
-import { fetchEvent, fetchBase, fetchBrush, fetchRender } from './api.js';
+import { fetchEvent, fetchBase, fetchBrush, fetchRender, fetchVisits, saveVisit, clearVisits } from './api.js';
 import { listen } from './audio.js';
 import { startCamera, readTips, resetTips } from './hand.js';
 import { startPose, trackMoves, moveScore } from './move.js';
@@ -14,21 +14,33 @@ const SPEAK_S = 6, TRACE_S = 12, SIM_TRACE_S = 5;
 addEventListener('resize', fit);
 
 // ---------------------------------------------------------------- the night's painting
-async function reset() {
+const showCount = () => { $('#count').textContent = S.visitors ? `${S.visitors} visitor${S.visitors > 1 ? 's' : ''} tonight` : ''; };
+
+// On load, rebuild tonight's painting from the saved visits; with clear (Reset, new start mode), start a new night.
+async function reset(clear) {
   S.busy = true; setButtons();
-  document.querySelectorAll('.modes button').forEach(b => b.classList.toggle('on', b.dataset.mode === S.start));
-  setTrailBlend();
   try {
     S.event = S.event || await fetchEvent();          // the event's question, scene and closing (events/*.json)
+    if (clear) await clearVisits();
+    const saved = clear ? [] : await fetchVisits().catch(e => (console.warn('saved visits unavailable', e), []));
+    const last = saved[saved.length - 1];
+    if (last?.start) S.start = last.start;
+    document.querySelectorAll('.modes button').forEach(b => b.classList.toggle('on', b.dataset.mode === S.start));
+    setTrailBlend();
     let img = null;
-    if (S.start === 'chapel') {
+    if (last?.canvas) {
+      say('Bringing back tonight’s painting…', `${saved.length} visitor${saved.length > 1 ? 's' : ''} so far`);
+      img = await loadImg(last.canvas).catch(() => (console.warn('saved canvas missing', last.canvas), null));
+      if (img) { S.W = img.naturalWidth; S.H = img.naturalHeight; }
+    }
+    if (!img && S.start === 'chapel') {
       say('Preparing the underpainting…', 'a calm, pale underpainting for tonight’s visitors to paint into');
       // GPU lab down and no cached frame: start on bare linen so visits can still run.
       img = await fetchBase().then(r => loadImg(r.image)).catch(e => { console.warn('no base frame:', e); return null; });
       if (img) { S.W = img.naturalWidth; S.H = img.naturalHeight; }
     }
     startCanvas(img);
-    S.visitors = 0; $('#count').textContent = ''; fit();
+    S.visitors = saved.length; showCount(); fit();
     say(S.event.question, 'Step up and answer out loud, then trace a path in the air. Your mood repaints the canvas only where your hand went.');
   } catch (e) { say('The GPU lab is not answering.', String(e.message || e)); }
   S.busy = false; setButtons();
@@ -68,8 +80,11 @@ async function visit(sim) {
     const vibe = await painting;
     say('Your vibe, painted.', `${d.reason}`);
     await reveal(strokes, vibe, look.width, texture, heard.envelope);
-    S.visitors++; $('#count').textContent = `${S.visitors} visitor${S.visitors > 1 ? 's' : ''} tonight`;
+    S.visitors++; showCount();
     say(S.event.closing, `${d.reason}`);
+    await saveVisit({ name: heard.name, reading: d.reading, painters: d.artists, presence: heard.presence, start: S.start,
+                      strokes, mood: vibe.src, canvas: S.base.toDataURL('image/jpeg', .92) })
+      .catch(e => console.warn('visit not saved', e));
     await sleep(2500);
     say('Next visitor: step up.', 'Each visit repaints only the path its hands drew.');
   } catch (e) {
@@ -100,12 +115,12 @@ function simVisitor() {
 function setButtons() { $('#go').disabled = $('#sim').disabled = $('#reset').disabled = S.busy || !S.base; if (!S.base) $('#reset').disabled = S.busy; }
 $('#go').onclick = () => visit();
 $('#sim').onclick = () => visit(simVisitor());
-$('#reset').onclick = () => !S.busy && reset();
+$('#reset').onclick = () => !S.busy && reset(true);
 document.querySelectorAll('.modes button').forEach(b => b.onclick = () => {
   if (S.busy || b.dataset.mode === S.start) return;
   if (S.visitors && !confirm('Start a new canvas? Tonight’s painting will be cleared.')) return;
   S.start = b.dataset.mode; try { localStorage.setItem('vibe-start', S.start); } catch {}
-  reset();
+  reset(true);
 });
 addEventListener('keydown', e => { if (e.code === 'Space' && !S.busy) { e.preventDefault(); visit(); } });
 reset();
