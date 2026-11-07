@@ -5,12 +5,21 @@ async function api(path, body) {
   if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
   return j;
 }
-// { image } : the night's calm chapel underpainting.
-export const fetchBase = () => api('/api/vibe/base');
+// The event this page is for: ?event=<name> on the page URL, else the server's BOOTH_EVENT.
+const EVENT = new URLSearchParams(location.search).get('event') || undefined;
+// { id, name, kind, question, scene, closing } : the active event's config.
+export async function fetchEvent() {
+  const r = await fetch('/api/event' + (EVENT ? `?event=${encodeURIComponent(EVENT)}` : ''));
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
+  return j;
+}
+// { image } : the night's calm underpainting of the event's scene.
+export const fetchBase = () => api('/api/vibe/base', { event: EVENT });
 // heard { feeling, arousal } -> { artists, palette, size, energy, warmth, light, atmosphere, reason }.
 export const fetchBrush = heard => api('/api/brush', heard);
-// { artists, energy, warmth, light, atmosphere, mode } -> { image } : the whole scene repainted in the mood.
-export const fetchRender = args => api('/api/vibe/render', args);
+// { artists, energy, warmth, light, atmosphere, mode } -> { image } : the event's scene repainted in the mood.
+export const fetchRender = args => api('/api/vibe/render', { ...args, event: EVENT });
 // Tonight's saved visits, oldest first: [{ id, t, name, reading, painters, presence, start, strokes, mood, canvas }].
 export const fetchVisits = async () => { const r = await fetch('/api/visits'); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); };
 // Store one finished visit (images as data URLs) -> { id }.

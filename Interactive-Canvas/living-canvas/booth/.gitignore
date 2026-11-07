@@ -2,3 +2,4 @@
 visits.jsonl
 __pycache__/
 visits/
+.frames/
