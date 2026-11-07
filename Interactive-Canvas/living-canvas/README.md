@@ -36,3 +36,14 @@ Stop the GPU when you're done (`gcloud compute instances stop ...`, same flags).
 - `experiments/`: the GPU lab, experiments, and Google Cloud setup
 - `prototype/`, `artifact/`: early prototypes and explainer pages
 - `HYPOTHESES.md`: what we tried and what we learned
+
+## Code layout (vibe page)
+
+`vibe/vibe.html` is markup only; it loads `vibe.css` and one module entry, `flow.js`. The booth server serves `/vibe/*.js` and `/vibe/*.css`.
+
+- `flow.js`: the visit state machine (speak → brush → trace → reveal → commit), start modes, Simulate, buttons
+- `hand.js`: camera + MediaPipe HandLandmarker, mirrored fingertip positions (`startCamera`, `readTips`)
+- `audio.js`: mic loudness and Web Speech → `{ feeling, arousal }` (`listen`)
+- `render.js`: canvas layout, linen start, glowing trails while tracing, bristle-masked reveal
+- `api.js`: calls to `/api/brush`, `/api/vibe/base`, `/api/vibe/render`
+- `state.js`: shared state (`S`: canvas size, painting, start mode), DOM handles, small helpers
