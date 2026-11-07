@@ -1,0 +1,532 @@
+<title>Living Canvas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: gallery wall. The shared canvas hangs as the artwork, with a museum wall label and the controls beside it, then the pipeline and the feedback poll below. */
+:root{
+  --wall:#e6e5e1; --wall-2:#d9d8d3; --ink:#1b1a1f; --ink-2:#5b5962; --rule:#c5c3bd;
+  --amber:#a8560a; --amber-soft:#f1d9bd; --chip:#f4f3f0;
+  --display:"Syne","Avenir Next","Helvetica Neue",sans-serif;
+  --body:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --canvas-bg:#0d0d10;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --wall:#16151a; --wall-2:#1f1e25; --ink:#eeebe4; --ink-2:#a19ea8; --rule:#34323b;
+  --amber:#ffb347; --amber-soft:#3a2a17; --chip:#24232a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --wall:#16151a; --wall-2:#1f1e25; --ink:#eeebe4; --ink-2:#a19ea8; --rule:#34323b;
+  --amber:#ffb347; --amber-soft:#3a2a17; --chip:#24232a; color-scheme:dark}
+
+[hidden]{display:none!important}
+body{background:var(--wall);color:var(--ink);font:15px/1.55 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1240px;margin:0 auto;display:grid;gap:56px}
+h1,h2{font-family:var(--display);text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(34px,5vw,56px);font-weight:800;line-height:1}
+h2{font-size:clamp(22px,2.6vw,28px);font-weight:700}
+.lede{color:var(--ink-2);max-width:62ch;font-size:16px}
+.eyebrow{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+header{display:grid;gap:12px}
+
+/* gallery: artwork + label */
+.gallery{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start}
+.frame{position:relative;background:var(--canvas-bg);border-radius:4px;box-shadow:0 1px 0 var(--rule),0 18px 40px -24px rgba(0,0,0,.55);overflow:hidden}
+#art{display:block;width:100%;height:auto;aspect-ratio:16/9;max-width:100%;touch-action:pan-y;cursor:crosshair}
+#art.painting{touch-action:none}
+.frame .hint{position:absolute;left:14px;top:12px;font:500 12px var(--mono);color:#cfcac0;background:rgba(13,13,16,.6);padding:5px 9px;border-radius:4px;pointer-events:none}
+.frame .tick{position:absolute;right:12px;top:10px;width:46px;height:46px;border-radius:50%;
+  background:conic-gradient(#ffb347 calc(var(--p,0)*1turn),rgba(255,255,255,.15) 0);display:grid;place-items:center}
+.frame .tick span{width:36px;height:36px;border-radius:50%;background:#141418;color:#f3efe6;display:grid;place-items:center;font:500 13px var(--mono)}
+.under{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between;margin-top:10px;font:12px var(--mono);color:var(--ink-2)}
+
+.label{display:grid;gap:18px}
+.placard{border-top:2px solid var(--ink);padding-top:12px;display:grid;gap:4px}
+.placard b{font-family:var(--display);font-size:20px;font-weight:700}
+.placard i{font-style:normal;color:var(--ink-2);font-size:13px}
+.placard small{font:12px/1.5 var(--mono);color:var(--ink-2)}
+.stepbox{display:grid;gap:10px}
+.stepbox .eyebrow{display:flex;gap:8px;align-items:center}
+.moods{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mood{display:flex;gap:8px;align-items:center;justify-content:flex-start;padding:9px 10px;text-align:left}
+.mood[aria-pressed="true"]{border-color:var(--amber);background:var(--amber-soft)}
+.sw{display:flex;gap:2px}.sw s{display:block;width:10px;height:10px;border-radius:50%}
+.slider{display:grid;grid-template-columns:52px 1fr 34px;gap:8px;align-items:center;font-size:13px}
+.slider output{font:12px var(--mono);color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--amber)}
+button{font:500 14px var(--body);color:var(--ink);background:var(--chip);border:1px solid var(--rule);border-radius:6px;padding:9px 14px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--ink-2)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.go{background:var(--ink);color:var(--wall);border-color:var(--ink);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.note{font-size:12.5px;color:var(--ink-2)}
+#moment{display:grid;gap:8px}
+#moment img{width:100%;border-radius:4px;border:1px solid var(--rule)}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stage{padding:20px 22px 22px 0;display:grid;gap:8px;align-content:start;min-width:0}
+.stage + .stage{padding-left:22px;border-left:1px solid var(--rule)}
+.stage h3{font:700 18px var(--display)}
+.stage p{color:var(--ink-2);font-size:14px}
+.stage code{font:12px var(--mono);color:var(--ink)}
+.stage .tag{font:500 11px var(--mono);color:var(--amber);letter-spacing:.06em;text-transform:uppercase}
+.map{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font:12.5px var(--mono);color:var(--ink-2)}
+.map dt{color:var(--ink)}
+
+/* feedback */
+.fb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px}
+form{display:grid;gap:20px}
+fieldset{border:0;display:grid;gap:8px}
+legend{font-weight:600;margin-bottom:6px}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opts label{display:inline-flex;gap:6px;align-items:center;background:var(--chip);border:1px solid var(--rule);border-radius:6px;padding:7px 11px;cursor:pointer;font-size:14px}
+.opts input{accent-color:var(--amber)}
+.opts label:has(input:checked){border-color:var(--amber);background:var(--amber-soft)}
+textarea{font:14px/1.5 var(--body);color:var(--ink);background:var(--chip);border:1px solid var(--rule);border-radius:6px;padding:10px;min-height:84px;resize:vertical;width:100%}
+.results{display:grid;gap:22px;align-content:start}
+.res h4{font-weight:600;font-size:14px;margin-bottom:8px}
+.bar{display:grid;grid-template-columns:minmax(0,150px) 1fr 28px;gap:10px;align-items:center;font-size:13px;margin:5px 0}
+.bar i{height:8px;background:var(--wall-2);border-radius:4px;overflow:hidden;display:block}
+.bar i b{display:block;height:100%;background:var(--amber);width:0;transition:width .3s}
+.bar em{font:12px var(--mono);font-style:normal;color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+.quotes{display:grid;gap:10px}
+.quotes blockquote{border-left:2px solid var(--rule);padding-left:12px;font-size:14px;color:var(--ink)}
+.empty{color:var(--ink-2);font-size:13.5px}
+footer{font:12px var(--mono);color:var(--ink-2);border-top:1px solid var(--rule);padding-top:14px}
+
+@media (max-width:900px){
+  .gallery{grid-template-columns:minmax(0,1fr)}
+  .pipe{grid-template-columns:minmax(0,1fr)}
+  .stage,.stage + .stage{padding:18px 0;border-left:0}
+  .stage + .stage{border-top:1px solid var(--rule)}
+  .fb{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.bar i b{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Duke Hackathon 2026 · concept demo</div>
+    <h1>Living Canvas</h1>
+    <p class="lede">Step up to a screen at an event, answer one question, and your hands and face paint ten seconds into an artwork the whole crowd builds together. You leave with a snapshot of the piece with your part lit up. This page is a stand-in for the booth: drag on the canvas to add your mark, then tell us what you think below.</p>
+  </header>
+
+  <section class="gallery" aria-label="The shared canvas">
+    <div>
+      <div class="frame">
+        <canvas id="art" width="1600" height="900" aria-label="Shared generative painting. Drag or touch to paint during your turn."></canvas>
+        <div class="hint" id="hint">Pick a mood, then press Start</div>
+        <div class="tick" id="tick" hidden><span id="secs">10</span></div>
+      </div>
+      <div class="under"><span id="who">Loading the shared canvas…</span><span id="mode"></span></div>
+    </div>
+
+    <aside class="label">
+      <div class="placard">
+        <b>Living Canvas</b>
+        <i>Everyone who stood here, 2026</i>
+        <small>Light and motion on screen. Driven by 21 hand landmarks, 478 face landmarks and 52 expression blendshapes per visitor.</small>
+      </div>
+
+      <div class="stepbox">
+        <div class="eyebrow">1 · How does tonight feel?</div>
+        <div class="moods" id="moods"></div>
+      </div>
+
+      <div class="stepbox">
+        <div class="eyebrow">2 · Your face</div>
+        <div class="slider"><label for="s-smile">Smile</label><input id="s-smile" type="range" min="0" max="9" value="5"><output id="o-smile">0.56</output></div>
+        <div class="slider"><label for="s-jaw">Jaw</label><input id="s-jaw" type="range" min="0" max="9" value="2"><output id="o-jaw">0.22</output></div>
+        <div class="slider"><label for="s-brow">Brow</label><input id="s-brow" type="range" min="0" max="9" value="3"><output id="o-brow">0.33</output></div>
+        <p class="note">At the booth the webcam reads these from your face. Smile warms and brightens your colors. An open jaw bursts more paint. Raised brows make strokes flow longer.</p>
+      </div>
+
+      <div class="stepbox">
+        <div class="eyebrow">3 · Paint for 10 seconds</div>
+        <div class="row"><button class="go" id="btnStart" disabled>Start my turn</button><button id="btnSim">Simulate 6 visitors</button></div>
+        <p class="note" id="saveNote"></p>
+      </div>
+
+      <div id="moment" hidden>
+        <div class="eyebrow">Your moment</div>
+        <img id="momentImg" alt="The shared canvas with your strokes lit and everyone else's dimmed">
+        <div class="row"><button id="btnSaveMine">Save my moment</button><button id="btnAgain">Paint again</button></div>
+      </div>
+    </aside>
+  </section>
+
+  <section style="display:grid;gap:18px" aria-labelledby="h-pipe">
+    <div style="display:grid;gap:6px">
+      <div class="eyebrow">What runs at the booth</div>
+      <h2 id="h-pipe">Three models between you and the paint</h2>
+    </div>
+    <div class="pipe">
+      <div class="stage">
+        <span class="tag">Perception · on-device</span>
+        <h3>Read the person</h3>
+        <p>MediaPipe hand and face landmarkers run in the browser at about 30 fps on a laptop webcam. No video leaves the machine.</p>
+        <p><code>2 hands × 21 points · 478 face points · 52 blendshapes</code></p>
+      </div>
+      <div class="stage">
+        <span class="tag">Mapping · signature</span>
+        <h3>Turn signals into a brush</h3>
+        <dl class="map">
+          <dt>fingertip</dt><dd>where paint flows from</dd>
+          <dt>pinch</dt><dd>brush width</dd>
+          <dt>hand speed</dt><dd>spread</dd>
+          <dt>smile</dt><dd>warmth, brightness</dd>
+          <dt>jawOpen</dt><dd>burst of paint</dd>
+          <dt>browInnerUp</dt><dd>stroke length</dd>
+        </dl>
+        <p>Next step: learn this mapping by clustering each visitor's blendshape trace, so similar energies land together.</p>
+      </div>
+      <div class="stage">
+        <span class="tag">Synthesis · planned</span>
+        <h3>Render the crowd's piece</h3>
+        <p>The raw strokes become the structure for an image model (ControlNet scribble on SDXL-Turbo or Flux), which repaints the whole canvas as one coherent artwork at set moments in the night.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:grid;gap:22px" aria-labelledby="h-fb">
+    <div style="display:grid;gap:6px">
+      <div class="eyebrow">Help us validate it</div>
+      <h2 id="h-fb">Would you do this?</h2>
+    </div>
+    <div class="fb">
+      <form id="fbForm">
+        <fieldset>
+          <legend>If this were at an event you went to, would you step up and do it?</legend>
+          <div class="opts" id="q1"></div>
+        </fieldset>
+        <fieldset>
+          <legend>What's the best part?</legend>
+          <div class="opts" id="q2"></div>
+        </fieldset>
+        <fieldset>
+          <legend><label for="q3">What would make you want to share your moment?</label></legend>
+          <textarea id="q3" maxlength="400" placeholder="e.g. if I could see it on the big screen at halftime"></textarea>
+        </fieldset>
+        <div class="row" style="align-items:center"><button class="go" type="submit" id="btnSend">Send feedback</button><button type="button" id="btnComment" hidden>Leave a comment instead</button><span class="note" id="fbStatus" role="status"></span></div>
+      </form>
+      <div class="results" aria-live="polite">
+        <div class="res"><h4>Would step up</h4><div id="r1"><p class="empty">No answers yet. Yours will show here.</p></div></div>
+        <div class="res"><h4>Best part</h4><div id="r2"></div></div>
+        <div class="res"><h4>What would make it shareable</h4><div class="quotes" id="r3"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Prototype. The booth version uses a webcam. This page uses touch or mouse plus sliders in its place.</footer>
+</div>
+
+<script>
+(() => {
+// ================= engine =================
+const W = 1600, H = 900, BG = '#0d0d10', TICKS = 300, TICK_MS = 1000 / 30, SUB = 2, MAXP = 2400;
+const MOODS = [
+  { name: 'Electric', hues: [190, 265, 320] },
+  { name: 'Calm',     hues: [165, 195, 215] },
+  { name: 'Joyful',   hues: [42, 18, 340] },
+  { name: 'Restless', hues: [355, 20, 250] },
+];
+const $ = s => document.querySelector(s);
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+const frame = () => new Promise(r => requestAnimationFrame(r));
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+// Perlin noise with a fixed permutation so every viewer re-renders strokes identically
+const P = new Uint8Array(512);
+{ const r = mulberry32(20261106), p = [...Array(256).keys()]; for (let i = 255; i > 0; i--) { const j = (r() * (i + 1)) | 0; [p[i], p[j]] = [p[j], p[i]]; } for (let i = 0; i < 512; i++) P[i] = p[i & 255]; }
+const fade = t => t * t * t * (t * (t * 6 - 15) + 10), lerp = (a, b, t) => a + t * (b - a);
+const grad = (h, x, y, z) => { h &= 15; const u = h < 8 ? x : y, v = h < 4 ? y : (h === 12 || h === 14 ? x : z); return ((h & 1) ? -u : u) + ((h & 2) ? -v : v); };
+function noise(x, y, z) {
+  const X = Math.floor(x) & 255, Y = Math.floor(y) & 255, Z = Math.floor(z) & 255;
+  x -= Math.floor(x); y -= Math.floor(y); z -= Math.floor(z);
+  const u = fade(x), v = fade(y), w = fade(z);
+  const A = P[X] + Y, AA = P[A] + Z, AB = P[A + 1] + Z, B = P[X + 1] + Y, BA = P[B] + Z, BB = P[B + 1] + Z;
+  return lerp(
+    lerp(lerp(grad(P[AA], x, y, z), grad(P[BA], x - 1, y, z), u), lerp(grad(P[AB], x, y - 1, z), grad(P[BB], x - 1, y - 1, z), u), v),
+    lerp(lerp(grad(P[AA + 1], x, y, z - 1), grad(P[BA + 1], x - 1, y, z - 1), u), lerp(grad(P[AB + 1], x, y - 1, z - 1), grad(P[BB + 1], x - 1, y - 1, z - 1), u), v), w);
+}
+
+// A contribution = recipe {mood, seed, ticks}; tick = "x.y.pinch.smile.jaw.brow" or "_" (no hand). Values 0-9 for the last four.
+function newPainter(rec, layer) {
+  return { rec, mood: MOODS[rec.mood] || MOODS[0], layer: layer || mk(), parts: [], em: null, t: 0, rnd: mulberry32(rec.seed), z: (rec.seed % 997) / 7 };
+}
+function decode(tk) {
+  if (tk === '_') return null;
+  const [x, y, p, s, j, b] = tk.split('.').map(Number);
+  return { x, y, pinch: p / 9, smile: s / 9, jaw: j / 9, brow: b / 9 };
+}
+function step(c, inp) {
+  const R = c.rnd; c.t += 16;
+  const ctx = c.layer.getContext('2d');
+  if (inp) {
+    let e = c.em || (c.em = { x: inp.x, y: inp.y, vx: 0, vy: 0 });
+    const nx = e.x + (inp.x - e.x) * 0.35, ny = e.y + (inp.y - e.y) * 0.35;
+    e.vx = nx - e.x; e.vy = ny - e.y; e.x = nx; e.y = ny;
+    const speed = Math.hypot(e.vx, e.vy);
+    const n = Math.round(3 + speed * 0.25 + inp.jaw * 14);
+    for (let k = 0; k < n && c.parts.length < MAXP; k++) {
+      const hues = c.mood.hues, h0 = hues[(R() * hues.length) | 0];
+      const spread = 6 + speed * 1.2 + inp.pinch * 30, ang = R() * Math.PI * 2, r = R() * spread;
+      const max = 40 + R() * 60 + inp.brow * 140;
+      c.parts.push({
+        x: e.x + Math.cos(ang) * r, y: e.y + Math.sin(ang) * r,
+        vx: clamp(e.vx * 0.15, -4, 4) + (R() - 0.5), vy: clamp(e.vy * 0.15, -4, 4) + (R() - 0.5),
+        sp: 1.2 + R() * 1.8, h: h0 + (R() - 0.5) * 24 + inp.smile * 18, s: 58 + inp.smile * 32, l: 46 + inp.smile * 20,
+        a: 0.16 + R() * 0.24, w: 0.6 + inp.pinch * 3.5 + R() * 1.2 + speed * 0.04, life: max, max,
+      });
+    }
+  } else c.em = null;
+  ctx.lineCap = 'round';
+  const ps = c.parts;
+  for (let i = ps.length - 1; i >= 0; i--) {
+    const p = ps[i];
+    const a = noise(p.x * 0.0018, p.y * 0.0018, c.t * 0.00012 + c.z) * Math.PI * 2.5;
+    p.vx = p.vx * 0.93 + Math.cos(a) * p.sp * 0.07; p.vy = p.vy * 0.93 + Math.sin(a) * p.sp * 0.07;
+    const ox = p.x, oy = p.y; p.x += p.vx; p.y += p.vy; p.life--;
+    const k = p.life / p.max;
+    ctx.strokeStyle = `hsla(${p.h},${p.s}%,${p.l}%,${p.a * k})`;
+    ctx.lineWidth = p.w * (0.3 + 0.7 * k);
+    ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(p.x, p.y); ctx.stroke();
+    if (p.life <= 0 || p.x < -50 || p.x > W + 50 || p.y < -50 || p.y > H + 50) { ps[i] = ps[ps.length - 1]; ps.pop(); }
+  }
+}
+function drain(c) { for (let i = 0; i < 400 && c.parts.length; i++) step(c, null); }
+async function renderRecipe(rec, yieldEvery = 40) {
+  const c = newPainter(rec), ticks = rec.ticks.split(',');
+  for (let i = 0; i < ticks.length; i++) { const inp = decode(ticks[i]); for (let s = 0; s < SUB; s++) step(c, inp); if (i % yieldEvery === 0) { S.preview = c; await frame(); } }
+  drain(c); S.preview = null; return c.layer;
+}
+
+// ================= state =================
+const art = $('#art'), actx = art.getContext('2d');
+let base = mk();
+const S = {
+  phase: 'idle', mood: null, painter: null, ticks: [], acc: 0, last: 0, pointer: null,
+  preview: null, mine: [], shared: new Map(), example: false, queue: Promise.resolve(), gen: 0,
+  db: null, user: null, uid: null, canWrite: null, dl: null, comments: null,
+};
+const sliders = ['smile', 'jaw', 'brow'].map(k => $('#s-' + k));
+const sv = () => sliders.map(s => +s.value);
+sliders.forEach((s, i) => s.addEventListener('input', () => { $('#o-' + ['smile', 'jaw', 'brow'][i]).value = (s.value / 9).toFixed(2); }));
+
+// ================= drawing loop =================
+function draw() {
+  actx.fillStyle = BG; actx.fillRect(0, 0, W, H);
+  actx.drawImage(base, 0, 0);
+  if (S.preview) actx.drawImage(S.preview.layer, 0, 0);
+  if (S.painter) actx.drawImage(S.painter.layer, 0, 0);
+  if (S.pointer && S.phase === 'painting') {
+    const { x, y } = S.pointer, g = actx.createRadialGradient(x, y, 0, x, y, 40);
+    g.addColorStop(0, 'rgba(255,179,71,.5)'); g.addColorStop(1, 'rgba(255,179,71,0)');
+    actx.fillStyle = g; actx.beginPath(); actx.arc(x, y, 40, 0, 7); actx.fill();
+  }
+}
+function loop(now) {
+  if (S.phase === 'painting') {
+    S.acc += Math.min(100, now - S.last); S.last = now;
+    while (S.acc >= TICK_MS && S.ticks.length < TICKS) {
+      S.acc -= TICK_MS;
+      const [s, j, b] = sv(), p = S.pointer;
+      const tk = p ? `${Math.round(p.x)}.${Math.round(p.y)}.4.${s}.${j}.${b}` : '_';
+      S.ticks.push(tk);
+      const inp = decode(tk); for (let k = 0; k < SUB; k++) step(S.painter, inp);
+    }
+    const prog = S.ticks.length / TICKS;
+    $('#tick').style.setProperty('--p', prog); $('#secs').textContent = Math.ceil((1 - prog) * 10);
+    if (S.ticks.length >= TICKS) endTurn();
+  }
+  draw(); requestAnimationFrame(loop);
+}
+
+// ================= input =================
+function toCanvas(e) { const r = art.getBoundingClientRect(); return { x: clamp((e.clientX - r.left) / r.width) * W, y: clamp((e.clientY - r.top) / r.height) * H }; }
+art.addEventListener('pointerdown', e => { if (S.phase !== 'painting') return; art.setPointerCapture(e.pointerId); S.pointer = toCanvas(e); e.preventDefault(); });
+art.addEventListener('pointermove', e => { if (S.phase !== 'painting' || !S.pointer) return; S.pointer = toCanvas(e); });
+['pointerup', 'pointercancel'].forEach(t => art.addEventListener(t, () => { S.pointer = null; }));
+
+// ================= turn flow =================
+$('#moods').innerHTML = MOODS.map((m, i) => `<button class="mood" type="button" aria-pressed="false" data-i="${i}"><span class="sw">${m.hues.map(h => `<s style="background:hsl(${h},75%,58%)"></s>`).join('')}</span>${m.name}</button>`).join('');
+$('#moods').addEventListener('click', e => {
+  const b = e.target.closest('.mood'); if (!b || S.phase === 'painting') return;
+  S.mood = +b.dataset.i;
+  document.querySelectorAll('.mood').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+  $('#btnStart').disabled = false; $('#hint').textContent = 'Press Start, then drag on the canvas';
+});
+$('#btnStart').onclick = () => {
+  if (S.mood == null || S.phase === 'painting') return;
+  if (S.example) clearExample();
+  const rec = { mood: S.mood, seed: (Math.random() * 2 ** 31) | 0 };
+  art.classList.add('painting');
+  S.painter = newPainter(rec); S.ticks = []; S.acc = 0; S.last = performance.now(); S.phase = 'painting';
+  $('#tick').hidden = false; $('#hint').textContent = 'Drag on the canvas. Move the sliders while you paint.';
+  $('#btnStart').disabled = true; $('#btnSim').disabled = true; $('#moment').hidden = true;
+};
+async function endTurn() {
+  S.phase = 'idle'; S.pointer = null; $('#tick').hidden = true; art.classList.remove('painting');
+  const c = S.painter; drain(c);
+  base.getContext('2d').drawImage(c.layer, 0, 0);
+  S.painter = null;
+  const rec = { ...c.rec, ticks: S.ticks.join(',') };
+  S.mine.push(c.layer);
+  showMoment(c.layer);
+  $('#btnStart').disabled = false; $('#btnSim').disabled = false;
+  $('#hint').textContent = 'Nice. Pick a mood and go again, or see your moment →';
+  if (!S.ticks.some(t => t !== '_')) { $('#saveNote').textContent = 'Nothing painted that turn. Hold and drag on the canvas while the timer runs.'; return; }
+  await saveStroke(rec, c.layer);
+}
+function highlight(layer) {
+  const out = mk(), o = out.getContext('2d');
+  o.fillStyle = BG; o.fillRect(0, 0, W, H);
+  o.globalAlpha = 0.16; o.drawImage(base, 0, 0); o.globalAlpha = 1; o.drawImage(layer, 0, 0);
+  o.font = '500 22px "IBM Plex Mono",monospace'; o.fillStyle = 'rgba(243,239,230,.75)'; o.textAlign = 'right';
+  o.fillText(`Living Canvas · ${MOODS[S.mood]?.name || ''} · ${new Date().toLocaleDateString()}`, W - 28, H - 28);
+  return out;
+}
+let momentCanvas = null;
+function showMoment(layer) { momentCanvas = highlight(layer); $('#momentImg').src = momentCanvas.toDataURL('image/png'); $('#moment').hidden = false; }
+$('#btnAgain').onclick = () => { $('#moment').hidden = true; $('#hint').textContent = 'Pick a mood, then press Start'; };
+$('#btnSaveMine').onclick = async () => {
+  if (!S.dl || !momentCanvas) return;
+  const blob = await new Promise(r => momentCanvas.toBlob(r, 'image/png'));
+  try { await S.dl.save({ filename: 'my-living-canvas-moment.png', data: blob }); }
+  catch (e) { if (e && e.code === 'unavailable') $('#btnSaveMine').hidden = true; }
+};
+
+// ================= example crowd (local only) =================
+function synthRecipe(r) {
+  const mood = (r() * MOODS.length) | 0, seed = (r() * 2 ** 31) | 0;
+  const ax = 1 + r() * 3, ay = 1 + r() * 3, ph = r() * 6.28;
+  const cx = W * (0.2 + r() * 0.6), cy = H * (0.25 + r() * 0.5), rx = W * (0.12 + r() * 0.25), ry = H * (0.12 + r() * 0.25);
+  const s = (r() * 10) | 0, b = (r() * 8) | 0, jm = r() * 6;
+  const ticks = [];
+  for (let i = 0; i < 160; i++) {
+    const t = i / 160 * Math.PI * 2;
+    const x = clamp(cx + Math.sin(ax * t + ph) * rx, 0, W), y = clamp(cy + Math.sin(ay * t) * ry, 0, H);
+    const p = Math.round(4.5 + 4.5 * Math.sin(t * 2 + ph)), j = Math.round(jm * (0.5 + 0.5 * Math.sin(t * 3)));
+    ticks.push(`${x | 0}.${y | 0}.${p}.${s}.${j}.${b}`);
+  }
+  return { mood, seed, ticks: ticks.join(',') };
+}
+function enqueue(fn) { S.queue = S.queue.then(fn).catch(console.error); return S.queue; }
+function simulate(n, asExample) {
+  const gen = S.gen, r = mulberry32((Math.random() * 2 ** 31) | 0);
+  if (asExample) S.example = true;
+  $('#btnSim').disabled = true;
+  for (let i = 0; i < n; i++) enqueue(async () => { if (gen !== S.gen) return; const layer = await renderRecipe(synthRecipe(r), 20); if (gen === S.gen) base.getContext('2d').drawImage(layer, 0, 0); });
+  enqueue(async () => { if (S.phase !== 'painting') $('#btnSim').disabled = false; });
+}
+$('#btnSim').onclick = () => simulate(6, false);
+function clearExample() { S.example = false; S.gen++; S.preview = null; rebuildFromShared(); }
+function rebuildFromShared() {
+  base = mk(); const ctx = base.getContext('2d');
+  for (const v of S.shared.values()) if (v.layer) ctx.drawImage(v.layer, 0, 0);
+  for (const l of S.mine) if (![...S.shared.values()].some(v => v.layer === l)) ctx.drawImage(l, 0, 0);
+}
+
+// ================= shared canvas (db) =================
+function setWho() {
+  const n = S.shared.size;
+  $('#who').textContent = S.db
+    ? (n ? `${n} mark${n === 1 ? '' : 's'} on the shared canvas` : (S.example ? 'Example: simulated visitors. Be the first real mark.' : 'Empty canvas. Be the first mark.'))
+    : (S.example ? 'Example: simulated visitors' : 'Your marks stay on this screen');
+}
+async function saveStroke(rec, layer) {
+  if (!S.db || S.canWrite === false) { $('#saveNote').textContent = 'Your stroke stays on this screen only.'; return; }
+  try {
+    const ref = S.db.collection('strokes').doc();
+    S.shared.set(ref.id, { layer, rec });
+    await ref.set({ ...rec, by: S.uid || null, createdAt: new Date().toISOString() });
+    $('#saveNote').textContent = 'Added to the shared canvas. Everyone viewing sees it.';
+  } catch (e) {
+    if (e && e.code === 'invalid_argument') S.canWrite = false;
+    $('#saveNote').textContent = e && e.code === 'quota_exceeded' ? 'The shared canvas is full. Your stroke stays on this screen.' : 'Your stroke stays on this screen. You can view the shared canvas but not add to it.';
+  }
+  setWho();
+}
+function listenStrokes() {
+  let loaded = false;
+  const timer = setTimeout(() => { if (!loaded) $('#who').textContent = 'The shared canvas is slow to load. Your marks still work here.'; }, 10000);
+  S.db.collection('strokes').orderBy('createdAt').limit(400).onSnapshot(snap => {
+    if (!snap.metadata.fromCache) { loaded = true; clearTimeout(timer); }
+    const added = snap.docChanges().filter(ch => ch.type === 'added' && !S.shared.has(ch.doc.id));
+    if (added.length && S.example) { S.example = false; S.gen++; S.preview = null; base = mk(); for (const l of S.mine) base.getContext('2d').drawImage(l, 0, 0); }
+    for (const ch of added) {
+      const d = ch.doc.data(); if (!d || typeof d.ticks !== 'string' || d.ticks.length > 20000) continue;
+      const entry = { layer: null, rec: d }; S.shared.set(ch.doc.id, entry);
+      enqueue(async () => { entry.layer = await renderRecipe({ mood: d.mood | 0, seed: d.seed | 0, ticks: d.ticks }, 60); base.getContext('2d').drawImage(entry.layer, 0, 0); });
+    }
+    for (const ch of snap.docChanges()) if (ch.type === 'removed') { S.shared.delete(ch.doc.id); enqueue(async () => rebuildFromShared()); }
+    setWho();
+  }, () => { clearTimeout(timer); $('#who').textContent = 'The shared canvas is unavailable right now. Your marks still work here.'; });
+}
+
+// ================= feedback =================
+const Q1 = ['Yes, I would', 'Maybe', 'No'];
+const Q2 = ['Becoming part of the art', 'The keepsake of my moment', 'Seeing the AI read me', 'Watching the piece grow'];
+$('#q1').innerHTML = Q1.map((t, i) => `<label><input type="radio" name="q1" value="${i}" id="q1-${i}">${t}</label>`).join('');
+$('#q2').innerHTML = Q2.map((t, i) => `<label><input type="radio" name="q2" value="${i}" id="q2-${i}">${t}</label>`).join('');
+function bars(el, labels, counts) {
+  const total = counts.reduce((a, b) => a + b, 0) || 1;
+  el.innerHTML = labels.map((t, i) => `<div class="bar"><span></span><i><b style="width:${(counts[i] / total * 100).toFixed(0)}%"></b></i><em>${counts[i]}</em></div>`).join('');
+  el.querySelectorAll('.bar > span').forEach((s, i) => { s.textContent = labels[i]; });
+}
+function renderResults(docs) {
+  if (!docs.length) return;
+  const c1 = Q1.map(() => 0), c2 = Q2.map(() => 0), quotes = [];
+  for (const d of docs) {
+    if (Number.isInteger(d.q1) && c1[d.q1] != null) c1[d.q1]++;
+    if (Number.isInteger(d.q2) && c2[d.q2] != null) c2[d.q2]++;
+    if (typeof d.q3 === 'string' && d.q3.trim()) quotes.push(d.q3.trim().slice(0, 400));
+  }
+  bars($('#r1'), Q1, c1); bars($('#r2'), Q2, c2);
+  const r3 = $('#r3'); r3.innerHTML = '';
+  if (!quotes.length) { r3.innerHTML = '<p class="empty">No written answers yet.</p>'; return; }
+  for (const q of quotes.slice(-6).reverse()) { const b = document.createElement('blockquote'); b.textContent = q; r3.appendChild(b); }
+}
+$('#r2').innerHTML = ''; $('#r3').innerHTML = '';
+$('#fbForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const q1 = document.querySelector('input[name=q1]:checked'), q2 = document.querySelector('input[name=q2]:checked');
+  const q3 = $('#q3').value.trim();
+  if (!q1 && !q2 && !q3) { $('#fbStatus').textContent = 'Pick an answer or write a note first.'; return; }
+  if (!S.db || S.canWrite === false) { $('#fbStatus').textContent = 'You can view this page but not answer the poll. Use a comment instead.'; return; }
+  $('#btnSend').disabled = true; $('#fbStatus').textContent = 'Sending…';
+  try {
+    await S.db.collection('feedback').add({ q1: q1 ? +q1.value : null, q2: q2 ? +q2.value : null, q3: q3.slice(0, 400), by: S.uid || null, createdAt: new Date().toISOString() });
+    $('#fbStatus').textContent = 'Thanks. Your answer is in the results.';
+    $('#fbForm').reset();
+  } catch (err) {
+    if (err && err.code === 'invalid_argument') { S.canWrite = false; showCommentFallback(); }
+    $('#fbStatus').textContent = 'Couldn’t send that. You can view the poll but not answer it here.';
+  } finally { $('#btnSend').disabled = false; }
+});
+function showCommentFallback() { if (S.comments) { $('#btnComment').hidden = false; } }
+$('#btnComment').onclick = async () => { try { await S.comments.openComposer({ element: $('#h-fb') }); } catch (e) { $('#btnComment').hidden = true; } };
+
+// ================= boot =================
+requestAnimationFrame(t => { S.last = t; loop(t); });
+simulate(6, true);
+setWho();
+(async () => {
+  const c = window.claude;
+  const [db, user, dl, comments] = c ? await Promise.all(['db', 'user', 'downloads', 'comments'].map(n => c.use(n).catch(() => null))) : [null, null, null, null];
+  S.db = db; S.user = user; S.dl = dl; S.comments = comments;
+  if (!dl) $('#btnSaveMine').hidden = true;
+  if (user) { try { S.uid = await user.id(); } catch {} try { S.canWrite = await user.can('data.write'); } catch {} }
+  $('#mode').textContent = db ? (S.canWrite === false ? 'View only: your strokes stay on your screen' : 'Shared live with everyone viewing') : 'Offline mode: marks stay on this screen';
+  if (S.canWrite === false) { $('#btnSend').disabled = true; showCommentFallback(); $('#fbStatus').textContent = 'You can see the results. Leave a comment to share your answer.'; }
+  if (!db) { showCommentFallback(); setWho(); return; }
+  listenStrokes();
+  db.collection('feedback').orderBy('createdAt').limit(500).onSnapshot(s => renderResults(s.docs.map(d => d.data()).filter(Boolean)), () => {});
+})();
+})();
+</script>

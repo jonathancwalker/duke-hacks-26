@@ -1,0 +1,270 @@
+<title>Living Canvas Pipeline</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a gallery wall read left to right. The night's painting opens the page, the five stations of the pipeline hang in a row with the actual data passed between them, then what we learned and where it should go next. */
+:root{
+  --wall:#e6e5e1; --wall-2:#dad8d2; --card:#f3f2ef; --ink:#1b1a1f; --ink-2:#5b5962; --rule:#c6c3bc;
+  --amber:#a8560a; --amber-soft:#f1dcc3; --sage:#3d6b55; --sage-soft:#d6e4dc;
+  --display:"Syne","Avenir Next","Helvetica Neue",sans-serif;
+  --body:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --wall:#16151a; --wall-2:#1f1e25; --card:#1d1c22; --ink:#eeebe4; --ink-2:#a19ea8; --rule:#35333c;
+  --amber:#ffb347; --amber-soft:#3a2a17; --sage:#8fc4a8; --sage-soft:#1c2d25; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --wall:#16151a; --wall-2:#1f1e25; --card:#1d1c22; --ink:#eeebe4; --ink-2:#a19ea8; --rule:#35333c;
+  --amber:#ffb347; --amber-soft:#3a2a17; --sage:#8fc4a8; --sage-soft:#1c2d25; color-scheme:dark}
+body{background:var(--wall);color:var(--ink);font:15px/1.6 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:64px}
+section{display:grid;gap:20px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(36px,5.4vw,60px);font-weight:800;line-height:1}
+h2{font-size:clamp(23px,2.8vw,30px);font-weight:700}
+h3{font-size:17px;font-weight:700;line-height:1.25}
+p{margin:0}
+.lede{color:var(--ink-2);max-width:68ch;font-size:16.5px}
+.eyebrow{font:500 11px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.note{font-size:13px;color:var(--ink-2)}
+code,.mono{font-family:var(--mono);font-size:12.5px}
+figure{margin:0;display:grid;gap:8px}
+figure img{width:100%;height:auto;max-width:100%;display:block;border-radius:3px;border:1px solid var(--rule)}
+figcaption{font:12px/1.5 var(--mono);color:var(--ink-2)}
+.scroll{overflow-x:auto}
+.scroll img{min-width:760px}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;border-top:2px solid var(--ink)}
+.station{position:relative;padding:18px 18px 20px 0;display:grid;gap:10px;align-content:start;min-width:0}
+.station + .station{padding-left:18px;border-left:1px solid var(--rule)}
+.num{font:500 12px var(--mono);color:var(--amber)}
+.where{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sage)}
+.station ul{margin:0;padding-left:16px;display:grid;gap:4px;font-size:13.5px;color:var(--ink)}
+.station li::marker{color:var(--ink-2)}
+.time{font:500 12px var(--mono);color:var(--ink-2)}
+.handoff{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0}
+.handoff div{padding:10px 18px 10px 0;min-width:0}
+.handoff div + div{padding-left:18px}
+.handoff pre{margin:0;white-space:pre-wrap;word-break:break-word;font:11.5px/1.5 var(--mono);color:var(--ink);background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:8px 10px}
+.handoff .lab{font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:4px}
+
+/* infra */
+.infra{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:stretch}
+.box{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;gap:6px;align-content:start;min-width:0}
+.box b{font-weight:600}
+.box .mono{color:var(--ink-2)}
+.link{display:grid;place-items:center;font:500 11px/1.3 var(--mono);color:var(--ink-2);text-align:center;min-width:70px}
+.link span{display:block;font-size:18px;color:var(--amber)}
+
+/* learnings */
+.learn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px}
+.learn div{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;padding:14px 0;border-top:1px solid var(--rule);min-width:0}
+.learn .tag{font:500 11px var(--mono);padding:2px 7px;border-radius:3px;height:fit-content;white-space:nowrap}
+.tag.fail{background:var(--amber-soft);color:var(--amber)}
+.tag.fix{background:var(--sage-soft);color:var(--sage)}
+.learn p{font-size:14px}
+.learn p b{font-weight:600}
+
+/* human */
+.top3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.idea{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.idea .rank{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
+.idea .now{font-size:13.5px;color:var(--ink-2)}
+.idea .do{font-size:14.5px}
+.idea .cost{font:500 12px var(--mono);color:var(--sage)}
+.more{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px}
+.more div{padding:12px 0;border-top:1px solid var(--rule);display:grid;gap:3px;min-width:0}
+.more b{font-weight:600}
+.more span{font-size:14px;color:var(--ink-2)}
+.status{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.status ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+footer{font:12px/1.6 var(--mono);color:var(--ink-2);border-top:1px solid var(--rule);padding-top:14px}
+
+@media (max-width:980px){
+  .pipe,.handoff{grid-template-columns:minmax(0,1fr)}
+  .station,.station + .station{padding:16px 0;border-left:0}
+  .station + .station{border-top:1px solid var(--rule)}
+  .handoff div,.handoff div + div{padding:6px 0}
+  .infra{grid-template-columns:minmax(0,1fr)}
+  .link{padding:2px 0}
+  .link span{transform:rotate(90deg)}
+  .top3,.learn,.more,.status{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+
+<div class="wrap">
+  <header style="display:grid;gap:14px">
+    <div class="eyebrow">Duke Hackathon 2026 · Living Canvas · how it works</div>
+    <h1>Living Canvas Pipeline</h1>
+    <p class="lede">A visitor speaks and moves for ten seconds. We read how they were, place that in a space built from eighteen real paintings, and the chapel over the pond is repainted in the manner the crowd has become. Each person gets a moment of their own, then settles into everyone before them.</p>
+  </header>
+
+  <figure>
+    <div class="scroll"><img src="img/crowd_arc.jpg" alt="Five frames of the crowd painting across a simulated night of sixteen visitors: calm, then stormy, then bright, then stormy again, then calm"></div>
+    <figcaption>The crowd painting across a simulated night of 16 visitors: the opening, then after 4, 8, 12 and 16. Same chapel and seed; only the crowd's position in art space moves.</figcaption>
+  </figure>
+
+  <section aria-labelledby="h-pipe">
+    <div style="display:grid;gap:6px"><div class="eyebrow">The pipeline</div><h2 id="h-pipe">Five stations, one visit in about 6 seconds</h2></div>
+    <div class="pipe">
+      <div class="station">
+        <span class="num">1 · Capture</span><span class="where">Booth laptop · Chrome</span>
+        <h3>Read the person</h3>
+        <ul>
+          <li>Webcam → MediaPipe Pose tracks both wrists → Laban effort: <b>weight</b>, <b>time</b>, <b>space</b>, <b>flow</b></li>
+          <li>Mic → loudness, pitch movement, syllable rate → <b>vocal arousal</b></li>
+          <li>Chrome speech recognition → words</li>
+        </ul>
+        <span class="time">10 s window</span>
+      </div>
+      <div class="station">
+        <span class="num">2 · Art director</span><span class="where">Gemini 3.8 Flash · Vertex AI</span>
+        <h3>Decide how it's painted</h3>
+        <ul>
+          <li>Words give meaning and feeling; body and voice set energy</li>
+          <li>Returns structured JSON: <b>energy</b>, <b>warmth</b>, <b>light</b> in −1…1, plus a museum-label reading</li>
+          <li>Never changes the subject, only the manner</li>
+        </ul>
+        <span class="time">3–6 s</span>
+      </div>
+      <div class="station">
+        <span class="num">3 · Art space</span><span class="where">CLIP ViT-H image space</span>
+        <h3>Place them among real paintings</h3>
+        <ul>
+          <li>18 public-domain works, Rembrandt to Kandinsky, embedded by the IP-Adapter's own image encoder</li>
+          <li>Each axis = mean of one group of paintings minus another (e.g. energy: Van Gogh, Turner, Goya vs Whistler, Monet)</li>
+          <li>Crowd = moving average (pull 0.25–0.5, stronger when you're surprising) plus <b>discord</b> when the room is divided</li>
+        </ul>
+        <span class="time">milliseconds</span>
+      </div>
+      <div class="station">
+        <span class="num">4 · Painter</span><span class="where">NVIDIA L4 · Google Cloud</span>
+        <h3>Repaint the chapel</h3>
+        <ul>
+          <li>SDXL-Turbo, 4 steps, fixed seed</li>
+          <li>IP-Adapter in <b>style-only</b> mode at 1.2 takes the art-space point (palette and brushwork, no borrowed figures)</li>
+          <li>Canny ControlNet at 0.35 holds the chapel's outline for the first half of the steps only</li>
+        </ul>
+        <span class="time">1.6 s for two frames</span>
+      </div>
+      <div class="station">
+        <span class="num">5 · Display</span><span class="where">Booth screen</span>
+        <h3>Your moment, then the crowd</h3>
+        <ul>
+          <li><b>Your moment</b>: the crowd pulled 85% toward you, held for 7 s with the reading</li>
+          <li><b>Crowd after</b>: where the room now stands, nearest paintings named</li>
+          <li>Visitors' words never appear on screen</li>
+        </ul>
+        <span class="time">crossfade 1.4 s</span>
+      </div>
+    </div>
+    <div class="handoff" aria-label="Real data passed between stations for one simulated visitor">
+      <div><div class="lab">passes →</div><pre>words: "Missing my grandma tonight."
+voice arousal 0.15
+weight −0.7 · time −0.8
+space −0.6 · flow +0.6</pre></div>
+      <div><div class="lab">passes →</div><pre>energy −0.75
+warmth −0.35
+light −0.55
+"quiet nocturnal grief drifting
+ in tender remembrance"</pre></div>
+      <div><div class="lab">passes →</div><pre>1024-d point, nearest:
+Whistler, Nocturne in Black
+and Gold · Monet, Impression,
+Sunrise</pre></div>
+      <div><div class="lab">passes →</div><pre>2 frames, 768×432
+moment + crowd after</pre></div>
+      <div><div class="lab">shows</div><pre>"Soft longing dissolving
+ into nocturnal blue"
+closest to Whistler and Monet</pre></div>
+    </div>
+    <p class="note">Values above are one real run of the booth with a simulated visitor. Timings are from the L4 on Google Cloud.</p>
+  </section>
+
+  <section aria-labelledby="h-infra">
+    <div style="display:grid;gap:6px"><div class="eyebrow">Where it runs</div><h2 id="h-infra">Two machines and a model, on hackathon credits</h2></div>
+    <div class="infra">
+      <div class="box"><b>Booth laptop</b><span class="mono">booth.html · booth_server.py</span><span class="note">Capture, display, and the art-director call. Credentials stay here.</span></div>
+      <div class="link">SSH tunnel<span>⇄</span>localhost:8765</div>
+      <div class="box"><b>GPU VM · <code>living-canvas-gpu</code></b><span class="mono">g2-standard-8 · 1× L4 · us-central1-b</span><span class="note">Lab service under systemd: SDXL-Turbo, ControlNet, IP-Adapter, the art library and the crowd state. Not exposed publicly.</span></div>
+      <div class="link">Vertex AI<span>⇄</span>HTTPS</div>
+      <div class="box"><b>Gemini 3.8 Flash</b><span class="mono">project hackathon-514014 · global</span><span class="note">The art director. Billed with the GPU to the Education credits.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-learn">
+    <div style="display:grid;gap:6px"><div class="eyebrow">How we got here</div><h2 id="h-learn">What broke, and what fixed it</h2></div>
+    <div class="learn">
+      <div><span class="tag fail">broke</span><p><b>Repainting the last frame over and over</b> collapsed into speckle by the third visitor.</p><span class="tag fix">fixed</span><p>Every frame starts fresh from the same seed. History lives in the crowd vector, not the pixels.</p></div>
+      <div><span class="tag fail">broke</span><p><b>Words as prompt directions</b> ("calm vs agitated brushwork") barely moved the painting.</p><span class="tag fix">fixed</span><p>Axes defined by groups of real paintings in the image space the model actually listens to.</p></div>
+      <div><span class="tag fail">broke</span><p><b>A full-strength outline lock</b> flattened every style into the same poster look.</p><span class="tag fix">fixed</span><p>Hold the outline only for the first half of the steps: layout early, style late.</p></div>
+      <div><span class="tag fail">broke</span><p><b>Anger came out bright yellow.</b> Nothing in the library was hot, dark and violent.</p><span class="tag fix">fixed</span><p>Added Goya, Delacroix and Géricault. The space only reaches where its paintings live.</p></div>
+      <div><span class="tag fail">broke</span><p><b>Figure-heavy paintings leaked their crowds</b>: anger became a brawl in front of the chapel.</p><span class="tag fix">fixed</span><p>Style-only injection keeps palette and drama, drops the borrowed people.</p></div>
+      <div><span class="tag fail">broke</span><p><b>Discord pinned at maximum</b> by visitor three, since any varied night looks divided.</p><span class="tag fix">fixed</span><p>Discord now responds only to unusual division, and never colors your own moment.</p></div>
+    </div>
+    <figure>
+      <div class="scroll"><img src="img/style_vs_lock.jpg" alt="Grid showing the chapel painted in the styles of The Starry Night, Whistler's Nocturne and Hokusai's Great Wave at different outline-lock settings"></div>
+      <figcaption>The moment the art space started working: with a looser outline lock, the same chapel becomes Van Gogh, Whistler or Hokusai.</figcaption>
+    </figure>
+  </section>
+
+  <section aria-labelledby="h-human">
+    <div style="display:grid;gap:6px"><div class="eyebrow">Next</div><h2 id="h-human">Making it feel less machine-made</h2></div>
+    <p class="lede">Right now the person goes in as numbers and the painting comes out whole, all at once, in a smooth digital finish, with a caption that sounds like an AI wrote it. Each of those is a place to put the human back. The art history already does part of this: every style on screen comes from a painting a person made.</p>
+    <div class="top3">
+      <div class="idea">
+        <span class="rank">Recommended first</span>
+        <h3>Your hand paints the change in</h3>
+        <p class="now">Now: your movement becomes four numbers and disappears.</p>
+        <p class="do">Reveal the new painting only along the path your wrist actually traced, widened into brushstrokes over the previous painting. Each visitor leaves a visible gesture, and the crowd painting becomes literal layers of people's marks.</p>
+        <span class="cost">GPU unchanged · mask + composite on the laptop</span>
+      </div>
+      <div class="idea">
+        <span class="rank">Recommended</span>
+        <h3>Let people watch it being painted</h3>
+        <p class="now">Now: a 1.4-second crossfade; the image just appears.</p>
+        <p class="do">Lay the new frame down in brush-shaped strokes over four or five seconds, in the direction and rhythm the visitor moved. It also hides Gemini's thinking time.</p>
+        <span class="cost">display only · small</span>
+      </div>
+      <div class="idea">
+        <span class="rank">Recommended</span>
+        <h3>Say it the way a docent would</h3>
+        <p class="now">Now: "radiant joy bursting with luminous affection."</p>
+        <p class="do">Plain words that name the cause: "You spoke softly and moved slowly, so the chapel borrowed Whistler's night." The reason is more human than the adjectives.</p>
+        <span class="cost">prompt change · small</span>
+      </div>
+    </div>
+    <div class="more">
+      <div><b>Physical material</b><span>Canvas weave and impasto lighting over the frame, or print each moment as a postcard and the final night as a canvas.</span></div>
+      <div><b>A choice for the visitor</b><span>Show two takes of your moment and let the visitor keep one, or let them nudge it warmer or cooler with one gesture.</span></div>
+      <div><b>Memory with weight</b><span>Older visitors sink into the underpainting instead of averaging away, so the end of the night carries the whole night.</span></div>
+      <div><b>A human artist in the loop</b><span>A local artist paints the base canvas or chooses the library, so the style space carries a person's taste, with their permission.</span></div>
+      <div><b>Imperfection</b><span>Small seed and composition drift between visitors, like a painter who never makes the same stroke twice.</span></div>
+      <div><b>Say what is AI and what is not</b><span>Name the paintings and the measurements plainly. Showing the mechanism makes the result feel made, not generated.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-status">
+    <div style="display:grid;gap:6px"><div class="eyebrow">Status, 7 November</div><h2 id="h-status">Working, and still to check</h2></div>
+    <div class="status">
+      <div class="box"><b>Working end to end</b><ul>
+        <li>Real capture in Chrome: webcam, mic, speech</li>
+        <li>Gemini art director on Vertex AI with structured output</li>
+        <li>Painting on an L4 in Google Cloud, 1.6 s per visit</li>
+        <li>Moment, crowd, series strip; words kept off screen</li>
+      </ul></div>
+      <div class="box"><b>Still to check</b><ul>
+        <li>Voice and movement calibration on real people (the voice meter reads high for normal speech)</li>
+        <li>Blind match test: can strangers match people to their paintings?</li>
+        <li>How a gentle response to distress should work at a public booth</li>
+        <li>A long night: does the crowd painting stay legible after 50+ visitors?</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <footer>Living Canvas · Duke Hackathon 2026. Art library: 18 public-domain paintings via Wikimedia Commons. Models: SDXL-Turbo (Stability AI), IP-Adapter (Tencent AI Lab), ControlNet Canny SDXL (diffusers), Gemini 3.8 Flash (Google).</footer>
+</div>
