@@ -86,6 +86,23 @@ function dot(x, y, r, up) {
   cctx.beginPath(); cctx.arc(x, y, r, 0, Math.PI * 2); cctx.stroke();
 }
 
+// Resample a stroke to points `step` apart along its length. Trace adds points per camera frame, so a fast hand
+// leaves sparse points and a slow one dense points; even spacing keeps the edges from depending on drawing speed.
+// Extra point fields are copied from the nearer original point.
+function evenly(s, step) {
+  const out = [s[0]]; let need = step;
+  for (let i = 1; i < s.length; i++) {
+    const a = s[i - 1], b = s[i], d = Math.hypot(b.x - a.x, b.y - a.y);
+    let at = 0;
+    while (d - at >= need) { at += need; need = step; const f = at / d;
+      out.push({ ...(f < .5 ? a : b), x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f }); }
+    need -= d - at;
+  }
+  const last = s[s.length - 1], end = out[out.length - 1];
+  if (s.length > 1 && (last.x !== end.x || last.y !== end.y)) out.push(last);
+  return out;
+}
+
 // Voice loudness (envelope, 0..1 over the talking moment) stretched across the drawing: f = 0 at the first drawn point,
 // 1 at the last. Quiet talk gives a faint reveal, loud talk a strong one. No envelope: full strength. Squared because a
 // piece's core and bristles stack and saturate fast; this keeps the visible opacity roughly following the voice.
@@ -98,17 +115,19 @@ function loudness(envelope, f) {
 }
 
 // The mood frame shows through a soft mask built along the path in the order it was drawn. Each short piece of path
-// adds about two-thirds opacity (scaled by the voice's loudness at that moment) with ragged bristle edges, so
-// crossings come through fully.
-export async function reveal(strokes, vibe, width, envelope) {
+// adds about two-thirds opacity (scaled by the voice's loudness at that moment) with bristle edges, so crossings come
+// through fully. texture (0..1, from movement while talking) sets the edges for the whole visit: 0 = soft, blurred;
+// 1 = ragged, splayed bristles. envelope (voice loudness while talking) sets the strength along the path.
+export async function reveal(strokes, vibe, width, texture = .35, envelope) {
   const { W, H, base } = S;
   const mask = mk(), soft = mk(), layer = mk(), m = mask.getContext('2d'), sc = soft.getContext('2d'), lc = layer.getContext('2d');
   m.lineCap = m.lineJoin = 'round'; m.strokeStyle = '#fff';
   const ts = strokes.flat().map(p => p.t), tFirst = Math.min(...ts), span = Math.max(...ts) - tFirst || 1;
-  const pieces = [];
-  for (const s of strokes) {
-    const bristles = Array.from({ length: 9 }, () => ({ dx: (Math.random() - .5) * width * .9, dy: (Math.random() - .5) * width * .9,
-                                                       w: width * (.08 + Math.random() * .14), a: .35 + Math.random() * .4 }));
+  const pieces = [], tk = texture, spread = width * (.7 + .7 * tk);
+  for (const raw of strokes) {
+    const s = evenly(raw, W / 150);       // pieces cover the same length however fast the hand moved
+    const bristles = Array.from({ length: Math.round(5 + 15 * tk) }, () => ({ dx: (Math.random() - .5) * spread, dy: (Math.random() - .5) * spread,
+                                                       w: width * (.18 - .12 * tk) * (.5 + Math.random()), a: .55 - .2 * tk + (Math.random() - .5) * (.2 + .5 * tk) }));
     for (let i = 0; i < Math.max(1, s.length - 1); i += 10) {
       const pts = s.slice(i, i + 11);
       pieces.push({ pts, bristles, k: loudness(envelope, (pts[pts.length >> 1].t - tFirst) / span) });
@@ -124,11 +143,11 @@ export async function reveal(strokes, vibe, width, envelope) {
     let tip = null;
     while (drawn < want) {
       const { pts, bristles, k } = pieces[drawn++];
-      m.globalAlpha = .65 * k; m.lineWidth = width * .75; line(pts, 0, 0);
+      m.globalAlpha = .65 * k; m.lineWidth = width * (.85 - .35 * texture); line(pts, 0, 0);
       for (const b of bristles) { m.globalAlpha = b.a * k; m.lineWidth = b.w; line(pts, b.dx, b.dy); }
       tip = pts[pts.length - 1];
     }
-    sc.clearRect(0, 0, W, H); sc.filter = `blur(${Math.max(1, Math.round(W / 350))}px)`; sc.drawImage(mask, 0, 0); sc.filter = 'none';
+    sc.clearRect(0, 0, W, H); sc.filter = `blur(${Math.max(1, Math.round(W / 350 * (3 - 2.6 * texture)))}px)`; sc.drawImage(mask, 0, 0); sc.filter = 'none';
     lc.globalCompositeOperation = 'source-over'; lc.clearRect(0, 0, W, H); lc.drawImage(vibe, 0, 0, W, H);
     lc.globalCompositeOperation = 'destination-in'; lc.drawImage(soft, 0, 0); lc.globalCompositeOperation = 'source-over';
     pctx.drawImage(base, 0, 0); pctx.drawImage(layer, 0, 0);
