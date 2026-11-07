@@ -6,7 +6,7 @@ import { S, $, video, sleep, say, bar, loadImg } from './state.js';
 import { fetchBase, fetchBrush, fetchRender } from './api.js';
 import { listen } from './audio.js';
 import { startCamera, readTips, resetTips } from './hand.js';
-import { fit, startCanvas, setTrailBlend, trace, reveal, clearTrail } from './render.js';
+import { fit, startCanvas, setTrailBlend, trace, reveal, clearTrail, paletteWash } from './render.js';
 
 const SPEAK_S = 6, TRACE_S = 12, SIM_TRACE_S = 5;
 
@@ -21,8 +21,9 @@ async function reset() {
     let img = null;
     if (S.start === 'chapel') {
       say('Preparing the underpainting…', 'a calm, pale chapel for tonight’s visitors to paint into');
-      img = await loadImg((await fetchBase()).image);
-      S.W = img.naturalWidth; S.H = img.naturalHeight;
+      // GPU lab down and no cached frame: start on bare linen so visits can still run.
+      img = await fetchBase().then(r => loadImg(r.image)).catch(e => { console.warn('no base frame:', e); return null; });
+      if (img) { S.W = img.naturalWidth; S.H = img.naturalHeight; }
     }
     startCanvas(img);
     S.visitors = 0; $('#count').textContent = ''; fit();
@@ -48,7 +49,8 @@ async function visit(sim) {
     const look = { palette: d.palette?.length ? d.palette : ['#e6bd6a'], width: S.W * (.035 + .045 * (d.size ?? .5)) };
     const painting = fetchRender({ artists: d.artists, energy: d.energy, warmth: d.warmth, light: d.light,
                                    atmosphere: d.atmosphere, mode: S.start === 'abstract' ? 'abstract' : 'scene' })
-      .then(r => loadImg(r.image));
+      .then(r => loadImg(r.image))
+      .catch(e => { console.warn('no mood frame, revealing a palette wash:', e); return paletteWash(look.palette); });
     const names = d.artists.map(a => a.name.split(',')[0]).join(', ');
     say(sim ? 'Tracing…' : 'Now trace a path in the air with your finger.', `${d.reason}`);
     $('#sub').prepend(Object.assign(document.createElement('span'), { id: 'swatches',
