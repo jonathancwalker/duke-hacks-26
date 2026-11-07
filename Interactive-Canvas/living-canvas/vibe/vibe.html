@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Living Canvas Vibe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #14110e; --ink: #efe7d8; --dim: #978d7f; --line: #3a332b; --accent: #e6bd6a; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); overflow: hidden;
+               font: 14px/1.45 Inter, system-ui, sans-serif; }
+  header { position: absolute; top: 0; left: 0; right: 0; height: 64px; display: flex; align-items: center;
+           justify-content: space-between; padding: 0 28px; }
+  h1 { margin: 0; font: italic 500 26px/1 "Cormorant Garamond", Georgia, serif; letter-spacing: .01em; }
+  h1 span { color: var(--dim); font-style: normal; font-size: 18px; margin-left: 10px; }
+  #count { color: var(--dim); margin-right: 16px; }
+  .right { display: flex; align-items: center; }
+  .modes { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+  .modes button { border: 0; padding: 6px 12px; font-size: 13px; color: var(--dim); }
+  .modes button.on { background: #2a241e; color: var(--ink); }
+  #frame { position: absolute; box-shadow: 0 24px 70px #000b; background: #000; }
+  #frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #trail { mix-blend-mode: screen; transition: opacity .2s; }
+  #cam { position: absolute; right: 28px; bottom: 112px; width: 200px; aspect-ratio: 16/9; object-fit: cover;
+         transform: scaleX(-1); border: 1px solid var(--line); opacity: 0; transition: opacity .4s; }
+  #cam.on { opacity: .85; }
+  footer { position: absolute; left: 0; right: 0; bottom: 0; height: 104px; display: grid;
+           grid-template-columns: 1fr auto; align-items: center; gap: 24px; padding: 0 28px; }
+  #say { font: 500 30px/1.15 "Cormorant Garamond", Georgia, serif; }
+  #sub { color: var(--dim); margin-top: 4px; min-height: 20px; }
+  #swatches { display: inline-flex; gap: 4px; vertical-align: middle; margin-right: 8px; }
+  #swatches i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+  #bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--accent); }
+  #meter { position: absolute; left: 0; bottom: 3px; height: 2px; width: 0; background: var(--ink); opacity: .35; }
+  .btns { display: flex; gap: 10px; }
+  button { font: 500 14px Inter, sans-serif; color: var(--ink); background: transparent; border: 1px solid var(--line);
+           padding: 10px 18px; border-radius: 999px; cursor: pointer; }
+  button.main { background: var(--ink); color: var(--bg); border-color: var(--ink); padding: 12px 26px; }
+  button:disabled { opacity: .35; cursor: default; }
+  @media (max-width: 700px) {
+    header, footer { padding: 0 16px; } #say { font-size: 22px; } #cam { display: none; }
+    footer { grid-template-columns: 1fr; height: auto; padding-bottom: 12px; }
+  }
+</style>
+</head>
+<body>
+<header><h1>Living Canvas <span>vibe paint</span></h1>
+  <div class="right"><div id="count"></div>
+    <div class="modes" title="What the night starts from">
+      <button data-mode="chapel">Chapel</button><button data-mode="blank">Blank → chapel</button><button data-mode="abstract">Blank → abstract</button>
+    </div></div></header>
+<div id="frame"><canvas id="paint"></canvas><canvas id="trail"></canvas><canvas id="cursor"></canvas></div>
+<video id="cam" playsinline muted></video>
+<footer>
+  <div><div id="say">Preparing the canvas…</div><div id="sub"></div></div>
+  <div class="btns">
+    <button id="reset" title="Start the night over from a blank underpainting">Reset</button>
+    <button id="sim" title="A pretend visitor with a scripted feeling and path">Simulate</button>
+    <button id="go" class="main" disabled>Step up</button>
+  </div>
+  <div id="meter"></div><div id="bar"></div>
+</footer>
+
+<script type="module">
+// Vibe paint: a visitor says how they feel, then traces a path in the air with a fingertip. Nothing is painted yet,
+// only a glowing trail. The GPU repaints the whole scene in their mood (Gemini picks the painters, plus energy,
+// warmth and light), and that repainting is revealed only along their path. Crossings show the mood more strongly.
+const SPEAK_S = 6, TRACE_S = 12, SIM_TRACE_S = 5, REVEAL_MS = 3200;
+const $ = s => document.querySelector(s);
+const paint = $('#paint'), trail = $('#trail'), cursor = $('#cursor'), video = $('#cam');
+const pctx = paint.getContext('2d'), tctx = trail.getContext('2d'), cctx = cursor.getContext('2d');
+let W = 768, H = 432, base = null, busy = false, visitors = 0, hands = null;
+// Start: 'chapel' (pale underpainting; your path repaints it), 'blank' (linen; your path reveals the chapel in your
+// mood), 'abstract' (linen; your path lays down pure mood paint, no scene: the most varied).
+let START = 'chapel';
+try { START = localStorage.getItem('vibe-start') || 'chapel'; } catch {}
+const blankStart = () => START !== 'chapel';
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const lin = (x, a, b) => Math.max(0, Math.min(1, (x - a) / (b - a)));
+const ease = t => t < .5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+const mk = () => Object.assign(document.createElement('canvas'), { width: W, height: H });
+const say = (a, b = '') => { $('#say').textContent = a; $('#sub').textContent = b; };
+const bar = f => { $('#bar').style.width = (100 * Math.max(0, Math.min(1, f))) + '%'; };
+const meter = f => { $('#meter').style.width = (100 * f) + '%'; };
+const frame = () => new Promise(r => requestAnimationFrame(r));
+
+async function api(path, body) {
+  const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
+  return j;
+}
+const loadImg = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+
+function fit() {
+  const aw = innerWidth - 56, ah = innerHeight - 64 - 112, s = Math.min(aw / W, ah / H);
+  Object.assign($('#frame').style, { width: W * s + 'px', height: H * s + 'px', left: (innerWidth - W * s) / 2 + 'px', top: 64 + (ah - H * s) / 2 + 'px' });
+}
+addEventListener('resize', fit);
+
+// Brighter, more saturated versions of a painting's colors, so trails glow on the dark-ish canvas.
+function glow(hex, onLight = blankStart()) {
+  let [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn;
+  let h = 0, s = d ? d / (1 - Math.abs(2 * l - 1)) : 0;
+  if (d) h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return `hsl(${Math.round(h * 60)}, ${Math.round(Math.min(1, s * 1.3 + .15) * 100)}%, ${Math.round((onLight ? Math.max(.35, Math.min(.55, l)) : Math.max(.55, Math.min(.75, l + .25))) * 100)}%)`;
+}
+
+// ---------------------------------------------------------------- the night's painting
+async function reset() {
+  busy = true; setButtons();
+  document.querySelectorAll('.modes button').forEach(b => b.classList.toggle('on', b.dataset.mode === START));
+  trail.style.mixBlendMode = blankStart() ? 'multiply' : 'screen';
+  try {
+    let img = null;
+    if (START === 'chapel') {
+      say('Preparing the underpainting…', 'a calm, pale chapel for tonight’s visitors to paint into');
+      img = await loadImg((await api('/api/vibe/base')).image);
+      W = img.naturalWidth; H = img.naturalHeight;
+    }
+    for (const c of [paint, trail, cursor]) { c.width = W; c.height = H; }
+    base = mk();
+    if (img) base.getContext('2d').drawImage(img, 0, 0); else linen(base.getContext('2d'));
+    pctx.drawImage(base, 0, 0);
+    visitors = 0; $('#count').textContent = ''; fit();
+    say('Step up, say how you feel, then trace a path in the air.', 'Your mood repaints the canvas only where your hand went.');
+  } catch (e) { say('The GPU lab is not answering.', String(e.message || e)); }
+  busy = false; setButtons();
+}
+
+// Primed linen: warm off-white with a faint woven grain.
+function linen(c) {
+  c.fillStyle = '#e9e2d3'; c.fillRect(0, 0, W, H);
+  for (let i = 0; i < 2600; i++) {
+    const x = Math.random() * W, y = Math.random() * H, horiz = Math.random() < .5, len = 4 + Math.random() * 14;
+    c.strokeStyle = Math.random() < .5 ? 'rgba(90,70,40,.05)' : 'rgba(255,255,255,.12)'; c.lineWidth = .8;
+    c.beginPath(); c.moveTo(x, y); c.lineTo(horiz ? x + len : x, horiz ? y : y + len); c.stroke();
+  }
+}
+
+// ---------------------------------------------------------------- 1. listen
+async function listen(sec) {
+  let text = '', interim = '', rec = null, ended = Promise.resolve();
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (SR) {
+    rec = new SR(); rec.continuous = true; rec.interimResults = true; rec.lang = 'en-US';
+    rec.onresult = e => { interim = ''; for (let i = e.resultIndex; i < e.results.length; i++) {
+      const r = e.results[i]; if (r.isFinal) text += r[0].transcript + ' '; else interim += r[0].transcript; } };
+    ended = new Promise(r => { rec.onend = r; rec.onerror = r; });
+    try { rec.start(); } catch {}
+  }
+  let stream, ac, an; const levels = [], buf = new Float32Array(2048);
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: { autoGainControl: false, noiseSuppression: false, echoCancellation: false } });
+    ac = new AudioContext(); an = ac.createAnalyser(); an.fftSize = 2048; ac.createMediaStreamSource(stream).connect(an);
+  } catch {}
+  const t0 = performance.now();
+  for (let t = 0; t < sec; t = (performance.now() - t0) / 1000) {
+    bar(t / sec);
+    if (an) { an.getFloatTimeDomainData(buf); let s = 0; for (const v of buf) s += v * v;
+      const db = 10 * Math.log10(s / buf.length + 1e-12); levels.push(db); meter(lin(db, -55, -20)); }
+    await frame();
+  }
+  meter(0);
+  if (rec) { try { rec.stop(); } catch {} await Promise.race([ended, sleep(1500)]); }
+  stream?.getTracks().forEach(t => t.stop()); ac?.close();
+  const voiced = levels.filter(d => d > -50).sort((a, b) => a - b);
+  const p90 = voiced.length ? voiced[Math.floor(voiced.length * .9)] : -60;
+  return { feeling: (text + interim).trim(), arousal: voiced.length > 10 ? lin(p90, -41, -25) : 0.3 };
+}
+
+// ---------------------------------------------------------------- 2. trace
+async function startCamera() {
+  if (hands) return;
+  say('Waking the camera…');
+  video.srcObject = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
+  await video.play();
+  const { FilesetResolver, HandLandmarker } = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14');
+  const vision = await FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
+  hands = await HandLandmarker.createFromOptions(vision, { runningMode: 'VIDEO', numHands: 2,
+    baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task', delegate: 'GPU' } });
+}
+
+// The camera's middle 80% maps to the whole canvas, so reaching the edges is easy. Mirrored, like a mirror.
+const toCanvas = lm => ({ x: lin(1 - lm.x, .1, .9) * W, y: lin(lm.y, .1, .9) * H });
+
+async function trace(sec, look, sim) {
+  const strokes = [], live = {}, width = look.width, colors = look.palette.map(glow);
+  tctx.clearRect(0, 0, W, H); trail.style.opacity = 1;
+  let lastT = -1, n = 0;
+  const t0 = performance.now();
+  for (let t = 0; t < sec; t = (performance.now() - t0) / 1000) {
+    bar(t / sec);
+    let tips = null;                                       // null: no new camera frame this tick (keep strokes open)
+    if (sim) tips = sim(t / sec);
+    else if (hands && video.readyState >= 2 && video.currentTime !== lastT) {
+      lastT = video.currentTime;
+      const r = hands.detectForVideo(video, performance.now());
+      tips = r.landmarks.map((lm, i) => ({ key: r.handednesses?.[i]?.[0]?.categoryName || 'h' + i, ...toCanvas(lm[8]) }));
+    }
+    cctx.clearRect(0, 0, W, H);
+    if (tips) {
+      for (const k of Object.keys(live)) if (!tips.some(p => p.key === k)) delete live[k];   // hand left: stroke ends
+      for (const p of tips) {
+        let h = live[p.key];
+        if (!h) { h = live[p.key] = { x: p.x, y: p.y, s: [] }; strokes.push(h.s); }
+        const x = h.x + (p.x - h.x) * .5, y = h.y + (p.y - h.y) * .5;           // light smoothing
+        const prev = h.s[h.s.length - 1];
+        if (!prev || Math.hypot(x - prev.x, y - prev.y) > W / 400) {
+          h.s.push({ x, y });
+          const c = colors[Math.floor(n++ / 14) % colors.length];
+          const a = prev || { x, y };
+          tctx.lineCap = tctx.lineJoin = 'round'; tctx.strokeStyle = c;
+          tctx.globalAlpha = .16; tctx.lineWidth = width; tctx.shadowBlur = 0;
+          tctx.beginPath(); tctx.moveTo(a.x, a.y); tctx.lineTo(x, y); tctx.stroke();
+          tctx.globalAlpha = .95; tctx.lineWidth = W / 300; tctx.shadowBlur = W / 60; tctx.shadowColor = c;
+          tctx.beginPath(); tctx.moveTo(a.x, a.y); tctx.lineTo(x, y); tctx.stroke();
+        }
+        h.x = x; h.y = y;
+      }
+    }
+    for (const h of Object.values(live)) dot(h.x, h.y, width / 2);
+    await frame();
+  }
+  cctx.clearRect(0, 0, W, H);
+  return strokes.filter(s => s.length);
+}
+
+function dot(x, y, r) {
+  cctx.globalAlpha = .9; cctx.strokeStyle = '#fff'; cctx.lineWidth = W / 500;
+  cctx.beginPath(); cctx.arc(x, y, r, 0, Math.PI * 2); cctx.stroke();
+}
+
+// ---------------------------------------------------------------- 3. reveal
+// The mood frame shows through a soft mask built along the path in the order it was drawn. Each short piece of path
+// adds about two-thirds opacity with ragged bristle edges, so crossings come through fully.
+async function reveal(strokes, vibe, width) {
+  const mask = mk(), soft = mk(), layer = mk(), m = mask.getContext('2d'), sc = soft.getContext('2d'), lc = layer.getContext('2d');
+  m.lineCap = m.lineJoin = 'round'; m.strokeStyle = '#fff';
+  const pieces = [];
+  for (const s of strokes) {
+    const bristles = Array.from({ length: 9 }, () => ({ dx: (Math.random() - .5) * width * .9, dy: (Math.random() - .5) * width * .9,
+                                                       w: width * (.08 + Math.random() * .14), a: .35 + Math.random() * .4 }));
+    for (let i = 0; i < Math.max(1, s.length - 1); i += 10) pieces.push({ pts: s.slice(i, i + 11), bristles });
+  }
+  const line = (pts, dx, dy) => { m.beginPath(); m.moveTo(pts[0].x + dx, pts[0].y + dy);
+    for (const q of pts.length > 1 ? pts.slice(1) : pts) m.lineTo(q.x + dx, q.y + dy); m.stroke(); };
+  let drawn = 0; const t0 = performance.now();
+  for (let f = 0; f < 1;) {
+    f = Math.min(1, (performance.now() - t0) / REVEAL_MS);
+    bar(f);
+    const want = Math.round(ease(f) * pieces.length);
+    let tip = null;
+    while (drawn < want) {
+      const { pts, bristles } = pieces[drawn++];
+      m.globalAlpha = .65; m.lineWidth = width * .75; line(pts, 0, 0);
+      for (const b of bristles) { m.globalAlpha = b.a; m.lineWidth = b.w; line(pts, b.dx, b.dy); }
+      tip = pts[pts.length - 1];
+    }
+    sc.clearRect(0, 0, W, H); sc.filter = `blur(${Math.max(1, Math.round(W / 350))}px)`; sc.drawImage(mask, 0, 0); sc.filter = 'none';
+    lc.globalCompositeOperation = 'source-over'; lc.clearRect(0, 0, W, H); lc.drawImage(vibe, 0, 0, W, H);
+    lc.globalCompositeOperation = 'destination-in'; lc.drawImage(soft, 0, 0); lc.globalCompositeOperation = 'source-over';
+    pctx.drawImage(base, 0, 0); pctx.drawImage(layer, 0, 0);
+    trail.style.opacity = 1 - f;
+    cctx.clearRect(0, 0, W, H);
+    if (tip && f < 1) { cctx.globalAlpha = .8; cctx.fillStyle = '#fff'; cctx.shadowBlur = W / 40; cctx.shadowColor = '#fff';
+      cctx.beginPath(); cctx.arc(tip.x, tip.y, W / 160, 0, Math.PI * 2); cctx.fill(); cctx.shadowBlur = 0; }
+    await frame();
+  }
+  cctx.clearRect(0, 0, W, H); tctx.clearRect(0, 0, W, H);
+  base.getContext('2d').drawImage(paint, 0, 0);                  // the change stays: next visitor paints over it
+}
+
+// ---------------------------------------------------------------- one visit
+async function visit(sim) {
+  if (busy || !base) return;
+  busy = true; setButtons();
+  try {
+    let heard;
+    if (sim) { heard = sim.heard; say(`“${heard.feeling}”`, 'a pretend visitor'); await sleep(900); }
+    else {
+      await startCamera(); video.classList.add('on');
+      say('How are you feeling right now?', 'Say it out loud, any way you like.');
+      heard = await listen(SPEAK_S);
+    }
+    say('Choosing your painters…', ''); bar(0);
+    const d = await api('/api/brush', heard);
+    const look = { palette: d.palette?.length ? d.palette : ['#e6bd6a'], width: W * (.035 + .045 * (d.size ?? .5)) };
+    const painting = api('/api/vibe/render', { artists: d.artists, energy: d.energy, warmth: d.warmth, light: d.light,
+                                               atmosphere: d.atmosphere, mode: START === 'abstract' ? 'abstract' : 'scene' })
+      .then(r => loadImg(r.image));
+    const names = d.artists.map(a => a.name.split(',')[0]).join(', ');
+    say(sim ? 'Tracing…' : 'Now trace a path in the air with your finger.', `${d.reason}`);
+    $('#sub').prepend(Object.assign(document.createElement('span'), { id: 'swatches',
+      innerHTML: look.palette.slice(0, 8).map(c => `<i style="background:${c}"></i>`).join('') }));
+    const strokes = await trace(sim ? SIM_TRACE_S : TRACE_S, look, sim?.path);
+    video.classList.remove('on');
+    if (!strokes.length) { say('No path this time.', 'Hold a hand up where the camera can see it, then trace.'); tctx.clearRect(0, 0, W, H); return; }
+    say('Mixing your paint…', `after ${names}`); bar(0);
+    const vibe = await painting;
+    say('Your vibe, painted.', `${d.reason}`);
+    await reveal(strokes, vibe, look.width);
+    visitors++; $('#count').textContent = `${visitors} visitor${visitors > 1 ? 's' : ''} tonight`;
+    await sleep(2500);
+    say('Next visitor: step up.', 'Each visit repaints only the path its hands drew.');
+  } catch (e) {
+    console.error(e); say('Something went wrong.', String(e.message || e));
+  } finally { busy = false; setButtons(); bar(0); video.classList.remove('on'); }
+}
+
+// A pretend visitor: a scripted feeling and a looping path, so the room can be tested without a camera.
+const FEELINGS = [
+  ['I just found out my grandmother passed away', .2], ['We won the championship, I can’t believe it!', .95],
+  ['so nervous about my presentation tomorrow', .7], ['honestly just calm, slow Sunday morning', .15],
+  ['I’m furious, my landlord kept the whole deposit', .9], ['in love, first date went really well', .6],
+];
+function simVisitor() {
+  const [feeling, arousal] = FEELINGS[Math.floor(Math.random() * FEELINGS.length)];
+  const a = 1 + Math.random() * 2, b = 1 + Math.random() * 2, ph = Math.random() * 6, cx = .3 + Math.random() * .4, cy = .35 + Math.random() * .3;
+  const path = f => [{ key: 'sim', x: W * (cx + .28 * Math.sin(a * 6.28 * f + ph)), y: H * (cy + .3 * Math.sin(b * 6.28 * f)) }];
+  return { heard: { feeling, arousal }, path };
+}
+
+function setButtons() { $('#go').disabled = $('#sim').disabled = $('#reset').disabled = busy || !base; if (!base) $('#reset').disabled = busy; }
+$('#go').onclick = () => visit();
+$('#sim').onclick = () => visit(simVisitor());
+$('#reset').onclick = () => !busy && reset();
+document.querySelectorAll('.modes button').forEach(b => b.onclick = () => {
+  if (busy || b.dataset.mode === START) return;
+  if (visitors && !confirm('Start a new canvas? Tonight’s painting will be cleared.')) return;
+  START = b.dataset.mode; try { localStorage.setItem('vibe-start', START); } catch {}
+  reset();
+});
+addEventListener('keydown', e => { if (e.code === 'Space' && !busy) { e.preventDefault(); visit(); } });
+reset();
+</script>
+</body>
+</html>

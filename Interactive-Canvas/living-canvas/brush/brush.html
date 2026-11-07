@@ -1,0 +1,1450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Living Canvas Brush</title>
+<script src="/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+<!-- Magenta (Google's music ML) loads before Tone so the page's own Tone.js stays the global one -->
+<script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.23.1"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wall:#2e3836; --panel:#262e2c; --line:#3d4946; --ink:#ece5d8; --muted:#a9b0a8;
+    --ochre:#d9a441; --ochre-ink:#2a2112; --frame:#1b1612; --field:#1f2624;
+    --serif:'Young Serif', Georgia, serif; --sans:'Figtree', system-ui, sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html, body { height:100%; }
+  body { margin:0; background:var(--wall); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.45; }
+  .hidden { display:none !important; }
+  button { font:inherit; color:inherit; cursor:pointer; }
+  :focus-visible { outline:2px solid var(--ochre); outline-offset:2px; }
+
+  #app { display:grid; grid-template-columns:268px 1fr; min-height:100vh; }
+
+  /* Tool panel */
+  #tools { background:var(--panel); border-right:1px solid var(--line); padding:22px 18px; display:flex; flex-direction:column; gap:22px; }
+  #tools h1 { font-family:var(--serif); font-weight:400; font-size:22px; line-height:1.15; margin:0; }
+  #tools h1 small { display:block; font-family:var(--sans); font-size:13px; color:var(--muted); margin-top:4px; }
+  .group { display:flex; flex-direction:column; gap:6px; }
+  .group h2 { font-size:13px; font-weight:600; color:var(--muted); margin:0 0 2px; }
+  .tool { display:flex; justify-content:space-between; align-items:center; width:100%; padding:9px 11px;
+          background:transparent; border:1px solid var(--line); border-radius:7px; text-align:left; transition:background .12s, border-color .12s; }
+  .tool:hover { background:#2d3734; border-color:#4b5854; }
+  .tool .val { color:var(--ochre); font-weight:500; }
+  .tool.quiet { border-color:transparent; color:var(--muted); }
+  .tool.quiet:hover { color:var(--ink); }
+  .tool.danger:hover { color:#e8a08f; }
+  .tool:active { transform:translateY(1px); }
+  #status { margin-top:auto; display:flex; flex-direction:column; gap:5px; font-size:12px; color:var(--muted); }
+  #status .m { display:flex; align-items:center; gap:8px; }
+  #status .dot { width:7px; height:7px; border-radius:50%; background:#58635f; }
+  #status .m.ok .dot { background:#8fbf8a; }
+
+  /* Gallery wall */
+  #wall { display:flex; align-items:center; justify-content:center; padding:40px 32px; min-width:0; }
+  #piece { display:flex; flex-direction:column; gap:18px; width:min(100%, 1200px); }
+  #stage { position:relative; background:var(--frame); padding:14px; border-radius:3px;
+           box-shadow:0 1px 0 #ffffff12 inset, 0 30px 60px -20px #0009, 0 8px 18px #0005; }
+  #holder { aspect-ratio:1200 / 720; background:#e9e2d3; }
+  #holder canvas { display:block; width:100% !important; height:auto !important; }
+
+  /* Museum label */
+  #placard { align-self:flex-start; background:#f1ece2; color:#2a2622; padding:12px 16px 13px; border-radius:2px;
+             box-shadow:0 6px 14px #0004; max-width:340px; }
+  #placard .title { font-family:var(--serif); font-size:17px; line-height:1.25; margin:0 0 4px; }
+  #placard p { margin:0; font-size:13px; color:#5a544d; }
+
+  /* Contribution card */
+  #overlay { position:absolute; inset:14px; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+  #panel { pointer-events:auto; background:#262e2cf2; backdrop-filter:blur(6px); border:1px solid var(--line);
+           padding:24px; border-radius:10px; width:min(400px, 92%); display:flex; flex-direction:column; gap:12px;
+           box-shadow:0 20px 50px #0008; }
+  #panel h2 { margin:0; font-family:var(--serif); font-weight:400; font-size:24px; line-height:1.2; }
+  #panel p { margin:0; color:var(--muted); max-width:60ch; }
+  #panel label { display:flex; flex-direction:column; gap:5px; font-size:13px; color:var(--muted); }
+  #panel input { padding:11px 12px; border-radius:7px; border:1px solid var(--line); background:var(--field); color:var(--ink); font:inherit; font-size:15px; }
+  #panel input:focus { border-color:var(--ochre); outline:none; }
+  .row { display:flex; gap:8px; }
+  .row input { flex:1; min-width:0; }
+  #say { padding:0 14px; border-radius:7px; border:1px solid var(--line); background:transparent; white-space:nowrap; }
+  #say:hover { border-color:var(--ochre); }
+  #go { padding:12px; border:0; border-radius:7px; background:var(--ochre); color:var(--ochre-ink); font-weight:600; font-size:15px; }
+  #go:hover { background:#e4b354; }
+
+  @media (max-width:860px) {
+    #app { grid-template-columns:1fr; }
+    #tools { border-right:0; border-bottom:1px solid var(--line); padding:16px; }
+    #tools .groups { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; }
+    #status { margin-top:0; }
+    #wall { padding:20px 16px; }
+    #stage { padding:8px; }
+    #overlay { inset:8px; }
+  }
+  /* Gallery screen: just the painting and its label */
+  body.gallery #app { grid-template-columns:1fr; }
+  body.gallery #tools, body.gallery #overlay { display:none !important; }
+  body.gallery #wall { padding:3vh 3vw; }
+  body.gallery #piece { width:min(100%, 160vh); }
+  @media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="tools" aria-label="Station controls">
+    <h1>Living Canvas<small>Paint with your hands, in the hand of the painters your words call up. Built on Shared Canvas.</small></h1>
+    <div class="groups" style="display:flex;flex-direction:column;gap:22px">
+      <div class="group">
+        <h2>Paint</h2>
+        <button id="brushBtn" class="tool"><span>Brush</span><span class="val">Hands</span></button>
+        <button id="styleBtn" class="tool"><span>Painter</span><span class="val">Van Gogh</span></button>
+        <button id="nodesBtn" class="tool"><span>Connections</span><span class="val">Blended</span></button>
+      </div>
+      <div class="group">
+        <h2>Hidden picture</h2>
+        <button id="snapBtn" class="tool"><span class="lbl">Take group snapshot</span></button>
+        <button id="photoBtn" class="tool"><span>Upload a photo</span></button>
+        <button id="peek" class="tool"><span>Peek underneath</span><span class="val">Hold</span></button>
+        <button id="revealBtn" class="tool"><span>Reveal</span><span class="val">Off</span></button>
+        <input type="file" id="photo" accept="image/*" class="hidden">
+      </div>
+      <div class="group">
+        <h2>Sound</h2>
+        <button id="mute" class="tool"><span>Sound</span><span class="val">On</span></button>
+        <button id="glazeBtn" class="tool"><span>AI glaze</span><span class="val">On</span></button>
+        <button id="replay" class="tool"><span>Replay with song</span></button>
+      </div>
+      <div class="group">
+        <h2>Session</h2>
+        <button id="save" class="tool"><span>Save image</span></button>
+        <button id="fake" class="tool quiet"><span>Add 12 test people</span></button>
+        <button id="clear" class="tool quiet danger"><span>Clear canvas</span></button>
+      </div>
+    </div>
+    <div id="status" class="hidden" aria-live="polite"></div>
+  </aside>
+
+  <main id="wall">
+    <div id="piece">
+      <div id="stage">
+        <div id="holder"></div>
+        <div id="overlay">
+          <div id="panel">
+            <h2>Add your moment</h2>
+            <p id="msg">Tell us how you feel and we'll find the painters whose hands you paint with. Then you have 15 seconds to paint with your hands. Clap to splatter. Your stroke stays in the painting and looks for people who feel the same.</p>
+            <label>First name<input id="name" maxlength="20" autocomplete="off"></label>
+            <label>What does this weekend feel like?
+              <span class="row">
+                <input id="feeling" maxlength="120" autocomplete="off">
+                <button id="say" type="button">Say it</button>
+              </span>
+            </label>
+            <button id="go">Choose your paint</button>
+          </div>
+        </div>
+      </div>
+      <div id="placard">
+        <div class="title">What does this weekend feel like?</div>
+        <p id="stats">Oil on canvas, after Van Gogh, waiting for its first painter</p>
+        <p id="sparks"></p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MediaPipe vision models: hands, face expressions, body silhouette. Each loads independently;
+     if one fails the rest still work, and holding the mouse button always paints. -->
+<script type="module">
+  const ready = n => window.modelReady && window.modelReady(n);
+  try {
+    const { FilesetResolver, HandLandmarker, FaceLandmarker, ImageSegmenter } =
+      await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14");
+    const vision = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+    await Promise.allSettled([
+      HandLandmarker.createFromOptions(vision, {
+        baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task", delegate: "GPU" },
+        runningMode: "VIDEO", numHands: 2
+      }).then(m => { window.handLandmarker = m; ready('hands'); }),
+      FaceLandmarker.createFromOptions(vision, {
+        baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task", delegate: "GPU" },
+        runningMode: "VIDEO", numFaces: 1, outputFaceBlendshapes: true
+      }).then(m => { window.faceLandmarker = m; ready('face'); }),
+      ImageSegmenter.createFromOptions(vision, {
+        baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite", delegate: "GPU" },
+        runningMode: "VIDEO", outputConfidenceMasks: true, outputCategoryMask: false
+      }).then(m => { window.segmenter = m; ready('body'); })
+    ]);
+  } catch (e) {
+    console.error('Vision models unavailable; mouse fallback only.', e);
+  }
+</script>
+
+<script>
+// ================= Config =================
+const W = 1200, H = 720;
+let oilOn = true;                               // any painted style (everything except plain ink)
+// Painter styles. Each is its own brush engine; the saved strokes are the same data,
+// so the whole piece can be replayed in any painter's hand.
+const STYLES = {
+  vangogh: { label: 'Van Gogh', medium: 'Oil on primed canvas, after its painters', bg: '#e9e2d3' },
+  monet:   { label: 'Monet',    medium: 'Oil on primed canvas, after its painters', bg: '#e9e2d3' },
+  seurat:  { label: 'Seurat',   medium: 'Oil on primed canvas, after its painters', bg: '#e9e2d3' }
+};
+const STYLE_ORDER = ['vangogh', 'monet', 'seurat'];   // every stroke is in a painter's hand
+let style = 'vangogh';
+const clamp255 = v => Math.max(0, Math.min(255, v));
+function saturate(r, g, b, k) { const m = (r + g + b) / 3; return [clamp255(m + (r - m) * k), clamp255(m + (g - m) * k), clamp255(m + (b - m) * k)]; }
+let BG = '#e9e2d3';                             // warm toned ground, like a primed oil canvas
+let canvasTex = null;
+
+// ================= Oil paint =================
+// One brush dab: 5 bristle lines laid along the stroke direction, each a slightly different
+// shade, plus a light edge and a dark edge so the paint looks thick (impasto).
+function drawDab(x, y, a, r, g, b, alpha, w, lenScale) {
+  const len = (5 + w * 5) * lenScale, half = w * 1.6 + 1;
+  const ca = Math.cos(a), sa = Math.sin(a), px = -sa, py = ca;
+  const hx = ca * len / 2, hy = sa * len / 2;
+  layer.strokeWeight(Math.max(1, w * 0.7));
+  for (let k = -2; k <= 2; k++) {
+    const off = (k / 2) * half;
+    const j = (((k + 3) * 73 + (x | 0) * 13 + (y | 0) * 7) % 23) - 11;   // deterministic bristle shade
+    layer.stroke(r + j, g + j, b + j, alpha);
+    layer.line(x + px * off - hx, y + py * off - hy, x + px * off + hx, y + py * off + hy);
+  }
+  // light comes from the upper left: highlight on the edge facing it, shadow on the other
+  const lit = (px * -0.7 + py * -0.7) > 0 ? -1 : 1;
+  layer.strokeWeight(1);
+  layer.stroke(255, 244, 225, alpha * 0.3);
+  layer.line(x + px * lit * (half + 0.8) - hx, y + py * lit * (half + 0.8) - hy, x + px * lit * (half + 0.8) + hx, y + py * lit * (half + 0.8) + hy);
+  layer.stroke(0, 0, 0, alpha * 0.3);
+  layer.line(x - px * lit * (half + 0.8) - hx, y - py * lit * (half + 0.8) - hy, x - px * lit * (half + 0.8) + hx, y - py * lit * (half + 0.8) + hy);
+}
+
+// Linen weave + grain, drawn once and laid over the painting.
+function makeCanvasTexture() {
+  const g = createGraphics(W, H); g.pixelDensity(1); g.loadPixels();
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const weave = (((x >> 1) & 1) ^ ((y >> 1) & 1)) ? 10 : -10;
+      const thread = Math.sin(x * 1.7) * 4 + Math.sin(y * 1.3) * 4;
+      const v = 128 + weave + thread + (Math.random() - 0.5) * 30;
+      const i = (y * W + x) * 4;
+      g.pixels[i] = v; g.pixels[i + 1] = v * 0.97; g.pixels[i + 2] = v * 0.9; g.pixels[i + 3] = 34;
+    }
+  }
+  g.updatePixels();
+  return g;
+}
+const PALETTE = ['#e07a5f', '#f2cc8f', '#81b29a', '#7aa5d2', '#c9a7eb'];
+const PALETTE_NAMES = ['coral', 'golden', 'sage', 'sky blue', 'lilac'];
+// Living Canvas: each stroke carries its painters' real palette (sampled from their paintings) and a brush style.
+function colOf(params) { return (params && params.palette && params.palette[0]) || PALETTE[(params && params.palette_index) | 0]; }
+function pickColor(params) {
+  const pal = params.palette; if (!pal || !pal.length) return colOf(params);
+  if (!params._w) params._w = pal.map((h, i) => { const [r, g, b] = hexToRgb(h), mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+                                                 return (pal.length - i) * (0.35 + (mx - mn) / 255); });   // common colors, vivid ones favored
+  let t = random(params._w.reduce((a, b) => a + b, 0));
+  for (let i = 0; i < pal.length; i++) { t -= params._w[i]; if (t <= 0) return pal[i]; }
+  return pal[0];
+}
+// Overlap: every place paint lands is counted. Crossings thicken the paint; this visitor's cells become the glaze mask.
+const DCELL = 12, DGW = Math.ceil(1200 / DCELL), DGH = Math.ceil(720 / DCELL);
+const densGrid = new Float32Array(DGW * DGH), visGrid = new Float32Array(DGW * DGH);
+function dcell(x, y) { return Math.max(0, Math.min(DGH - 1, y / DCELL | 0)) * DGW + Math.max(0, Math.min(DGW - 1, x / DCELL | 0)); }
+let glazeOn = true, glazeFx = null;
+const GLAZE_MIX = 0.75, GLAZE_MS = 2200;
+const PAINT_SECONDS = 15, COUNTDOWN_SECONDS = 3;
+const FIELD_SEED = 42;
+const MAX_PARTICLES = 4000;
+// ================= Shared painting (Supabase) =================
+const GALLERY = new URLSearchParams(location.search).has('gallery');
+document.body.classList.toggle('gallery', GALLERY);
+const CFG = window.CANVAS_CONFIG || {};
+const sb = (CFG.supabaseUrl && CFG.supabaseKey && window.supabase) ? window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseKey) : null;
+const knownIds = new Set();
+const incoming = [];
+
+function compactPath(path) {
+  return path.map(frame => frame.map(p => {
+    const o = { x: Math.round(p.x), y: Math.round(p.y) };
+    for (const k of ['s', 'o', 'e', 'v', 'h']) if (p[k]) o[k] = p[k];
+    if (p.pinch) o.pinch = true;
+    if (p.b) o.b = 1;
+    return o;
+  }));
+}
+function rowToContribution(r) {
+  return { id: r.id, name: r.name, feeling: r.feeling, author: r.author, params: r.params, seed: r.seed, path: r.path || [], t: Number(r.t) };
+}
+async function saveStroke(c) {
+  knownIds.add(c.id);
+  if (!sb) return;
+  const { error } = await sb.from('contributions').insert({
+    id: c.id, t: c.t, name: c.name, feeling: c.feeling, author: c.author, params: c.params, seed: c.seed, path: compactPath(c.path)
+  });
+  if (error) console.error('Could not save stroke', error);
+}
+async function loadShared() {
+  if (!sb) { console.warn('No Supabase config: running as a single station.'); return; }
+  const { data, error } = await sb.from('contributions').select('*').order('t', { ascending: true }).limit(2000);
+  if (error) { console.error('Could not load painting', error); }
+  else {
+    for (const r of data) { const c = rowToContribution(r); knownIds.add(c.id); contributions.push(c); addFirefly(c); }
+    updateStats();
+    rebuildPainting();
+  }
+  sb.channel('strokes')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'contributions' }, payload => {
+      const c = rowToContribution(payload.new);
+      if (knownIds.has(c.id)) return;          // our own stroke echoing back
+      knownIds.add(c.id); contributions.push(c); incoming.push(c);
+    })
+    .subscribe();
+}
+// Fast, silent rebuild of everything saved so far (on page load)
+function rebuildPainting() {
+  if (!contributions.length) return;
+  layer.background(BG); particles = []; resetWet();
+  replay = { queue: [...contributions].sort((a, b) => a.t - b.t), f: 0, speed: 14 };
+  replay.c = replay.queue.shift();
+  state = 'replay';
+  document.getElementById('overlay').classList.add('hidden');
+}
+// A stroke painted at another station paints itself in here
+function playIncoming(c) {
+  replay = { queue: [], c, f: 0, speed: 2, incoming: true };
+  state = 'replay';
+  document.getElementById('overlay').classList.add('hidden');
+}
+
+const ME = (() => { try { let id = localStorage.getItem('cid'); if (!id) { id = crypto.randomUUID(); localStorage.setItem('cid', id); } return id; } catch { return 'local'; } })();
+
+// ================= AI step: feeling -> brush (stub) =================
+// Swap for your API route: POST /api/brush { feeling } -> { palette_index, shape, energy, size, reason }
+const MOODS = {
+  hyped:   ['hype', 'excited', 'wild', 'loud', 'chaos', 'chaotic', 'fast', 'energy', 'pumped'],
+  calm:    ['calm', 'chill', 'peace', 'peaceful', 'quiet', 'soft', 'relaxed'],
+  tired:   ['tired', 'sleepy', 'late', 'night', 'exhausted', 'fumes'],
+  joyful:  ['love', 'happy', 'joy', 'fun', 'grateful', 'warm', 'proud'],
+  nervous: ['nervous', 'anxious', 'stress', 'stressed', 'scared', 'overwhelmed']
+};
+function moodOf(text) {
+  const w = words(text);
+  for (const [mood, keys] of Object.entries(MOODS)) if (keys.some(k => w.includes(k))) return mood;
+  return null;
+}
+function words(t) { return t.toLowerCase().match(/[a-z']+/g) || []; }
+
+const SHAPE_WORDS = { ribbon: 'long strokes', bloom: 'blossoms', wash: 'soft glazes', scatter: 'flecks' };
+let lastArousal = 0.5;
+async function feelingToBrush(feeling) {
+  try {
+    const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 15000);
+    const r = await fetch('/api/brush', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                                          body: JSON.stringify({ feeling, arousal: lastArousal }), signal: ctl.signal });
+    clearTimeout(timer);
+    if (r.ok) {
+      const b = await r.json();
+      if (b && b.palette && b.palette.length && SHAPE_WORDS[b.shape]) {      // Living Canvas: painters chosen by Gemini
+        return { palette_index: 0, shape: b.shape, palette: b.palette, style: b.style, artists: b.artists || [],
+                 energy: Math.max(0, Math.min(1, +b.energy || 0.5)), size: Math.max(0.2, Math.min(1, +b.size || 0.5)),
+                 reason: String(b.reason || '').slice(0, 90) };
+      }
+      if (b && b.palette_index >= 0 && b.palette_index <= 4 && SHAPE_WORDS[b.shape]) {
+        return { palette_index: b.palette_index | 0, shape: b.shape,
+                 energy: Math.max(0, Math.min(1, +b.energy || 0.5)), size: Math.max(0.2, Math.min(1, +b.size || 0.5)),
+                 reason: String(b.reason || `${PALETTE_NAMES[b.palette_index]} ${SHAPE_WORDS[b.shape]}`).slice(0, 40) };
+      }
+    }
+  } catch (e) { /* slow or offline: use the local mixer */ }
+  return localBrush(feeling);
+}
+async function localBrush(feeling) {
+  const mood = moodOf(feeling);
+  const table = {
+    hyped:   { shape: 'scatter', energy: 0.9, palette_index: 0 },
+    calm:    { shape: 'wash',    energy: 0.2, palette_index: 2 },
+    tired:   { shape: 'wash',    energy: 0.3, palette_index: 3 },
+    joyful:  { shape: 'bloom',   energy: 0.6, palette_index: 1 },
+    nervous: { shape: 'scatter', energy: 0.6, palette_index: 4 }
+  };
+  const b = table[mood] || { shape: 'ribbon', energy: 0.5, palette_index: Math.floor(Math.random() * 5) };
+  return { ...b, size: 0.3 + Math.random() * 0.5, reason: `${PALETTE_NAMES[b.palette_index]} ${SHAPE_WORDS[b.shape]}` };
+}
+
+// ================= Matching: who is kindred? (stub) =================
+// Swap for embeddings: embed each feeling, kindred if cosine similarity > ~0.6,
+// and have an LLM write the "why" line for each pair.
+function kinship(a, b) {
+  const ma = moodOf(a.feeling), mb = moodOf(b.feeling);
+  const wa = new Set(words(a.feeling)), wb = new Set(words(b.feeling));
+  const shared = [...wa].filter(x => wb.has(x) && x.length > 3);
+  if (ma && ma === mb) return { kindred: true, why: `both feeling ${ma}` };
+  if (shared.length) return { kindred: true, why: `both said "${shared[0]}"` };
+  return { kindred: false };
+}
+
+// ================= State =================
+let layer, video;
+let particles = [];
+let contributions = [];
+let state = 'ask';                  // ask | countdown | paint | settle | replay
+let current = null, phaseStart = 0, frameIdx = 0;
+let replay = null;
+let lastVideoTime = -1, lastHands = [];
+let fireflies = [], bonds = [], sparks = [], labels = [];
+let showNodes = false;              // false: fireflies blend into the paint; true: full constellation view
+
+// ================= Hidden picture =================
+// Every particle takes its color from this image at its own position, mixed with the
+// person's brush color. Few strokes = streaks; many strokes = the picture appears.
+// The picture can be swapped at any time: replay re-renders every saved stroke against it,
+// so strokes collected all weekend can reveal a group photo taken minutes before judging.
+let hidden = null, hiddenPx = null, revealOn = false, peeking = false;   // start blank: no hidden picture
+const MIX = 0.8;            // 0 = only brush colors, 1 = only the hidden picture
+
+function hexToRgb(h) { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+
+function rgbAt(x, y, base) {
+  if (!revealOn || !hiddenPx) return base;
+  const xi = Math.max(0, Math.min(W - 1, x | 0)), yi = Math.max(0, Math.min(H - 1, y | 0));
+  const i = (yi * W + xi) * 4;
+  return [base[0] + (hiddenPx[i] - base[0]) * MIX,
+          base[1] + (hiddenPx[i + 1] - base[1]) * MIX,
+          base[2] + (hiddenPx[i + 2] - base[2]) * MIX];
+}
+
+// Draw any image (photo, webcam frame) into the hidden layer, cropped to fill the canvas.
+function setHidden(src, mirror = false) {
+  const sw = src.width, sh = src.height, s = Math.max(W / sw, H / sh);
+  const dw = sw * s, dh = sh * s;
+  hidden.clear();
+  hidden.push();
+  if (mirror) { hidden.translate(W, 0); hidden.scale(-1, 1); }
+  hidden.image(src, (W - dw) / 2, (H - dh) / 2, dw, dh);
+  hidden.pop();
+  hidden.loadPixels(); hiddenPx = hidden.pixels.slice();
+  if (contributions.length && state === 'ask') startReplay();   // re-reveal everything against the new picture
+}
+
+// Placeholder picture until a real photo is set: a sunset over layered hills.
+function drawDefaultHidden() {
+  const g = hidden;
+  for (let y = 0; y < H; y++) {
+    const t = y / H;
+    const c = lerpColor(color('#24305e'), color('#f08a5d'), Math.min(1, t * 1.4));
+    g.stroke(c); g.line(0, y, W, y);
+  }
+  g.noStroke(); g.fill('#ffd479'); g.circle(W * 0.68, H * 0.52, 190);
+  g.fill('#ffe9a8'); g.circle(W * 0.68, H * 0.52, 120);
+  const ranges = [['#6a4c93', 0.55, 0.004], ['#3d5a80', 0.68, 0.006], ['#1b263b', 0.82, 0.009]];
+  ranges.forEach(([col, base, f], k) => {
+    g.fill(col); g.beginShape(); g.vertex(0, H);
+    for (let x = 0; x <= W; x += 8) g.vertex(x, H * base - noise(x * f, k * 10) * 160);
+    g.vertex(W, H); g.endShape(CLOSE);
+  });
+  g.loadPixels(); hiddenPx = g.pixels.slice();
+}
+
+// ================= Sound (Tone.js) =================
+let synths = null, muted = false;
+const PENTA = ['C', 'D', 'E', 'G', 'A'];   // pentatonic: every note sounds good together
+
+async function initAudio() {
+  if (synths || typeof Tone === 'undefined') return;
+  await Tone.start();
+  const reverb = new Tone.Reverb({ decay: 5, wet: 0.4 }).toDestination();
+  const vol = new Tone.Volume(-10).connect(reverb);
+  synths = {
+    ribbon:  new Tone.PolySynth(Tone.FMSynth, { envelope: { attack: 0.05, release: 1.2 } }).connect(vol),
+    bloom:   new Tone.PolySynth(Tone.Synth, { oscillator: { type: 'triangle' }, envelope: { attack: 0.005, decay: 0.3, sustain: 0.1, release: 1.5 } }).connect(vol),
+    wash:    new Tone.PolySynth(Tone.AMSynth, { envelope: { attack: 0.8, release: 3 } }).connect(vol),
+    scatter: new Tone.PolySynth(Tone.Synth, { oscillator: { type: 'square' }, envelope: { attack: 0.001, decay: 0.08, sustain: 0, release: 0.05 } }).connect(vol),
+    chime:   new Tone.PolySynth(Tone.Synth, { oscillator: { type: 'sine' }, envelope: { attack: 0.001, decay: 0.6, sustain: 0, release: 1.2 } }).connect(vol),
+    // The AI musician's voice: a bell-like FM synth through a stereo echo
+    ai:      new Tone.PolySynth(Tone.FMSynth, { harmonicity: 2, modulationIndex: 3, envelope: { attack: 0.01, decay: 0.2, sustain: 0.2, release: 0.8 } })
+               .connect(new Tone.PingPongDelay('8n', 0.3).connect(vol))
+  };
+  synths.ai.volume.value = -4;
+  synths.wash.volume.value = -6;
+  synths.scatter.volume.value = -14;
+}
+
+function noteFor(params, y) {
+  // Color picks the starting pitch, height on screen picks the step up the scale.
+  const step = Math.floor((1 - y / H) * 7);
+  const idx = params.palette_index + step;
+  const base = { wash: 2, ribbon: 3, bloom: 4, scatter: 4 }[params.shape];
+  return PENTA[idx % 5] + (base + (params.octave || 0) + Math.floor(idx / 5));
+}
+
+// Called identically during live painting and replay, so the timelapse replays the same song.
+function soundFor(params, pts, prevPts, f) {
+  if (!synths || muted || !pts.length) return;
+  const pt = pts[0], prev = (prevPts && prevPts[0]) || pt;
+  const speed = pt.b ? 12 : Math.hypot(pt.x - prev.x, pt.y - prev.y);   // body brush: steady rhythm
+  // Movement speed sets the rhythm: faster hands = more notes.
+  const every = params.shape === 'wash' ? 30 : speed > 25 ? 4 : speed > 10 ? 8 : 16;
+  if (f % every !== 0) return;
+  try {
+    const dur = params.shape === 'wash' ? '2n' : params.shape === 'scatter' ? '32n' : '8n';
+    const note = noteFor(params, pt.y);
+    synths[params.shape].triggerAttackRelease(note, dur, undefined, 0.4 + Math.min(speed, 40) / 80);
+    recentNotes.push(Tone.Frequency(note).toMidi());           // the AI musician listens to these
+    if (recentNotes.length > 16) recentNotes.shift();
+  } catch (e) {}
+}
+
+// ================= AI musician (Magenta MusicRNN) =================
+// Every few seconds it takes the last notes the crowd played and improvises a continuation,
+// snapped to the same pentatonic scale so it always fits.
+let rnn = null, rnnBusy = false, recentNotes = [], lastJam = -99999, jamUntil = 0;
+const PENTA_PC = [0, 2, 4, 7, 9];
+
+async function initJam() {
+  if (rnn || typeof mm === 'undefined') return;
+  try {
+    const m = new mm.MusicRNN('https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/basic_rnn');
+    await m.initialize();
+    rnn = m; window.modelReady('AI jam');
+  } catch (e) { console.error('Magenta unavailable', e); }
+}
+
+function snapPenta(midi) {
+  const pc = ((midi % 12) + 12) % 12;
+  let best = PENTA_PC[0], bd = 99;
+  for (const p of PENTA_PC) { const d = Math.min(Math.abs(p - pc), 12 - Math.abs(p - pc)); if (d < bd) { bd = d; best = p; } }
+  let out = midi - pc + best;
+  if (best - pc > 6) out -= 12; else if (pc - best > 6) out += 12;
+  return out;
+}
+
+function maybeJam() {
+  if (!rnn || rnnBusy || !synths || muted) return;
+  if (recentNotes.length < 4 || millis() - lastJam < 4500) return;
+  jam();
+}
+
+async function jam() {
+  rnnBusy = true; lastJam = millis();
+  const seed = recentNotes.slice(-8).map(p => Math.max(48, Math.min(83, p)));
+  const seq = {
+    notes: seed.map((p, i) => ({ pitch: p, quantizedStartStep: i * 2, quantizedEndStep: i * 2 + 2 })),
+    totalQuantizedSteps: seed.length * 2,
+    quantizationInfo: { stepsPerQuarter: 4 }
+  };
+  try {
+    const out = await rnn.continueSequence(seq, 24, 1.1);
+    const stepSec = 0.14, start = Tone.now() + 0.05;
+    out.notes.forEach(n => {
+      const midi = snapPenta(n.pitch + 12);
+      synths.ai.triggerAttackRelease(Tone.Frequency(midi, 'midi').toNote(),
+        Math.max(1, n.quantizedEndStep - n.quantizedStartStep) * stepSec, start + n.quantizedStartStep * stepSec, 0.5);
+    });
+    jamUntil = millis() + 24 * stepSec * 1000;
+  } catch (e) { console.error(e); }
+  rnnBusy = false;
+}
+window.addEventListener('load', () => setTimeout(initJam, 1500));
+
+// ================= Voice: say your feeling =================
+// Speech recognition fills in the words; the mic's loudness sets energy, its pitch sets your octave.
+let voiceStats = null;
+
+function detectPitch(buf, sr) {
+  let best = 0, bestLag = 0;
+  for (let lag = Math.floor(sr / 400); lag <= Math.floor(sr / 80); lag++) {
+    let c = 0;
+    for (let i = 0; i < buf.length - lag; i++) c += buf[i] * buf[i + lag];
+    if (c > best) { best = c; bestLag = lag; }
+  }
+  return bestLag ? sr / bestLag : 0;
+}
+
+async function sayIt() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const btn = document.getElementById('say'), input = document.getElementById('feeling');
+  if (!SR) { document.getElementById('msg').textContent = 'Voice input needs Chrome. Type your feeling instead.'; return; }
+  let stream, ac;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch (e) { btn.textContent = 'No mic'; return; }
+  ac = new AudioContext();
+  const an = ac.createAnalyser(); an.fftSize = 2048;
+  ac.createMediaStreamSource(stream).connect(an);
+  const buf = new Float32Array(2048);
+  let rmsSum = 0, count = 0; const pitches = [];
+  const iv = setInterval(() => {
+    an.getFloatTimeDomainData(buf);
+    let r = 0; for (const v of buf) r += v * v; r = Math.sqrt(r / buf.length);
+    if (r > 0.01) { rmsSum += r; count++; const p = detectPitch(buf, ac.sampleRate); if (p) pitches.push(p); }
+  }, 60);
+
+  const rec = new SR(); rec.lang = 'en-US'; rec.interimResults = true;
+  rec.onresult = e => { input.value = [...e.results].map(r => r[0].transcript).join(''); };
+  rec.onerror = () => {};
+  rec.onend = () => {
+    clearInterval(iv); stream.getTracks().forEach(t => t.stop()); ac.close();
+    pitches.sort((a, b) => a - b);
+    voiceStats = { loud: count ? rmsSum / count : 0, pitch: pitches.length ? pitches[Math.floor(pitches.length / 2)] : 0 };
+    btn.textContent = 'Say it';
+    if (input.value.trim()) document.getElementById('msg').textContent =
+      `Heard you. Your voice was ${voiceStats.loud > 0.06 ? 'bold, so your paint will be too' : 'soft, so your paint will be gentle'}.`;
+  };
+  btn.textContent = 'Listening…';
+  rec.start();
+}
+
+function applyVoice(params, v) {
+  const e = Math.max(0.1, Math.min(1, (v.loud - 0.01) / 0.12));
+  params.energy = (params.energy + e) / 2;
+  params.octave = v.pitch > 220 ? 1 : (v.pitch && v.pitch < 130 ? -1 : 0);
+  params.reason += ` · ${e > 0.5 ? 'loud' : 'soft'} voice`;
+}
+
+function chime(a, b) {
+  if (!synths || muted) return;
+  try { synths.chime.triggerAttackRelease([noteFor(a.params, 200), noteFor(b.params, 100)], '4n'); } catch (e) {}
+}
+
+// ================= Brush engine =================
+function flowAngle(x, y, st = style) {
+  if (st === 'vangogh') {
+    // Starry-Night currents: each 260px cell has a slow vortex, blended with tighter noise
+    const cs = 260, cx = (Math.floor(x / cs) + 0.5) * cs, cy = (Math.floor(y / cs) + 0.5) * cs;
+    const swirl = Math.atan2(y - cy, x - cx) + Math.PI / 2 + 0.35;
+    const n = noise(x * 0.004, y * 0.004) * TWO_PI * 2;
+    const d = Math.min(1, Math.hypot(x - cx, y - cy) / (cs * 0.6));
+    return Math.atan2(Math.sin(swirl) * (1 - d * 0.5) + Math.sin(n) * 0.6, Math.cos(swirl) * (1 - d * 0.5) + Math.cos(n) * 0.6);
+  }
+  return noise(x * 0.0016, y * 0.0016) * TWO_PI * 2;
+}
+
+// A smile pulls the brush color toward warm gold.
+function warm(rgb, t) { return [rgb[0] + (255 - rgb[0]) * t, rgb[1] + (200 - rgb[1]) * t * 0.6, rgb[2] + (110 - rgb[2]) * t * 0.6]; }
+
+// Each point may carry face scores recorded at paint time (s = smile, o = open mouth,
+// e = raised eyebrows) and b = 1 for body-outline points. Because they're stored in the
+// path, the replay reproduces the exact same face-driven effects.
+function emitFor(params, pts, prevPts) {
+  const col = colOf(params);
+  const baseRgb = hexToRgb(col);
+  pts.forEach((pt, i) => {
+    const prev = pt.b ? pt : ((prevPts && prevPts[i]) || pt);
+    const vx = pt.x - prev.x, vy = pt.y - prev.y, speed = Math.hypot(vx, vy);
+    const smile = pt.s || 0, open = pt.o || 0, brow = pt.e || 0;
+    let rgb = baseRgb;
+
+    // Clap: flick a splatter of paint from the brush, like shaking a loaded brush at the canvas
+    if (i === 0 && pt.c) {
+      const drops = 40 + Math.floor(params.energy * 30);
+      for (let k = 0; k < drops && particles.length < MAX_PARTICLES; k++) {
+        const t = random(TWO_PI), sp = random(2, 11) * (0.6 + params.energy * 0.6);
+        particles.push({ x: pt.x, y: pt.y, vx: Math.cos(t) * sp, vy: Math.sin(t) * sp, life: random(8, 26),
+                         col, rgb: baseRgb, warmth: smile * 0.6, kind: 'scatter', w: random(1.5, 5) });
+      }
+      for (let k = 0; k < 3 && particles.length < MAX_PARTICLES; k++) {   // a few runs where the big drops landed
+        const t = random(TWO_PI), d = random(10, 60), life = 40 + random(80);
+        particles.push({ x: pt.x + Math.cos(t) * d, y: pt.y + Math.sin(t) * d, vx: 0, vy: 0.4 + random(0.5),
+                         life, max: life, col, rgb: baseRgb, kind: 'drip', w: 2 + random(2.5) });
+      }
+      if (state === 'paint') { burstFlash = { x: pt.x, y: pt.y, t: 12 }; clapSound(params); }
+    }
+
+    // Open mouth ("woah!"): one radial burst the moment the mouth opens
+    const wasOpen = prevPts && prevPts[0] && (prevPts[0].o || 0) > 0.4;
+    if (i === 0 && open > 0.4 && !wasOpen) {
+      for (let k = 0; k < 48 && particles.length < MAX_PARTICLES; k++) {
+        const t = random(TWO_PI), s = random(3, 9);
+        particles.push({ x: pt.x, y: pt.y, vx: Math.cos(t) * s, vy: Math.sin(t) * s, life: random(40, 90),
+                         col, rgb: baseRgb, warmth: 0.45, kind: 'ribbon', w: 1.5 + params.size * 3 });
+      }
+      if (state === 'paint') { burstFlash = { x: pt.x, y: pt.y, t: 18 }; chimeBurst(params); }
+    }
+    // Raised eyebrows: sparkles
+    if (i % 8 === 0 && brow > 0.3 && random() < 0.4 + brow * 0.6) {
+      for (let k = 0; k < 5 && particles.length < MAX_PARTICLES; k++) {
+        particles.push({ x: pt.x + random(-30, 30), y: pt.y + random(-30, 30), vx: random(-2, 2), vy: random(-2, 2),
+                         life: random(20, 45), col, rgb: [255, 248, 225], kind: 'spark', w: random(1.5, 3.5) });
+      }
+    }
+
+    let n = 0;
+    if (pt.b) n = random() < 0.5 + params.energy * 0.4 ? 1 : 0;   // body outline: many points, few particles each
+    else if (params.shape === 'ribbon')  n = 1 + speed * 0.15;
+    if (params.shape === 'bloom')   n = 2 + speed * 0.2 + (pt.pinch ? 30 : 0);
+    if (params.shape === 'wash')    n = random() < 0.35 + speed * 0.02 ? 1 : 0;
+    if (params.shape === 'scatter') n = 3 + speed * 0.4 * (0.5 + params.energy);
+    n = Math.min(Math.floor(n * (1 + smile * 1.5)), 60);   // smiling = more paint
+    const heavy = Math.max(smile - 0.55, 0);
+    if (heavy > 0 && random() < heavy * 0.25 && particles.length < MAX_PARTICLES) {
+      const life = 50 + random(90);
+      particles.push({ x: pt.x + random(-10, 10), y: pt.y + random(-6, 6), vx: 0, vy: 0.5 + random(0.6),
+                       life, max: life, col, rgb, kind: 'drip', w: 2.2 + random(2) });
+    }
+    for (let k = 0; k < n && particles.length < MAX_PARTICLES; k++) {
+      const spread = params.shape === 'bloom' ? 14 : 5;
+      particles.push({
+        x: pt.x + random(-spread, spread), y: pt.y + random(-spread, spread),
+        vx: vx * 0.35 + random(-1, 1) * (0.5 + params.energy * 2),
+        vy: vy * 0.35 + random(-1, 1) * (0.5 + params.energy * 2),
+        life: params.shape === 'scatter' ? random(15, 60) : random(50, 150),
+        col, rgb: params.palette ? hexToRgb(pickColor(params)) : rgb, warmth: smile * 0.6, kind: params.shape, st: params.style, mine: true,
+        w: (params.shape === 'wash' ? 30 + params.size * 70 : 0.6 + params.size * (params.shape === 'ribbon' ? 4 : 2.5))
+      });
+    }
+  });
+}
+
+// ================= Wet paint =================
+// A coarse grid remembers the last paint laid in each cell and when. Fresh paint is wet for
+// DRY_MS: new strokes over wet paint mix with it (subtractively, so blue over yellow leans green),
+// wet areas shine, and the shine fades as the paint dries. Replay uses each stroke's own
+// timestamp, so the same strokes mix the same way every time.
+const CELL = 12, GW = Math.ceil(1200 / CELL), GH = Math.ceil(720 / CELL), DRY_MS = 90000;
+const wetR = new Float32Array(GW * GH), wetG = new Float32Array(GW * GH), wetB = new Float32Array(GW * GH);
+const wetT = new Float64Array(GW * GH).fill(-1e15);
+let sheen = null;
+function resetWet() { wetT.fill(-1e15); }
+function paintClock() {
+  if (state === 'replay' && replay && replay.c) return replay.c.t + replay.f * 16.7;
+  if (current && (state === 'paint' || state === 'settle')) return current.t + frameIdx * 16.7;
+  return Date.now();
+}
+function wetness(i, now) { return Math.max(0, 1 - (now - wetT[i]) / DRY_MS); }
+function mixWet(x, y, rgb) {
+  const cx = Math.max(0, Math.min(GW - 1, x / CELL | 0)), cy = Math.max(0, Math.min(GH - 1, y / CELL | 0));
+  const i = cy * GW + cx, now = paintClock(), w = wetness(i, now) * 0.5;
+  let out = rgb;
+  if (w > 0.02) {
+    // geometric (subtractive-style) mix, then a little saturation back so it doesn't go muddy
+    const m = (a, b) => Math.exp((1 - w) * Math.log(a + 8) + w * Math.log(b + 8)) - 8;
+    out = saturate(m(rgb[0], wetR[i]), m(rgb[1], wetG[i]), m(rgb[2], wetB[i]), 1 + w * 0.5);
+  }
+  const k = wetness(i, now) > 0 ? 0.5 : 1;     // deposit: wet paint takes on the new color
+  wetR[i] += (out[0] - wetR[i]) * k; wetG[i] += (out[1] - wetG[i]) * k; wetB[i] += (out[2] - wetB[i]) * k;
+  wetT[i] = now;
+  return out;
+}
+// Glossy highlight over wet areas, rebuilt a few times a second at grid resolution and scaled up soft.
+function drawSheen() {
+  if (!sheen) { sheen = createGraphics(GW, GH); sheen.pixelDensity(1); }
+  if (frameCount % 6 === 0) {
+    const now = paintClock();
+    sheen.loadPixels();
+    for (let i = 0; i < GW * GH; i++) {
+      const wv = wetness(i, now);
+      const gloss = wv > 0 ? wv * (0.45 + noise((i % GW) * 0.25, (i / GW | 0) * 0.25, 7) * 0.9) : 0;
+      sheen.pixels[i * 4] = 255; sheen.pixels[i * 4 + 1] = 250; sheen.pixels[i * 4 + 2] = 238;
+      sheen.pixels[i * 4 + 3] = Math.min(255, gloss * 46);
+    }
+    sheen.updatePixels();
+  }
+  image(sheen, 0, 0, W, H);
+}
+
+function stepParticles() {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    if (p.kind === 'drip') {
+      // Heavy paint runs straight down, slowing and thinning as it goes
+      p.vy *= 0.985; p.y += p.vy; p.x += Math.sin((p.age = (p.age || 0) + 1) * 0.25) * 0.08;
+      const [dr, dg, db] = mixWet(p.x, p.y, rgbAt(p.x, p.y, p.rgb));
+      layer.noStroke(); layer.fill(dr, dg, db, Math.min(200, p.life * 3));
+      layer.circle(p.x, p.y, p.w * (0.45 + 0.55 * p.life / p.max));
+      if (--p.life <= 0 || p.vy < 0.05 || p.y > H) particles.splice(i, 1);
+      continue;
+    }
+    const st = p.st || style;
+    const a = flowAngle(p.x, p.y, st);
+    p.vx = p.vx * 0.93 + Math.cos(a) * 0.55;
+    p.vy = p.vy * 0.93 + Math.sin(a) * 0.55;
+    const nx = p.x + p.vx, ny = p.y + p.vy;
+    // sparkles keep their own bright color; everything else takes the hidden picture's color,
+    // then the painter's smile warms it, so face effects stay visible on top of the picture
+    const base = p.kind === 'spark' ? p.rgb : rgbAt(nx, ny, p.rgb);
+    const [r, g, b] = mixWet(nx, ny, p.warmth ? warm(base, p.warmth) : base);
+    const di = dcell(nx, ny); densGrid[di] += 1; if (p.mine && current) visGrid[di] += 1;
+    const ov = 1 + 0.35 * Math.min(2, Math.log1p(densGrid[di] / 60));   // crossings build up thicker paint
+    const boost = (revealOn && hiddenPx ? 1.6 : 1) * ov;     // slightly thicker marks uncover the picture faster
+    p.age = (p.age || 0) + 1;
+    const sc = p.kind === 'scatter';
+    if (st === 'seurat' && p.kind !== 'spark') {
+      // Pointillism: no strokes, only dots of purer color that mix in the eye
+      if (p.age % 2 === 1) {
+        layer.noStroke();
+        const [sr, sg, sb] = saturate(r, g, b, 1.7);
+        const dots = p.kind === 'wash' ? 4 : 2;
+        for (let k = 0; k < dots; k++) {
+          const comp = ((nx * 7 + ny * 3 + k * 11) | 0) % 6 === 0;     // every ~6th dot: a complementary accent
+          const c = comp ? [255 - sr * 0.6, 255 - sg * 0.6, 255 - sb * 0.6] : [sr, sg, sb];
+          layer.fill(c[0], c[1], c[2], Math.min(230, p.life * 6));
+          const spread = p.kind === 'wash' ? 26 : 6;
+          layer.circle(nx + ((k * 37 + p.age * 13) % (spread * 2)) - spread, ny + ((k * 53 + p.age * 7) % (spread * 2)) - spread, 2.6 + boost);
+        }
+      }
+    } else if (st === 'vangogh') {
+      // Van Gogh: short, thick, saturated dashes riding the swirls
+      if (p.age % 2 === 1) {
+        const wash = p.kind === 'wash', spark = p.kind === 'spark';
+        let [vr, vg, vb] = saturate(r, g, b, 1.35);
+        if (spark) { vr += (255 - vr) * 0.5; vg += (255 - vg) * 0.5; vb += (255 - vb) * 0.5; }
+        const w = wash ? 3.2 : spark ? 1.4 : p.w * 1.35 + 1.2;
+        drawDab(nx, ny, Math.atan2(p.vy, p.vx), vr, vg, vb,
+                Math.min(wash ? 70 : 225, p.life * 5), w * boost, sc || spark ? 0.7 : wash ? 1.4 : 1.15);
+      }
+    } else if (st === 'ink' && p.kind !== 'spark') {
+      const bw = p.kind === 'wash' ? Math.min(p.w * 0.12, 6) : p.w;   // 'wash' particles are 30-100px wide: far too big for these brushes
+      // Ink (Hokusai, Hiroshige, Fan Kuan, Kandinsky): crisp tapered lines, darkest of the palette
+      layer.stroke(r * 0.55, g * 0.55, b * 0.55, Math.min(120, p.life * 3)); layer.strokeWeight(Math.max(0.7, bw * 0.45 * boost));
+      layer.line(p.x, p.y, nx, ny);
+    } else if (st === 'flat' && p.kind !== 'spark') {
+      const bw = p.kind === 'wash' ? Math.min(p.w * 0.15, 8) : p.w;
+      // Flat color (Matisse, Gauguin, Marc, Klee, Mondrian): bold opaque blocks
+      if (p.age % 3 === 1) drawDab(nx, ny, Math.atan2(p.vy, p.vx), r, g, b, Math.min(235, p.life * 6), (bw * 1.7 + 2) * boost, 1.5);
+    } else if (st === 'glaze' && p.kind !== 'spark') {
+      const bw = p.kind === 'wash' ? Math.min(p.w * 0.15, 8) : p.w;
+      // Glaze (Rembrandt, Caravaggio, Vermeer, Goya): thin translucent layers that deepen where they overlap
+      if (p.age % 2 === 1) drawDab(nx, ny, Math.atan2(p.vy, p.vx), r * 0.8, g * 0.8, b * 0.8, Math.min(80, p.life * 2), (bw * 1.6 + 3) * boost, 1.3);
+    } else if (st === 'monet') {
+      // Monet: small broken dabs laid mostly sideways, neighbors in slightly different shades
+      if (p.age % 2 === 1) {
+        const wash = p.kind === 'wash', spark = p.kind === 'spark';
+        const j = (o) => (noise(nx * 0.06 + o, ny * 0.06) - 0.5) * 70;
+        const ang = (noise(nx * 0.02, ny * 0.02 + 9) - 0.5) * 0.7;
+        let c = [clamp255(r + j(0)), clamp255(g + j(3)), clamp255(b + j(6))];
+        if (spark) c = c.map(v => v + (255 - v) * 0.5);
+        const w = wash ? 2.6 : spark ? 1 : p.w * 0.9 + 0.8;
+        drawDab(nx, ny, ang, c[0], c[1], c[2], Math.min(wash ? 60 : 140, p.life * 3), w * boost, wash ? 0.8 : 0.55);
+      }
+    } else if (oilOn && p.kind !== 'spark' && p.kind !== 'wash') {
+      // Oil: lay a dab every 3rd step instead of a thin line every step
+      if (p.age % 3 === 1) {
+        drawDab(nx, ny, Math.atan2(p.vy, p.vx), r, g, b, Math.min(sc ? 200 : 170, p.life * 4),
+                p.w * boost * (sc ? 0.9 : 1), sc ? 0.5 : 1);
+      }
+    } else if (p.kind === 'wash') {
+      layer.noStroke(); layer.fill(r, g, b, Math.min(revealOn ? 14 : 6, p.life));
+      layer.ellipse(nx, ny, p.w, p.w * 0.7);
+    } else if (p.kind === 'spark') {
+      layer.noStroke(); layer.fill(r + (255 - r) * 0.55, g + (255 - g) * 0.55, b + (255 - b) * 0.55, Math.min(220, p.life * 8));
+      layer.circle(nx, ny, p.w);
+    } else if (p.kind === 'scatter') {
+      layer.noStroke(); layer.fill(r, g, b, Math.min(170, p.life * 4));
+      layer.circle(nx, ny, p.w * boost);
+    } else {
+      layer.stroke(r, g, b, Math.min(90, p.life)); layer.strokeWeight(p.w * boost);
+      layer.line(p.x, p.y, nx, ny);
+    }
+    p.x = nx; p.y = ny; p.life--;
+    if (p.life <= 0 || nx < -40 || nx > W + 40 || ny < -40 || ny > H + 40) particles.splice(i, 1);
+  }
+}
+
+// ================= Fireflies =================
+function addFirefly(c) {
+  const first = c.path.find(f => f.length);
+  const start = first ? first[0] : { x: random(W), y: random(H) };
+  const ff = { c, x: start.x, y: start.y, vx: 0, vy: 0, phase: Math.random() * TWO_PI,
+               matches: [], met: new Set(), spin: null, born: frameCount };
+  for (const other of fireflies) {
+    if (ff.matches.length >= 3) break;
+    if (other.matches.length >= 3) continue;
+    const k = kinship(c, other.c);
+    if (k.kindred) { ff.matches.push({ ff: other, why: k.why }); other.matches.push({ ff, why: k.why }); }
+  }
+  fireflies.push(ff);
+  return ff;
+}
+
+function updateFireflies() {
+  for (const ff of fireflies) {
+    if (ff.spin) {
+      ff.spin.ang += 0.16;
+      ff.x = ff.spin.cx + Math.cos(ff.spin.ang) * ff.spin.r;
+      ff.y = ff.spin.cy + Math.sin(ff.spin.ang) * ff.spin.r;
+      if (--ff.spin.t <= 0) ff.spin = null;
+      continue;
+    }
+    // Wander through a slow noise field
+    const a = noise(ff.x * 0.003, ff.y * 0.003, frameCount * 0.004 + ff.phase) * TWO_PI * 2;
+    ff.vx += Math.cos(a) * 0.05; ff.vy += Math.sin(a) * 0.05;
+    // Drift toward the first kindred firefly not yet met
+    const target = ff.matches.find(m => !ff.met.has(m.ff));
+    if (target) {
+      const dx = target.ff.x - ff.x, dy = target.ff.y - ff.y, d = Math.hypot(dx, dy) || 1;
+      ff.vx += (dx / d) * 0.04; ff.vy += (dy / d) * 0.04;
+      if (d < 18 && !target.ff.spin) meet(ff, target.ff, target.why);
+    }
+    ff.vx *= 0.96; ff.vy *= 0.96;
+    const sp = Math.hypot(ff.vx, ff.vy); if (sp > 1.6) { ff.vx *= 1.6 / sp; ff.vy *= 1.6 / sp; }
+    ff.x += ff.vx; ff.y += ff.vy;
+    if (ff.x < 10 || ff.x > W - 10) ff.vx *= -1;
+    if (ff.y < 54 || ff.y > H - 10) ff.vy *= -1;
+    ff.x = constrain(ff.x, 10, W - 10); ff.y = constrain(ff.y, 54, H - 10);
+    if (!showNodes && state === 'ask' && (frameCount + (ff.phase * 10 | 0)) % 7 === 0 && particles.length < MAX_PARTICLES) {
+      particles.push({ x: ff.x, y: ff.y, vx: ff.vx, vy: ff.vy, life: 10, age: 0,
+                       col: colOf(ff.c.params), rgb: hexToRgb(colOf(ff.c.params)),
+                       kind: ff.c.params.shape === 'wash' ? 'ribbon' : ff.c.params.shape, w: 0.7 });
+    }
+  }
+}
+
+// When two people's fireflies meet, the bond is painted into the canvas itself:
+// a thin strand of paint in the current painter's style, colored by the picture underneath.
+function paintStrand(a, b) {
+  const ax = a.x, ay = a.y, bx = b.x, by = b.y, len = Math.hypot(bx - ax, by - ay);
+  if (len < 1) return;
+  const ra = hexToRgb(colOf(a.c.params)), rb = hexToRgb(colOf(b.c.params));
+  const ang = Math.atan2(by - ay, bx - ax);
+  for (let d = 0; d <= len; d += 6) {
+    const t = d / len, x = ax + (bx - ax) * t, y = ay + (by - ay) * t + Math.sin(t * Math.PI) * -12;
+    const base = [ra[0] + (rb[0] - ra[0]) * t, ra[1] + (rb[1] - ra[1]) * t, ra[2] + (rb[2] - ra[2]) * t];
+    const [r, g, bl] = rgbAt(x, y, base);
+    if (style === 'seurat') { layer.noStroke(); layer.fill(r, g, bl, 120); layer.circle(x, y, 2.4); }
+    else if (oilOn) drawDab(x, y, ang, r, g, bl, 70, 0.9, 0.8);
+    else { layer.stroke(r, g, bl, 60); layer.strokeWeight(1); layer.point(x, y); }
+  }
+}
+
+function meet(a, b, why) {
+  a.met.add(b); b.met.add(a);
+  const cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2, ang = Math.atan2(a.y - cy, a.x - cx);
+  a.spin = { cx, cy, r: 14, ang, t: 90 };
+  b.spin = { cx, cy, r: 14, ang: ang + Math.PI, t: 90 };
+  bonds.push({ a, b });
+  if (showNodes) {
+    for (let i = 0; i < 28; i++) {
+      const t = Math.random() * TWO_PI, s = 1 + Math.random() * 3;
+      sparks.push({ x: cx, y: cy, vx: Math.cos(t) * s, vy: Math.sin(t) * s, life: 40,
+                    col: i % 2 ? colOf(a.c.params) : colOf(b.c.params) });
+    }
+  } else {
+    paintStrand(a, b);
+    // a small bloom of paint where they met, instead of sparks on top
+    for (let i = 0; i < 14 && particles.length < MAX_PARTICLES; i++) {
+      const t = Math.random() * TWO_PI, s = 0.8 + Math.random() * 1.6, src = i % 2 ? a : b;
+      const col = colOf(src.c.params);
+      particles.push({ x: cx, y: cy, vx: Math.cos(t) * s, vy: Math.sin(t) * s, life: 22, age: 0,
+                       col, rgb: hexToRgb(col), kind: 'ribbon', w: 0.9 });
+    }
+  }
+  labels.push({ text: `${a.c.name} and ${b.c.name}, ${why}`, x: cx, y: cy - 22, life: showNodes ? 200 : 150 });
+  chime(a.c, b.c);
+}
+
+function drawFireflies(dim) {
+  if (!showNodes) { drawSubtleFireflies(); return; }
+  // Constellation lines between creatures that have met
+  for (const { a, b } of bonds) {
+    const c = color(colOf(a.c.params)); c.setAlpha(dim ? 25 : 70);
+    stroke(c); strokeWeight(1); line(a.x, a.y, b.x, b.y);
+  }
+  noStroke();
+  for (const ff of fireflies) {
+    const pulse = 1 + Math.sin(frameCount * 0.08 + ff.phase) * 0.25;
+    const c = color(colOf(ff.c.params));
+    c.setAlpha(dim ? 10 : 30); fill(c); circle(ff.x, ff.y, 30 * pulse);
+    c.setAlpha(dim ? 30 : 90); fill(c); circle(ff.x, ff.y, 13 * pulse);
+    fill(255, 250, 230, dim ? 90 : 230); circle(ff.x, ff.y, 5);
+    if (!dim) { fill(244, 241, 222, 150); textSize(11); textAlign(CENTER, TOP); text(ff.c.name, ff.x, ff.y + 12); }
+  }
+  for (let i = sparks.length - 1; i >= 0; i--) {
+    const s = sparks[i]; s.x += s.vx; s.y += s.vy; s.vx *= 0.94; s.vy *= 0.94;
+    const c = color(s.col); c.setAlpha(s.life * 6); fill(c); circle(s.x, s.y, 3);
+    if (--s.life <= 0) sparks.splice(i, 1);
+  }
+  textAlign(CENTER, CENTER); textSize(14);
+  for (let i = labels.length - 1; i >= 0; i--) {
+    const l = labels[i]; l.y -= 0.15;
+    fill(20, 22, 31, Math.min(200, l.life * 3)); const tw = textWidth(l.text) + 16;
+    rect(l.x - tw / 2, l.y - 12, tw, 24, 12);
+    fill(244, 241, 222, Math.min(255, l.life * 4)); text(l.text, l.x, l.y);
+    if (--l.life <= 0) labels.splice(i, 1);
+  }
+}
+
+// Subtle mode: each firefly is a faint fleck of the painting's own color with a soft breathing
+// light. No names, no lines on top; the bonds already live in the paint.
+function drawSubtleFireflies() {
+  noStroke();
+  for (const ff of fireflies) {
+    const [r, g, b] = rgbAt(ff.x, ff.y, hexToRgb(colOf(ff.c.params)));
+    const breathe = 0.5 + 0.5 * Math.sin(frameCount * 0.045 + ff.phase);
+    fill(r + (255 - r) * 0.35, g + (255 - g) * 0.35, b + (255 - b) * 0.35, 18 + breathe * 22);
+    circle(ff.x, ff.y, 10 + breathe * 4);
+    fill(r + (255 - r) * 0.55, g + (255 - g) * 0.55, b + (255 - b) * 0.55, 60 + breathe * 60);
+    circle(ff.x, ff.y, 2.6);
+  }
+  // The meeting line: quiet italic text that drifts up and fades, like a caption
+  textAlign(CENTER, CENTER); textStyle(ITALIC); textFont('Young Serif, Georgia, serif'); textSize(13);
+  for (let i = labels.length - 1; i >= 0; i--) {
+    const l = labels[i]; l.y -= 0.12;
+    const a = Math.min(190, l.life * 2.5);
+    fill(0, 0, 0, a * 0.35); text(l.text, l.x + 1, l.y + 1);
+    fill(246, 240, 228, a); text(l.text, l.x, l.y);
+    if (--l.life <= 0) labels.splice(i, 1);
+  }
+  textStyle(NORMAL); textFont('sans-serif');
+}
+
+// ================= Input =================
+let tick = 0, lastFace = { s: 0, o: 0, e: 0 }, lastBody = [], brushMode = 'hands';
+function videoReady() { return video && video.elt.readyState >= 2; }
+
+// Face expressions (52 blendshape scores from MediaPipe); read every other frame, lightly smoothed.
+// Raw scores differ a lot between faces, so each person is calibrated: during the 3-second
+// countdown we average their neutral face, then measure expressions relative to it.
+let faceBase = { s: 0.08, o: 0.05, e: 0.12 }, baseAcc = null, faceSeen = false, faceMissFrames = 0, faceErrLogged = false;
+function normFace(v, base, gain) { return Math.max(0, Math.min(1, (v - base) * gain / Math.max(0.25, 1 - base))); }
+function readFace() {
+  if (!window.faceLandmarker || !videoReady() || tick % 2) return;
+  try {
+    const r = window.faceLandmarker.detectForVideo(video.elt, performance.now());
+    const bs = r.faceBlendshapes && r.faceBlendshapes[0];
+    if (!bs) {
+      if (++faceMissFrames > 6) faceSeen = false;
+      lastFace = { s: lastFace.s * 0.8, o: 0, e: lastFace.e * 0.8 };
+      return;
+    }
+    faceSeen = true; faceMissFrames = 0;
+    const g = n => { const c = bs.categories.find(c => c.categoryName === n); return c ? c.score : 0; };
+    const s = (g('mouthSmileLeft') + g('mouthSmileRight')) / 2;
+    const e = Math.max(g('browInnerUp'), (g('browOuterUpLeft') + g('browOuterUpRight')) / 2);
+    const o = g('jawOpen');
+    if (state === 'countdown') {
+      baseAcc = baseAcc || { s: 0, o: 0, e: 0, n: 0 };
+      baseAcc.s += s; baseAcc.o += o; baseAcc.e += e; baseAcc.n++;
+    } else if (baseAcc) {
+      if (baseAcc.n >= 4) faceBase = { s: baseAcc.s / baseAcc.n, o: baseAcc.o / baseAcc.n, e: baseAcc.e / baseAcc.n };
+      baseAcc = null;
+    }
+    const sN = normFace(s, faceBase.s, 2.2), eN = normFace(e, faceBase.e, 3.2), oN = normFace(o, faceBase.o, 1.8);
+    lastFace = { s: lastFace.s * 0.6 + sN * 0.4, o: oN, e: lastFace.e * 0.6 + eN * 0.4 };
+  } catch (err) {
+    if (!faceErrLogged) { console.warn('Face tracking error', err); faceErrLogged = true; }
+  }
+}
+
+// Body silhouette: segment the person, keep points on the edge of the mask as brush points.
+function readBody() {
+  if (!window.segmenter || !videoReady() || tick % 2 === 0) return lastBody;
+  try {
+    const r = window.segmenter.segmentForVideo(video.elt, performance.now());
+    const m = r.confidenceMasks && r.confidenceMasks[0];
+    if (m) {
+      const mw = m.width, mh = m.height, d = m.getAsFloat32Array(), step = 4;
+      let on = 0; for (let i = 0; i < d.length; i += 16) if (d[i] > 0.5) on++;
+      const flip = on / (d.length / 16) > 0.75;           // guard: if the mask comes back inverted, invert it
+      const isP = (x, y) => (d[y * mw + x] > 0.5) !== flip;
+      const pts = [];
+      for (let y = step; y < mh - step; y += step)
+        for (let x = step; x < mw - step; x += step)
+          if (isP(x, y) && (!isP(x - step, y) || !isP(x + step, y) || !isP(x, y - step) || !isP(x, y + step)))
+            pts.push({ x: (1 - x / mw) * W, y: (y / mh) * H, b: 1 });
+      while (pts.length > 40) pts.splice(Math.floor(Math.random() * pts.length), 1);
+      lastBody = pts;
+    }
+    if (r.close) r.close();
+  } catch (e) {}
+  return lastBody;
+}
+
+function getPoints() {
+  tick++;
+  readFace();
+  let pts = [];
+  if (brushMode === 'body') {
+    pts = readBody().map(p => ({ ...p }));
+  } else if (window.handLandmarker && videoReady()) {
+    if (video.elt.currentTime !== lastVideoTime) {
+      lastVideoTime = video.elt.currentTime;
+      try { lastHands = window.handLandmarker.detectForVideo(video.elt, performance.now()).landmarks || []; } catch { lastHands = []; }
+    }
+    pts = lastHands.map(lm => ({
+      x: (1 - lm[8].x) * W, y: lm[8].y * H,
+      pinch: Math.hypot(lm[8].x - lm[4].x, lm[8].y - lm[4].y) < 0.045
+    }));
+  }
+  if (!pts.length && mouseIsPressed && mouseX >= 0 && mouseX <= W && mouseY >= 0 && mouseY <= H) pts = [{ x: mouseX, y: mouseY, pinch: false }];
+  const clapped = readClap();
+  if (pts.length) { clapPt = { x: pts[0].x, y: pts[0].y }; }
+  else if (clapped) {
+    // No hands in view? A clap still splatters, somewhere new each time
+    clapPt = { x: random(W * 0.12, W * 0.88), y: random(H * 0.15, H * 0.85) };
+    pts = [{ x: clapPt.x, y: clapPt.y, pinch: false }];
+  }
+  const f = { s: +lastFace.s.toFixed(2), o: +lastFace.o.toFixed(2), e: +lastFace.e.toFixed(2) };
+  pts.forEach(p => Object.assign(p, f));   // stored in the path, so replay keeps the face effects
+  if (clapped && pts.length) pts[0].c = 1;  // the clap is saved too, so replay splatters at the same moment
+  return pts;
+}
+
+// ================= Claps =================
+// A clap is a sudden, sharp spike: a high peak far above the room's recent background level.
+let mic = null, clapPt = { x: 600, y: 360 }, bgLevel = 0.01, lastClap = 0, clapGlow = 0;
+const CLAP_PEAK = 0.3, CLAP_JUMP = 4, CLAP_GAP_MS = 180;
+async function startLiveMic() {
+  if (mic) return;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true } });
+    const ac = new AudioContext(), an = ac.createAnalyser(); an.fftSize = 1024;
+    ac.createMediaStreamSource(stream).connect(an);
+    mic = { ac, an, buf: new Float32Array(1024) };
+  } catch (e) { console.warn('No mic for clapping', e); }
+}
+function readClap() {
+  clapGlow *= 0.85;
+  if (!mic) return false;
+  mic.an.getFloatTimeDomainData(mic.buf);
+  let r = 0, peak = 0;
+  for (const x of mic.buf) { r += x * x; const a = Math.abs(x); if (a > peak) peak = a; }
+  r = Math.sqrt(r / mic.buf.length);
+  const now = performance.now();
+  const isClap = peak > CLAP_PEAK && r > bgLevel * CLAP_JUMP && now - lastClap > CLAP_GAP_MS;
+  bgLevel = bgLevel * 0.97 + Math.min(r, 0.2) * 0.03;      // slowly follows the room's noise
+  if (isClap) { lastClap = now; clapGlow = 1; }
+  return isClap;
+}
+function clapSound(params) {
+  if (!synths || muted) return;
+  try { synths.scatter.triggerAttackRelease(noteFor(params, 80), '32n', undefined, 0.9); } catch (e) {}
+}
+
+let burstFlash = null;
+function chimeBurst(params) {
+  if (!synths || muted) return;
+  try { synths.chime.triggerAttackRelease([noteFor(params, 120), noteFor(params, 60)], '8n'); } catch (e) {}
+}
+function drawBurstFlash() {
+  if (!burstFlash) return;
+  const f = burstFlash, k = f.t / 18;
+  noFill(); stroke(255, 240, 210, 200 * k); strokeWeight(3 * k + 1);
+  circle(f.x, f.y, 40 + (1 - k) * 160);
+  if (--f.t <= 0) burstFlash = null;
+}
+
+function drawFaceMeters() {
+  const items = [];
+  if (window.faceLandmarker) items.push(['Smile to warm it', lastFace.s], ['Say "oh!" to burst', lastFace.o], ['Raise brows to sparkle', lastFace.e]);
+  if (mic) items.push(['Clap to splatter', clapGlow]);
+  if (!items.length) return;
+  const x = 20, y0 = H - 20 - items.length * 22;
+  if (window.faceLandmarker) {
+    const hint = state === 'countdown' ? 'Hold a relaxed face for a moment'
+               : !faceSeen ? 'Keep your face in view: paint beside it, not in front' : '';
+    if (hint) {
+      textSize(13); const tw = textWidth(hint) + 20;
+      noStroke(); fill(20, 22, 31, 200); rect(x - 8, y0 - 44, tw, 26, 8);
+      fill(242, 204, 143); textAlign(LEFT, CENTER); text(hint, x + 2, y0 - 31);
+    }
+  }
+  noStroke(); fill(20, 22, 31, 190); rect(x - 8, y0 - 10, 246, items.length * 22 + 12, 8);
+  items.forEach(([label, v], i) => {
+    const y = y0 + i * 22;
+    fill(244, 241, 222, 210); textSize(12); textAlign(LEFT, CENTER); text(label, x, y + 6);
+    fill(60, 66, 90); rect(x + 154, y + 2, 74, 8, 4);
+    fill('#d9a441'); rect(x + 154, y + 2, 74 * Math.min(1, v), 8, 4);
+  });
+}
+
+// ================= Flow =================
+async function startContribution() {
+  const feeling = document.getElementById('feeling').value.trim();
+  const name = document.getElementById('name').value.trim() || 'Someone';
+  if (!feeling) { document.getElementById('feeling').focus(); return; }
+  await initAudio();
+  await startLiveMic();
+  baseAcc = null;
+  if (voiceStats) lastArousal = Math.max(0.1, Math.min(1, (voiceStats.loud - 0.01) / 0.12));   // same scale as applyVoice
+  const params = await feelingToBrush(feeling);
+  if (voiceStats) { applyVoice(params, voiceStats); voiceStats = null; }
+  current = { id: crypto.randomUUID(), name, feeling, params, seed: Math.floor(Math.random() * 1e9), path: [], author: ME, t: Date.now() };
+  frameIdx = 0;
+  state = 'countdown'; phaseStart = millis();
+  document.getElementById('overlay').classList.add('hidden');
+}
+
+function finishContribution() {
+  contributions.push(current);
+  saveStroke(current);
+  // Real app: insert into Supabase here (name, feeling, params, seed, path, embedding).
+  const ff = addFirefly(current);
+  const who = ff.matches.map(m => m.ff.c.name);
+  if (glazeOn && current.params.artists && current.params.artists.length) glazeContribution(current);
+  else visGrid.fill(0);
+  document.getElementById('msg').textContent = who.length
+    ? `${current.name}, your stroke is drifting toward ${who.join(', ')}. Watch the painting.`
+    : `${current.name}, your stroke is in the painting. It will find kindred spirits as more people join.`;
+  const painters = (current.params.artists || []).map(a => a.name.split(',')[0]);
+  if (painters.length) document.getElementById('msg').textContent += ` You painted in the hand of ${painters.join(' and ')}.`;
+  document.getElementById('feeling').value = '';
+  document.getElementById('name').value = '';
+  document.getElementById('overlay').classList.remove('hidden');
+  updateStats();
+  current = null; state = 'ask';
+}
+
+// Test people: synthetic paths, simulated instantly and silently
+const FAKE = [
+  ['Maya', 'nervous but excited'], ['Sam', 'so tired but happy'], ['Priya', 'pure chaotic energy'],
+  ['Leo', 'calm and focused'], ['Ava', 'anxious about the demo'], ['Jordan', 'hype hype hype'],
+  ['Noah', 'running on fumes'], ['Zoe', 'grateful for this team'], ['Eli', 'chill vibes only'],
+  ['Kai', 'excited to build'], ['Ivy', 'happy and warm'], ['Ben', 'stressed but proud']
+];
+async function addFakePeople(n) {
+  if (state !== 'ask') return;
+  const picks = Array.from({ length: n }, () => FAKE[Math.floor(Math.random() * FAKE.length)]);
+  const allParams = await Promise.all(picks.map(([, f]) => feelingToBrush(f)));
+  for (let i = 0; i < n; i++) {
+    const [name, feeling] = picks[i];
+    const params = allParams[i];
+    const c = { name, feeling, params, seed: Math.floor(Math.random() * 1e9), path: [], author: 'fake', t: Date.now() + i };
+    const cx = random(120, W - 120), cy = random(120, H - 120), R = random(90, 260), a = random(0.03, 0.09), b = random(0.03, 0.09);
+    for (let f = 0; f < 240; f++) c.path.push([{ x: cx + Math.sin(f * a) * R, y: cy + Math.cos(f * b) * R, pinch: false }]);
+    for (let f = 0; f < c.path.length; f++) { randomSeed(c.seed + f); emitFor(c.params, c.path[f], c.path[f - 1]); stepParticles(); }
+    let guard = 0; while (particles.length && guard++ < 400) stepParticles();
+    contributions.push(c); addFirefly(c);
+  }
+  updateStats();
+}
+
+async function startReplay() {
+  if (!contributions.length || state !== 'ask') return;
+  await initAudio();
+  layer.background(BG); particles = []; resetWet();
+  replay = { queue: [...contributions].sort((a, b) => a.t - b.t), f: 0 };
+  replay.c = replay.queue.shift();
+  state = 'replay';
+  document.getElementById('overlay').classList.add('hidden');
+}
+
+function stepReplay() {
+  const r = replay;
+  if (r.f < r.c.path.length) {
+    randomSeed(r.c.seed + r.f);
+    emitFor(r.c.params, r.c.path[r.f], r.c.path[r.f - 1]);
+    soundFor(r.c.params, r.c.path[r.f], r.c.path[r.f - 1], r.f);
+    r.f++;
+  }
+  stepParticles();
+  if (r.f >= r.c.path.length && particles.length === 0) {
+    if (r.queue.length) { r.c = r.queue.shift(); r.f = 0; }
+    else {
+      const done = replay;
+      replay = null; state = 'ask';
+      if (done.incoming) { addFirefly(done.c); updateStats(); }
+      if (!showNodes) bonds.forEach(({ a, b }) => paintStrand(a, b));   // bonds come back in the new style
+      if (!GALLERY) document.getElementById('overlay').classList.remove('hidden');
+    }
+  }
+}
+
+// ================= Light AI glaze =================
+// The GPU restyles the whole canvas in this visitor's painters' manner; we keep it only where they painted
+// (their density cells, blurred), at 75%, faded in over ~2 s. Everyone else's paint is untouched.
+async function glazeContribution(c) {
+  const mask = document.createElement('canvas'); mask.width = DGW; mask.height = DGH;
+  const mctx = mask.getContext('2d'), md = mctx.createImageData(DGW, DGH);
+  let painted = 0;
+  for (let i = 0; i < visGrid.length; i++) { const a = Math.min(1, visGrid[i] / 25); md.data[i * 4 + 3] = a * 255; md.data[i * 4] = md.data[i * 4 + 1] = md.data[i * 4 + 2] = 255; if (a > 0.1) painted++; }
+  visGrid.fill(0);
+  if (painted < 4) return;
+  mctx.putImageData(md, 0, 0);
+  try {
+    const snap = layer.elt.toDataURL('image/jpeg', 0.9);
+    const r = await fetch('/api/brush/glaze', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                                                 body: JSON.stringify({ image: snap, artists: c.params.artists }) }).then(r => r.json());
+    if (!r.image) throw new Error(r.error || 'no image');
+    const img = await new Promise((ok, bad) => { const im = new Image(); im.onload = () => ok(im); im.onerror = bad; im.src = r.image; });
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const x = cv.getContext('2d'); x.drawImage(img, 0, 0, W, H);
+    x.globalCompositeOperation = 'destination-in'; x.filter = 'blur(10px)'; x.drawImage(mask, 0, 0, W, H);
+    glazeFx = { cv, t0: millis() };
+    console.log(`glaze in ${r.seconds}s after ${(c.params.artists || []).map(a => a.name).join(', ')}`);
+  } catch (e) { console.warn('glaze skipped:', e); }
+}
+function drawGlaze() {
+  if (!glazeFx) return;
+  const t = Math.min(1, (millis() - glazeFx.t0) / GLAZE_MS);
+  if (t >= 1) { layer.drawingContext.globalAlpha = GLAZE_MIX; layer.drawingContext.drawImage(glazeFx.cv, 0, 0); layer.drawingContext.globalAlpha = 1; glazeFx = null; return; }
+  drawingContext.globalAlpha = GLAZE_MIX * t; drawingContext.drawImage(glazeFx.cv, 0, 0); drawingContext.globalAlpha = 1;
+}
+
+// ================= p5 =================
+function setup() {
+  createCanvas(W, H).parent('holder');
+  pixelDensity(1);
+  noiseSeed(FIELD_SEED);
+  layer = createGraphics(W, H); layer.pixelDensity(1); layer.background(BG);
+  video = createCapture(VIDEO, () => {}); video.size(640, 480); video.hide();
+  hidden = createGraphics(W, H); hidden.pixelDensity(1);
+  drawDefaultHidden();
+  canvasTex = makeCanvasTexture();
+  loadShared();
+}
+
+function draw() {
+  image(layer, 0, 0);
+  drawGlaze();
+  if (oilOn && canvasTex) image(canvasTex, 0, 0);
+  drawSheen();
+  if (peeking && hidden) { tint(255, 110); image(hidden, 0, 0); noTint(); }
+
+  if (state === 'replay') {
+    const sp = (replay && replay.speed) || 2;
+    for (let s = 0; s < sp && state === 'replay'; s++) stepReplay();   // timelapse + song
+    maybeJam();                                                        // the AI plays along with the replay
+    hudBar(!replay ? '' : replay.incoming ? `${replay.c.name} is adding to the painting` : replay.speed > 2 ? 'Rebuilding the painting' : 'The room\'s song', null);
+    return;                                                            // fireflies hide until the reveal ends
+  }
+
+  if (state === 'ask' && incoming.length) { playIncoming(incoming.shift()); return; }
+  updateFireflies();
+  drawFireflies(state === 'countdown' || state === 'paint');
+
+  const pts = (state === 'countdown' || state === 'paint') ? getPoints() : [];
+
+  if (state === 'countdown') {
+    const left = COUNTDOWN_SECONDS - (millis() - phaseStart) / 1000;
+    hudBar(`Raise your hand, ${current.name}. Your paint: ${current.params.reason}`, null);
+    textAlign(CENTER, CENTER); noStroke(); fill(244, 241, 222, 200); textSize(140);
+    text(Math.ceil(left), W / 2, H / 2);
+    if (left <= 0) { state = 'paint'; phaseStart = millis(); }
+  }
+
+  if (state === 'paint') {
+    randomSeed(current.seed + frameIdx);
+    current.path.push(pts);
+    emitFor(current.params, pts, current.path[frameIdx - 1]);
+    soundFor(current.params, pts, current.path[frameIdx - 1], frameIdx);
+    frameIdx++;
+    const elapsed = (millis() - phaseStart) / 1000;
+    hudBar(`Paint, ${current.name}. ${current.params.reason}`, 1 - elapsed / PAINT_SECONDS);
+    if (elapsed >= PAINT_SECONDS) state = 'settle';
+  }
+
+  if (state === 'paint') maybeJam();
+  stepParticles();
+  if (state === 'settle' && particles.length === 0) finishContribution();
+
+  if (current) pts.forEach(pt => {
+    noFill(); stroke(colOf(current.params)); strokeWeight(2);
+    circle(pt.x, pt.y, pt.b ? 5 : (pt.pinch ? 36 : 22));
+  });
+  drawBurstFlash();
+  if (state === 'countdown' || state === 'paint') { drawPreview(); drawFaceMeters(); }
+}
+
+function hudBar(label, progress) {
+  noStroke(); fill(20, 22, 31, 200); rect(0, 0, W, 44);
+  fill(244, 241, 222); textSize(16); textAlign(LEFT, CENTER); text(label, 16, 22);
+  if (millis() < jamUntil) { fill('#f2cc8f'); textAlign(RIGHT, CENTER); text('The room is playing along', W - 16, 22); }
+  if (progress !== null && current) { fill(colOf(current.params)); rect(0, 40, W * Math.max(0, progress), 4); }
+}
+
+function drawPreview() {
+  const w = 192, h = 144, x = W - w - 14, y = H - h - 14;
+  push(); translate(x + w, y); scale(-1, 1); tint(255, 170); image(video, 0, 0, w, h); pop();
+  noFill(); stroke(255, 60); strokeWeight(1); rect(x, y, w, h, 8);
+}
+
+function updateStats() {
+  const n = new Set(contributions.map(c => c.name + c.author)).size;
+  const medium = STYLES[style].medium;
+  document.getElementById('stats').textContent = n
+    ? `${medium}, painted by ${n} ${n === 1 ? 'person' : 'people'}`
+    : `${medium}, waiting for its first painter`;
+  document.getElementById('sparks').textContent = bonds.length
+    ? `${bonds.length} kindred ${bonds.length === 1 ? 'pair has' : 'pairs have'} found each other` : '';
+}
+setInterval(() => typeof updateStats === 'function' && fireflies && updateStats(), 1000);
+
+function setVal(btn, v) { btn.querySelector('.val').textContent = v; }
+document.getElementById('nodesBtn').onclick = e => {
+  showNodes = !showNodes;
+  setVal(e.currentTarget, showNodes ? 'Shown' : 'Blended');
+};
+document.getElementById('go').onclick = startContribution;
+document.getElementById('feeling').addEventListener('keydown', e => { if (e.key === 'Enter') startContribution(); });
+document.getElementById('fake').onclick = () => addFakePeople(12);
+document.getElementById('say').onclick = sayIt;
+document.getElementById('brushBtn').onclick = e => {
+  brushMode = brushMode === 'hands' ? 'body' : 'hands';
+  setVal(e.currentTarget, brushMode === 'hands' ? 'Hands' : 'Body');
+};
+const loadedModels = new Set();
+function renderStatus() {
+  const names = { hands: 'Hand tracking', face: 'Face expressions', body: 'Body outline', 'AI jam': 'AI musician' };
+  document.getElementById('status').innerHTML = Object.entries(names).map(([k, label]) =>
+    `<span class="m ${loadedModels.has(k) ? 'ok' : ''}"><span class="dot"></span>${label}${loadedModels.has(k) ? '' : ' (loading)'}</span>`).join('');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === '`' && document.activeElement.tagName !== 'INPUT') document.getElementById('status').classList.toggle('hidden');
+});
+window.modelReady = n => { loadedModels.add(n); renderStatus(); };
+renderStatus();
+document.getElementById('photoBtn').onclick = () => document.getElementById('photo').click();
+document.getElementById('photo').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  loadImage(URL.createObjectURL(file), img => setHidden(img));
+  e.target.value = '';
+};
+// Group-photo moment: everyone gathers in front of the station, 3-second countdown, snap.
+document.getElementById('snapBtn').onclick = () => {
+  if (!video || video.elt.readyState < 2 || state !== 'ask') return;
+  const btn = document.getElementById('snapBtn'); let n = 3;
+  const lbl = btn.querySelector('.lbl'); lbl.textContent = `Snapshot in ${n}`;
+  const t = setInterval(() => {
+    n--;
+    if (n > 0) { lbl.textContent = `Snapshot in ${n}`; return; }
+    clearInterval(t);
+    setHidden(video.get(), true);
+    lbl.textContent = 'Take group snapshot';
+  }, 1000);
+};
+const peekBtn = document.getElementById('peek');
+['mousedown', 'touchstart'].forEach(ev => peekBtn.addEventListener(ev, () => { peeking = true; }));
+['mouseup', 'mouseleave', 'touchend'].forEach(ev => peekBtn.addEventListener(ev, () => { peeking = false; }));
+document.getElementById('revealBtn').onclick = e => {
+  revealOn = !revealOn; setVal(e.currentTarget, revealOn ? 'On' : 'Off');
+  if (contributions.length && state === 'ask') startReplay();
+};
+document.getElementById('replay').onclick = startReplay;
+document.getElementById('glazeBtn').onclick = e => { glazeOn = !glazeOn; setVal(e.currentTarget, glazeOn ? 'On' : 'Off'); };
+document.getElementById('mute').onclick = e => {
+  muted = !muted; setVal(e.currentTarget, muted ? 'Off' : 'On');
+  if (typeof Tone !== 'undefined') Tone.Destination.mute = muted;
+};
+document.getElementById('save').onclick = () => {
+  const g = createGraphics(W, H); g.pixelDensity(1);
+  g.image(layer, 0, 0);
+  if (oilOn && canvasTex) g.image(canvasTex, 0, 0);
+  saveCanvas(g, 'shared-canvas', 'png');
+};
+document.getElementById('styleBtn').onclick = e => {
+  style = STYLE_ORDER[(STYLE_ORDER.indexOf(style) + 1) % STYLE_ORDER.length];
+  BG = STYLES[style].bg;
+  setVal(e.currentTarget, STYLES[style].label); updateStats();
+  if (state === 'ask') { if (contributions.length) startReplay(); else layer.background(BG); }
+};
+// Gallery keys: R = reveal (constellation + song), S = group snapshot, F = fullscreen
+document.addEventListener('keydown', async e => {
+  if (!GALLERY || document.activeElement.tagName === 'INPUT') return;
+  const k = e.key.toLowerCase();
+  if (k === 'f') document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+  if (k === 's') document.getElementById('snapBtn').click();
+  if (k === 'r' && state === 'ask') { showNodes = true; setVal(document.getElementById('nodesBtn'), 'Shown'); await startReplay(); }
+});
+document.getElementById('clear').onclick = () => {
+  if (state !== 'ask') return;
+  contributions = []; particles = []; fireflies = []; bonds = []; sparks = []; labels = []; resetWet(); densGrid.fill(0); visGrid.fill(0); glazeFx = null;
+  layer.background(BG); updateStats();
+};
+</script>
+</body>
+</html>

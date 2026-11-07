@@ -22,11 +22,17 @@ Step up, talk and move for 10 seconds, and a shared painting changes with you.
 
 By default each visitor becomes a mix of real paintings plus intensity (`BOOTH_PLACEMENT=hybrid`). Add `BOOTH_PLACEMENT=axes` to go back to energy / warmth / light only.
 
+**Brush experiment:** open http://localhost:8790/brush instead. You paint with your hands, in the hand of the painters Gemini picks from what you say (36 paintings), with a light AI glaze over your strokes afterward. Built on `Shared-Canvas`.
+
+**Vibe paint:** open http://localhost:8790/vibe. Say how you feel, trace a path in the air with a finger, and the painting is repainted in your mood only along that path. **Simulate** runs a pretend visitor. Pick what the night starts from at the top: the chapel, a blank canvas the chapel emerges from, or a blank canvas for abstract mood paint.
+
 Stop the GPU when you're done (`gcloud compute instances stop ...`, same flags). You also need `experiments/.lab.json` with the lab URL and token; it's kept out of git, so ask the team for it.
 
 ## Folders
 
 - `booth/`: the booth page and server
+- `brush/`: the brush experiment page
+- `vibe/`: the vibe paint page
 - `experiments/`: the GPU lab, experiments, and Google Cloud setup
 - `prototype/`, `artifact/`: early prototypes and explainer pages
 - `HYPOTHESES.md`: what we tried and what we learned

@@ -102,3 +102,20 @@ The personas use synthetic voice, movement and gesture values until the webcam a
 - **The hybrid is best by eye and ties for best on output spread (+36% over the current axes).** The mix supplies character (Friedrich's mist, Kandinsky's florals, Munch's sky); the axes supply intensity (anger's dark amber).
 - **Cost:** the mix call took 4–6 s versus 3–5 s for axes. The booth would need one combined Gemini call returning both.
 - **Caveats:** 9 visitors, one seed, one Gemini call each; output spread is a proxy, not a human judgment. "Nearest painting of each output" was dropped as a metric because every frame shows a pond, so it measured subject, not style.
+
+## Vibe paint: mood only along the hand path (2026-11-07)
+
+- **Same seed + outline lock = pixel-aligned mood frames.** Each visitor's frame repaints the whole chapel in their mood, and it lines up with the current painting, so the page can show it only along their path with no seams.
+- **Style-only injection at 1.4, plus the energy, warmth and light axes, carries tone as well as brushwork.** Grief goes dark and misty, triumph bright and flat, nerves swirl. Full injection (0.7 and 0.85) brings figures back.
+- **Start calm and pale.** On a bold starting painting, bright moods disappeared into it. A pale underpainting lets every path read, and the visits stack.
+- **Overlaps read stronger.** Each piece of a path adds 70% of the mood, so crossings come through fully.
+- **Not yet verified:** real camera and mic in the vibe page (the browser pane blocks devices). Only tested with Simulate.
+
+## Vibe paint round 3: why moods looked alike (2026-11-07)
+
+- **Gemini isn't the bottleneck.** Across 12 feelings it chose 17 different painters.
+- **The scene prompt is.** "Chapel above a garden pond" pulls every mood toward the same greens: calm and bored, grief and homesick came out nearly identical.
+- **What didn't help:** color words in the prompt, letting the lead painter dominate the blend, palette matching to the paintings' pixels, and starting from the chapel recolored in the painters' palettes (the model repaints it green, and the moods converge further).
+- **What helped:** letting the mood set the scene's **light and weather** (Gemini writes it: "at night, one candle-lit window", "in full spring bloom, turquoise sky"). Spring turns turquoise, exam nerves get rain streaks, homesick gets snow and a moon.
+- **Most distinct: no scene at all.** Abstract frames (same painters and axes, no chapel) differ in color *and* form: grief grey slashes, triumph Kandinsky shapes, love Klimt mosaic.
+- **Blank canvas, two ways:** paths reveal the chapel in each visitor's mood (it emerges over the night), or lay down abstract mood paint. Brush-like ragged mask edges keep paths from looking like cut-out tubes on linen.
