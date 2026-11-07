@@ -11,3 +11,9 @@ export const fetchBase = () => api('/api/vibe/base');
 export const fetchBrush = heard => api('/api/brush', heard);
 // { artists, energy, warmth, light, atmosphere, mode } -> { image } : the whole scene repainted in the mood.
 export const fetchRender = args => api('/api/vibe/render', args);
+// Tonight's saved visits, oldest first: [{ id, t, name, reading, painters, presence, start, strokes, mood, canvas }].
+export const fetchVisits = async () => { const r = await fetch('/api/visits'); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); };
+// Store one finished visit (images as data URLs) -> { id }.
+export const saveVisit = v => api('/api/visits', v);
+// Start a new night: the server moves tonight's visits aside.
+export const clearVisits = () => api('/api/visits/clear');
