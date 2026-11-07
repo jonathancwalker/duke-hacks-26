@@ -40,7 +40,8 @@ export const setTrailBlend = () => { trail.style.mixBlendMode = blankStart() ? '
 
 export const clearTrail = () => tctx.clearRect(0, 0, S.W, S.H);
 
-// Trace for sec seconds. tipsAt(f) -> [{ key, x, y }] or null (no new frame), f in 0..1. Returns strokes of points.
+// Trace for sec seconds. tipsAt(f) -> [{ key, x, y, fist }] or null (no new frame), f in 0..1. Returns strokes of points.
+// A fist lifts the pen: the cursor keeps moving but records nothing, and opening the hand starts a new stroke.
 export async function trace(sec, look, tipsAt) {
   const { W, H } = S;
   const strokes = [], live = {}, width = look.width, colors = look.palette.map(c => glow(c));
@@ -55,10 +56,12 @@ export async function trace(sec, look, tipsAt) {
       for (const k of Object.keys(live)) if (!tips.some(p => p.key === k)) delete live[k];   // hand left: stroke ends
       for (const p of tips) {
         let h = live[p.key];
-        if (!h) { h = live[p.key] = { x: p.x, y: p.y, s: [] }; strokes.push(h.s); }
+        if (!h) h = live[p.key] = { x: p.x, y: p.y, s: null };
+        if (p.fist) h.s = null;                                                 // pen up
+        else if (!h.s) strokes.push(h.s = []);                                  // pen down: a new stroke
         const x = h.x + (p.x - h.x) * .5, y = h.y + (p.y - h.y) * .5;           // light smoothing
-        const prev = h.s[h.s.length - 1];
-        if (!prev || Math.hypot(x - prev.x, y - prev.y) > W / 400) {
+        const prev = h.s?.[h.s.length - 1];
+        if (h.s && (!prev || Math.hypot(x - prev.x, y - prev.y) > W / 400)) {
           h.s.push({ x, y });
           const c = colors[Math.floor(n++ / 14) % colors.length];
           const a = prev || { x, y };
@@ -71,15 +74,15 @@ export async function trace(sec, look, tipsAt) {
         h.x = x; h.y = y;
       }
     }
-    for (const h of Object.values(live)) dot(h.x, h.y, width / 2);
+    for (const h of Object.values(live)) dot(h.x, h.y, width / 2, !h.s);
     await frame();
   }
   cctx.clearRect(0, 0, W, H);
   return strokes.filter(s => s.length);
 }
 
-function dot(x, y, r) {
-  cctx.globalAlpha = .9; cctx.strokeStyle = '#fff'; cctx.lineWidth = S.W / 500;
+function dot(x, y, r, up) {
+  cctx.globalAlpha = up ? .35 : .9; cctx.strokeStyle = '#fff'; cctx.lineWidth = S.W / 500;   // faint while the pen is up
   cctx.beginPath(); cctx.arc(x, y, r, 0, Math.PI * 2); cctx.stroke();
 }
 
