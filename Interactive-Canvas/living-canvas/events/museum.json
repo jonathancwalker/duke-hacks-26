@@ -3,5 +3,12 @@
   "kind": "museum",
   "question": "How are you feeling right now?",
   "scene": "an oil painting of a gothic chapel tower above still water, reflections on the water, visible brushstrokes",
-  "closing": "Every visitor tonight has painted a little of this chapel. Yours is in there now."
+  "closing": "Every visitor tonight has painted a little of this chapel. Yours is in there now.",
+  "consent": [
+    "The camera follows your fingertip and the mic hears your answer. We don't save video or sound.",
+    "Chrome sends your voice to Google to turn it into text, and Google's Gemini AI reads that text to pick your colors.",
+    "Your words aren't saved. We keep your path, your painting and a short mood label.",
+    "No name needed. The shared painting and mood labels are shown publicly.",
+    "Rather not? Just watch, or step away at any point: no path, nothing saved."
+  ]
 }

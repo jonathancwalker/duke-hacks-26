@@ -5,6 +5,7 @@
 import { S, $, video, sleep, say, bar, loadImg } from './state.js';
 import { fetchEvent, fetchBase, fetchBrush, fetchRender, fetchVisits, saveVisit, clearVisits } from './api.js';
 import { listen } from './audio.js';
+import { showConsent, hideConsent } from './consent.js';
 import { startCamera, readTips, resetTips } from './hand.js';
 import { startPose, trackMoves, moveScore } from './move.js';
 import { fit, startCanvas, setTrailBlend, trace, reveal, clearTrail, paletteWash } from './render.js';
@@ -42,6 +43,7 @@ async function reset(clear) {
     startCanvas(img);
     S.visitors = saved.length; showCount(); fit();
     say(S.event.question, 'Step up and answer out loud, then trace a path in the air. Your mood repaints the canvas only where your hand went.');
+    showConsent(S.event.consent);                   // the privacy notice, while the station waits for a visitor
   } catch (e) { say('The GPU lab is not answering.', String(e.message || e)); }
   S.busy = false; setButtons();
 }
@@ -49,7 +51,7 @@ async function reset(clear) {
 // ---------------------------------------------------------------- one visit
 async function visit(sim) {
   if (S.busy || !S.base) return;
-  S.busy = true; setButtons();
+  S.busy = true; setButtons(); hideConsent();
   try {
     let heard, laban;
     if (sim) { heard = sim.heard; laban = sim.laban; say(`“${heard.feeling}”`, `a pretend visitor, ${sim.voice}`); await sleep(900); }
@@ -89,7 +91,7 @@ async function visit(sim) {
     say('Next visitor: step up.', 'Each visit repaints only the path its hands drew.');
   } catch (e) {
     console.error(e); say('Something went wrong.', String(e.message || e));
-  } finally { S.busy = false; setButtons(); bar(0); video.classList.remove('on'); }
+  } finally { S.busy = false; setButtons(); bar(0); video.classList.remove('on'); showConsent(S.event?.consent); }
 }
 
 // A pretend visitor: a scripted feeling, how they moved while saying it, a voice loudness shape and a looping path, so

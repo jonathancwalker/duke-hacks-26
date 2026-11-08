@@ -38,10 +38,11 @@ PLACEMENT = os.environ.get("BOOTH_PLACEMENT", "hybrid")
 if PLACEMENT not in ("hybrid", "axes"):
     sys.exit(f"BOOTH_PLACEMENT must be 'hybrid' or 'axes', not {PLACEMENT!r}")
 
-# The event the booth is set up for: one JSON per event in events/ (name, kind, question, scene, closing).
-# BOOTH_EVENT picks the default; a page can ask for another with ?event=<name>.
+# The event the booth is set up for: one JSON per event in events/ (name, kind, question, scene, closing, consent).
+# consent is the on-screen privacy notice (see PRIVACY.md), a string or a list of lines; it comes back as one string
+# with the lines joined by "\n". BOOTH_EVENT picks the default; a page can ask for another with ?event=<name>.
 EVENTS = os.path.join(HERE, "..", "events")
-EVENT_KEYS = ("name", "kind", "question", "scene", "closing")
+EVENT_KEYS = ("name", "kind", "question", "scene", "closing", "consent")
 EVENT = os.environ.get("BOOTH_EVENT", "museum")
 
 
@@ -53,6 +54,8 @@ def load_event(name=None):
         raise LookupError(f"no event {name!r} in events/")
     with open(path) as f:
         ev = json.load(f)
+    if isinstance(ev.get("consent"), list):
+        ev["consent"] = "\n".join(str(line).strip() for line in ev["consent"] if str(line).strip())
     missing = [k for k in EVENT_KEYS if not str(ev.get(k) or "").strip()]
     if missing:
         raise ValueError(f"events/{name}.json is missing {', '.join(missing)}")

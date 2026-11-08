@@ -3,5 +3,12 @@
   "kind": "concert",
   "question": "How did that last song make you feel?",
   "scene": "an oil painting of an outdoor concert stage at night under colored lights, a sea of raised hands, haze in the beams, visible brushstrokes",
-  "closing": "The whole crowd is painting this stage together. Your song is part of it now."
+  "closing": "The whole crowd is painting this stage together. Your song is part of it now.",
+  "consent": [
+    "The camera follows your fingertip and the mic hears your answer. We don't save video or sound.",
+    "Chrome sends your voice to Google to turn it into text, and Google's Gemini AI reads that text to pick your colors.",
+    "Your words aren't saved. We keep your path, your painting and a short mood label.",
+    "No name needed. The shared painting and mood labels are shown publicly.",
+    "Rather not? Just watch, or step away at any point: no path, nothing saved."
+  ]
 }
