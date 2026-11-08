@@ -130,9 +130,11 @@ function loudness(envelope, f) {
 // adds about two-thirds opacity (scaled by the voice's loudness at that moment) with bristle edges, so crossings come
 // through fully. texture (0..1, from movement while talking) sets the edges for the whole visit: 0 = soft, blurred;
 // 1 = ragged, splayed bristles. envelope (voice loudness while talking) sets the strength along the path. ms: how long
-// the reveal takes (the montage replays each visit in under a second).
-export async function reveal(strokes, vibe, width, texture = .35, envelope, ms = REVEAL_MS) {
-  const { W, H, base } = S;
+// the reveal takes (the montage replays each visit in under a second). to: draw somewhere other than the station's canvas
+// (the idle loop's overlay, #37): { ctx, base, stop }. ctx gets the frames, base is the canvas revealed over (it keeps the
+// result), and stop() returning true ends the reveal early. With `to`, the progress bar, trail and cursor are untouched.
+export async function reveal(strokes, vibe, width, texture = .35, envelope, ms = REVEAL_MS, to) {
+  const { W, H } = S, base = to?.base || S.base, out = to?.ctx || pctx;
   const mask = mk(), soft = mk(), layer = mk(), m = mask.getContext('2d'), sc = soft.getContext('2d'), lc = layer.getContext('2d');
   m.lineCap = m.lineJoin = 'round'; m.strokeStyle = '#fff';
   const ts = strokes.flat().map(p => p.t), tFirst = Math.min(...ts), span = Math.max(...ts) - tFirst || 1;
@@ -150,8 +152,9 @@ export async function reveal(strokes, vibe, width, texture = .35, envelope, ms =
     for (const q of pts.length > 1 ? pts.slice(1) : pts) m.lineTo(q.x + dx, q.y + dy); m.stroke(); };
   let drawn = 0; const t0 = performance.now();
   for (let f = 0; f < 1;) {
+    if (to?.stop?.()) return;
     f = Math.min(1, (performance.now() - t0) / ms);
-    bar(f);
+    if (!to) bar(f);
     const want = Math.round(ease(f) * pieces.length);
     let tip = null;
     while (drawn < want) {
@@ -163,13 +166,30 @@ export async function reveal(strokes, vibe, width, texture = .35, envelope, ms =
     sc.clearRect(0, 0, W, H); sc.filter = `blur(${Math.max(1, Math.round(W / 350 * (3 - 2.6 * texture)))}px)`; sc.drawImage(mask, 0, 0); sc.filter = 'none';
     lc.globalCompositeOperation = 'source-over'; lc.clearRect(0, 0, W, H); lc.drawImage(vibe, 0, 0, W, H);
     lc.globalCompositeOperation = 'destination-in'; lc.drawImage(soft, 0, 0); lc.globalCompositeOperation = 'source-over';
-    pctx.drawImage(base, 0, 0); pctx.drawImage(layer, 0, 0);
-    trail.style.opacity = 1 - f;
-    cctx.clearRect(0, 0, W, H);
-    if (tip && f < 1) { cctx.globalAlpha = .8; cctx.fillStyle = '#fff'; cctx.shadowBlur = W / 40; cctx.shadowColor = '#fff';
-      cctx.beginPath(); cctx.arc(tip.x, tip.y, W / 160, 0, Math.PI * 2); cctx.fill(); cctx.shadowBlur = 0; }
+    out.drawImage(base, 0, 0); out.drawImage(layer, 0, 0);
+    if (!to) { trail.style.opacity = 1 - f; cctx.clearRect(0, 0, W, H); }
+    const tc = to ? out : cctx;                                    // the overlay redraws every frame, so the tip can go on it
+    if (tip && f < 1) { tc.save(); tc.globalAlpha = .8; tc.fillStyle = '#fff'; tc.shadowBlur = W / 40; tc.shadowColor = '#fff';
+      tc.beginPath(); tc.arc(tip.x, tip.y, W / 160, 0, Math.PI * 2); tc.fill(); tc.restore(); }
     await frame();
   }
-  cctx.clearRect(0, 0, W, H); tctx.clearRect(0, 0, W, H);
-  base.getContext('2d').drawImage(paint, 0, 0);                  // the change stays: next visitor paints over it
+  if (!to) { cctx.clearRect(0, 0, W, H); tctx.clearRect(0, 0, W, H); }
+  base.getContext('2d').drawImage(out.canvas, 0, 0);             // the change stays: next visitor paints over it
+}
+
+// Cross-fade the frame onto img by time `end` (performance.now), then make it the canvas the next visit starts from.
+// to: as for reveal (the montage draws on the station's canvas; the idle loop on its overlay).
+export async function settle(img, end, to) {
+  const ctx = to?.ctx || pctx, base = to?.base || S.base, from = mk();
+  from.getContext('2d').drawImage(ctx.canvas, 0, 0);
+  const t0 = performance.now(), span = Math.max(1, end - t0);
+  for (let f = 0; f < 1;) {
+    if (to?.stop?.()) return;
+    f = Math.min(1, (performance.now() - t0) / span);
+    ctx.globalAlpha = 1; ctx.drawImage(from, 0, 0);
+    ctx.globalAlpha = f; ctx.drawImage(img, 0, 0, S.W, S.H);
+    await frame();
+  }
+  ctx.globalAlpha = 1; ctx.drawImage(img, 0, 0, S.W, S.H);
+  base.getContext('2d').drawImage(ctx.canvas, 0, 0);
 }

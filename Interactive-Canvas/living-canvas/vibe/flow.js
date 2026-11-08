@@ -11,6 +11,7 @@ import { startGlow, stopGlow } from './glow.js';
 import { startCamera, readTips, resetTips } from './hand.js';
 import { startPose, trackMoves, moveScore } from './move.js';
 import { fit, startCanvas, setTrailBlend, trace, reveal, clearTrail, paletteWash } from './render.js';
+import { watchIdle } from './idle.js';
 
 const SPEAK_S = 6, TRACE_S = 12, SIM_TRACE_S = 5;
 
@@ -128,7 +129,9 @@ function simVisitor() {
   return { heard: { feeling, arousal, envelope }, laban: { weight, time, space, flow, detected: true }, path, voice };
 }
 
-function setButtons() { $('#go').disabled = $('#sim').disabled = $('#reset').disabled = S.busy || !S.base; if (!S.base) $('#reset').disabled = S.busy; }
+// Idle loop (#37): after 8 s with no visit and no interaction, replay recent visits; going busy or free restarts the wait.
+const nudgeIdle = watchIdle(() => S.busy || !S.base);
+function setButtons() { nudgeIdle(); $('#go').disabled = $('#sim').disabled = $('#reset').disabled = S.busy || !S.base; if (!S.base) $('#reset').disabled = S.busy; }
 $('#go').onclick = () => visit();
 $('#sim').onclick = () => visit(simVisitor());
 $('#reset').onclick = () => !S.busy && reset(true);
