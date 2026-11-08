@@ -29,5 +29,11 @@ export const fetchRender = args => api('/api/vibe/render', { ...args, event: EVE
 export const fetchVisits = async () => { const r = await fetch('/api/visits'); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); };
 // Store one finished visit (images as data URLs) -> { id }.
 export const saveVisit = v => api('/api/visits', v);
+// { reading, before } -> { line, source } : one sentence for after the visit (#67), written from the event, the reading
+// and how many people painted before; the event's fixed closing line when Gemini is off, slow (4 s) or off-voice.
+export const fetchLine = args => api('/api/line', { ...args, event: EVENT });
+// -> { reflection, visitors, source } : the montage's closing words over the final canvas (#34), from every reading of
+// the night; "N visitors. One painting." when Gemini is off or slow.
+export const fetchReflection = () => api('/api/reflection', { event: EVENT });
 // Start a new night: the server moves tonight's visits aside.
 export const clearVisits = () => api('/api/visits/clear');
