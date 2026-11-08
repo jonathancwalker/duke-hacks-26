@@ -129,8 +129,9 @@ function loudness(envelope, f) {
 // The mood frame shows through a soft mask built along the path in the order it was drawn. Each short piece of path
 // adds about two-thirds opacity (scaled by the voice's loudness at that moment) with bristle edges, so crossings come
 // through fully. texture (0..1, from movement while talking) sets the edges for the whole visit: 0 = soft, blurred;
-// 1 = ragged, splayed bristles. envelope (voice loudness while talking) sets the strength along the path.
-export async function reveal(strokes, vibe, width, texture = .35, envelope) {
+// 1 = ragged, splayed bristles. envelope (voice loudness while talking) sets the strength along the path. ms: how long
+// the reveal takes (the montage replays each visit in under a second).
+export async function reveal(strokes, vibe, width, texture = .35, envelope, ms = REVEAL_MS) {
   const { W, H, base } = S;
   const mask = mk(), soft = mk(), layer = mk(), m = mask.getContext('2d'), sc = soft.getContext('2d'), lc = layer.getContext('2d');
   m.lineCap = m.lineJoin = 'round'; m.strokeStyle = '#fff';
@@ -149,7 +150,7 @@ export async function reveal(strokes, vibe, width, texture = .35, envelope) {
     for (const q of pts.length > 1 ? pts.slice(1) : pts) m.lineTo(q.x + dx, q.y + dy); m.stroke(); };
   let drawn = 0; const t0 = performance.now();
   for (let f = 0; f < 1;) {
-    f = Math.min(1, (performance.now() - t0) / REVEAL_MS);
+    f = Math.min(1, (performance.now() - t0) / ms);
     bar(f);
     const want = Math.round(ease(f) * pieces.length);
     let tip = null;
