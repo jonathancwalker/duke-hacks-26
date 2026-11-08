@@ -242,7 +242,7 @@ class Presence:
                 print(f"[presence] config not applied: {e.__class__.__name__}: {e}", file=sys.stderr)
 
     def _gemini_read(self, text):
-        timeout = self.timeout_s if self.timeout_s is not None else float(self.lib.cfg.get("gemini_timeout_s", 3.0))
+        timeout = self.timeout_s if self.timeout_s is not None else float(self.lib.cfg.get("gemini_timeout_s", 8.0))
         f = self._pool.submit(self.gemini, text)
         try:
             return f.result(timeout=timeout)

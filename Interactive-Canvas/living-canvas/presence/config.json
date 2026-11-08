@@ -5,7 +5,7 @@
   "prior_votes": 10,
   "steer": 2.0,
   "gemini_weight": 0.5,
-  "gemini_timeout_s": 3.0,
+  "gemini_timeout_s": 8.0,
   "top_k": 3,
   "library_dir": "~/.cache/living-canvas/presence"
 }

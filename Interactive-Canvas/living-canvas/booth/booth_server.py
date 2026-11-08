@@ -607,7 +607,7 @@ def vibe_render(v):
 # ---------------------------------------------------------------- presence (issue #7): words + loudness + movement -> paintings
 # The C5 feeling scorer (presence/scorer.py) picks 3 of ~2,600 WikiArt paintings and returns their CLIP vectors, which
 # /api/vibe/render takes for paintings outside the lab library. Its emotion read blends the ArtEmis text head with
-# Gemini's read (up to gemini_timeout_s, 3 s; the head alone when Gemini is slow or fails).
+# Gemini's read (up to gemini_timeout_s, 8 s; the head alone when Gemini is slow or fails).
 # Needs torch + transformers and the built library (presence/build.py); without them the director's painters are used.
 sys.path.insert(0, os.path.join(HERE, ".."))
 PRESENCE, PRESENCE_ERROR = None, "presence scorer still loading"

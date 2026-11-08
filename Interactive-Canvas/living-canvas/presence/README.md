@@ -13,7 +13,7 @@ POST /api/presence  {"feeling": "First snow of the year on the walk here.", "lou
 ```
 
 `loudness` falls back to `arousal` (what `listen()` sends); both are 0..1. The call waits for Gemini's read (up to
-`gemini_timeout_s`, 3 s) and uses the text head alone when Gemini is slow or fails, so it takes a few seconds.
+`gemini_timeout_s`, 8 s) and uses the text head alone when Gemini is slow or fails, so it takes a few seconds.
 503 when the scorer is not loaded; the vibe page then uses the director's painters.
 
 ## How it scores
@@ -43,7 +43,7 @@ warmth, light, atmosphere, the reading and the trail palette.
 | `prior_votes` | 10 | pseudo-votes that pull each painting's vote profile toward the corpus prior |
 | `steer` | 2.0 | strength of the voice/movement steer |
 | `gemini_weight` | 0.5 | share of Gemini's read in the blend |
-| `gemini_timeout_s` | 3.0 | how long to wait for Gemini before using the text head alone |
+| `gemini_timeout_s` | 8.0 | how long to wait for Gemini before using the text head alone |
 | `top_k` | 3 | paintings returned |
 | `library_dir` | `~/.cache/living-canvas/presence` | the built library (or `PRESENCE_DIR`) |
 

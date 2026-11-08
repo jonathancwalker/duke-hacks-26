@@ -183,4 +183,4 @@ def test_falls_back_to_the_head_when_gemini_is_slow_or_fails(lib):
 
 
 def test_gemini_timeout_lives_in_the_config():
-    assert P.load_config()["gemini_timeout_s"] == 3.0
+    assert P.load_config()["gemini_timeout_s"] == 8.0
