@@ -3,5 +3,7 @@
   "kind": "concert",
   "question": "How did that last song make you feel?",
   "scene": "an oil painting of an outdoor concert stage at night under colored lights, a sea of raised hands, haze in the beams, visible brushstrokes",
-  "closing": "The whole crowd is painting this stage together. Your song is part of it now."
+  "closing": "The whole crowd is painting this stage together. Your song is part of it now.",
+  "context": "An outdoor concert at night: one stage, colored lights, a crowd standing close together between songs.",
+  "voice": "Loud, warm and plain. Name the stage, the lights and the crowd; each visitor is one more voice in it."
 }

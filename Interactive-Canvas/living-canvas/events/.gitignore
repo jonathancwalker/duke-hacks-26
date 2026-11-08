@@ -1,0 +1,3 @@
+# The event last saved on /setup (booth-local state), and atomic-write temp files.
+.active
+*.tmp
