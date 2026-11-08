@@ -29,7 +29,7 @@ Interactive art is usually built for one person at a time. Momento is built for 
 
 1. **Answer one question out loud.** For example, "How are you feeling right now?" You can whisper, shout, laugh or ramble.
 2. **We pick your painters.** Your words, how loudly you said them and how much you moved choose 3 real paintings, out of about 2,600, that match how you feel. "First snow of the year on the walk here" finds a Sisley snow scene. "In love, first date" finds Toulouse-Lautrec's *The Kiss*.
-3. **Paint in the air.** Trace a path with your finger for 12 seconds. Close your fist to lift the brush.
+3. **Paint in the air.** Trace a path with your finger for 6 seconds. Close your fist to lift the brush.
 4. **Watch it land.** The whole scene is repainted in your mood, but it shows only along your path. Your voice sets how strongly it comes through, and your movement sets how rough the edges are.
 5. **Leave your mark.** Your strokes glow for a moment. You can add your name, and you get one line about how your moment is now part of the night.
 

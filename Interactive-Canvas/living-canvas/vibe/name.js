@@ -1,10 +1,10 @@
 // "What name should we credit?" after the reveal (#30). The visitor says a name, or skips: the Skip button, the space
-// key, saying "skip", or about 5 s of silence. Resolves with the cleaned name, or '' for a skip (the server then credits
+// key, saying "skip", or about 5 s of silence. A time bar under the painting shows how long is left. Resolves with the cleaned name, or '' for a skip (the server then credits
 // "Visitor N"). It never rejects and gives up after LISTEN_MAX_S, so a visit always finishes; speech failing is a skip.
-import { $, say, sleep } from './state.js';
-import { cleanName, creditName } from './name_text.js';
+import { $, say, sleep, bar } from './state.js';
+import { cleanName, creditName, nameProgress, SILENCE_S, LISTEN_MAX_S } from './name_text.js';
 
-const SILENCE_S = 5, LISTEN_MAX_S = 12, THANKS_MS = 1400;
+const THANKS_MS = 1400;
 const SIM_NAMES = ['Ada', 'Rachel Chen', 'Sam', '', ''];   // Simulate: a pretend name, or a skip
 
 // n: this visit's number (for the "Visitor N" thanks); sim: a pretend visitor, so no mic. answered() is called the
@@ -22,6 +22,11 @@ export async function askName(n, sim, answered = () => {}) {
 
   let silence = setTimeout(() => done(''), SILENCE_S * 1000);
   const cap = setTimeout(() => done(cleanName(heard)), LISTEN_MAX_S * 1000);
+  // The time bar under the painting (the same strip as talking and drawing) shows how long is left to answer.
+  const t0 = performance.now(), secs = () => (performance.now() - t0) / 1000;
+  let talkStart = null;
+  bar(0);
+  const ticker = setInterval(() => bar(nameProgress(secs(), talkStart)), 100);
   let rec = null;
   try {
     if (sim) {
@@ -34,6 +39,7 @@ export async function askName(n, sim, answered = () => {}) {
         rec = new SR(); rec.continuous = false; rec.interimResults = true; rec.lang = 'en-US';
         rec.onresult = e => {
           clearTimeout(silence); silence = null;                 // they're talking: wait for them to finish
+          if (talkStart == null) talkStart = secs();             // the bar now runs to the 12 s cap
           const r = e.results[e.results.length - 1];
           show(r[0].transcript.trim());
           if (r.isFinal) done(cleanName(heard));
@@ -47,7 +53,7 @@ export async function askName(n, sim, answered = () => {}) {
 
   const name = await answer;
   try { answered(); } catch (e) { console.warn(e); }
-  clearTimeout(silence); clearTimeout(cap); removeEventListener('keydown', onKey);
+  clearTimeout(silence); clearTimeout(cap); clearInterval(ticker); bar(0); removeEventListener('keydown', onKey);
   if (rec) { rec.onresult = rec.onerror = rec.onend = null; try { rec.abort(); } catch {} }
   skip.remove();
   say(`Thanks, ${creditName(name, n)}.`, '');
