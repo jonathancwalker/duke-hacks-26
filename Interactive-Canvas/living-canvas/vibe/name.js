@@ -7,8 +7,9 @@ import { cleanName, creditName } from './name_text.js';
 const SILENCE_S = 5, LISTEN_MAX_S = 12, THANKS_MS = 1400;
 const SIM_NAMES = ['Ada', 'Rachel Chen', 'Sam', '', ''];   // Simulate: a pretend name, or a skip
 
-// n: this visit's number (for the "Visitor N" thanks); sim: a pretend visitor, so no mic.
-export async function askName(n, sim) {
+// n: this visit's number (for the "Visitor N" thanks); sim: a pretend visitor, so no mic. answered() is called the
+// moment they answer or skip, before the thanks.
+export async function askName(n, sim, answered = () => {}) {
   let done, heard = '';
   const answer = new Promise(r => { done = r; });
   say('What name should we credit?', 'Say your first name, or skip.');
@@ -45,6 +46,7 @@ export async function askName(n, sim) {
   } catch (e) { console.warn('name step failed, skipping:', e); done(''); }
 
   const name = await answer;
+  try { answered(); } catch (e) { console.warn(e); }
   clearTimeout(silence); clearTimeout(cap); removeEventListener('keydown', onKey);
   if (rec) { rec.onresult = rec.onerror = rec.onend = null; try { rec.abort(); } catch {} }
   skip.remove();

@@ -7,6 +7,7 @@ import { S, $, video, sleep, say, bar, loadImg } from './state.js';
 import { fetchEvent, fetchBase, fetchBrush, fetchPresence, fetchRender, fetchVisits, saveVisit, clearVisits } from './api.js';
 import { listen } from './audio.js';
 import { askName } from './name.js';
+import { startGlow, stopGlow } from './glow.js';
 import { startCamera, readTips, resetTips } from './hand.js';
 import { startPose, trackMoves, moveScore } from './move.js';
 import { fit, startCanvas, setTrailBlend, trace, reveal, clearTrail, paletteWash } from './render.js';
@@ -20,7 +21,7 @@ const showCount = () => { $('#count').textContent = S.visitors ? `${S.visitors} 
 
 // On load, rebuild tonight's painting from the saved visits; with clear (Reset, new start mode), start a new night.
 async function reset(clear) {
-  S.busy = true; setButtons();
+  S.busy = true; setButtons(); stopGlow(false);
   try {
     S.event = S.event || await fetchEvent();          // the event's question, scene and closing (events/*.json)
     if (clear) await clearVisits();
@@ -51,7 +52,7 @@ async function reset(clear) {
 // ---------------------------------------------------------------- one visit
 async function visit(sim) {
   if (S.busy || !S.base) return;
-  S.busy = true; setButtons();
+  S.busy = true; setButtons(); stopGlow(false);
   try {
     let heard, laban;
     if (sim) { heard = sim.heard; laban = sim.laban; say(`“${heard.feeling}”`, `a pretend visitor, ${sim.voice}`); await sleep(900); }
@@ -93,7 +94,8 @@ async function visit(sim) {
     const before = S.visitors ? undefined : S.base.toDataURL('image/jpeg', .92);   // night's first visit: where the montage starts
     await reveal(strokes, vibe, look.width, texture, heard.envelope);
     S.visitors++; showCount();
-    const name = await askName(S.visitors, !!sim);       // '' = skipped; never throws, so the visit always finishes
+    startGlow(strokes);                                   // their strokes breathe behind the name prompt, then fade
+    const name = await askName(S.visitors, !!sim, stopGlow);   // '' = skipped; never throws, so the visit always finishes
     say(S.event.closing, reason);
     const painters = artists.map(a => ({ name: a.label || a.name, id: a.name, weight: a.weight }));
     await saveVisit({ name, reading: d.reading, painters, presence: heard.presence, start: S.start,
@@ -103,7 +105,7 @@ async function visit(sim) {
     say('Next visitor: step up.', 'Each visit repaints only the path its hands drew.');
   } catch (e) {
     console.error(e); say('Something went wrong.', String(e.message || e));
-  } finally { S.busy = false; setButtons(); bar(0); video.classList.remove('on'); }
+  } finally { stopGlow(); S.busy = false; setButtons(); bar(0); video.classList.remove('on'); }
 }
 
 // A pretend visitor: a scripted feeling, how they moved while saying it, a voice loudness shape and a looping path, so
