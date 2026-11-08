@@ -4,7 +4,7 @@
 // only along their path. Crossings show the mood more strongly.
 // This module is the visit state machine: speak -> brush -> trace -> reveal -> name -> commit, plus start modes and Simulate.
 import { S, $, video, sleep, say, bar, loadImg } from './state.js';
-import { fetchEvent, fetchBase, fetchBrush, fetchPresence, fetchRender, fetchVisits, saveVisit, clearVisits } from './api.js';
+import { fetchEvent, fetchBase, fetchBrush, fetchPresence, fetchRender, fetchVisits, fetchGallery, saveVisit, clearVisits } from './api.js';
 import { listen } from './audio.js';
 import { askName } from './name.js';
 import { startGlow, stopGlow } from './glow.js';
@@ -12,6 +12,8 @@ import { startCamera, readTips, resetTips } from './hand.js';
 import { startPose, trackMoves, moveScore } from './move.js';
 import { fit, startCanvas, setTrailBlend, trace, reveal, clearTrail, paletteWash } from './render.js';
 import { watchIdle } from './idle.js';
+import { playMontage } from './montage_play.js';
+import { stationButtons, downloadName } from './finish_plan.js';
 
 const SPEAK_S = 6, TRACE_S = 12, SIM_TRACE_S = 5;
 
@@ -25,7 +27,7 @@ async function reset(clear) {
   S.busy = true; setButtons(); stopGlow(false);
   try {
     S.event = S.event || await fetchEvent();          // the event's question, scene and closing (events/*.json)
-    if (clear) await clearVisits();
+    if (clear) { await clearVisits(); S.finished = false; }
     const saved = clear ? [] : await fetchVisits().catch(e => (console.warn('saved visits unavailable', e), []));
     const last = saved[saved.length - 1];
     if (last?.start) S.start = last.start;
@@ -52,7 +54,7 @@ async function reset(clear) {
 
 // ---------------------------------------------------------------- one visit
 async function visit(sim) {
-  if (S.busy || !S.base) return;
+  if (S.busy || S.finished || !S.base) return;
   S.busy = true; setButtons(); stopGlow(false);
   try {
     let heard, laban;
@@ -129,17 +131,58 @@ function simVisitor() {
   return { heard: { feeling, arousal, envelope }, laban: { weight, time, space, flow, detected: true }, path, voice };
 }
 
+// ---------------------------------------------------------------- finishing the night (part of #32)
+// Finish -> "are you sure?" -> tonight's montage -> hold on the final piece with Download. Tonight's visits stay in
+// place (the final piece and /montage stay reachable) until Reset starts a new night, which moves them aside.
+async function finishNight() {
+  if (S.busy || S.finished || !S.visitors) return;
+  S.busy = S.finished = true; setButtons(); stopGlow(false); clearTrail();
+  try {
+    const { visits, ok } = await playMontage();
+    if (!ok) S.finished = false;                          // visits unavailable: back to the night, nothing was closed
+    else if (!visits) { S.finished = false; S.visitors = 0; showCount(); }
+  } catch (e) { console.error(e); say('The montage did not play.', String(e.message || e)); }
+  S.busy = false; setButtons();
+}
+
+// Saves the latest saved canvas (what the montage ended on) as <event>-<date>.jpg.
+async function download() {
+  try {
+    const { canvas } = await fetchGallery();
+    if (!canvas) throw new Error('no saved canvas yet');
+    let blob = await fetch(canvas).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.blob(); });
+    if (blob.type !== 'image/jpeg') {                     // the station saves JPEGs; re-encode anything else
+      const img = await loadImg(URL.createObjectURL(blob)), c = document.createElement('canvas');
+      URL.revokeObjectURL(img.src);
+      c.width = img.naturalWidth; c.height = img.naturalHeight; c.getContext('2d').drawImage(img, 0, 0);
+      blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .92));
+    }
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: downloadName(S.event) });
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  } catch (e) { console.warn('download failed', e); say('Tonight’s canvas', `Download failed: ${e.message || e}`); }
+}
+
+const confirmFinish = $('#finish-confirm');
+confirmFinish.addEventListener('close', () => { if (confirmFinish.returnValue === 'finish') finishNight(); });
+
 // Idle loop (#37): after 8 s with no visit and no interaction, replay recent visits; going busy or free restarts the wait.
-const nudgeIdle = watchIdle(() => S.busy || !S.base);
-function setButtons() { nudgeIdle(); $('#go').disabled = $('#sim').disabled = $('#reset').disabled = S.busy || !S.base; if (!S.base) $('#reset').disabled = S.busy; }
+const nudgeIdle = watchIdle(() => S.busy || S.finished || confirmFinish.open || !S.base);
+function setButtons() {
+  nudgeIdle();
+  const b = stationButtons({ busy: S.busy, ready: !!S.base, visitors: S.visitors, finished: !!S.finished });
+  for (const [id, { hidden, disabled }] of Object.entries(b)) Object.assign($('#' + id), { hidden, disabled });
+}
 $('#go').onclick = () => visit();
 $('#sim').onclick = () => visit(simVisitor());
 $('#reset').onclick = () => !S.busy && reset(true);
+$('#finish').onclick = () => { if (!S.busy && S.visitors) { confirmFinish.returnValue = ''; confirmFinish.showModal(); } };
+$('#download').onclick = download;
 document.querySelectorAll('.modes button').forEach(b => b.onclick = () => {
   if (S.busy || b.dataset.mode === S.start) return;
   if (S.visitors && !confirm('Start a new canvas? Tonight’s painting will be cleared.')) return;
   S.start = b.dataset.mode; try { localStorage.setItem('vibe-start', S.start); } catch {}
   reset(true);
 });
-addEventListener('keydown', e => { if (e.code === 'Space' && !S.busy) { e.preventDefault(); visit(); } });
+addEventListener('keydown', e => { if (e.code === 'Space' && !S.busy && !confirmFinish.open) { e.preventDefault(); visit(); } });
 reset();

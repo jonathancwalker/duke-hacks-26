@@ -27,6 +27,8 @@ export const fetchPresence = args => api('/api/presence', args);
 export const fetchRender = args => api('/api/vibe/render', { ...args, event: EVENT });
 // Tonight's saved visits, oldest first: [{ id, t, name ('Visitor N' if skipped), reading, painters, presence, start, strokes, mood, canvas }].
 export const fetchVisits = async () => { const r = await fetch('/api/visits'); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); };
+// { visits, id, canvas, name } : tonight's visit count and the latest saved canvas's URL (null before the first visit).
+export const fetchGallery = async () => { const r = await fetch('/api/gallery'); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); };
 // Store one finished visit (images as data URLs) -> { id }.
 export const saveVisit = v => api('/api/visits', v);
 // Start a new night: the server moves tonight's visits aside.
