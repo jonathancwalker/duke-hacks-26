@@ -15,7 +15,10 @@ import { watchIdle } from './idle.js';
 import { playMontage } from './montage_play.js';
 import { stationButtons, downloadName } from './finish_plan.js';
 
-const SPEAK_S = 6, TRACE_S = 12, SIM_TRACE_S = 5;
+const SPEAK_S = 10, TRACE_S = 12, SIM_TRACE_S = 5;
+// The station's screens (visit_ui.js): question card, 3 · 2 · 1, camera with meters, get-ready countdown. Look only;
+// every call is optional, so this module runs the same on a page without them.
+const ui = () => window.momento || {};
 
 addEventListener('resize', fit);
 
@@ -51,6 +54,7 @@ async function reset(clear) {
     say(S.event.question, 'Step up and answer out loud, then trace a path in the air. Your mood repaints the canvas only where your hand went.');
   } catch (e) { say('The GPU lab is not answering.', String(e.message || e)); }
   S.busy = false; setButtons();
+  if (!S.finished) ui().ask?.();                        // the question card for the first visitor
 }
 
 // ---------------------------------------------------------------- one visit
@@ -59,13 +63,16 @@ async function visit(sim) {
   S.busy = true; setButtons(); stopGlow(false);
   try {
     let heard, laban;
-    if (sim) { heard = sim.heard; laban = sim.laban; say(`“${heard.feeling}”`, `a pretend visitor, ${sim.voice}`); await sleep(900); }
+    if (sim) { ui().closeCard?.(); heard = sim.heard; laban = sim.laban; say(`“${heard.feeling}”`, `a pretend visitor, ${sim.voice}`); await sleep(900); }
     else {
       await startCamera(); await startPose(); video.classList.add('on');
       say(S.event.question, 'Say it out loud, any way you like.');
-      const moves = trackMoves();
-      try { heard = await listen(SPEAK_S); } finally { laban = moves(); }
+      await ui().countdown?.();                           // 3 · 2 · 1 in the card
+      ui().capture?.(SPEAK_S);                            // camera with live Vol / Move meters
+      const moves = trackMoves(v => ui().level?.('Move', v));
+      try { heard = await listen(SPEAK_S); } finally { laban = moves(); ui().closeCard?.(); }
     }
+    const ready = ui().ready?.();                         // "use your hand as a brush" while the painters are chosen
     const texture = moveScore(laban);                     // one edge texture for the whole stroke; drawing can't change it
     console.info('movement while talking', { texture: +texture.toFixed(2), ...laban });
     say('Choosing your painters…', ''); bar(0);
@@ -92,7 +99,8 @@ async function visit(sim) {
     say(sim ? 'Tracing…' : 'Now trace a path in the air with your finger.', reason);
     $('#sub').prepend(Object.assign(document.createElement('span'), { id: 'swatches',
       innerHTML: look.palette.slice(0, 8).map(c => `<i style="background:${c}"></i>`).join('') }));
-    resetTips();                                          // locks onto the largest hand: the 3, 2, 1 should end here
+    await ready;                                          // the get-ready countdown ends...
+    resetTips();                                          // ...and locks onto the largest hand: the 3, 2, 1 should end here
     const strokes = await trace(sim ? SIM_TRACE_S : TRACE_S, look, sim ? sim.path : readTips);
     video.classList.remove('on');
     if (!strokes.length) { say('No path this time.', 'Hold a hand up where the camera can see it, then trace.'); clearTrail(); return; }
@@ -113,7 +121,10 @@ async function visit(sim) {
     say('Next visitor: step up.', 'Each visit repaints only the path its hands drew.');
   } catch (e) {
     console.error(e); say('Something went wrong.', String(e.message || e));
-  } finally { stopGlow(); S.busy = false; setButtons(); bar(0); video.classList.remove('on'); }
+  } finally {
+    stopGlow(); S.busy = false; setButtons(); bar(0); video.classList.remove('on');
+    if (!S.finished) ui().ask?.(10000);                 // 10 s to look (or press Finish), then the card for the next visitor
+  }
 }
 
 // A pretend visitor: a scripted feeling, how they moved while saying it, a voice loudness shape and a looping path, so
@@ -141,7 +152,7 @@ function simVisitor() {
 // place (the final piece and /montage stay reachable) until Reset starts a new night, which moves them aside.
 async function finishNight() {
   if (S.busy || S.finished || !S.visitors) return;
-  S.busy = S.finished = true; setButtons(); stopGlow(false); clearTrail();
+  S.busy = S.finished = true; setButtons(); stopGlow(false); clearTrail(); ui().closeCard?.();
   try {
     const { visits, ok } = await playMontage();
     if (!ok) S.finished = false;                          // visits unavailable: back to the night, nothing was closed

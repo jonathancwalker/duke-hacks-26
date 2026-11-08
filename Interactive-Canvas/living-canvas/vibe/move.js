@@ -19,8 +19,9 @@ export async function startPose() {
 
 // Record wrists until stop() is called; stop() returns the Laban effort of the whole recording.
 // Several bodies in frame: lock onto the largest (nearest) one and follow it by its nose, same rule as the drawing hand.
-export function trackMoves() {
-  const track = []; let on = true, lastT = -1, lock = null;
+// onMove(0..1), optional: a live wrist-speed level each frame, for the station's Move meter. Display only.
+export function trackMoves(onMove) {
+  const track = []; let on = true, lastT = -1, lock = null, prev = null;
   const loop = now => {
     if (!on) return;
     if (pose && video.readyState >= 2 && video.currentTime !== lastT) {
@@ -29,6 +30,11 @@ export function trackMoves() {
       const pick = pickHand(bodies, lock, now / 1000), L = pick.hand?.L;
       lock = pick.lock;
       if (L) track.push({ t: now / 1000, l: L[15].visibility > .5 ? [L[15].x, L[15].y] : null, r: L[16].visibility > .5 ? [L[16].x, L[16].y] : null });
+      if (onMove) {
+        const f = L ? track[track.length - 1] : null, p = f && (f.r || f.l), q = prev && (prev.r || prev.l);
+        try { onMove(p && q ? Math.min(1, Math.hypot(p[0] - q[0], p[1] - q[1]) / Math.max(1 / 60, f.t - prev.t) / 1.5) : 0); } catch {}
+        prev = f;
+      }
     }
     requestAnimationFrame(loop);
   };

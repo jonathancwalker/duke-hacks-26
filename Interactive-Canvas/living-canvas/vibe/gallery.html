@@ -3,31 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Living Canvas Gallery</title>
+<title>Momento Gallery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/vibe/momento.css">
 <style>
-  /* The projector screen: tonight's shared canvas, fullscreen, nothing to press. */
-  :root { --bg: #14110e; --ink: #efe7d8; --dim: #978d7f; }
-  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); overflow: hidden; cursor: none;
-               font: 15px/1.4 Inter, system-ui, sans-serif; }
+  /* The projector screen: tonight's shared canvas, fullscreen, nothing to press. Momento look: the painting is the
+     only color; the text is quiet, neutral and out of the way. */
+  html, body { height: 100%; overflow: hidden; cursor: none; }
   .layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0;
            transition: opacity 1.6s ease-in-out; }
   .layer.on { opacity: 1; }
-  #wait { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 10px;
-          transition: opacity 1.6s; }
+  #wait { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center;
+          gap: 22px; padding: 24px; transition: opacity 1.6s; }
   #wait.off { opacity: 0; }
-  #wait h1 { margin: 0; font: italic 500 64px/1 "Cormorant Garamond", Georgia, serif; }
-  #wait p { margin: 0; color: var(--dim); font-size: 20px; }
-  footer { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between;
-           padding: 14px 24px; color: var(--ink); opacity: .7; text-shadow: 0 1px 6px #000c;
-           font: italic 500 22px/1 "Cormorant Garamond", Georgia, serif; }
-  #count { font: 400 14px/22px Inter, system-ui, sans-serif; }
+  #wait .tagline { color: var(--m-fg); opacity: .85; font-size: clamp(20px, 2vw, 30px); margin-top: -8px; }
+  #wait h1 { margin: 0; font: 700 var(--m-display)/1 var(--m-font); letter-spacing: var(--m-track-display); }
+  #wait p { margin: 0; color: var(--m-muted); font-size: clamp(16px, 1.6vw, 22px); max-width: 40ch; text-wrap: balance; }
+  footer { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: center;
+           padding: 18px 28px; background: linear-gradient(transparent, rgba(23, 22, 21, .6)); }
+  #event { font: 500 12px/1 var(--m-font); letter-spacing: .2em; text-transform: uppercase; color: var(--m-fg); opacity: .8; }
+  #count { font: 400 14px/1 var(--m-font); color: var(--m-muted); font-variant-numeric: tabular-nums; }
 </style>
 </head>
-<body>
+<body class="m-body">
 <img class="layer" alt=""><img class="layer" alt="">
-<div id="wait"><h1>Living Canvas</h1><p>Tonight’s painting begins with the first visitor.</p></div>
+<div id="wait"><h1>Momento</h1><p class="tagline">A moment captured through art.</p><p>Tonight’s painting begins with the first visitor.</p></div>
 <footer><div id="event"></div><div id="count"></div></footer>
 <script type="module" src="/vibe/gallery.js"></script>
 </body>

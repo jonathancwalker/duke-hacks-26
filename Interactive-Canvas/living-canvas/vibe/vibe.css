@@ -1,53 +1,82 @@
-:root { --bg: #14110e; --ink: #efe7d8; --dim: #978d7f; --line: #3a332b; --accent: #e6bd6a; }
-* { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); overflow: hidden;
-             font: 14px/1.45 Inter, system-ui, sans-serif; }
+/* Station (/vibe) and montage (/montage), in the Momento look (momento.css: link it first, body.m-body).
+   Neutral and dark; the only color on screen is the painting and the visitor's swatches.
+   Geometry is fixed on purpose: render.js fit() lays the canvas out between a 64px header and a 112px footer band
+   with 28px sides, so keep those numbers if you move things around. */
+html, body { height: 100%; overflow: hidden; }
+body { font-size: 14px; }
+
+/* ---------- header: brand, visitor count, start modes ---------- */
 header { position: absolute; top: 0; left: 0; right: 0; height: 64px; display: flex; align-items: center;
          justify-content: space-between; padding: 0 28px; }
-h1 { margin: 0; font: italic 500 26px/1 "Cormorant Garamond", Georgia, serif; letter-spacing: .01em; }
-h1 span { color: var(--dim); font-style: normal; font-size: 18px; margin-left: 10px; }
-#count { color: var(--dim); margin-right: 16px; }
+h1 { margin: 0; display: flex; align-items: baseline; gap: 14px;
+     font: 500 12px/1 var(--m-font); letter-spacing: .2em; text-transform: uppercase; color: var(--m-muted); }
+h1 span { font-weight: 400; letter-spacing: .08em; color: var(--m-faint); }
+#count { color: var(--m-muted); font-size: var(--m-small); margin-right: 16px; font-variant-numeric: tabular-nums; }
 .right { display: flex; align-items: center; }
-.modes { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
-.modes button { border: 0; padding: 6px 12px; font-size: 13px; color: var(--dim); }
-.modes button.on { background: #2a241e; color: var(--ink); }
-#frame { position: absolute; box-shadow: 0 24px 70px #000b; background: #000; }
+.modes { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--m-line); border-radius: var(--m-r-md); }
+.modes button { border: 0; padding: 6px 12px; border-radius: var(--m-r-sm); font: 500 13px/1 var(--m-font);
+                color: var(--m-muted); background: transparent; box-shadow: none; cursor: pointer; }
+.modes button:hover:not(:disabled) { color: var(--m-fg); }
+.modes button.on { background: var(--m-card); color: var(--m-fg); }
+
+/* ---------- the painting ---------- */
+#frame { position: absolute; background: #000; border-radius: var(--m-r-lg); overflow: hidden;
+         border: 1px solid var(--m-line-soft); box-shadow: var(--m-shadow-card); }
 #frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 #trail { mix-blend-mode: screen; transition: opacity .2s; }
 #cam { position: absolute; right: 28px; bottom: 112px; width: 200px; aspect-ratio: 16/9; object-fit: cover;
-       transform: scaleX(-1); border: 1px solid var(--line); opacity: 0; transition: opacity .4s; }
-#cam.on { opacity: .85; }
+       transform: scaleX(-1); border: 1px solid var(--m-line); border-radius: var(--m-r-md); background: #1B1A18;
+       opacity: 0; transition: opacity var(--m-med); }
+#cam.on { opacity: .9; }
+
+/* ---------- footer: what to do now, controls, progress ---------- */
 footer { position: absolute; left: 0; right: 0; bottom: 0; height: 104px; display: grid;
          grid-template-columns: 1fr auto; align-items: center; gap: 24px; padding: 0 28px; }
-#say { font: 500 30px/1.15 "Cormorant Garamond", Georgia, serif; }
-#sub { color: var(--dim); margin-top: 4px; min-height: 20px; }
-#say.long { font-size: 24px; }   /* the montage's closing reflection, up to ~40 words */
-#swatches { display: inline-flex; gap: 4px; vertical-align: middle; margin-right: 8px; }
-#swatches i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
-#bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--accent); }
-#meter { position: absolute; left: 0; bottom: 3px; height: 2px; width: 0; background: var(--ink); opacity: .35; }
-.btns { display: flex; gap: 10px; }
-button { font: 500 14px Inter, sans-serif; color: var(--ink); background: transparent; border: 1px solid var(--line);
-         padding: 10px 18px; border-radius: 999px; cursor: pointer; }
-button.main { background: var(--ink); color: var(--bg); border-color: var(--ink); padding: 12px 26px; }
-button:disabled { opacity: .35; cursor: default; }
+#say { font: 700 var(--m-title)/1.1 var(--m-font); letter-spacing: var(--m-track-title); text-wrap: balance; }
+#say.long { font-size: 22px; font-weight: 500; letter-spacing: -.01em; }   /* the montage's closing reflection, up to ~40 words */
+#sub { color: var(--m-muted); margin-top: 6px; min-height: 20px; font-size: var(--m-small); }
+#swatches { display: inline-flex; gap: 4px; vertical-align: middle; margin-right: 10px; }
+#swatches i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; box-shadow: 0 0 0 1px var(--m-line-soft); }
+#bar { position: absolute; left: 0; bottom: 0; height: 4px; width: 0; background: var(--m-fg); }
+#meter { position: absolute; left: 0; bottom: 4px; height: 2px; width: 0; background: var(--m-fg); opacity: .35; }
+
+/* buttons: ghost by default, solid for the main action (same as .m-btn / .m-btn--ghost) */
+.btns { display: flex; gap: 10px; align-items: center; }
+.btns button, #skip { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--m-line);
+         border-radius: var(--m-r-md); padding: 11px 18px; background: transparent; color: var(--m-fg); box-shadow: none;
+         font: 600 14px/1 var(--m-font); letter-spacing: -.01em; cursor: pointer;
+         transition: transform var(--m-fast), opacity var(--m-fast); }
+.btns button.main { background: var(--m-fg); color: var(--m-card); border-color: var(--m-fg); padding: 14px 24px;
+                    font-size: 15px; box-shadow: var(--m-shadow-pop); }
+.btns button:hover:not(:disabled), #skip:hover { transform: translateY(-1px); }
+.btns button:active:not(:disabled) { transform: scale(.98); }
+.btns button:disabled { opacity: .4; cursor: default; }
+
 @media (max-width: 700px) {
   header, footer { padding: 0 16px; } #say { font-size: 22px; } #cam { display: none; }
   footer { grid-template-columns: 1fr; height: auto; padding-bottom: 12px; }
 }
-/* Idle loop (#37): the replay overlay, its captions and the invite, all inside #frame over the live canvas. */
-#idle-cap, #idle-invite { position: absolute; left: 0; right: 0; padding: 14px 20px; pointer-events: none;
+
+/* ---------- idle loop (#37): replay captions and the invite, inside #frame over the live canvas ---------- */
+#idle-cap, #idle-invite { position: absolute; left: 0; right: 0; padding: 16px 22px; pointer-events: none;
                           text-shadow: 0 1px 10px #000c; }
-#idle-cap { bottom: 0; background: linear-gradient(transparent, #0009); }
-#idle-cap .reading { font: italic 500 26px/1.15 "Cormorant Garamond", Georgia, serif; }
-#idle-cap .who { opacity: .8; font-size: 13px; letter-spacing: .04em; margin-top: 2px; }
-#idle-invite { top: 0; text-align: center; font: 500 24px/1 "Cormorant Garamond", Georgia, serif; color: var(--accent);
+#idle-cap { bottom: 0; background: linear-gradient(transparent, rgba(23, 22, 21, .75)); }
+#idle-cap .reading { font: 700 26px/1.2 var(--m-font); letter-spacing: -.03em; }
+#idle-cap .who { margin-top: 6px; font: 500 12px/1 var(--m-font); letter-spacing: .2em; text-transform: uppercase;
+                 color: var(--m-muted); }
+#idle-invite { top: 0; text-align: center; font: 700 24px/1 var(--m-font); letter-spacing: -.03em; color: var(--m-fg);
                animation: idle-breathe 3.2s ease-in-out infinite; }
 @keyframes idle-breathe { 50% { opacity: .4; } }
-/* Finish (#32): the "are you sure?" modal. */
-dialog { max-width: min(440px, calc(100vw - 32px)); padding: 24px 28px; color: var(--ink); background: var(--bg);
-         border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 24px 70px #000b; }
-dialog::backdrop { background: #000a; }
-dialog h2 { margin: 0 0 8px; font: 500 26px/1.15 "Cormorant Garamond", Georgia, serif; }
-dialog p { margin: 0 0 20px; color: var(--dim); }
+
+/* ---------- finish (#32): the "are you sure?" card ---------- */
+dialog { max-width: min(460px, calc(100vw - 32px)); padding: 28px 30px; color: var(--m-fg); background: var(--m-card);
+         border: 1px solid var(--m-line-soft); border-radius: var(--m-r-card); box-shadow: var(--m-shadow-card); }
+dialog::backdrop { background: rgba(23, 22, 21, .7); }
+dialog h2 { margin: 0 0 10px; font: 700 var(--m-title)/1.1 var(--m-font); letter-spacing: var(--m-track-title); }
+dialog p { margin: 0 0 22px; color: var(--m-muted); }
 dialog .btns { justify-content: flex-end; }
+
+@media (prefers-reduced-motion: reduce) {
+  #idle-invite { animation: none; }
+  .btns button, #skip, #cam { transition: none; }
+}

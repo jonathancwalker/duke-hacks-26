@@ -1,102 +1,792 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Living Canvas Setup</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  /* Operator screen: set up tonight's event. Same tokens as vibe.css; plain on purpose. */
-  :root { --bg: #14110e; --ink: #efe7d8; --dim: #978d7f; --line: #3a332b; --accent: #e6bd6a; --field: #1d1915; --warn: #e48a6a; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 Inter, system-ui, sans-serif; }
-  main { max-width: 1080px; margin: 0 auto; padding: 24px 16px 48px; }
-  header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
-  h1 { margin: 0; font: italic 500 30px/1 "Cormorant Garamond", Georgia, serif; }
-  h1 span { color: var(--dim); font-style: normal; font-size: 20px; margin-left: 8px; }
-  h2 { margin: 0 0 12px; font: 500 13px/1 Inter, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
-  .cols { display: grid; grid-template-columns: 1fr 1.3fr; gap: 28px; }
-  section { border: 1px solid var(--line); border-radius: 12px; padding: 18px; min-width: 0; }
-  label { display: block; margin-bottom: 14px; color: var(--dim); font-size: 13px; }
-  label small { display: block; margin-top: 4px; }
-  input, select, textarea { display: block; width: 100%; margin-top: 6px; padding: 9px 11px; border: 1px solid var(--line);
-                            border-radius: 8px; background: var(--field); color: var(--ink); font: 15px/1.4 Inter, sans-serif; }
-  textarea { resize: vertical; min-height: 64px; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .btns { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 6px; }
-  button { font: 500 14px Inter, sans-serif; color: var(--ink); background: transparent; border: 1px solid var(--line);
-           padding: 9px 16px; border-radius: 999px; cursor: pointer; }
-  button.main { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  button:disabled { opacity: .35; cursor: default; }
-  .note { color: var(--dim); font-size: 13px; min-height: 19px; margin: 8px 0 0; }
-  .note.warn { color: var(--warn); }
-  .note.ok { color: var(--accent); }
-  #preview { margin-top: 12px; aspect-ratio: 16/9; border: 1px solid var(--line); border-radius: 8px; background: #0c0a08;
-             display: grid; place-items: center; overflow: hidden; color: var(--dim); font-size: 13px; text-align: center; padding: 0; }
-  #preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #live { color: var(--dim); }
-  #live b { color: var(--ink); font-weight: 500; }
-  footer { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap;
-           align-items: center; gap: 12px; }
-  @media (max-width: 760px) { .cols, .row { grid-template-columns: 1fr; } }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Momento Setup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/vibe/momento.css" />
+    <style>
+      /* Operator setup in four steps: Event, Question, Scene, Go live. All colors are set here, so text stays readable
+     even if momento.css is missing or different. Every id setup.js uses is still on the page (hidden steps included). */
+      :root {
+        color-scheme: dark;
+        --s-bg: #141312;
+        --s-card: #24231f;
+        --s-field: #34322d;
+        --s-field-line: rgba(255, 255, 255, 0.22);
+        --s-fg: #f7f3ec;
+        --s-label: #dcd6cc;
+        --s-hint: #ada79c;
+        --s-line: rgba(255, 255, 255, 0.14);
+        --s-ink: #1b1a18;
+        --s-ok: #7bd88f;
+        --s-warn: #ff8a7a;
+        --s-font: "Helvetica Neue", Helvetica, "Inter Tight", Arial, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+      }
+      body {
+        background: var(--s-bg);
+        color: var(--s-fg);
+        font: 400 15px/1.45 var(--s-font);
+      }
+      #silk {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        display: block;
+      }
+      main {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px 16px;
+      }
+
+      .card {
+        width: min(1240px, 100%);
+        background: var(--s-card);
+        color: var(--s-fg);
+        border: 1px solid var(--s-line);
+        border-radius: 28px;
+        padding: clamp(22px, 3vw, 44px);
+        display: grid;
+        gap: 28px;
+        box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.85);
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .eyebrow {
+        font: 600 11px/1 var(--s-font);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--s-hint);
+      }
+      #live {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        border: 1px solid var(--s-line);
+        border-radius: 999px;
+        color: var(--s-label);
+        font-size: 14px;
+      }
+      #live::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--s-ok);
+        box-shadow: 0 0 0 4px rgba(123, 216, 143, 0.18);
+      }
+      #live b {
+        color: var(--s-fg);
+        font-weight: 600;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      .steps button {
+        all: unset;
+        box-sizing: border-box;
+        width: 100%;
+        display: grid;
+        gap: 10px;
+        cursor: pointer;
+        color: var(--s-hint);
+        font: 600 13px/1.2 var(--s-font);
+        padding-bottom: 4px;
+      }
+      .steps button i {
+        display: block;
+        height: 4px;
+        border-radius: 4px;
+        background: var(--s-line);
+      }
+      .steps button.done {
+        color: var(--s-label);
+      }
+      .steps button.done i {
+        background: var(--s-label);
+      }
+      .steps button[aria-current="step"] {
+        color: var(--s-fg);
+      }
+      .steps button[aria-current="step"] i {
+        background: var(--s-fg);
+      }
+      .steps button:focus-visible {
+        outline: 2px solid var(--s-fg);
+        outline-offset: 4px;
+        border-radius: 4px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: clamp(24px, 3.5vw, 48px);
+        align-items: start;
+      }
+      .step > * {
+        min-width: 0;
+      }
+      .big {
+        margin: 0 0 10px;
+        font: 700 clamp(28px, 3.4vw, 46px)/1.05 var(--s-font);
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+      }
+      .lede {
+        margin: 0 0 24px;
+        color: var(--s-label);
+        font-size: 16px;
+        max-width: 46ch;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 16px;
+        color: var(--s-label);
+        font: 500 14px/1.3 var(--s-font);
+      }
+      label small {
+        display: block;
+        margin-top: 3px;
+        color: var(--s-hint);
+        font-size: 12.5px;
+        font-weight: 400;
+      }
+      input,
+      select,
+      textarea {
+        display: block;
+        width: 100%;
+        margin-top: 7px;
+        padding: 13px 14px;
+        background: var(--s-field);
+        color: var(--s-fg);
+        border: 1px solid var(--s-field-line);
+        border-radius: 12px;
+        font: 400 15px/1.4 var(--s-font);
+      }
+      select option {
+        background: var(--s-card);
+        color: var(--s-fg);
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: var(--s-hint);
+      }
+      textarea {
+        resize: vertical;
+        min-height: 70px;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: 2px solid var(--s-fg);
+        outline-offset: 1px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      button.btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 22px;
+        border-radius: 14px;
+        border: 1px solid var(--s-line);
+        background: transparent;
+        color: var(--s-fg);
+        font: 600 15px/1 var(--s-font);
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          opacity 0.15s;
+      }
+      button.btn.main {
+        background: var(--s-fg);
+        color: var(--s-ink);
+        border-color: var(--s-fg);
+      }
+      button.btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+      }
+      button.btn:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      button.btn:focus-visible {
+        outline: 2px solid var(--s-fg);
+        outline-offset: 2px;
+      }
+      .btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+      .note {
+        margin: 10px 0 0;
+        min-height: 19px;
+        color: var(--s-hint);
+        font-size: 14px;
+      }
+      .note.warn {
+        color: var(--s-warn);
+      }
+      .note.ok {
+        color: var(--s-ok);
+      }
+
+      /* booth preview, follows the Question field */
+      .booth {
+        position: relative;
+        aspect-ratio: 16/10;
+        max-width: 100%;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #111;
+        border: 1px solid var(--s-line);
+      }
+      .booth canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .booth .c {
+        position: absolute;
+        inset: 8%;
+        background: var(--s-card);
+        border: 1px solid var(--s-line);
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        align-content: center;
+        gap: 7%;
+        padding: 8%;
+        text-align: center;
+      }
+      .booth .c .eyebrow {
+        position: absolute;
+        left: 6%;
+        top: 8%;
+        font-size: 9px;
+      }
+      .booth .q {
+        margin: 0;
+        color: var(--s-fg);
+        font: 700 clamp(20px, 2.6vw, 36px)/1.02 var(--s-font);
+        letter-spacing: -0.045em;
+        max-width: 13ch;
+        text-wrap: balance;
+      }
+      .booth .dot {
+        width: clamp(42px, 4.6vw, 60px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--s-fg);
+        color: var(--s-ink);
+        display: grid;
+        place-items: center;
+        font: 700 12px/1 var(--s-font);
+        box-shadow: 0 0 0 5px rgba(247, 243, 236, 0.14);
+      }
+      .cap {
+        margin: 10px 0 0;
+        color: var(--s-hint);
+        font-size: 13px;
+      }
+
+      #preview {
+        aspect-ratio: 16/9;
+        max-width: 100%;
+        border: 1px solid var(--s-line);
+        border-radius: 16px;
+        background: #1b1a18;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        color: var(--s-hint);
+        font-size: 14px;
+        text-align: center;
+        padding: 0;
+      }
+      #preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .summary {
+        display: grid;
+        border: 1px solid var(--s-line);
+        border-radius: 16px;
+        overflow: hidden;
+        margin: 0 0 20px;
+      }
+      .summary div {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 16px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--s-line);
+      }
+      .summary div:last-child {
+        border-bottom: 0;
+      }
+      .summary dt {
+        color: var(--s-hint);
+        font-size: 13px;
+        margin: 0;
+      }
+      .summary dd {
+        margin: 0;
+        color: var(--s-fg);
+        font-weight: 500;
+        overflow-wrap: anywhere;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        border-top: 1px solid var(--s-line);
+        padding-top: 22px;
+      }
+
+      @media (max-width: 900px) {
+        .step,
+        .row {
+          grid-template-columns: 1fr;
+        }
+        .summary div {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        button.btn {
+          transition: none;
+        }
+      }
+      /* Start screen (before setup): a Momento card on the silk with one round Start. Look only; setup.js is untouched. */
+  .start{position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:24px 16px; background:var(--m-bg)}
+  .start .m-card{width:min(1060px,82vw); max-height:78vh; position:relative; z-index:1}
+  .start .m-bg{z-index:0}
+  .start h1{font:700 var(--m-display)/1 var(--m-font); letter-spacing:var(--m-track-display)}
+  .start-title{display:grid; justify-items:center; gap:14px}
+  .tagline{margin:0; font:400 clamp(18px,1.8vw,26px)/1.3 var(--m-font); letter-spacing:-.01em; color:var(--m-fg); opacity:.85}
+  @media (max-width:760px){ .start .m-card{width:94vw; aspect-ratio:auto; min-height:70vh} }
 </style>
-</head>
-<body>
-<main>
-  <header>
-    <h1>Living Canvas <span>event setup</span></h1>
-    <div id="live">Live now: <b id="live-name">…</b></div>
-  </header>
-  <div class="cols">
-    <section>
-      <h2>Tonight</h2>
-      <label>Start from a saved event
-        <select id="pick"></select>
-      </label>
-      <label>Event name <input id="name" maxlength="80" autocomplete="off"></label>
-      <div class="row">
-        <label>Kind
-          <select id="kind">
-            <option value="concert">Concert</option><option value="festival">Festival</option>
-            <option value="conference">Conference</option><option value="museum">Museum</option>
-            <option value="other">Other</option>
-          </select>
-        </label>
-        <label>Date <input id="date" type="date"></label>
-      </div>
-      <label>What’s tonight about?
-        <textarea id="context" rows="5" maxlength="1200" placeholder="A few sentences: the place, who’s here, what they came for."></textarea>
-      </label>
-      <div class="btns"><button id="draft" class="main">Draft with Gemini</button></div>
-      <p class="note" id="draft-note"></p>
-    </section>
-    <section>
-      <h2>What visitors see</h2>
-      <label>Question <small>Visitors answer this out loud while they draw.</small>
-        <input id="question" maxlength="160" autocomplete="off">
-      </label>
-      <label>Base scene <small>The shared painting’s subject. Every visit repaints this scene.</small>
-        <textarea id="scene" rows="3" maxlength="400"></textarea>
-      </label>
-      <div class="btns"><button id="preview-btn">Preview scene</button></div>
-      <div id="preview">No preview yet</div>
-      <p class="note" id="preview-note"></p>
-      <label style="margin-top: 14px">Writing voice <small>Guides the line written after each visit and the closing reflection.</small>
-        <textarea id="voice" rows="3" maxlength="400"></textarea>
-      </label>
-      <label>Closing line <small>Shown after each visit when no written line is ready.</small>
-        <input id="closing" maxlength="200" autocomplete="off">
-      </label>
-    </section>
+  </head>
+  <body class="m-body">
+<!-- Start screen: shown first; Start fades it away to reveal the event setup below. -->
+<div class="start m-veil" id="start">
+  <canvas class="m-bg" id="silk" aria-hidden="true"></canvas>
+  <div class="m-card">
+    <div class="start-title">
+      <h1 class="m-display">Momento</h1>
+      <p class="tagline">A moment captured through art.</p>
+    </div>
+    <p class="m-text m-muted">Set up tonight’s event, then open the station.</p>
+    <button class="m-btn-round" id="start-btn" type="button">Start</button>
   </div>
-  <footer>
-    <button id="save" class="main">Save and go live</button>
-    <button id="fresh">Start a fresh night</button>
-    <p class="note" id="save-note" style="margin: 0"></p>
-  </footer>
-</main>
+</div>
+    <canvas id="silk" aria-hidden="true"></canvas>
+    <main>
+      <div class="card">
+        <div class="top">
+          <span class="eyebrow">Momento · Event setup</span>
+          <div id="live">Live now: <b id="live-name">…</b></div>
+        </div>
+
+        <ol class="steps" aria-label="Setup steps">
+          <li>
+            <button type="button"><i></i><span>Event</span></button>
+          </li>
+          <li>
+            <button type="button"><i></i><span>Question</span></button>
+          </li>
+          <li>
+            <button type="button"><i></i><span>Scene</span></button>
+          </li>
+          <li>
+            <button type="button"><i></i><span>Go live</span></button>
+          </li>
+        </ol>
+
+        <!-- 1 · Event -->
+        <section class="step">
+          <div>
+            <p class="big">What’s happening tonight?</p>
+            <p class="lede">
+              Tell Gemini about the event. It drafts the question, the scene and
+              the voice for you.
+            </p>
+            <label>Start from a saved event<select id="pick"></select></label>
+            <label
+              >Event name<input
+                id="name"
+                maxlength="80"
+                autocomplete="off"
+                placeholder="Concert Night"
+            /></label>
+            <div class="row">
+              <label
+                >Kind
+                <select id="kind">
+                  <option value="concert">Concert</option>
+                  <option value="festival">Festival</option>
+                  <option value="conference">Conference</option>
+                  <option value="museum">Museum</option>
+                  <option value="other">Other</option>
+                </select>
+              </label>
+              <label>Date<input id="date" type="date" /></label>
+            </div>
+          </div>
+          <div>
+            <label
+              >What’s tonight about?
+              <small
+                >A few sentences: the place, who’s here, what they came
+                for.</small
+              >
+              <textarea
+                id="context"
+                rows="7"
+                maxlength="1200"
+                placeholder="Indie show at the Cat’s Cradle. Mostly students, here for the headliner."
+              ></textarea>
+            </label>
+            <div class="btns">
+              <button id="draft" class="btn main" type="button">
+                Draft with Gemini
+              </button>
+            </div>
+            <p class="note" id="draft-note"></p>
+          </div>
+        </section>
+
+        <!-- 2 · Question -->
+        <section class="step" hidden>
+          <div>
+            <p class="big">What should the booth ask?</p>
+            <p class="lede">
+              Visitors answer this out loud while they move. Keep it short
+              enough to read from a few steps away.
+            </p>
+            <label
+              >Question<input
+                id="question"
+                maxlength="160"
+                autocomplete="off"
+                placeholder="How do you feel today?"
+            /></label>
+            <label
+              >Closing line
+              <small
+                >Shown after each visit when no written line is ready.</small
+              >
+              <input
+                id="closing"
+                maxlength="200"
+                autocomplete="off"
+                placeholder="Thanks. You’re in the painting now."
+              />
+            </label>
+          </div>
+          <div>
+            <div class="booth" aria-label="Preview of the booth screen">
+              <canvas aria-hidden="true"></canvas>
+              <div class="c">
+                <span class="eyebrow">Momento</span>
+                <p class="q">How do you feel today?</p>
+                <span class="dot" aria-hidden="true">Start</span>
+              </div>
+            </div>
+            <p class="cap">This is what visitors see at the booth.</p>
+          </div>
+        </section>
+
+        <!-- 3 · Scene -->
+        <section class="step" hidden>
+          <div>
+            <p class="big">What are we painting?</p>
+            <p class="lede">
+              The base scene is the painting’s subject. Every visit repaints it
+              a little.
+            </p>
+            <label
+              >Base scene<textarea
+                id="scene"
+                rows="3"
+                maxlength="400"
+                placeholder="A crowd under stage lights, haze drifting over the floor."
+              ></textarea>
+            </label>
+            <label
+              >Writing voice
+              <small
+                >Guides the line written after each visit and the closing
+                reflection.</small
+              >
+              <textarea id="voice" rows="3" maxlength="400"></textarea>
+            </label>
+          </div>
+          <div>
+            <div id="preview">No preview yet</div>
+            <div class="btns" style="margin-top: 14px">
+              <button id="preview-btn" class="btn" type="button">
+                Preview scene
+              </button>
+            </div>
+            <p class="note" id="preview-note"></p>
+          </div>
+        </section>
+
+        <!-- 4 · Go live -->
+        <section class="step" hidden>
+          <div>
+            <p class="big">Ready to go live?</p>
+            <p class="lede">
+              The booth switches to this event as soon as you save.
+            </p>
+            <dl class="summary">
+              <div>
+                <dt>Event</dt>
+                <dd id="sum-name">—</dd>
+              </div>
+              <div>
+                <dt>Question</dt>
+                <dd id="sum-q">—</dd>
+              </div>
+              <div>
+                <dt>Scene</dt>
+                <dd id="sum-scene">—</dd>
+              </div>
+              <div>
+                <dt>Closing</dt>
+                <dd id="sum-close">—</dd>
+              </div>
+            </dl>
+            <div class="btns">
+              <button id="save" class="btn main" type="button">
+                Save and go live</button
+              ><button id="fresh" class="btn" type="button">
+                Start a fresh night
+              </button>
+            </div>
+            <p class="note" id="save-note"></p>
+          </div>
+          <div>
+            <div class="booth" aria-hidden="true">
+              <canvas></canvas>
+              <div class="c">
+                <span class="eyebrow">Momento</span>
+                <p class="q">How do you feel today?</p>
+                <span class="dot">Start</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="nav">
+          <button id="back" class="btn" type="button">Back</button>
+          <button id="next" class="btn main" type="button">
+            Next: Question
+          </button>
+        </div>
+      </div>
+    </main>
+    <script>
+      // Steps and look only. It reads fields but never writes them, so setup.js stays in charge of the data.
+      (function () {
+        const $ = (id) => document.getElementById(id);
+        const steps = [...document.querySelectorAll(".step")],
+          tabs = [...document.querySelectorAll(".steps button")];
+        const names = ["Event", "Question", "Scene", "Go live"];
+        let cur = 0;
+        function go(n) {
+          cur = Math.max(0, Math.min(3, n));
+          steps.forEach((s, i) => (s.hidden = i !== cur));
+          tabs.forEach((t, i) => {
+            t.classList.toggle("done", i < cur);
+            if (i === cur) t.setAttribute("aria-current", "step");
+            else t.removeAttribute("aria-current");
+          });
+          $("back").style.visibility = cur === 0 ? "hidden" : "visible";
+          $("next").hidden = cur === 3;
+          $("next").textContent = "Next: " + (names[cur + 1] || "");
+          sync();
+          sizeAll();
+        }
+        tabs.forEach((t, i) => (t.onclick = () => go(i)));
+        $("back").onclick = () => go(cur - 1);
+        $("next").onclick = () => go(cur + 1);
+
+        const v = (id) => ($(id).value || "").trim();
+        function sync() {
+          const q = v("question") || "How do you feel today?";
+          document
+            .querySelectorAll(".booth .q")
+            .forEach((p) => (p.textContent = q));
+          $("sum-name").textContent = v("name") || "—";
+          $("sum-q").textContent = v("question") || "—";
+          $("sum-scene").textContent = v("scene") || "—";
+          $("sum-close").textContent = v("closing") || "—";
+        }
+        document.addEventListener("input", sync);
+        setInterval(sync, 700); // the interval catches values setup.js fills in
+
+        // charcoal silk: page background plus the small booth previews
+        const FS = `precision highp float; varying vec2 vUv; uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse;
+  float hash(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+  float noise(vec2 p){ vec2 i=floor(p),f=fract(p); vec2 u=f*f*(3.0-2.0*f); return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),u.x),mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x),u.y); }
+  float fbm(vec2 p){ float v=0.0,a=0.5; for(int i=0;i<5;i++){ v+=a*noise(p); p=p*2.02+vec2(3.1,7.7); a*=0.5; } return v; }
+  float H(vec2 p){ float t=uTime*0.15; vec2 m=uMouse*vec2(uRes.x/uRes.y,1.0); float d=length(p-m);
+    float h=sin(p.x*4.2+sin(p.y*2.3+t)*2.0+t)*0.5+sin(p.y*6.51+p.x*1.6-t*1.2)*0.2+fbm(p*1.5+t*0.2)*0.15; return h+0.12*exp(-d*d*6.0)*sin(d*10.0-uTime*1.2); }
+  void main(){ vec2 asp=vec2(uRes.x/uRes.y,1.0), p=vUv*asp; float e=1.5/uRes.y;
+    float h=H(p),hx=H(p+vec2(e,0.0)),hy=H(p+vec2(0.0,e)); vec3 n=normalize(vec3((h-hx)/e*0.7,(h-hy)/e*0.7,1.0));
+    float key=max(dot(n,normalize(vec3(-0.6,0.5,0.6))),0.0); vec2 lm=uMouse*asp-p; vec3 L=normalize(vec3(lm,0.5)); float fall=1.0/(1.0+dot(lm,lm)*4.0);
+    float spec=pow(max(dot(reflect(-L,n),vec3(0.0,0.0,1.0)),0.0),10.0)*fall;
+    vec3 c=vec3(0.07,0.066,0.062)+vec3(0.13,0.125,0.118)*key+vec3(0.30,0.28,0.26)*spec; gl_FragColor=vec4(c,1.0); }`;
+        const views = [];
+        function silk(cv) {
+          const gl = cv.getContext("webgl", { antialias: false });
+          if (!gl) return;
+          const sh = (t, s) => {
+            const o = gl.createShader(t);
+            gl.shaderSource(o, s);
+            gl.compileShader(o);
+            return o;
+          };
+          const pr = gl.createProgram();
+          gl.attachShader(
+            pr,
+            sh(
+              gl.VERTEX_SHADER,
+              "attribute vec2 a; varying vec2 vUv; void main(){ vUv=a*0.5+0.5; gl_Position=vec4(a,0.0,1.0); }",
+            ),
+          );
+          gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS));
+          gl.linkProgram(pr);
+          gl.useProgram(pr);
+          gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+          gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+            gl.STATIC_DRAW,
+          );
+          const a = gl.getAttribLocation(pr, "a");
+          gl.enableVertexAttribArray(a);
+          gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+          views.push({
+            cv,
+            gl,
+            u: {
+              r: gl.getUniformLocation(pr, "uRes"),
+              t: gl.getUniformLocation(pr, "uTime"),
+              m: gl.getUniformLocation(pr, "uMouse"),
+            },
+            page: cv.id === "silk",
+          });
+        }
+        function sizeAll() {
+          views.forEach((v) => {
+            const r = v.cv.getBoundingClientRect(),
+              d = Math.min(devicePixelRatio || 1, 1.25);
+            if (!r.width) return;
+            v.cv.width = Math.round(r.width * d);
+            v.cv.height = Math.round(r.height * d);
+            v.gl.viewport(0, 0, v.cv.width, v.cv.height);
+          });
+        }
+        silk($("silk"));
+        document.querySelectorAll(".booth canvas").forEach(silk);
+        addEventListener("resize", sizeAll);
+        let mx = -1,
+          my = -1;
+        const M = { x: 0.5, y: 0.55 };
+        addEventListener("pointermove", (e) => {
+          mx = e.clientX / innerWidth;
+          my = 1 - e.clientY / innerHeight;
+        });
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let last = 0;
+        (function loop(now) {
+          const t = reduce ? 10 : now / 1000;
+          const tx = mx < 0 ? 0.5 + Math.sin(t * 0.25) * 0.25 : mx,
+            ty = my < 0 ? 0.55 + Math.cos(t * 0.2) * 0.12 : my;
+          M.x += (tx - M.x) * 0.08;
+          M.y += (ty - M.y) * 0.08;
+          const small = now - last > 66;
+          if (small) last = now;
+          views.forEach((v) => {
+            if (!v.page && (!small || !v.cv.offsetParent)) return;
+            if (!v.cv.width) return;
+            v.gl.uniform2f(v.u.r, v.cv.width, v.cv.height);
+            v.gl.uniform1f(v.u.t, t);
+            v.page
+              ? v.gl.uniform2f(v.u.m, M.x, M.y)
+              : v.gl.uniform2f(v.u.m, 0.5 + Math.sin(t * 0.3) * 0.3, 0.55);
+            v.gl.drawArrays(v.gl.TRIANGLE_STRIP, 0, 4);
+          });
+          requestAnimationFrame(loop);
+        })(0);
+        go(0);
+      })();
+    </script>
+    <script type="module">
+  // Start screen: the silk runs only while it's up; Start lifts it and puts the cursor in the form.
+  import { startSilk } from '/vibe/silk.js';
+  const start = document.getElementById('start'), btn = document.getElementById('start-btn'), stop = startSilk(document.getElementById('silk'));
+  btn.focus({ preventScroll: true });
+  btn.onclick = () => {
+    start.classList.add('is-off'); stop();
+    setTimeout(() => { start.hidden = true; document.getElementById('name')?.focus({ preventScroll: true }); }, 700);
+  };
+</script>
 <script type="module" src="/vibe/setup.js"></script>
-</body>
+  </body>
 </html>

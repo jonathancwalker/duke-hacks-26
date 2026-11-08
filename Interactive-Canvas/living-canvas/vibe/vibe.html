@@ -3,30 +3,220 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Living Canvas Vibe</title>
+<title>Momento Station</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/vibe/momento.css">
 <link rel="stylesheet" href="/vibe/vibe.css">
+<style>
+  /* Station screen, from Rachel's sketch: one big booth card on the charcoal silk. The question is centered on top,
+     the painting fills the middle, the gesture key floats in the painting's corner, and the bottom row is Simulate · Reset.
+     Before each visit a booth card (question + Start -> 3 · 2 · 1 -> camera with Vol / Move) sits over it; between
+     talking and painting a get-ready card counts down. Screens: visit_ui.js. Visit logic: flow.js (unchanged order).
+     Every id flow.js uses is on the page; the ones the sketch leaves out sit in a hidden tray. */
+  :root{
+    color-scheme:dark;
+    --v-bg:#141312; --v-card:#24231F; --v-fg:#F7F3EC; --v-label:#DCD6CC; --v-hint:#ADA79C;
+    --v-line:rgba(255,255,255,.14); --v-ink:#1B1A18;
+    --v-font:"Helvetica Neue",Helvetica,"Inter Tight",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html,body.m-body{height:100%; margin:0; overflow:hidden}
+  body.m-body{background:var(--v-bg); color:var(--v-fg); font:400 15px/1.45 var(--v-font)}
+  #silk{position:fixed; inset:0; width:100%; height:100%; z-index:0; display:block}
+
+  main{position:relative; z-index:1; height:100%; padding:clamp(14px,2.4vh,32px) clamp(16px,2.4vw,40px); display:grid;
+       transition:filter .6s ease, opacity .6s ease}
+  .card{min-height:0; display:grid; grid-template-rows:auto minmax(0,1fr) auto; gap:clamp(14px,2vh,24px);
+        background:var(--v-card); border:1px solid var(--v-line); border-radius:28px; padding:clamp(18px,2.6vh,32px) clamp(18px,2.4vw,36px);
+        box-shadow:0 40px 90px -40px rgba(0,0,0,.85)}
+
+  /* top: the question, centered; status and the visitor's swatches in a small line under it */
+  body.m-body header{all:unset; display:grid; justify-items:center; gap:8px; text-align:center}
+  body.m-body #top-q{display:block; margin:0; color:var(--v-fg); font:700 clamp(28px,3.4vw,54px)/1.02 var(--v-font); letter-spacing:-.045em;
+                     text-transform:none; text-wrap:balance; max-width:28ch}
+  .status{min-height:22px; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:6px 12px; color:var(--v-hint); font-size:14px}
+  .status #top-say{color:var(--v-label)}
+  .status #top-say:empty{display:none}
+  body.m-body #sub{margin:0; min-height:0; color:var(--v-hint); font-size:14px}
+
+  /* middle: the painting, 16:9, as big as fits (overrides render.js fit(), which sizes the old layout inline) */
+  .stage{min-height:0; container-type:size; display:grid; place-items:center}
+  body.m-body #frame{position:relative!important; left:auto!important; top:auto!important; height:auto!important;
+                     width:min(100cqw, 100cqh * 16 / 9)!important; aspect-ratio:16/9; max-width:100%; margin:0;
+                     border-radius:18px; overflow:hidden; background:#EDE7DA; border:1px solid var(--v-line); box-shadow:none}
+  body.m-body #frame canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+  body.m-body #cam{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none}
+
+  /* key: frosted glass in the painting's corner. It fades when the brush comes near and hides 5 s after the countdown */
+  .key{position:absolute; left:clamp(10px,1.4vw,20px); bottom:clamp(10px,1.4vw,20px); z-index:5; display:grid; gap:9px; margin:0; padding:14px 16px; list-style:none;
+       border-radius:16px; background:rgba(24,23,21,.74); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.12);
+       color:var(--v-label); font-size:clamp(13px,.95vw,15px); pointer-events:none; transition:opacity .35s ease, transform .35s ease}
+  .key.gone{opacity:0; transform:translateY(6px)}
+  .key .k{font:600 10px/1 var(--v-font); letter-spacing:.22em; text-transform:uppercase; color:var(--v-hint)}
+  .key li{display:flex; align-items:center; gap:10px}
+  .key svg{flex:none; width:22px; height:22px; color:var(--v-fg)}
+  .key b{color:var(--v-fg); font-weight:600}
+
+  /* bottom: Simulate (and Download once the night is finished) · Finish + "back to the question in 10 s" · Reset */
+  body.m-body footer{all:unset; position:relative; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px}
+  footer .left{display:flex; gap:10px; justify-self:start}
+  footer .mid{display:flex; align-items:center; gap:14px; justify-self:center}
+  #next-in{color:var(--v-hint); font-size:14px; font-variant-numeric:tabular-nums}
+  #next-in:empty{display:none}
+  body.m-body footer button{display:inline-flex; align-items:center; justify-content:center; padding:13px 24px; border-radius:999px; border:1px solid var(--v-line);
+                            background:transparent; color:var(--v-fg); font:600 15px/1 var(--v-font); cursor:pointer; transition:transform .15s, opacity .15s}
+  body.m-body footer button.main{background:var(--v-fg); color:var(--v-ink); border-color:var(--v-fg)}
+  body.m-body footer button:hover:not(:disabled){transform:translateY(-1px)}
+  body.m-body footer button:disabled{opacity:.4; cursor:default}
+  body.m-body footer button:focus-visible{outline:2px solid var(--v-fg); outline-offset:3px}
+  #reset{justify-self:end}
+  /* progress strips flow.js fills, along the bottom of the painting */
+  body.m-body #meter, body.m-body #bar{position:absolute; left:0; right:auto; top:-10px; bottom:auto; height:3px; pointer-events:none}
+
+  /* the visitor card (booth): question + Start -> 3 · 2 · 1 -> camera with Vol / Move */
+  .visit{position:fixed; inset:0; z-index:15; display:grid; place-items:center; padding:24px 16px}
+  .visit .m-card{width:min(1060px,82vw); max-height:78vh}
+  #ask-q{max-width:14ch}
+  .ask-note{min-height:1.4em; margin:0}
+  .cap{position:absolute; inset:clamp(44px,4.4vw,60px) clamp(16px,2vw,28px) clamp(14px,1.8vw,22px); display:grid;
+       grid-template-rows:minmax(0,1fr) auto; gap:clamp(10px,1.4vw,16px); justify-items:center}
+  .cap .m-camera{width:auto; height:100%; max-width:100%}
+  .cap .m-camera video{filter:saturate(.85)}
+
+  /* finish dialog, as a booth card */
+  body.m-body dialog{border:1px solid var(--v-line); border-radius:24px; background:var(--v-card); color:var(--v-fg); padding:32px; width:min(480px,92vw); box-shadow:0 40px 90px -30px rgba(0,0,0,.9)}
+  body.m-body dialog::backdrop{background:rgba(10,10,9,.65); backdrop-filter:blur(4px)}
+  body.m-body dialog h2{margin:0 0 12px; font:700 28px/1.05 var(--v-font); letter-spacing:-.035em}
+  body.m-body dialog p{margin:0 0 24px; color:var(--v-label); line-height:1.5}
+  body.m-body dialog .btns{display:flex; gap:10px; justify-content:flex-end}
+  body.m-body dialog button{padding:13px 22px; border-radius:999px; border:1px solid var(--v-line); background:transparent; color:var(--v-fg); font:600 15px/1 var(--v-font); cursor:pointer}
+  body.m-body dialog button.main{background:var(--v-fg); color:var(--v-ink); border-color:var(--v-fg)}
+
+  /* get-ready countdown: a booth card over the station */
+  .eyebrow{font:600 11px/1 var(--v-font); letter-spacing:.22em; text-transform:uppercase; color:var(--v-hint)}
+  .ready{position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px 16px; background:transparent; animation:r-in .3s ease both}
+  .ready-card{position:relative; width:min(860px,calc(100vw - 32px)); min-height:min(560px,80vh); display:grid; place-items:center; align-content:center; gap:20px; text-align:center;
+              background:var(--v-card); border:1px solid var(--v-line); border-radius:28px; padding:clamp(32px,5vw,64px); box-shadow:0 40px 90px -30px rgba(0,0,0,.9)}
+  .ready-card .eyebrow{position:absolute; left:32px; top:30px}
+  .ready-intro{display:grid; justify-items:center; gap:16px}
+  .ready-intro svg{width:72px; height:72px; padding:14px; border-radius:50%; background:var(--v-fg); color:var(--v-ink); box-shadow:0 0 0 8px rgba(247,243,236,.12)}
+  .ready-intro h2{margin:0; font:700 clamp(32px,4vw,58px)/1.02 var(--v-font); letter-spacing:-.045em; max-width:16ch; text-wrap:balance}
+  .ready-intro p{margin:0; color:var(--v-label); font-size:clamp(15px,1.2vw,18px)}
+  .ready-num{display:none; font:700 clamp(160px,22vw,300px)/.9 var(--v-font); letter-spacing:-.06em; font-variant-numeric:tabular-nums; color:var(--v-fg)}
+  .ready.counting .ready-intro h2{font-size:clamp(20px,2vw,28px)} .ready.counting .ready-intro p{display:none}
+  .ready.counting .ready-num{display:block}
+  .ready-num.tick{animation:r-tick .85s cubic-bezier(.2,.8,.2,1) both}
+  .ready.out{animation:r-out .35s ease both}
+  /* while a card is up, the station sits blurred behind it */
+  body.counting main, body.carded main{filter:blur(12px); opacity:.5; pointer-events:none}
+  @keyframes r-in{from{opacity:0}} @keyframes r-out{to{opacity:0}}
+  @keyframes r-tick{0%{transform:scale(.7); opacity:0} 25%{transform:scale(1); opacity:1} 85%{opacity:1} 100%{opacity:.15}}
+
+  @media (max-width:900px){
+    html,body.m-body{overflow:auto; height:auto} main,.card{height:auto} .stage{container-type:normal} body.m-body #frame{width:100%!important}
+    .visit .m-card{width:94vw}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ready,.ready.out,.ready-num.tick{animation:none} body.m-body footer button{transition:none} main{transition:none}
+  }
+</style>
 </head>
-<body>
-<header><h1>Living Canvas <span>vibe paint</span></h1>
-  <div class="right"><div id="count"></div>
-    <div class="modes" title="What the night starts from">
-      <button data-mode="chapel">Chapel</button><button data-mode="blank">Blank → chapel</button><button data-mode="abstract">Blank → abstract</button>
-    </div></div></header>
-<div id="frame"><canvas id="paint"></canvas><canvas id="trail"></canvas><canvas id="cursor"></canvas></div>
-<video id="cam" playsinline muted></video>
-<footer>
-  <div><div id="say">Preparing the canvas…</div><div id="sub"></div></div>
-  <div class="btns">
-    <button id="reset" title="Start the night over from a blank underpainting">Reset</button>
-    <button id="finish" title="Close out tonight: replay every visit, then hold on the final piece" disabled>Finish</button>
-    <button id="sim" title="A pretend visitor with a scripted feeling and path">Simulate</button>
-    <button id="go" class="main" disabled>Step up</button>
-    <button id="download" class="main" title="Save tonight’s final canvas as a JPEG" hidden>Download</button>
+<body class="m-body carded">
+<canvas id="silk" aria-hidden="true"></canvas>
+<main>
+  <div class="card">
+    <header>
+      <h1 id="top-q">How do you feel today?</h1>
+      <div class="status"><span id="top-say"></span><p id="sub"></p></div>
+    </header>
+
+    <div class="stage">
+      <div id="frame"><canvas id="paint"></canvas><canvas id="trail"></canvas><canvas id="cursor"></canvas>
+        <ul class="key" id="key" aria-label="Gestures">
+          <li class="k">Key</li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 11V4.5a1.5 1.5 0 0 1 3 0V11"/><path d="M12 10V8.5a1.5 1.5 0 0 1 3 0V11"/><path d="M15 10.5a1.5 1.5 0 0 1 3 0V14a6 6 0 0 1-6 6h-1a5.5 5.5 0 0 1-4.6-2.5L4.3 14a1.5 1.5 0 0 1 2.4-1.8L9 14"/>
+            </svg>
+            <span><b>Hand or finger</b> = brush</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 11V8.5a1.5 1.5 0 0 1 3 0V11"/><path d="M10 10.5V7.5a1.5 1.5 0 0 1 3 0v3"/><path d="M13 10.5V8a1.5 1.5 0 0 1 3 0v3"/>
+              <path d="M16 10.5a1.5 1.5 0 0 1 3 0V14a6 6 0 0 1-6 6h-1.5A5.5 5.5 0 0 1 6 14.5V12a1.5 1.5 0 0 1 3 0"/>
+            </svg>
+            <span><b>Close fist</b> = stop</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <video id="cam" playsinline muted></video>
+
+    <footer>
+      <div class="left">
+        <button id="sim" title="A pretend visitor with a scripted feeling and path">Simulate</button>
+        <button id="download" class="main" title="Save tonight’s final canvas as a JPEG" hidden>Download</button>
+      </div>
+      <div class="mid">
+        <button id="finish" class="main" title="Close out tonight: replay every visit, then hold on the final piece" disabled>Finish</button>
+        <span id="next-in" aria-live="polite"></span>
+      </div>
+      <button id="reset" title="Start the night over from a blank underpainting">Reset</button>
+      <div id="meter"></div><div id="bar"></div>
+    </footer>
   </div>
-  <div id="meter"></div><div id="bar"></div>
-</footer>
+</main>
+
+<!-- Not in the sketch, but flow.js still looks for these. Unhide the tray to bring them back. -->
+<div class="tray" hidden>
+  <h1 id="say">Preparing the canvas…</h1><div id="count"></div>
+  <div class="modes"><button data-mode="chapel">Chapel</button><button data-mode="blank">Blank → chapel</button><button data-mode="abstract">Blank → abstract</button></div>
+</div>
+
+<!-- The visitor card (from the booth): question + Start -> 3 · 2 · 1 -> camera with Vol / Move -->
+<div id="visit" class="visit m-veil" aria-live="polite">
+  <div class="m-card">
+    <span class="m-card__brand m-label">Momento</span>
+    <section class="m-screen" id="s-ask" aria-labelledby="ask-q">
+      <h2 class="m-display" id="ask-q">How do you feel today?</h2>
+      <button class="m-btn-round" id="go" disabled>Start</button>
+      <p class="m-text m-muted">Press Start, then answer out loud and move however you feel for 10 seconds.</p>
+      <p class="m-small m-muted ask-note" id="ask-note"></p>
+    </section>
+    <section class="m-screen is-off" id="s-count" aria-live="assertive">
+      <p class="m-num" id="count-n">3</p>
+    </section>
+    <section class="m-screen is-off" id="s-cap">
+      <div class="cap">
+        <div class="m-camera">
+          <video id="cap-video" playsinline muted></video>
+          <span class="m-camera__note">Say it out loud, and move</span>
+          <span class="m-camera__corner" id="cap-secs">10</span>
+          <div class="m-timebar"><i id="cap-bar"></i></div>
+        </div>
+        <div class="m-meters">
+          <span>Vol</span><canvas id="cv-vol" aria-label="Your voice"></canvas>
+          <span>Move</span><canvas id="cv-move" aria-label="Your movement"></canvas>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Get-ready countdown, between talking and painting -->
+<div id="ready" class="ready" hidden aria-live="assertive">
+  <div class="ready-card">
+    <span class="eyebrow">Momento</span>
+    <div class="ready-intro">
+      <h2>Get ready to use your hand as a brush</h2>
+      <p>Hold your hand up to the camera and move it to paint.</p>
+    </div>
+    <div class="ready-num" id="ready-num" aria-hidden="true">3</div>
+  </div>
+</div>
+
 <dialog id="finish-confirm" aria-labelledby="finish-title">
   <form method="dialog">
     <h2 id="finish-title">Finish tonight’s canvas?</h2>
@@ -36,6 +226,7 @@
   </form>
 </dialog>
 
+<script type="module" src="/vibe/visit_ui.js"></script>
 <script type="module" src="/vibe/flow.js"></script>
 </body>
 </html>

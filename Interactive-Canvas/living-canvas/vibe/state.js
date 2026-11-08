@@ -16,6 +16,6 @@ export const ease = t => t < .5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
 export const mk = () => Object.assign(document.createElement('canvas'), { width: S.W, height: S.H });
 export const say = (a, b = '') => { $('#say').textContent = a; $('#sub').textContent = b; };
 export const bar = f => { $('#bar').style.width = (100 * Math.max(0, Math.min(1, f))) + '%'; };
-export const meter = f => { $('#meter').style.width = (100 * f) + '%'; };
+export const meter = f => { $('#meter').style.width = (100 * f) + '%'; window.momento?.level?.('Vol', f); };   // + the station's Vol meter
 export const frame = () => new Promise(r => requestAnimationFrame(r));
 export const loadImg = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
