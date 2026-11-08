@@ -4,8 +4,11 @@ import { S, $, paint, trail, cursor, pctx, tctx, cctx, mk, bar, ease, frame, bla
 const REVEAL_MS = 3200;
 
 export function fit() {
-  const { W, H } = S, aw = innerWidth - 56, ah = innerHeight - 64 - 112, s = Math.min(aw / W, ah / H);
-  Object.assign($('#frame').style, { width: W * s + 'px', height: H * s + 'px', left: (innerWidth - W * s) / 2 + 'px', top: 64 + (ah - H * s) / 2 + 'px' });
+  // Room above and below comes from vibe.css (--head, --foot); 24px more on each side for the frame's moulding.
+  const css = getComputedStyle(document.documentElement), px = v => parseFloat(css.getPropertyValue(v)) || 0;
+  const head = px('--head') + 24, foot = px('--foot') + 24;
+  const { W, H } = S, aw = innerWidth - 88, ah = innerHeight - head - foot, s = Math.min(aw / W, ah / H);
+  Object.assign($('#frame').style, { width: W * s + 'px', height: H * s + 'px', left: (innerWidth - W * s) / 2 + 'px', top: head + (ah - H * s) / 2 + 'px' });
 }
 
 // Brighter, more saturated versions of a painting's colors, so trails glow on the dark-ish canvas.

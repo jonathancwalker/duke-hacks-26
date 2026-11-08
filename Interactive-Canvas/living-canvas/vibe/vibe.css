@@ -1,36 +1,67 @@
-:root { --bg: #14110e; --ink: #efe7d8; --dim: #978d7f; --line: #3a332b; --accent: #e6bd6a; }
+/* A gallery wall at night: the canvas hangs in a dark frame under a spotlight on green-grey wall paint, and the
+   text below reads like the wall label beside a painting. Young Serif for what the visitor reads from a distance,
+   Schibsted Grotesk for the small label lines. Gilt is used once, for the frame liner and the one main button. */
+:root {
+  --wall: #1e2622; --wall-lit: #2c3631; --ink: #ede6d6; --dim: #a7a291; --rule: #3d4740;
+  --gilt: #c8a35a; --frame: #15110d;
+  --display: "Young Serif", "Iowan Old Style", Georgia, serif;
+  --text: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --head: 76px; --foot: 136px;                         /* render.js fit() leaves this much room above and below */
+}
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); overflow: hidden;
-             font: 14px/1.45 Inter, system-ui, sans-serif; }
-header { position: absolute; top: 0; left: 0; right: 0; height: 64px; display: flex; align-items: center;
-         justify-content: space-between; padding: 0 28px; }
-h1 { margin: 0; font: italic 500 26px/1 "Cormorant Garamond", Georgia, serif; letter-spacing: .01em; }
-h1 span { color: var(--dim); font-style: normal; font-size: 18px; margin-left: 10px; }
-#count { color: var(--dim); margin-right: 16px; }
-.right { display: flex; align-items: center; }
-.modes { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
-.modes button { border: 0; padding: 6px 12px; font-size: 13px; color: var(--dim); }
-.modes button.on { background: #2a241e; color: var(--ink); }
-#frame { position: absolute; box-shadow: 0 24px 70px #000b; background: #000; }
+html, body { margin: 0; height: 100%; overflow: hidden; color: var(--ink); font: 15px/1.45 var(--text); }
+body { background: radial-gradient(ellipse 70% 60% at 50% 38%, var(--wall-lit), var(--wall) 70%) var(--wall); }
+
+header { position: absolute; top: 0; left: 0; right: 0; height: var(--head); display: flex; align-items: center;
+         justify-content: space-between; gap: 24px; padding: 0 32px; }
+.brand { display: flex; align-items: baseline; gap: 14px; }
+h1 { margin: 0; font: 400 24px/1 var(--display); letter-spacing: -.005em; }
+.kicker, #count { font: 500 11px/1 var(--text); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+.right { display: flex; align-items: center; gap: 28px; }
+#count:empty { display: none; }
+.modes { display: flex; gap: 18px; }
+.modes button { border: 0; border-radius: 0; padding: 6px 0; background: none; color: var(--dim);
+                font: 500 13px var(--text); border-bottom: 1px solid transparent; }
+.modes button:hover { color: var(--ink); }
+.modes button.on { color: var(--ink); border-bottom-color: var(--gilt); }
+
+/* The painting: a thin gilt liner inside a dark wooden frame, casting a soft shadow down the wall. */
+#frame { position: absolute; background: #000;
+         box-shadow: 0 0 0 1px var(--gilt), 0 0 0 11px var(--frame), 0 0 0 12px #000, 0 28px 50px -10px #000c, 0 50px 90px -30px #0009; }
 #frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 #trail { mix-blend-mode: screen; transition: opacity .2s; }
-#cam { position: absolute; right: 28px; bottom: 112px; width: 200px; aspect-ratio: 16/9; object-fit: cover;
-       transform: scaleX(-1); border: 1px solid var(--line); opacity: 0; transition: opacity .4s; }
-#cam.on { opacity: .85; }
-footer { position: absolute; left: 0; right: 0; bottom: 0; height: 104px; display: grid;
-         grid-template-columns: 1fr auto; align-items: center; gap: 24px; padding: 0 28px; }
-#say { font: 500 30px/1.15 "Cormorant Garamond", Georgia, serif; }
-#sub { color: var(--dim); margin-top: 4px; min-height: 20px; }
-#swatches { display: inline-flex; gap: 4px; vertical-align: middle; margin-right: 8px; }
-#swatches i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
-#bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--accent); }
-#meter { position: absolute; left: 0; bottom: 3px; height: 2px; width: 0; background: var(--ink); opacity: .35; }
-.btns { display: flex; gap: 10px; }
-button { font: 500 14px Inter, sans-serif; color: var(--ink); background: transparent; border: 1px solid var(--line);
-         padding: 10px 18px; border-radius: 999px; cursor: pointer; }
-button.main { background: var(--ink); color: var(--bg); border-color: var(--ink); padding: 12px 26px; }
+
+#cam { position: absolute; right: 32px; bottom: calc(var(--foot) + 8px); width: 196px; aspect-ratio: 16/9; object-fit: cover;
+       transform: scaleX(-1); border: 4px solid var(--frame); outline: 1px solid var(--rule); opacity: 0; transition: opacity .4s; }
+#cam.on { opacity: .9; }
+
+/* The wall label: a hairline above, the question large, the reading in small type underneath. */
+footer { position: absolute; left: 0; right: 0; bottom: 0; height: var(--foot); display: grid;
+         grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 32px; padding: 0 32px; }
+footer::before { content: ""; position: absolute; top: 0; left: 32px; right: 32px; border-top: 1px solid var(--rule); }
+.label { min-width: 0; max-width: 62ch; }
+#say { font: 400 34px/1.12 var(--display); letter-spacing: -.01em; text-wrap: balance; }
+#sub { color: var(--dim); margin-top: 8px; min-height: 22px; font-size: 15px; }
+#swatches { display: inline-flex; gap: 3px; vertical-align: -2px; margin-right: 10px; }
+#swatches i { width: 18px; height: 18px; display: inline-block; box-shadow: inset 0 0 0 1px #0000002e; }
+#bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--gilt); transition: width .15s linear; }
+#meter { position: absolute; left: 0; bottom: 3px; height: 2px; width: 0; background: var(--ink); opacity: .3; }
+
+.btns { display: flex; gap: 8px; }
+button { font: 500 14px var(--text); color: var(--ink); background: transparent; border: 1px solid var(--rule);
+         padding: 11px 18px; border-radius: 2px; cursor: pointer; transition: border-color .15s, background .15s; }
+button:hover:not(:disabled) { border-color: var(--dim); }
+button.main { background: var(--gilt); border-color: var(--gilt); color: #1b160e; font-weight: 600; padding: 13px 26px; }
+button.main:hover:not(:disabled) { background: #d6b26a; border-color: #d6b26a; }
 button:disabled { opacity: .35; cursor: default; }
-@media (max-width: 700px) {
-  header, footer { padding: 0 16px; } #say { font-size: 22px; } #cam { display: none; }
-  footer { grid-template-columns: 1fr; height: auto; padding-bottom: 12px; }
+button:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+@media (max-width: 760px) {
+  :root { --head: 96px; --foot: 190px; }
+  header { flex-direction: column; align-items: flex-start; justify-content: center; gap: 10px; padding: 0 16px; }
+  .right { gap: 16px; flex-wrap: wrap; } .modes { gap: 12px; }
+  footer { grid-template-columns: 1fr; align-content: center; gap: 14px; padding: 0 16px; }
+  footer::before { left: 16px; right: 16px; }
+  #say { font-size: 24px; } #cam { display: none; }
 }

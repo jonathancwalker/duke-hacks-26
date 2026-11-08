@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Living Canvas Vibe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/vibe/vibe.css">
 </head>
 <body>
-<header><h1>Living Canvas <span>vibe paint</span></h1>
+<header>
+  <div class="brand"><h1>Living Canvas</h1><span class="kicker">Vibe paint</span></div>
   <div class="right"><div id="count"></div>
     <div class="modes" title="What the night starts from">
       <button data-mode="chapel">Chapel</button><button data-mode="blank">Blank → chapel</button><button data-mode="abstract">Blank → abstract</button>
@@ -17,7 +19,7 @@
 <div id="frame"><canvas id="paint"></canvas><canvas id="trail"></canvas><canvas id="cursor"></canvas></div>
 <video id="cam" playsinline muted></video>
 <footer>
-  <div><div id="say">Preparing the canvas…</div><div id="sub"></div></div>
+  <div class="label"><div id="say">Preparing the canvas…</div><div id="sub"></div></div>
   <div class="btns">
     <button id="reset" title="Start the night over from a blank underpainting">Reset</button>
     <button id="sim" title="A pretend visitor with a scripted feeling and path">Simulate</button>
