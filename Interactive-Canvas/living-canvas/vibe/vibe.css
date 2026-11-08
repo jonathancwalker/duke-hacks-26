@@ -1,67 +1,73 @@
-/* A gallery wall at night: the canvas hangs in a dark frame under a spotlight on green-grey wall paint, and the
-   text below reads like the wall label beside a painting. Young Serif for what the visitor reads from a distance,
-   Schibsted Grotesk for the small label lines. Gilt is used once, for the frame liner and the one main button. */
+/* A picture gallery at night: the canvas hangs in a gilt frame under a spotlight on oxblood wall paint, the way old
+   masters hang in red-walled rooms, and the text below reads like the wall label beside it. Bodoni Moda for what the
+   visitor reads from across the room, Archivo for the small label lines. Gold lives in the frame only; the one
+   button a visitor presses is ivory, like the label card. */
 :root {
-  --wall: #1e2622; --wall-lit: #2c3631; --ink: #ede6d6; --dim: #a7a291; --rule: #3d4740;
-  --gilt: #c8a35a; --frame: #15110d;
-  --display: "Young Serif", "Iowan Old Style", Georgia, serif;
-  --text: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --head: 76px; --foot: 136px;                         /* render.js fit() leaves this much room above and below */
+  --wall: #33181a; --wall-lit: #5b2a2b; --wall-deep: #1f0e0f; --ink: #f1e9d8; --dim: #c2ad9c; --rule: #5c3a37;
+  --ivory: #efe6d2; --liner: #1a110c;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --text: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --head: 80px; --foot: 150px;                         /* render.js fit() leaves this much room above and below */
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; overflow: hidden; color: var(--ink); font: 15px/1.45 var(--text); }
-body { background: radial-gradient(ellipse 70% 60% at 50% 38%, var(--wall-lit), var(--wall) 70%) var(--wall); }
+body { background: radial-gradient(ellipse 52% 58% at 50% 34%, var(--wall-lit), var(--wall) 62%, var(--wall-deep)) var(--wall); }
 
 header { position: absolute; top: 0; left: 0; right: 0; height: var(--head); display: flex; align-items: center;
-         justify-content: space-between; gap: 24px; padding: 0 32px; }
+         justify-content: space-between; gap: 24px; padding: 0 36px; }
 .brand { display: flex; align-items: baseline; gap: 14px; }
-h1 { margin: 0; font: 400 24px/1 var(--display); letter-spacing: -.005em; }
-.kicker, #count { font: 500 11px/1 var(--text); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+h1 { margin: 0; font: 500 26px/1 var(--display); font-optical-sizing: auto; }
+.kicker, #count { font: 500 11px/1 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
 .right { display: flex; align-items: center; gap: 28px; }
 #count:empty { display: none; }
-.modes { display: flex; gap: 18px; }
+.modes { display: flex; gap: 20px; }
 .modes button { border: 0; border-radius: 0; padding: 6px 0; background: none; color: var(--dim);
                 font: 500 13px var(--text); border-bottom: 1px solid transparent; }
-.modes button:hover { color: var(--ink); }
-.modes button.on { color: var(--ink); border-bottom-color: var(--gilt); }
+.modes button:hover:not(:disabled) { color: var(--ink); }
+.modes button.on { color: var(--ink); border-bottom-color: var(--ink); }
 
-/* The painting: a thin gilt liner inside a dark wooden frame, casting a soft shadow down the wall. */
-#frame { position: absolute; background: #000;
-         box-shadow: 0 0 0 1px var(--gilt), 0 0 0 11px var(--frame), 0 0 0 12px #000, 0 28px 50px -10px #000c, 0 50px 90px -30px #0009; }
+/* The painting: a dark liner, then a gilt moulding drawn behind the frame box (so fit() still sizes only the canvas). */
+#frame { position: absolute; background: #000; box-shadow: 0 0 0 5px var(--liner); }
+#frame::before { content: ""; position: absolute; inset: -24px; z-index: -1;
+  background: linear-gradient(135deg, #7a5a24, #e4c77c 22%, #9b7633 45%, #f2d891 66%, #8a6629 85%, #c9a65a);
+  box-shadow: inset 0 0 0 1px #f6e2a855, inset 0 0 0 4px #6b4e1e66, inset 0 0 14px #3a2708aa,
+              0 30px 50px -12px #000d, 0 60px 110px -30px #000b; }
 #frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 #trail { mix-blend-mode: screen; transition: opacity .2s; }
 
-#cam { position: absolute; right: 32px; bottom: calc(var(--foot) + 8px); width: 196px; aspect-ratio: 16/9; object-fit: cover;
-       transform: scaleX(-1); border: 4px solid var(--frame); outline: 1px solid var(--rule); opacity: 0; transition: opacity .4s; }
+#cam { position: absolute; right: 36px; bottom: calc(var(--foot) + 8px); width: 196px; aspect-ratio: 16/9; object-fit: cover;
+       transform: scaleX(-1); border: 4px solid var(--liner); outline: 1px solid var(--rule); opacity: 0; transition: opacity .4s; }
 #cam.on { opacity: .9; }
 
 /* The wall label: a hairline above, the question large, the reading in small type underneath. */
 footer { position: absolute; left: 0; right: 0; bottom: 0; height: var(--foot); display: grid;
-         grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 32px; padding: 0 32px; }
-footer::before { content: ""; position: absolute; top: 0; left: 32px; right: 32px; border-top: 1px solid var(--rule); }
-.label { min-width: 0; max-width: 62ch; }
-#say { font: 400 34px/1.12 var(--display); letter-spacing: -.01em; text-wrap: balance; }
-#sub { color: var(--dim); margin-top: 8px; min-height: 22px; font-size: 15px; }
-#swatches { display: inline-flex; gap: 3px; vertical-align: -2px; margin-right: 10px; }
-#swatches i { width: 18px; height: 18px; display: inline-block; box-shadow: inset 0 0 0 1px #0000002e; }
-#bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--gilt); transition: width .15s linear; }
+         grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 36px; padding: 0 36px; }
+footer::before { content: ""; position: absolute; top: 0; left: 36px; right: 36px; border-top: 1px solid var(--rule); }
+.label { min-width: 0; }
+#say { font: 500 40px/1.06 var(--display); font-optical-sizing: auto; letter-spacing: -.01em; text-wrap: balance; }
+#sub { color: var(--dim); margin-top: 10px; min-height: 22px; font-size: 16px; max-width: 64ch; }
+#swatches { display: inline-flex; gap: 3px; vertical-align: -3px; margin-right: 12px; }
+#swatches i { width: 20px; height: 20px; display: inline-block; box-shadow: inset 0 0 0 1px #00000033; }
+#bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--ivory); transition: width .15s linear; }
 #meter { position: absolute; left: 0; bottom: 3px; height: 2px; width: 0; background: var(--ink); opacity: .3; }
 
-.btns { display: flex; gap: 8px; }
-button { font: 500 14px var(--text); color: var(--ink); background: transparent; border: 1px solid var(--rule);
-         padding: 11px 18px; border-radius: 2px; cursor: pointer; transition: border-color .15s, background .15s; }
-button:hover:not(:disabled) { border-color: var(--dim); }
-button.main { background: var(--gilt); border-color: var(--gilt); color: #1b160e; font-weight: 600; padding: 13px 26px; }
-button.main:hover:not(:disabled) { background: #d6b26a; border-color: #d6b26a; }
+/* Reset and Simulate are for whoever runs the booth: quiet text. Step up is for visitors: the one solid button. */
+.btns { display: flex; align-items: center; gap: 22px; }
+button { font: 500 14px var(--text); color: var(--dim); background: none; border: 0; padding: 8px 0; cursor: pointer;
+         border-radius: 0; text-decoration: underline transparent; text-underline-offset: 4px; transition: color .15s, background .15s; }
+button:hover:not(:disabled) { color: var(--ink); text-decoration-color: currentColor; }
+button.main { background: var(--ivory); color: #2a1414; font: 600 17px var(--text); letter-spacing: .01em;
+              padding: 16px 34px; text-decoration: none; box-shadow: 0 10px 24px -12px #000c; }
+button.main:hover:not(:disabled) { background: #fff8e8; color: #2a1414; }
 button:disabled { opacity: .35; cursor: default; }
-button:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px; }
+button:focus-visible { outline: 2px solid var(--ivory); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 @media (max-width: 760px) {
-  :root { --head: 96px; --foot: 190px; }
+  :root { --head: 100px; --foot: 210px; }
   header { flex-direction: column; align-items: flex-start; justify-content: center; gap: 10px; padding: 0 16px; }
-  .right { gap: 16px; flex-wrap: wrap; } .modes { gap: 12px; }
-  footer { grid-template-columns: 1fr; align-content: center; gap: 14px; padding: 0 16px; }
+  .right { gap: 16px; flex-wrap: wrap; } .modes { gap: 14px; }
+  footer { grid-template-columns: 1fr; align-content: center; gap: 16px; padding: 0 16px; }
   footer::before { left: 16px; right: 16px; }
-  #say { font-size: 24px; } #cam { display: none; }
+  #say { font-size: 28px; } #cam { display: none; }
 }

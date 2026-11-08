@@ -4,10 +4,10 @@ import { S, $, paint, trail, cursor, pctx, tctx, cctx, mk, bar, ease, frame, bla
 const REVEAL_MS = 3200;
 
 export function fit() {
-  // Room above and below comes from vibe.css (--head, --foot); 24px more on each side for the frame's moulding.
+  // Room above and below comes from vibe.css (--head, --foot); 32px more on each side for the gilt frame.
   const css = getComputedStyle(document.documentElement), px = v => parseFloat(css.getPropertyValue(v)) || 0;
-  const head = px('--head') + 24, foot = px('--foot') + 24;
-  const { W, H } = S, aw = innerWidth - 88, ah = innerHeight - head - foot, s = Math.min(aw / W, ah / H);
+  const head = px('--head') + 36, foot = px('--foot') + 48;
+  const { W, H } = S, aw = innerWidth - 136, ah = innerHeight - head - foot, s = Math.min(aw / W, ah / H);
   Object.assign($('#frame').style, { width: W * s + 'px', height: H * s + 'px', left: (innerWidth - W * s) / 2 + 'px', top: head + (ah - H * s) / 2 + 'px' });
 }
 
