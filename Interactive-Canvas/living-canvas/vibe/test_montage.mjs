@@ -34,7 +34,7 @@ const visit = (n, extra = {}) => ({ id: String(n).padStart(4, '0'), reading: `re
   const p = plan([visit(1, { name: 'Ada' }), visit(2)]);
   assert.equal(p.steps[0].caption, 'reading 1');
   assert.equal(p.steps[0].name, 'Ada');
-  assert.equal(p.steps[1].name, null);
+  assert.equal(p.steps[1].name, 'Visitor 2', 'a visit saved without a name is credited by its number');
 }
 
 // No reading (the rule-based director gives none): the caption names the painters instead.

@@ -1,10 +1,11 @@
 // Vibe paint: a visitor says how they feel, then traces a path in the air with a fingertip. Nothing is painted yet,
 // only a glowing trail. The GPU repaints the whole scene in their mood (Gemini picks the painters, plus energy,
 // warmth and light), and that repainting is revealed only along their path. Crossings show the mood more strongly.
-// This module is the visit state machine: speak -> brush -> trace -> reveal -> commit, plus start modes and Simulate.
+// This module is the visit state machine: speak -> brush -> trace -> reveal -> name -> commit, plus start modes and Simulate.
 import { S, $, video, sleep, say, bar, loadImg } from './state.js';
 import { fetchEvent, fetchBase, fetchBrush, fetchRender, fetchVisits, saveVisit, clearVisits } from './api.js';
 import { listen } from './audio.js';
+import { askName } from './name.js';
 import { startCamera, readTips, resetTips } from './hand.js';
 import { startPose, trackMoves, moveScore } from './move.js';
 import { fit, startCanvas, setTrailBlend, trace, reveal, clearTrail, paletteWash } from './render.js';
@@ -82,8 +83,9 @@ async function visit(sim) {
     const before = S.visitors ? undefined : S.base.toDataURL('image/jpeg', .92);   // night's first visit: where the montage starts
     await reveal(strokes, vibe, look.width, texture, heard.envelope);
     S.visitors++; showCount();
+    const name = await askName(S.visitors, !!sim);       // '' = skipped; never throws, so the visit always finishes
     say(S.event.closing, `${d.reason}`);
-    await saveVisit({ name: heard.name, reading: d.reading, painters: d.artists, presence: heard.presence, start: S.start,
+    await saveVisit({ name, reading: d.reading, painters: d.artists, presence: heard.presence, start: S.start,
                       strokes, mood: vibe.src, canvas: S.base.toDataURL('image/jpeg', .92), before })
       .catch(e => console.warn('visit not saved', e));
     await sleep(2500);
