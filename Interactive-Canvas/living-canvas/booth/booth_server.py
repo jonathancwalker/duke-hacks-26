@@ -4,6 +4,7 @@
     python3 booth/booth_server.py            # then open http://localhost:8790
 
 - Serves booth.html (webcam + mic capture, painting display).
+- POST /api/presence: words + voice loudness + movement -> 3 painting weights and their CLIP vectors (presence/).
 - POST /api/visit: visitor features -> an LLM art director -> art-space coefficients -> lab GPU -> two frames.
 - Art director, first available of:
     Gemini on Google Cloud Vertex AI  BOOTH_GCP_PROJECT=<project id>  (auth: `gcloud auth application-default login`;
@@ -16,6 +17,7 @@ import base64
 import concurrent.futures
 import threading
 import json
+import math
 import os
 import re
 import sys
@@ -553,8 +555,38 @@ def vibe_base(v):
     return lab_frame(f"show(base_frame(scene={json.dumps(ev['scene'])}), 'base')", [key], [key])
 
 
+def ext_vectors(vectors, weights):
+    """CLIP ViT-H image vectors for paintings in this mix that are outside the lab's library (from /api/presence).
+    Only paintings in the mix are kept; each must be 1024 finite numbers, since they are written into lab code."""
+    if not vectors:
+        return {}
+    if not isinstance(vectors, dict):
+        raise ValueError("vectors must map painting names to 1024 numbers")
+    out = {}
+    for name, vec in vectors.items():
+        if name not in weights:
+            continue
+        if not (isinstance(vec, list) and len(vec) == 1024 and
+                all(isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x) for x in vec)):
+            raise ValueError(f"vector for {str(name)[:80]!r} must be 1024 finite numbers")
+        out[str(name)] = [float(x) for x in vec]
+    return out
+
+
+def ext_prelude(vectors):
+    """Lab code that lets mix_vector take these out-of-library paintings for this call only (every call reloads the
+    lab libs). Vectors are scaled to the library's mean norm, as mix_vector does."""
+    return (f"import torch as _t\n_EXT = {{n: _t.tensor(v, device=DEV, dtype=_t.float32).reshape(1, -1) for n, v in {json.dumps(vectors)}.items()}}\n"
+            "_EXT = {n: v / v.norm() * MEAN_NORM for n, v in _EXT.items()}\n"
+            "def mix_vector(weights):\n"
+            "    v = sum(float(w) * (_EXT[n] if n in _EXT else ART_M[ART_NAMES.index(n)]) for n, w in weights.items() if n in _EXT or n in ART_NAMES)\n"
+            "    v = v[None] if v.dim() == 1 else v\n"
+            "    return v / v.norm() * MEAN_NORM\n")
+
+
 def vibe_render(v):
-    """The whole scene repainted in this visitor's mood; the page shows it only along their hand path."""
+    """The whole scene repainted in this visitor's mood; the page shows it only along their hand path.
+    Paintings outside the lab library come with their CLIP vectors (v["vectors"], as /api/presence returns them)."""
     weights = {a["name"]: a["weight"] for a in v.get("artists", []) if a.get("name")}
     args = ", ".join(f"{k}={clamp(v.get(k, d), lo, 1.0):.3f}" for k, d, lo in
                      (("energy", 0.5, 0.0), ("warmth", 0.0, -1.0), ("light", 0.0, -1.0)))
@@ -563,12 +595,58 @@ def vibe_render(v):
     ev = load_event(v.get("event"))
     lead = f"{ev['id']} {mode} {max(weights, key=weights.get) if weights else 'none'}"
     last, base = f"{ev['id']} {mode} last", f"{ev['id']} base"
+    ext = ext_vectors(v.get("vectors"), weights)
     t0 = time.time()
     # Lab down: the last frame for this lead painter, else the last frame in this mode, else (scene) the base.
-    r = lab_frame(f"show(vibe_frame({json.dumps(weights)}, {args}, atmosphere={json.dumps(atmosphere)}, mode={json.dumps(mode)}, "
+    r = lab_frame((ext_prelude(ext) if ext else "") + f"show(vibe_frame({json.dumps(weights)}, {args}, atmosphere={json.dumps(atmosphere)}, mode={json.dumps(mode)}, "
                   f"scene={json.dumps(ev['scene'])}), 'vibe')",
                   [lead, last], [lead, last] + ([base] if mode == "scene" else []))
     return {**r, "seconds": round(time.time() - t0, 2)}
+
+
+# ---------------------------------------------------------------- presence (issue #7): words + loudness + movement -> paintings
+# The C5 feeling scorer (presence/scorer.py) picks 3 of ~2,600 WikiArt paintings and returns their CLIP vectors, which
+# /api/vibe/render takes for paintings outside the lab library. Its emotion read blends the ArtEmis text head with
+# Gemini's read (up to gemini_timeout_s, 8 s; the head alone when Gemini is slow or fails).
+# Needs torch + transformers and the built library (presence/build.py); without them the director's painters are used.
+sys.path.insert(0, os.path.join(HERE, ".."))
+PRESENCE, PRESENCE_ERROR = None, "presence scorer still loading"
+
+
+class PresenceUnavailable(RuntimeError):
+    pass
+
+
+def load_presence():
+    """Load the scorer and the CLIP text tower once, in the background at startup (~10 s)."""
+    global PRESENCE, PRESENCE_ERROR
+    try:
+        from presence import scorer
+        lib = scorer.Library.load(scorer.load_config())
+        lib.score("warming up", 0.5, 0.5)
+        PRESENCE = scorer.Presence(lib, gemini=scorer.gemini_reader(GEMINI, GEMINI_MODEL) if GEMINI is not None else None)
+        print(f"[booth] presence scorer ready ({lib.view['keep'].size} paintings)", file=sys.stderr)
+    except Exception as e:
+        PRESENCE_ERROR = f"{e.__class__.__name__}: {e}"
+        print(f"[booth] presence scorer unavailable ({PRESENCE_ERROR}); the director picks painters", file=sys.stderr)
+
+
+def _unit(x, default=0.5):
+    try:
+        x = float(x)
+    except (TypeError, ValueError):
+        return default
+    return max(0.0, min(1.0, x)) if math.isfinite(x) else default
+
+
+def presence_api(v):
+    """{feeling, loudness (or arousal), movement} -> {artists: [{name, weight, label, ...}], vectors, read}."""
+    if PRESENCE is None:
+        raise PresenceUnavailable(PRESENCE_ERROR)
+    text = " ".join(str(v.get("feeling") or v.get("text") or "").split())[:300]
+    loudness = _unit(v.get("loudness", v.get("arousal")))
+    movement = _unit(v.get("movement"))
+    return PRESENCE(text, loudness, movement)
 
 
 # ---------------------------------------------------------------- saved visits (vibe paint)
@@ -758,6 +836,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, brush_glaze(payload))
             if self.path == "/api/vibe/base":
                 return self._send(200, vibe_base(payload))
+            if self.path == "/api/presence":
+                try:
+                    return self._send(200, presence_api(payload))
+                except PresenceUnavailable as e:
+                    return self._send(503, {"error": f"presence scorer unavailable: {e}"})
             if self.path == "/api/vibe/render":
                 return self._send(200, vibe_render(payload))
             if self.path == "/api/visits":
@@ -781,4 +864,5 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     print(f"[booth] http://localhost:{PORT}  (director: {DIRECTOR_NAME}; placement: {PLACEMENT})")
+    threading.Thread(target=load_presence, daemon=True).start()
     ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()

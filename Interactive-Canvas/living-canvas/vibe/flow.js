@@ -1,9 +1,10 @@
 // Vibe paint: a visitor says how they feel, then traces a path in the air with a fingertip. Nothing is painted yet,
-// only a glowing trail. The GPU repaints the whole scene in their mood (Gemini picks the painters, plus energy,
-// warmth and light), and that repainting is revealed only along their path. Crossings show the mood more strongly.
+// only a glowing trail. The GPU repaints the whole scene in their mood (the presence scorer picks 3 paintings from
+// their words, voice and movement; Gemini sets energy, warmth, light and the reading), and that repainting is revealed
+// only along their path. Crossings show the mood more strongly.
 // This module is the visit state machine: speak -> brush -> trace -> reveal -> name -> commit, plus start modes and Simulate.
 import { S, $, video, sleep, say, bar, loadImg } from './state.js';
-import { fetchEvent, fetchBase, fetchBrush, fetchRender, fetchVisits, saveVisit, clearVisits } from './api.js';
+import { fetchEvent, fetchBase, fetchBrush, fetchPresence, fetchRender, fetchVisits, saveVisit, clearVisits } from './api.js';
 import { listen } from './audio.js';
 import { askName } from './name.js';
 import { startCamera, readTips, resetTips } from './hand.js';
@@ -63,14 +64,23 @@ async function visit(sim) {
     const texture = moveScore(laban);                     // one edge texture for the whole stroke; drawing can't change it
     console.info('movement while talking', { texture: +texture.toFixed(2), ...laban });
     say('Choosing your painters…', ''); bar(0);
-    const d = await fetchBrush(heard);
+    // Painters: the presence scorer (words + voice loudness + movement), asked alongside the director; both wait on
+    // Gemini. Scorer down: the director's own painters.
+    const [d, pres] = await Promise.all([
+      fetchBrush(heard),
+      fetchPresence({ feeling: heard.feeling, loudness: heard.arousal, movement: texture })
+        .catch(e => (console.warn('presence scorer unavailable:', e), null)),
+    ]);
+    const artists = pres?.artists?.length ? pres.artists : d.artists;
+    if (pres) console.info('presence', pres.read, artists.map(a => `${a.label} ${a.weight}`));
     const look = { palette: d.palette?.length ? d.palette : ['#e6bd6a'], width: S.W * (.035 + .045 * (d.size ?? .5)) };
-    const painting = fetchRender({ artists: d.artists, energy: d.energy, warmth: d.warmth, light: d.light,
+    const painting = fetchRender({ artists, vectors: pres?.vectors, energy: d.energy, warmth: d.warmth, light: d.light,
                                    atmosphere: d.atmosphere, mode: S.start === 'abstract' ? 'abstract' : 'scene' })
       .then(r => loadImg(r.image))
       .catch(e => { console.warn('no mood frame, revealing a palette wash:', e); return paletteWash(look.palette); });
-    const names = d.artists.map(a => a.name.split(',')[0]).join(', ');
-    say(sim ? 'Tracing…' : 'Now trace a path in the air with your finger.', `${d.reason}`);
+    const names = artists.map(a => (a.label || a.name).split(',')[0]).join(', ');
+    const reason = pres ? (d.reading ? `${d.reading} · after ${names}` : `after ${names}`).slice(0, 90) : d.reason;
+    say(sim ? 'Tracing…' : 'Now trace a path in the air with your finger.', reason);
     $('#sub').prepend(Object.assign(document.createElement('span'), { id: 'swatches',
       innerHTML: look.palette.slice(0, 8).map(c => `<i style="background:${c}"></i>`).join('') }));
     resetTips();                                          // locks onto the largest hand: the 3, 2, 1 should end here
@@ -79,13 +89,14 @@ async function visit(sim) {
     if (!strokes.length) { say('No path this time.', 'Hold a hand up where the camera can see it, then trace.'); clearTrail(); return; }
     say('Mixing your paint…', `after ${names}`); bar(0);
     const vibe = await painting;
-    say('Your vibe, painted.', `${d.reason}`);
+    say('Your vibe, painted.', reason);
     const before = S.visitors ? undefined : S.base.toDataURL('image/jpeg', .92);   // night's first visit: where the montage starts
     await reveal(strokes, vibe, look.width, texture, heard.envelope);
     S.visitors++; showCount();
     const name = await askName(S.visitors, !!sim);       // '' = skipped; never throws, so the visit always finishes
-    say(S.event.closing, `${d.reason}`);
-    await saveVisit({ name, reading: d.reading, painters: d.artists, presence: heard.presence, start: S.start,
+    say(S.event.closing, reason);
+    const painters = artists.map(a => ({ name: a.label || a.name, id: a.name, weight: a.weight }));
+    await saveVisit({ name, reading: d.reading, painters, presence: heard.presence, start: S.start,
                       strokes, mood: vibe.src, canvas: S.base.toDataURL('image/jpeg', .92), before })
       .catch(e => console.warn('visit not saved', e));
     await sleep(2500);
