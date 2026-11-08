@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Living Canvas Montage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/vibe/vibe.css">
+</head>
+<body>
+<header><h1>Living Canvas <span>tonight’s montage</span></h1>
+  <div class="right"><div id="count"></div></div></header>
+<div id="frame"><canvas id="paint"></canvas><canvas id="trail"></canvas><canvas id="cursor"></canvas></div>
+<footer>
+  <div><div id="say">Loading tonight’s visits…</div><div id="sub"></div></div>
+  <div class="btns"><button id="again" class="main" disabled>Play again</button></div>
+  <div id="meter"></div><div id="bar"></div>
+</footer>
+
+<script type="module" src="/vibe/montage.js"></script>
+</body>
+</html>

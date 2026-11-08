@@ -79,11 +79,12 @@ async function visit(sim) {
     say('Mixing your paint…', `after ${names}`); bar(0);
     const vibe = await painting;
     say('Your vibe, painted.', `${d.reason}`);
+    const before = S.visitors ? undefined : S.base.toDataURL('image/jpeg', .92);   // night's first visit: where the montage starts
     await reveal(strokes, vibe, look.width, texture, heard.envelope);
     S.visitors++; showCount();
     say(S.event.closing, `${d.reason}`);
     await saveVisit({ name: heard.name, reading: d.reading, painters: d.artists, presence: heard.presence, start: S.start,
-                      strokes, mood: vibe.src, canvas: S.base.toDataURL('image/jpeg', .92) })
+                      strokes, mood: vibe.src, canvas: S.base.toDataURL('image/jpeg', .92), before })
       .catch(e => console.warn('visit not saved', e));
     await sleep(2500);
     say('Next visitor: step up.', 'Each visit repaints only the path its hands drew.');

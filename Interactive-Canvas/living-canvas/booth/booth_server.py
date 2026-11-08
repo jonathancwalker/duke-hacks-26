@@ -572,7 +572,8 @@ def vibe_render(v):
 
 
 # ---------------------------------------------------------------- saved visits (vibe paint)
-# Tonight's visits live in booth/visits/current/: NNNN.json plus NNNN-mood.jpg and NNNN-canvas.jpg. The page rebuilds
+# Tonight's visits live in booth/visits/current/: NNNN.json plus NNNN-mood.jpg and NNNN-canvas.jpg (and, for the night's
+# first visit, NNNN-before.jpg: the canvas before it, where the montage starts). The page rebuilds
 # from them on load, so a reload or crash loses nothing. Reset moves the folder aside (visits/night-<time>/), never
 # deletes it. Visitors' spoken words are not stored.
 VISITS = os.path.join(HERE, "visits")
@@ -611,7 +612,8 @@ def visit_save(v):
                "start": v.get("start") if v.get("start") in ("chapel", "blank", "abstract") else None,
                "strokes": strokes,
                "mood": _save_img(v.get("mood"), os.path.join(TONIGHT, f"{vid}-mood")),
-               "canvas": _save_img(v.get("canvas"), os.path.join(TONIGHT, f"{vid}-canvas"))}
+               "canvas": _save_img(v.get("canvas"), os.path.join(TONIGHT, f"{vid}-canvas")),
+               "before": _save_img(v.get("before"), os.path.join(TONIGHT, f"{vid}-before"))}
         tmp = os.path.join(TONIGHT, f"{vid}.json.tmp")
         with open(tmp, "w") as f:
             json.dump(rec, f)
@@ -632,7 +634,7 @@ def visits_list():
             except (OSError, ValueError) as e:
                 print(f"[booth] skipping unreadable visit {f}: {e}", file=sys.stderr)
                 continue
-            for k in ("mood", "canvas"):
+            for k in ("mood", "canvas", "before"):
                 if rec.get(k):
                     rec[k] = f"/visits/{rec[k]}"
             out.append(rec)
@@ -685,6 +687,9 @@ class Handler(BaseHTTPRequestHandler):
         if self.path.split("?")[0] in ("/vibe", "/vibe.html"):
             with open(os.path.join(HERE, "..", "vibe", "vibe.html"), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
+        if self.path.split("?")[0] in ("/montage", "/montage.html"):     # fast replay of tonight's visits
+            with open(os.path.join(HERE, "..", "vibe", "montage.html"), "rb") as f:
+                return self._send(200, f.read(), "text/html; charset=utf-8")
         if self.path.split("?")[0] in ("/gallery", "/gallery.html"):   # the projector screen (issue #26)
             with open(os.path.join(HERE, "..", "vibe", "gallery.html"), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
@@ -697,7 +702,7 @@ class Handler(BaseHTTPRequestHandler):
                 with open(p, "rb") as f:
                     ctype = "text/javascript" if m[2] == "js" else "text/css"
                     return self._send(200, f.read(), ctype + "; charset=utf-8")
-        m = re.fullmatch(r"/visits/(\d{4}-(?:mood|canvas)\.(jpg|png))", self.path.split("?")[0])
+        m = re.fullmatch(r"/visits/(\d{4}-(?:mood|canvas|before)\.(jpg|png))", self.path.split("?")[0])
         if m and os.path.isfile(os.path.join(TONIGHT, m[1])):
             with open(os.path.join(TONIGHT, m[1]), "rb") as f:
                 return self._send(200, f.read(), "image/jpeg" if m[2] == "jpg" else "image/png")
