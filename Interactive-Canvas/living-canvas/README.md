@@ -18,7 +18,7 @@ Step up, talk and move for 10 seconds, and a shared painting changes with you.
    ```bash
    cd booth && BOOTH_GCP_PROJECT=hackathon-514014 .venv/bin/python booth_server.py
    ```
-4. Open http://localhost:8790 in Chrome and press **Step up**.
+4. Open http://localhost:8790 in Chrome: it opens the station (`/vibe`). The first booth page is still at `/booth`.
 
 By default each visitor becomes a mix of real paintings plus intensity (`BOOTH_PLACEMENT=hybrid`). Add `BOOTH_PLACEMENT=axes` to go back to energy / warmth / light only.
 

@@ -206,7 +206,7 @@ def test_endpoints_are_served():
                 return json.load(r)
         try:
             assert post("/api/line", {"reading": "joy", "before": 0})["line"] == bs.load_event()["closing"]
-            assert post("/api/line", {"event": "concert", "reading": "joy", "before": 0})["line"].startswith("The whole crowd")
+            assert post("/api/line", {"event": "concert", "reading": "joy", "before": 0})["line"] == bs.load_event("concert")["closing"]
             assert post("/api/reflection", {"event": "museum"})["reflection"] == "1 visitor. One painting."
         finally:
             srv.shutdown(); srv.server_close()

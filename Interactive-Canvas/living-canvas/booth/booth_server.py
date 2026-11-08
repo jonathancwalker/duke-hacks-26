@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Living Canvas booth server (runs on the booth laptop).
 
-    python3 booth/booth_server.py            # then open http://localhost:8790
+    python3 booth/booth_server.py            # then open http://localhost:8790 (the station, /vibe)
 
-- Serves booth.html (webcam + mic capture, painting display).
+- / redirects to the station (/vibe); the first booth page (booth.html) is at /booth.
 - POST /api/presence: words + voice loudness + movement -> 3 painting weights and their CLIP vectors (presence/).
 - POST /api/visit: visitor features -> an LLM art director -> art-space coefficients -> lab GPU -> two frames.
 - Art director, first available of:
@@ -1140,7 +1140,12 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers(); self.wfile.write(data)
 
     def do_GET(self):
-        if self.path in ("/", "/booth.html"):
+        if self.path.split("?")[0] == "/":                # the station is home; keep ?event=... for it
+            q = urllib.parse.urlsplit(self.path).query
+            self.send_response(302); self.send_header("Location", "/vibe" + (f"?{q}" if q else ""))
+            self.send_header("Content-Length", "0"); self.end_headers()
+            return
+        if self.path.split("?")[0] in ("/booth", "/booth.html"):   # the first booth page, kept for reference
             with open(os.path.join(HERE, "booth.html"), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
         if self.path.split("?")[0] in ("/brush", "/brush.html"):
