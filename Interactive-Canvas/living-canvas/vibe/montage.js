@@ -3,9 +3,9 @@
 // ending on the night's final canvas. Revealing the saved canvases (not the mood frames) needs no GPU, and every step
 // lands exactly on what the station showed, palette-wash fallbacks included. ?loop replays forever, picking up new
 // visits each time (for the projector).
-import { S, $, paint, pctx, mk, say, meter, frame, sleep, loadImg } from './state.js';
+import { S, $, pctx, say, meter, sleep, loadImg } from './state.js';
 import { fetchVisits } from './api.js';
-import { fit, startCanvas, reveal, clearTrail } from './render.js';
+import { fit, startCanvas, reveal, settle, clearTrail } from './render.js';
 import { plan, FINAL_MS } from './montage_plan.js';
 
 const LOOP = new URLSearchParams(location.search).has('loop');
@@ -14,20 +14,6 @@ const REVEAL_SHARE = .7;   // of each visit's slot; the rest settles onto the sa
 addEventListener('resize', fit);
 
 const load = src => src ? loadImg(src).catch(() => (console.warn('montage image missing', src), null)) : Promise.resolve(null);
-
-// Cross-fade the frame onto img by time `end` (performance.now), then make it the canvas the next visit starts from.
-async function settle(img, end) {
-  const from = mk(); from.getContext('2d').drawImage(paint, 0, 0);
-  const t0 = performance.now(), span = Math.max(1, end - t0);
-  for (let f = 0; f < 1;) {
-    f = Math.min(1, (performance.now() - t0) / span);
-    pctx.globalAlpha = 1; pctx.drawImage(from, 0, 0);
-    pctx.globalAlpha = f; pctx.drawImage(img, 0, 0, S.W, S.H);
-    await frame();
-  }
-  pctx.globalAlpha = 1; pctx.drawImage(img, 0, 0, S.W, S.H);
-  S.base.getContext('2d').drawImage(paint, 0, 0);
-}
 
 async function play() {
   $('#again').disabled = true; meter(0);

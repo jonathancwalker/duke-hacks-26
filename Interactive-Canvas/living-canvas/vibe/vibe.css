@@ -34,3 +34,12 @@ button:disabled { opacity: .35; cursor: default; }
   header, footer { padding: 0 16px; } #say { font-size: 22px; } #cam { display: none; }
   footer { grid-template-columns: 1fr; height: auto; padding-bottom: 12px; }
 }
+/* Idle loop (#37): the replay overlay, its captions and the invite, all inside #frame over the live canvas. */
+#idle-cap, #idle-invite { position: absolute; left: 0; right: 0; padding: 14px 20px; pointer-events: none;
+                          text-shadow: 0 1px 10px #000c; }
+#idle-cap { bottom: 0; background: linear-gradient(transparent, #0009); }
+#idle-cap .reading { font: italic 500 26px/1.15 "Cormorant Garamond", Georgia, serif; }
+#idle-cap .who { opacity: .8; font-size: 13px; letter-spacing: .04em; margin-top: 2px; }
+#idle-invite { top: 0; text-align: center; font: 500 24px/1 "Cormorant Garamond", Georgia, serif; color: var(--accent);
+               animation: idle-breathe 3.2s ease-in-out infinite; }
+@keyframes idle-breathe { 50% { opacity: .4; } }
