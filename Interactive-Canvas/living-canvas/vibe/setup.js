@@ -79,7 +79,9 @@ $('#preview-btn').addEventListener('click', async () => {
   const btn = $('#preview-btn'), box = $('#preview');
   busy(btn, true, 'Painting…'); box.textContent = 'Painting the base scene on the GPU (up to a minute)…'; note('#preview-note', '');
   try {
-    const r = await call('/api/event/preview', values(['name', 'scene']));
+    const form = values(['name', 'scene']);
+    if (loaded && form.name === loaded.name) form.id = loaded.id;   // cache it where the saved event will look
+    const r = await call('/api/event/preview', form);
     const img = new Image(); img.alt = 'Base scene preview'; img.src = r.image;
     box.replaceChildren(img);
     if (r.fallback) note('#preview-note', 'The GPU lab didn’t answer; this is the last preview of this exact scene.', 'warn');

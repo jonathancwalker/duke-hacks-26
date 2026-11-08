@@ -1075,6 +1075,14 @@ def event_draft(e):
     return out
 
 
+def _setup_id(e):
+    """The id an event from /setup saves under: re-saving an event loaded from events/ keeps its file (concert.json
+    stays concert.json); a new one is named by a slug of its name."""
+    eid = e.get("id")
+    return eid if isinstance(eid, str) and _EVENT_ID.fullmatch(eid) and os.path.isfile(_event_path(eid)) \
+        else event_slug(_line(e.get("name"), "name"))
+
+
 def event_save(e):
     """Write events/<id>.json (the given id if that event exists, else a slug of the name) and make it the active
     event now and after a restart. ValueError if a
@@ -1086,9 +1094,7 @@ def event_save(e):
         raise ValueError(f"fill in {', '.join(missing)}")
     if ev["kind"] not in EVENT_KINDS:
         raise ValueError(f"kind must be one of {', '.join(EVENT_KINDS)}")
-    # Re-saving an event loaded from events/ keeps its file (concert.json stays concert.json); a new one is named by slug.
-    eid = e.get("id") if isinstance(e.get("id"), str) and _EVENT_ID.fullmatch(e["id"]) and os.path.isfile(_event_path(e["id"])) \
-        else event_slug(ev["name"])
+    eid = _setup_id(e)
     if not eid:
         raise ValueError("the name needs at least one letter or number")
     ev = {k: v for k, v in ev.items() if v}
@@ -1108,7 +1114,7 @@ def event_preview(e):
     if not scene:
         raise ValueError("write a scene to preview")
     try:
-        return base_frame({"id": event_slug(e.get("name")) or "preview", "scene": scene})
+        return base_frame({"id": _setup_id(e) or "preview", "scene": scene})
     except RuntimeError as ex:
         raise LabUnavailable("The GPU lab isn't answering, so there's no preview right now. You can still save; the "
                              "station paints this scene once the lab is back.") from ex

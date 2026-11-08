@@ -273,6 +273,20 @@ def test_preview_with_the_gpu_down_explains_instead_of_failing():
         bs.lab_exec, bs.FRAMES = saved
 
 
+def test_preview_of_concert_night_is_cached_where_the_station_looks():
+    saved = bs.lab_exec, bs.FRAMES
+    bs.FRAMES = tempfile.mkdtemp()
+    bs.lab_exec = lambda *a, **k: {"images": [{"jpg": "/9j/2Q=="}]}
+    scene = "an oil painting of a summer stage at dusk, visible brushstrokes"
+    try:
+        with Events():
+            bs.event_preview({"id": "concert", "name": "Concert Night", "scene": scene})
+            assert os.path.isfile(bs._frame_path(bs.base_key({"id": "concert", "scene": scene})))
+    finally:
+        shutil.rmtree(bs.FRAMES)
+        bs.lab_exec, bs.FRAMES = saved
+
+
 def test_setup_page_is_served():
     with Server() as s:
         code, body, ctype = s.get("/setup")
