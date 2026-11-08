@@ -58,8 +58,9 @@ restatements (`c4_restatements.json` and `c4_restatements_emb.pt`). Training tak
 uv run --no-project --with torch,transformers,pandas,pyarrow,numpy,pillow python -I presence/build.py --restatements <dir>
 ```
 
-The booth needs `torch` and `transformers` in its environment (the CLIP ViT-H text tower runs locally, on the Apple GPU
-when there is one, about 10 ms per sentence).
+The booth's packages are in `booth/requirements.txt` (`start.sh` installs them and fetches the CLIP model). The CLIP ViT-H
+text tower runs locally, on the Apple GPU when there is one, about 10 ms per sentence. `/api/health` reports
+`"presence": "ready"` once the scorer has loaded, or why it is unavailable.
 
 ## Tests
 

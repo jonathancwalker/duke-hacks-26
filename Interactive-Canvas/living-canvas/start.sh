@@ -44,10 +44,25 @@ gcloud auth application-default print-access-token >/dev/null 2>&1 \
 [ -f "$HERE/experiments/.lab.json" ] \
   || need "experiments/.lab.json is missing (it holds the lab token and is not in git; ask the team)"
 if listening "$BOOTH_PORT"; then need "port $BOOTH_PORT is busy (a booth already running?). Run ./stop.sh --keep-vm first"; fi
-if [ ! -x "$HERE/booth/.venv/bin/python" ]; then
-  say "First run: setting up the booth's Python environment"
+PY="$HERE/booth/.venv/bin/python"
+if [ ! -x "$PY" ]; then
+  say "First run: setting up the booth's Python environment (torch is a large download)"
   run python3 -m venv "$HERE/booth/.venv"
-  run "$HERE/booth/.venv/bin/pip" install -q google-genai
+  run "$PY" -m pip install -q -r "$HERE/booth/requirements.txt"
+elif ! "$PY" -c "import google.genai, torch, transformers, numpy" 2>/dev/null; then
+  say "Adding the booth's new Python packages (booth/requirements.txt; torch is a large download)"
+  run "$PY" -m pip install -q -r "$HERE/booth/requirements.txt"
+fi
+
+# Presence scorer (picks the vibe painters): its library is built from ArtEmis data, which is not in git.
+PRESENCE_LIB=${PRESENCE_DIR:-$HOME/.cache/living-canvas/presence}/presence_library.npz
+[ -f "$PRESENCE_LIB" ] \
+  || echo "warning: no presence library at $PRESENCE_LIB; the Gemini director picks the painters. Build it once: see presence/README.md"
+# Its CLIP text model (~4 GB) is fetched once, here, so the first visitor does not wait for the download.
+CLIP_ID=laion/CLIP-ViT-H-14-laion2B-s32B-b79K
+if [ ! -d "${HF_HOME:-$HOME/.cache/huggingface}/hub/models--${CLIP_ID//\//--}" ]; then
+  say "First run: downloading the CLIP text model for the presence scorer (~4 GB)"
+  run "$PY" -c "from transformers import CLIPTextModelWithProjection, CLIPTokenizer as T; T.from_pretrained('$CLIP_ID'); CLIPTextModelWithProjection.from_pretrained('$CLIP_ID')"
 fi
 
 # ---------------------------------------------------------------- 1. GPU VM
