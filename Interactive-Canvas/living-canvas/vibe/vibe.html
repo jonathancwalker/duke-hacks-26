@@ -20,11 +20,21 @@
   <div><div id="say">Preparing the canvas…</div><div id="sub"></div></div>
   <div class="btns">
     <button id="reset" title="Start the night over from a blank underpainting">Reset</button>
+    <button id="finish" title="Close out tonight: replay every visit, then hold on the final piece" disabled>Finish</button>
     <button id="sim" title="A pretend visitor with a scripted feeling and path">Simulate</button>
     <button id="go" class="main" disabled>Step up</button>
+    <button id="download" class="main" title="Save tonight’s final canvas as a JPEG" hidden>Download</button>
   </div>
   <div id="meter"></div><div id="bar"></div>
 </footer>
+<dialog id="finish-confirm" aria-labelledby="finish-title">
+  <form method="dialog">
+    <h2 id="finish-title">Finish tonight’s canvas?</h2>
+    <p>Every visit replays, then the station holds on the final piece. No more visits until Reset starts a new night.
+       Tonight’s visits are kept.</p>
+    <div class="btns"><button value="cancel" autofocus>Keep painting</button><button value="finish" class="main">Finish</button></div>
+  </form>
+</dialog>
 
 <script type="module" src="/vibe/flow.js"></script>
 </body>
