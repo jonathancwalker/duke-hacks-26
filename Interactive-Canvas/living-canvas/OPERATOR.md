@@ -38,7 +38,7 @@ The vibe painters come from the presence scorer. It loads about 10 s after the b
 
 Then in Chrome:
 
-- [ ] Open http://localhost:8790/vibe (or `/` for the booth, `/brush` for the brush experiment).
+- [ ] Open http://localhost:8790 (it opens the station, `/vibe`). Set up the event first with **Set up event** (or `/setup`); saving brings you back to the station. The first booth page is at `/booth`, the brush experiment at `/brush`.
 - [ ] When Chrome asks, **Allow** camera and microphone. If you missed it: click the icon left of the address bar → turn on Camera and Microphone → reload.
 - [ ] Wrong camera or mic? Same icon → **Site settings**, or `chrome://settings/content/camera` and `.../microphone`.
 - [ ] Press **Simulate** once to check a full visit end to end, then go full screen (`Ctrl+Cmd+F` on macOS).

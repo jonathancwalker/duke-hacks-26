@@ -146,12 +146,28 @@
         height: 100%;
         display: block;
       }
+      /* the camera: a small mirror in the painting's bottom-right corner while the visitor talks and traces
+         (flow.js adds .on), so they can see their hand. Strokes still paint underneath it. */
       body.m-body #cam {
         position: absolute;
-        width: 1px;
-        height: 1px;
+        right: clamp(10px, 1.4vw, 20px);
+        bottom: clamp(10px, 1.4vw, 20px);
+        width: clamp(160px, 22%, 300px);
+        height: auto;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        transform: scaleX(-1);
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        border-radius: 12px;
+        background: #1b1a18;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
         opacity: 0;
+        transition: opacity 0.3s;
         pointer-events: none;
+        z-index: 3;
+      }
+      body.m-body #cam.on {
+        opacity: 1;
       }
 
       /* key: frosted glass in the painting's corner. It fades when the brush comes near and hides 5 s after the countdown */
@@ -231,7 +247,9 @@
       #next-in:empty {
         display: none;
       }
-      body.m-body footer button {
+      body.m-body footer button,
+      body.m-body footer #setup-link {
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -251,6 +269,7 @@
         color: var(--v-ink);
         border-color: var(--v-fg);
       }
+      body.m-body footer #setup-link:hover,
       body.m-body footer button:hover:not(:disabled) {
         transform: translateY(-1px);
       }
@@ -529,6 +548,7 @@
           <div id="frame">
             <canvas id="paint"></canvas><canvas id="trail"></canvas
             ><canvas id="cursor"></canvas>
+            <video id="cam" playsinline muted></video>
             <ul class="key" id="key" aria-label="Gestures">
               <li class="k">Key</li>
               <li>
@@ -571,7 +591,6 @@
             </ul>
           </div>
         </div>
-        <video id="cam" playsinline muted></video>
 
         <footer>
           <div class="left">
@@ -581,6 +600,7 @@
             >
               Simulate
             </button>
+            <a id="setup-link" href="/setup" title="Set up tonight’s event, then come back here">Set up event</a>
             <button
               id="download"
               class="main"
