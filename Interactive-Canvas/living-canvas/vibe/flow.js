@@ -53,14 +53,17 @@ async function reset(clear) {
     S.visitors = saved.length; showCount(); fit();
     say(S.event.question, 'Step up and answer out loud, then trace a path in the air. Your mood repaints the canvas only where your hand went.');
   } catch (e) { say('The GPU lab is not answering.', String(e.message || e)); }
+  if (!S.finished) showQuestion();                      // the question card for the first visitor
   S.busy = false; setButtons();
-  if (!S.finished) ui().ask?.();                        // the question card for the first visitor
 }
+
+// The question card (visit_ui.js). After a visit it waits for Next visitor instead of coming back on a timer.
+function showQuestion() { S.asking = !!ui().ask; ui().ask?.(); }
 
 // ---------------------------------------------------------------- one visit
 async function visit(sim) {
   if (S.busy || S.finished || !S.base) return;
-  S.busy = true; setButtons(); stopGlow(false);
+  S.busy = true; S.asking = false; setButtons(); stopGlow(false);
   try {
     let heard, laban;
     if (sim) { ui().closeCard?.(); heard = sim.heard; laban = sim.laban; say(`“${heard.feeling}”`, `a pretend visitor, ${sim.voice}`); await sleep(900); }
@@ -122,8 +125,7 @@ async function visit(sim) {
   } catch (e) {
     console.error(e); say('Something went wrong.', String(e.message || e));
   } finally {
-    stopGlow(); S.busy = false; setButtons(); bar(0); video.classList.remove('on');
-    if (!S.finished) ui().ask?.(10000);                 // 10 s to look (or press Finish), then the card for the next visitor
+    stopGlow(); S.busy = false; setButtons(); bar(0); video.classList.remove('on');   // rests here until Next visitor
   }
 }
 
@@ -152,7 +154,7 @@ function simVisitor() {
 // place (the final piece and /montage stay reachable) until Reset starts a new night, which moves them aside.
 async function finishNight() {
   if (S.busy || S.finished || !S.visitors) return;
-  S.busy = S.finished = true; setButtons(); stopGlow(false); clearTrail(); ui().closeCard?.();
+  S.busy = S.finished = true; S.asking = false; setButtons(); stopGlow(false); clearTrail(); ui().closeCard?.();
   try {
     const { visits, ok } = await playMontage();
     if (!ok) S.finished = false;                          // visits unavailable: back to the night, nothing was closed
@@ -186,11 +188,12 @@ confirmFinish.addEventListener('close', () => { if (confirmFinish.returnValue ==
 const nudgeIdle = watchIdle(() => S.busy || S.finished || confirmFinish.open || !S.base);
 function setButtons() {
   nudgeIdle();
-  const b = stationButtons({ busy: S.busy, ready: !!S.base, visitors: S.visitors, finished: !!S.finished });
+  const b = stationButtons({ busy: S.busy, ready: !!S.base, visitors: S.visitors, finished: !!S.finished, asking: !!S.asking });
   for (const [id, { hidden, disabled }] of Object.entries(b)) Object.assign($('#' + id), { hidden, disabled });
 }
 $('#go').onclick = () => visit();
 $('#sim').onclick = () => visit(simVisitor());
+$('#next').onclick = () => { if (S.busy || S.finished) return; showQuestion(); setButtons(); };
 $('#reset').onclick = () => !S.busy && reset(true);
 $('#finish').onclick = () => { if (!S.busy && S.visitors) { confirmFinish.returnValue = ''; confirmFinish.showModal(); } };
 $('#download').onclick = download;

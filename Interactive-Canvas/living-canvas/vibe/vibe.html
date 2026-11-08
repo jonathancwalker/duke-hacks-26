@@ -219,7 +219,7 @@
         font-weight: 600;
       }
 
-      /* bottom: Simulate (and Download once the night is finished) · Finish + "back to the question in 10 s" · Reset */
+      /* bottom: Simulate, Set up event (Download once the night is finished) · Next visitor · Finish + Reset, kept apart from Next */
       body.m-body footer {
         all: unset;
         position: relative;
@@ -281,7 +281,9 @@
         outline: 2px solid var(--v-fg);
         outline-offset: 3px;
       }
-      #reset {
+      footer .right {
+        display: flex;
+        gap: 10px;
         justify-self: end;
       }
       /* progress strips flow.js fills, along the bottom of the painting */
@@ -612,21 +614,30 @@
           </div>
           <div class="mid">
             <button
-              id="finish"
+              id="next"
               class="main"
+              title="Bring up the question for the next visitor"
+              hidden
+            >
+              Next visitor
+            </button>
+            <span id="next-in" aria-live="polite"></span>
+          </div>
+          <div class="right">
+            <button
+              id="finish"
               title="Close out tonight: replay every visit, then hold on the final piece"
               disabled
             >
               Finish
             </button>
-            <span id="next-in" aria-live="polite"></span>
+            <button
+              id="reset"
+              title="Start the night over from a blank underpainting"
+            >
+              Reset
+            </button>
           </div>
-          <button
-            id="reset"
-            title="Start the night over from a blank underpainting"
-          >
-            Reset
-          </button>
           <div id="meter"></div>
           <div id="bar"></div>
         </footer>
