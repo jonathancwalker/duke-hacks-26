@@ -62,8 +62,12 @@ async function visit(sim) {
     const texture = moveScore(laban);                     // one edge texture for the whole stroke; drawing can't change it
     console.info('movement while talking', { texture: +texture.toFixed(2), ...laban });
     say('Choosing your painters…', ''); bar(0);
-    const d = await fetchBrush(heard);
-    const look = { palette: d.palette?.length ? d.palette : ['#e6bd6a'], width: S.W * (.035 + .045 * (d.size ?? .5)) };
+    const d = await fetchBrush({ ...heard, movement: texture });
+    // The trail and swatches use the visitor's mood palette (issue #10: feeling + voice + movement); older servers
+    // without it fall back to the painters' colors.
+    const mood = d.mood?.palette?.length ? d.mood.palette : d.palette?.length ? d.palette : ['#e6bd6a'];
+    console.info('mood palette', d.mood);
+    const look = { palette: mood, width: S.W * (.035 + .045 * (d.size ?? .5)) };
     const painting = fetchRender({ artists: d.artists, energy: d.energy, warmth: d.warmth, light: d.light,
                                    atmosphere: d.atmosphere, mode: S.start === 'abstract' ? 'abstract' : 'scene' })
       .then(r => loadImg(r.image))
@@ -83,6 +87,7 @@ async function visit(sim) {
     S.visitors++; showCount();
     say(S.event.closing, `${d.reason}`);
     await saveVisit({ name: heard.name, reading: d.reading, painters: d.artists, presence: heard.presence, start: S.start,
+                      palette: look.palette,
                       strokes, mood: vibe.src, canvas: S.base.toDataURL('image/jpeg', .92) })
       .catch(e => console.warn('visit not saved', e));
     await sleep(2500);
