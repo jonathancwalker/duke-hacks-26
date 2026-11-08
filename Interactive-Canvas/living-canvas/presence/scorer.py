@@ -3,8 +3,8 @@
 This is "C5", the scorer that won the blind feeling-space eval. For words + loudness (0..1) + movement (0..1):
 
 1. Emotion read over the 9 ArtEmis emotions: the ArtEmis text head on the CLIP text embedding, blended 50/50 with
-   Gemini (temperature 0, same 9 emotions) when Gemini has already answered. "something else" is dropped and the rest
-   renormalised. Then the voice/movement steer: arousal = (loudness + movement) / 2 multiplies excitement, anger and
+   Gemini (temperature 0, same 9 emotions). The booth waits up to `gemini_timeout_s` for Gemini and uses the head
+   alone when it is slow or fails. "something else" is dropped and the rest renormalised. Then the voice/movement steer: arousal = (loudness + movement) / 2 multiplies excitement, anger and
    fear by exp(steer * (arousal - 0.5) * clarity) and contentment and sadness by its inverse, where clarity is
    1 - normalised entropy of the read (a vague read is steered less than a clear one).
 2. Emotion score = steered read . PMI of each painting's human vote distribution, smoothed toward the corpus prior
@@ -19,7 +19,6 @@ paintings outside the lab's 36-painting library.
 Settings live in config.json (re-read when it changes). The library (presence/build.py) is ArtEmis-derived, so it
 stays outside git: config `library_dir`, or PRESENCE_DIR.
 """
-import collections
 import concurrent.futures
 import json
 import os
@@ -195,7 +194,7 @@ class Library:
                 "library": int(len(v["keep"])), "ms": round(1000 * (time.perf_counter() - t0), 1)}
 
 
-# ---------------------------------------------------------------- Gemini emotion read, in the background
+# ---------------------------------------------------------------- Gemini emotion read (the booth waits for it, up to a timeout)
 EMO_KEYS = [e.replace(" ", "_") for e in EMO]
 EMO_SCHEMA = {"type": "OBJECT", "properties": {k: {"type": "NUMBER"} for k in EMO_KEYS}, "required": EMO_KEYS}
 EMO_PROMPT = ("Someone at an interactive art installation said: \"{text}\"\n"
@@ -217,16 +216,14 @@ def gemini_reader(client, model):
 
 
 class Presence:
-    """The booth's scorer: answers at once from the text head, and blends in Gemini's read once it is back.
+    """The booth's scorer: the text head blended with Gemini's read, waiting up to timeout_s (config
+    `gemini_timeout_s`) for Gemini. Gemini slow, failing or not configured: the head alone. config.json is re-read
+    when it changes."""
 
-    The first call for a sentence starts Gemini in the background; any call for the same sentence uses it when it is
-    done (or waits up to wait_s for it). config.json is re-read when it changes."""
-
-    def __init__(self, lib, gemini=None, config_path=None, keep=256):
-        self.lib, self.gemini, self.config_path, self.keep = lib, gemini, config_path or CONFIG_PATH, keep
-        self._reads = collections.OrderedDict()
-        self._lock = threading.Lock()
-        self._pool = concurrent.futures.ThreadPoolExecutor(max_workers=4)
+    def __init__(self, lib, gemini=None, timeout_s=None, config_path=None):
+        self.lib, self.gemini, self.config_path = lib, gemini, config_path or CONFIG_PATH
+        self.timeout_s = timeout_s
+        self._pool = concurrent.futures.ThreadPoolExecutor(max_workers=8)
         self._mtime = self._stat()
 
     def _stat(self):
@@ -244,29 +241,19 @@ class Presence:
             except Exception as e:                       # a half-saved or bad config keeps the last good one
                 print(f"[presence] config not applied: {e.__class__.__name__}: {e}", file=sys.stderr)
 
-    def _ask_gemini(self, text):
+    def _gemini_read(self, text):
+        timeout = self.timeout_s if self.timeout_s is not None else float(self.lib.cfg.get("gemini_timeout_s", 3.0))
+        f = self._pool.submit(self.gemini, text)
         try:
-            return self.gemini(text)
+            return f.result(timeout=timeout)
+        except concurrent.futures.TimeoutError:
+            print(f"[presence] Gemini emotion read over {timeout:.1f}s; using the text head alone", file=sys.stderr)
         except Exception as e:
-            print(f"[presence] Gemini emotion read failed: {e.__class__.__name__}: {str(e)[:200]}", file=sys.stderr)
-            raise
+            print(f"[presence] Gemini emotion read failed ({e.__class__.__name__}: {str(e)[:200]}); using the text head alone",
+                  file=sys.stderr)
+        return None
 
-    def _read(self, text):
-        with self._lock:
-            f = self._reads.get(text)
-            if f is None or (f.done() and f.exception() is not None):
-                f = self._reads[text] = self._pool.submit(self._ask_gemini, text)
-                while len(self._reads) > self.keep:
-                    self._reads.popitem(last=False)
-            return f
-
-    def __call__(self, text, loudness, movement, wait_s=0.0):
+    def __call__(self, text, loudness, movement):
         self._refresh_config()
-        gem = None
-        if self.gemini is not None and text:
-            f = self._read(text)
-            try:
-                gem = f.result(timeout=wait_s) if wait_s > 0 else (f.result() if f.done() else None)
-            except Exception:                            # still thinking, failed, or over quota: the head alone
-                gem = None
+        gem = self._gemini_read(text) if self.gemini is not None and text else None
         return self.lib.score(text, loudness, movement, gemini=None if gem is None else np.asarray(gem, dtype=F32))

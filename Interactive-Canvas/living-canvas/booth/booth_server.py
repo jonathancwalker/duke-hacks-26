@@ -606,12 +606,11 @@ def vibe_render(v):
 
 # ---------------------------------------------------------------- presence (issue #7): words + loudness + movement -> paintings
 # The C5 feeling scorer (presence/scorer.py) picks 3 of ~2,600 WikiArt paintings and returns their CLIP vectors, which
-# /api/vibe/render takes for paintings outside the lab library. It answers from the ArtEmis text head at once; Gemini's
-# emotion read is started in the background and blended in on later calls for the same words once it is back.
+# /api/vibe/render takes for paintings outside the lab library. Its emotion read blends the ArtEmis text head with
+# Gemini's read (up to gemini_timeout_s, 3 s; the head alone when Gemini is slow or fails).
 # Needs torch + transformers and the built library (presence/build.py); without them the director's painters are used.
 sys.path.insert(0, os.path.join(HERE, ".."))
 PRESENCE, PRESENCE_ERROR = None, "presence scorer still loading"
-PRESENCE_MAX_WAIT_S = 3.0
 
 
 class PresenceUnavailable(RuntimeError):
@@ -632,23 +631,22 @@ def load_presence():
         print(f"[booth] presence scorer unavailable ({PRESENCE_ERROR}); the director picks painters", file=sys.stderr)
 
 
-def _unit(x, default=0.5, hi=1.0):
+def _unit(x, default=0.5):
     try:
         x = float(x)
     except (TypeError, ValueError):
         return default
-    return max(0.0, min(hi, x)) if math.isfinite(x) else default
+    return max(0.0, min(1.0, x)) if math.isfinite(x) else default
 
 
 def presence_api(v):
-    """{feeling, loudness (or arousal), movement, wait_s?} -> {artists: [{name, weight, label, ...}], vectors, read}."""
+    """{feeling, loudness (or arousal), movement} -> {artists: [{name, weight, label, ...}], vectors, read}."""
     if PRESENCE is None:
         raise PresenceUnavailable(PRESENCE_ERROR)
     text = " ".join(str(v.get("feeling") or v.get("text") or "").split())[:300]
     loudness = _unit(v.get("loudness", v.get("arousal")))
     movement = _unit(v.get("movement"))
-    wait_s = _unit(v.get("wait_s"), 0.0, PRESENCE_MAX_WAIT_S)
-    return PRESENCE(text, loudness, movement, wait_s)
+    return PRESENCE(text, loudness, movement)
 
 
 # ---------------------------------------------------------------- saved visits (vibe paint)

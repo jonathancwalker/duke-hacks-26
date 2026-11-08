@@ -117,7 +117,8 @@ def test_first_snow_picks_a_snow_painting(lib):
     assert any(re.search(r"snow|winter", t, re.I) for t in titles), titles
 
 
-def test_head_only_answer_is_under_300_ms(lib):
+def test_reports_head_only_latency(lib):
+    """Measured and printed, not a gate: the booth waits for Gemini anyway (see the Presence tests below)."""
     texts = ["My grandmother passed away last month.", "We won! We actually won the championship!",
              "First snow of the year on the walk here.", "I'm nervous about my exams next week.",
              "I'm furious about how things are going.", "I feel peaceful and slow tonight."]
@@ -129,7 +130,6 @@ def test_head_only_answer_is_under_300_ms(lib):
         ms.append(1000 * (time.perf_counter() - t0))
     p50, p95 = statistics.median(ms), sorted(ms)[int(0.95 * len(ms)) - 1]
     print(f"\npresence head-only latency over {len(ms)} calls: p50 {p50:.1f} ms, p95 {p95:.1f} ms")
-    assert p95 < 300
 
 
 EVAL_OUT = os.environ.get("PRESENCE_EVAL_OUT")
@@ -149,18 +149,38 @@ def test_picks_match_the_eval_board_c5b(lib):
         assert [a["weight"] for a in res["artists"]] == pytest.approx(list(row["weights"].values()), abs=0.002)
 
 
-# ---------------------------------------------------------------- Gemini refines in the background
-def test_gemini_read_refines_later_calls_without_blocking_the_first(lib):
-    calls = []
+# ---------------------------------------------------------------- the booth's call: head + Gemini blend, head alone as fallback
+GRIEF = "My grandmother passed away last month."
 
-    def slow_gemini(text):
-        calls.append(text); time.sleep(0.5)
-        return dist(sadness=1).tolist()
 
-    pres = P.Presence(lib, gemini=slow_gemini)
+def test_waits_for_gemini_and_blends_it(lib):
+    def gemini(text):
+        time.sleep(0.2)
+        return dist(fear=1).tolist()
+
+    res = P.Presence(lib, gemini=gemini, timeout_s=3.0)(GRIEF, 0.2, 0.1)
+    assert res["read"]["source"] == "head+gemini"
+    assert res["read"]["gemini"] == {"fear": 1.0}
+    expected = lib.score(GRIEF, 0.2, 0.1, gemini=dist(fear=1))
+    assert names(res) == names(expected)
+
+
+def test_falls_back_to_the_head_when_gemini_is_slow_or_fails(lib):
+    def slow(text):
+        time.sleep(1.0)
+        return dist(fear=1).tolist()
+
+    def broken(text):
+        raise RuntimeError("429 quota")
+
+    head = lib.score(GRIEF, 0.2, 0.1)
     t0 = time.perf_counter()
-    first = pres("My grandmother passed away last month.", 0.2, 0.1)
-    assert time.perf_counter() - t0 < 0.3 and first["read"]["source"] == "head"
-    later = pres("My grandmother passed away last month.", 0.2, 0.1, wait_s=2.0)
-    assert later["read"]["source"] == "head+gemini"
-    assert calls == ["My grandmother passed away last month."]      # one Gemini call per sentence
+    late = P.Presence(lib, gemini=slow, timeout_s=0.3)(GRIEF, 0.2, 0.1)
+    assert time.perf_counter() - t0 < 0.8
+    failed = P.Presence(lib, gemini=broken, timeout_s=3.0)(GRIEF, 0.2, 0.1)
+    for res in (late, failed):
+        assert res["read"]["source"] == "head" and names(res) == names(head)
+
+
+def test_gemini_timeout_lives_in_the_config():
+    assert P.load_config()["gemini_timeout_s"] == 3.0

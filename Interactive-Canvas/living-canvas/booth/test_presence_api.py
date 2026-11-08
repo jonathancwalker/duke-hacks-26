@@ -18,8 +18,8 @@ class FakePresence:
     def __init__(self):
         self.calls = []
 
-    def __call__(self, text, loudness, movement, wait_s=0.0):
-        self.calls.append((text, loudness, movement, wait_s))
+    def __call__(self, text, loudness, movement):
+        self.calls.append((text, loudness, movement))
         return {"artists": [{"name": "a-painter_a-painting", "weight": 0.6, "label": "A Painter, A Painting"},
                             {"name": "b-painter_b-painting", "weight": 0.4, "label": "B Painter, B Painting"}],
                 "vectors": {"a-painter_a-painting": VEC, "b-painter_b-painting": VEC},
@@ -30,7 +30,7 @@ def test_presence_takes_words_loudness_and_movement():
     fake = FakePresence()
     bs.PRESENCE = fake
     out = bs.presence_api({"feeling": "  My grandmother passed away last month. ", "loudness": 0.2, "movement": 0.1})
-    assert fake.calls == [("My grandmother passed away last month.", 0.2, 0.1, 0.0)]
+    assert fake.calls == [("My grandmother passed away last month.", 0.2, 0.1)]
     assert [a["name"] for a in out["artists"]] == ["a-painter_a-painting", "b-painter_b-painting"]
     assert set(out["vectors"]) == {"a-painter_a-painting", "b-painter_b-painting"}
 
@@ -38,8 +38,8 @@ def test_presence_takes_words_loudness_and_movement():
 def test_presence_clamps_inputs_and_reads_arousal_as_loudness():
     fake = FakePresence()
     bs.PRESENCE = fake
-    bs.presence_api({"feeling": "We won!", "arousal": 3, "movement": -1, "wait_s": 9})
-    assert fake.calls[-1] == ("We won!", 1.0, 0.0, bs.PRESENCE_MAX_WAIT_S)
+    bs.presence_api({"feeling": "We won!", "arousal": 3, "movement": -1})
+    assert fake.calls[-1] == ("We won!", 1.0, 0.0)
 
 
 def test_presence_unavailable_is_a_clear_error():

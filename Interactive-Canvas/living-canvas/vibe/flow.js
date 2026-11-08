@@ -63,12 +63,13 @@ async function visit(sim) {
     const texture = moveScore(laban);                     // one edge texture for the whole stroke; drawing can't change it
     console.info('movement while talking', { texture: +texture.toFixed(2), ...laban });
     say('Choosing your painters…', ''); bar(0);
-    // Painters: the presence scorer (words + voice loudness + movement). Its first call starts Gemini's emotion read;
-    // by the time the director answers, a second call usually has it. Scorer down: the director's own painters.
-    const words = { feeling: heard.feeling, loudness: heard.arousal, movement: texture };
-    const early = fetchPresence(words).catch(e => (console.warn('presence scorer unavailable:', e), null));
-    const d = await fetchBrush(heard);
-    const pres = (await early) && await fetchPresence({ ...words, wait_s: 1.5 }).catch(() => early);
+    // Painters: the presence scorer (words + voice loudness + movement), asked alongside the director; both wait on
+    // Gemini. Scorer down: the director's own painters.
+    const [d, pres] = await Promise.all([
+      fetchBrush(heard),
+      fetchPresence({ feeling: heard.feeling, loudness: heard.arousal, movement: texture })
+        .catch(e => (console.warn('presence scorer unavailable:', e), null)),
+    ]);
     const artists = pres?.artists?.length ? pres.artists : d.artists;
     if (pres) console.info('presence', pres.read, artists.map(a => `${a.label} ${a.weight}`));
     const look = { palette: d.palette?.length ? d.palette : ['#e6bd6a'], width: S.W * (.035 + .045 * (d.size ?? .5)) };

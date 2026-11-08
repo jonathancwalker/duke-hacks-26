@@ -9,17 +9,17 @@ POST /api/presence  {"feeling": "First snow of the year on the walk here.", "lou
 -> {"artists": [{"name", "weight", "label", "title", "votes", "emotion_z", "subject_z"}, ...3],
     "vectors": {name: [1024 floats]},          # CLIP ViT-H image vectors: /api/vibe/render takes them as "vectors"
     "read": {"source": "head" | "head+gemini", "emotions", "head", "gemini", "clarity", "arousal"},
-    "library": 2656, "ms": 9.0}
+    "library": 2656, "ms": 9.0}   # ms = scoring only, after Gemini answered
 ```
 
-`loudness` falls back to `arousal` (what `listen()` sends); both are 0..1. `wait_s` (up to 3) waits for Gemini.
+`loudness` falls back to `arousal` (what `listen()` sends); both are 0..1. The call waits for Gemini's read (up to
+`gemini_timeout_s`, 3 s) and uses the text head alone when Gemini is slow or fails, so it takes a few seconds.
 503 when the scorer is not loaded; the vibe page then uses the director's painters.
 
 ## How it scores
 
-1. **Emotion read** over ArtEmis's 9 emotions: a linear head on the CLIP text embedding, answered at once. The first
-   call for a sentence also asks Gemini (temperature 0, same 9 emotions) in the background; later calls for the same
-   words blend 50/50 once it is back. "something else" is dropped and the rest renormalised.
+1. **Emotion read** over ArtEmis's 9 emotions: a linear head on the CLIP text embedding, blended 50/50 with Gemini
+   (temperature 0, same 9 emotions). "something else" is dropped and the rest renormalised.
 2. **Voice and movement steer**: arousal = (loudness + movement) / 2 multiplies excitement, anger and fear by
    exp(steer × (arousal − 0.5) × clarity), and contentment and sadness by its inverse. Clarity = 1 − normalised
    entropy of the read, so a vague read is steered less.
@@ -29,8 +29,8 @@ POST /api/presence  {"feeling": "First snow of the year on the walk here.", "lou
    library centred), so "first snow" reaches snow paintings.
 5. **score** = z(emotion) + λ · z(subject) over the whole library; top 3; weights = softmax of their z-scores.
 
-The vibe page calls it once when the visitor stops talking (starts the Gemini read) and again after the director
-answers (usually with Gemini's read by then), and renders with those paintings. The director still sets energy,
+The vibe page calls it alongside the director when the visitor stops talking (both wait on Gemini) and renders with
+its paintings. The director still sets energy,
 warmth, light, atmosphere, the reading and the trail palette.
 
 ## Settings (`config.json`, re-read when it changes; no restart, no code change)
@@ -43,6 +43,7 @@ warmth, light, atmosphere, the reading and the trail palette.
 | `prior_votes` | 10 | pseudo-votes that pull each painting's vote profile toward the corpus prior |
 | `steer` | 2.0 | strength of the voice/movement steer |
 | `gemini_weight` | 0.5 | share of Gemini's read in the blend |
+| `gemini_timeout_s` | 3.0 | how long to wait for Gemini before using the text head alone |
 | `top_k` | 3 | paintings returned |
 | `library_dir` | `~/.cache/living-canvas/presence` | the built library (or `PRESENCE_DIR`) |
 
