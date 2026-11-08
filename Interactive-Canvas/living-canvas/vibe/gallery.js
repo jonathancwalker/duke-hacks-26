@@ -31,7 +31,8 @@ async function poll() {
     const r = await fetch('/api/gallery', { cache: 'no-store' });
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const g = await r.json();
-    $('#count').textContent = g.visits ? `${g.visits} visitor${g.visits > 1 ? 's' : ''} tonight` : '';
+    $('#count').textContent = g.visits ? [`${g.visits} visitor${g.visits > 1 ? 's' : ''} tonight`,
+                                          g.name && `latest: ${g.name}`].filter(Boolean).join(' · ') : '';
     if (g.canvas !== shown) await show(g.canvas);
   } catch (e) { console.warn('gallery poll failed', e); }
   setTimeout(poll, POLL_MS);

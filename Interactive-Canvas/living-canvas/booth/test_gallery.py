@@ -41,34 +41,34 @@ class Tonight:
 
 def test_empty_night_has_no_canvas():
     with Tonight():
-        assert bs.gallery_state() == {"visits": 0, "id": None, "canvas": None}
+        assert bs.gallery_state() == {"visits": 0, "id": None, "canvas": None, "name": None}
 
 
 def test_one_saved_visit_shows_canvas_0001():
     with Tonight():
         bs.visit_save({"reading": "quiet hope", "canvas": JPEG, "mood": JPEG})
-        assert shown(bs.gallery_state()) == {"visits": 1, "id": "0001", "canvas": "/visits/0001-canvas.jpg"}
+        assert shown(bs.gallery_state()) == {"visits": 1, "id": "0001", "canvas": "/visits/0001-canvas.jpg", "name": "Visitor 1"}
 
 
 def test_latest_visit_wins():
     with Tonight():
         for _ in range(3):
             bs.visit_save({"canvas": JPEG})
-        assert shown(bs.gallery_state()) == {"visits": 3, "id": "0003", "canvas": "/visits/0003-canvas.jpg"}
+        assert shown(bs.gallery_state()) == {"visits": 3, "id": "0003", "canvas": "/visits/0003-canvas.jpg", "name": "Visitor 3"}
 
 
 def test_visit_without_canvas_keeps_the_last_canvas():
     with Tonight():
         bs.visit_save({"canvas": JPEG})
         bs.visit_save({"reading": "no image saved"})
-        assert shown(bs.gallery_state()) == {"visits": 2, "id": "0001", "canvas": "/visits/0001-canvas.jpg"}
+        assert shown(bs.gallery_state()) == {"visits": 2, "id": "0001", "canvas": "/visits/0001-canvas.jpg", "name": "Visitor 2"}
 
 
 def test_new_night_clears_the_gallery():
     with Tonight():
         bs.visit_save({"canvas": JPEG})
         bs.visits_clear()
-        assert bs.gallery_state() == {"visits": 0, "id": None, "canvas": None}
+        assert bs.gallery_state() == {"visits": 0, "id": None, "canvas": None, "name": None}
 
 
 def test_new_nights_0001_gets_a_new_url():
