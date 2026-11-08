@@ -16,11 +16,12 @@ export async function fetchEvent() {
 }
 // { image } : the night's calm underpainting of the event's scene.
 export const fetchBase = () => api('/api/vibe/base', { event: EVENT });
-// heard { feeling, arousal } -> { artists, palette, size, energy, warmth, light, atmosphere, reason }.
+// heard { feeling, arousal, movement } -> { artists, palette, size, energy, warmth, light, atmosphere, reason,
+//   mood: { palette (5 colors from feeling, voice and movement), vad, hue } }.
 export const fetchBrush = heard => api('/api/brush', heard);
 // { artists, energy, warmth, light, atmosphere, mode } -> { image } : the event's scene repainted in the mood.
 export const fetchRender = args => api('/api/vibe/render', { ...args, event: EVENT });
-// Tonight's saved visits, oldest first: [{ id, t, name, reading, painters, presence, start, strokes, mood, canvas }].
+// Tonight's saved visits, oldest first: [{ id, t, name, reading, painters, presence, start, palette, strokes, mood, canvas }].
 export const fetchVisits = async () => { const r = await fetch('/api/visits'); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); };
 // Store one finished visit (images as data URLs) -> { id }.
 export const saveVisit = v => api('/api/visits', v);
