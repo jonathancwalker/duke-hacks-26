@@ -1,29 +1,46 @@
 // Montage playback: a fast replay of tonight's saved visits, in order, about a second each. Each visit's path reveals
 // the canvas as it was after that visit over the canvas as it was before it, captioned with the reading and who it's
-// credited to, ending drawn on the night's final canvas. Revealing the saved canvases (not the mood frames) needs no
-// GPU, and every step lands exactly on what the station showed, palette-wash fallbacks included. Used by /montage and
-// by the station's Finish (part of #32); both pages have the same #frame canvases, #say and #meter.
+// credited to, ending drawn on the night's final canvas with the closing reflection (#34). Revealing the saved
+// canvases (not the mood frames) needs no GPU, and every step lands exactly on what the station showed, palette-wash
+// fallbacks included. Used by /montage and by the station's Finish (part of #32); both pages have the same #frame
+// canvases, #say and #meter. The station's idle loop has its own engine and asks for no reflection.
 import { S, $, pctx, say, meter, sleep, loadImg } from './state.js';
-import { fetchVisits } from './api.js';
+import { fetchVisits, fetchReflection } from './api.js';
 import { fit, startCanvas, reveal, settle, clearTrail } from './render.js';
-import { plan } from './montage_plan.js';
+import { plan, FINAL_MS } from './montage_plan.js';
 
 const REVEAL_SHARE = .7;   // of each visit's slot; the rest settles onto the saved canvas
+const GRACE_MS = 2000, READ_MS_PER_WORD = 300;   // wait for a late reflection; hold long enough to read it
 
 const load = src => src ? loadImg(src).catch(() => (console.warn('montage image missing', src), null)) : Promise.resolve(null);
 
-// -> { visits: n, ok } once the final canvas is on screen (and in S.base). ok is false when the saved visits could not
-// be loaded; visits is 0 then, or when there are none yet.
+// The closing reflection, asked for when the montage starts so it's ready at the end. Asked again only when the night
+// has new visits (loop mode, Play again). Keyed on the count and the last visit's id and time, so a new night after
+// Reset never reuses the old reflection.
+let asked = { key: null, words: null };
+const reflectionFor = visits => {
+  const last = visits[visits.length - 1], key = `${visits.length} ${last?.id} ${last?.t}`;
+  if (asked.key !== key) asked = { key, words: fetchReflection().then(r => r.reflection || '').catch(e => (console.warn('no reflection:', e), '')) };
+  return asked.words;
+};
+
+// How long to hold the final canvas: at least FINAL_MS, longer for a long reflection.
+export const holdMs = words => Math.max(FINAL_MS, READ_MS_PER_WORD * (words ? words.split(' ').length : 0));
+
+// -> { visits: n, ok, words } once the final canvas and its caption are on screen (and the canvas in S.base). ok is
+// false when the saved visits could not be loaded; visits is 0 then, or when there are none yet. words: the
+// reflection shown, or '' when it didn't arrive in time (the count shows instead).
 export async function playMontage() {
-  meter(0);
+  meter(0); $('#say').classList.remove('long');
   say('Loading tonight’s visits…');
   const visits = await fetchVisits().catch(e => { say('Saved visits are unavailable.', String(e.message || e)); return null; });
   const p = plan(visits || []), n = p.steps.length;
   $('#count').textContent = n ? `${n} visitor${n > 1 ? 's' : ''} tonight` : '';
   if (!n) {
     if (visits) say('No visits yet tonight.', 'The montage plays once someone has painted.');
-    return { visits: 0, ok: !!visits };
+    return { visits: 0, ok: !!visits, words: '' };
   }
+  const reflection = reflectionFor(visits);
 
   const urls = [...new Set(p.steps.flatMap(s => [s.before, s.after]).filter(Boolean))];
   const imgs = new Map(await Promise.all(urls.map(async u => [u, await load(u)])));
@@ -44,7 +61,10 @@ export async function playMontage() {
   meter(1);
   const last = imgs.get(p.final);
   if (last) { pctx.drawImage(last, 0, 0, S.W, S.H); S.base.getContext('2d').drawImage(last, 0, 0, S.W, S.H); }
-  say('Tonight’s canvas', `${n} visitor${n > 1 ? 's' : ''}, one painting`);
-  console.info('montage', { visits: n, playedMs: Math.round(performance.now() - t0), plannedMs: p.finalAt });
-  return { visits: n, ok: true };
+  // The final canvas, captioned with the night's reflection; the count (the server's own fallback) until it arrives.
+  say(`${n} visitor${n > 1 ? 's' : ''}. One painting.`, 'Tonight’s canvas');
+  const words = await Promise.race([reflection, sleep(GRACE_MS).then(() => '')]);
+  if (words) { $('#say').classList.toggle('long', words.length > 90); say(words); }   // in place of the caption
+  console.info('montage', { visits: n, playedMs: Math.round(performance.now() - t0) + holdMs(words), plannedMs: p.total, reflection: words });
+  return { visits: n, ok: true, words };
 }

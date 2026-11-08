@@ -4,7 +4,7 @@
 // only along their path. Crossings show the mood more strongly.
 // This module is the visit state machine: speak -> brush -> trace -> reveal -> name -> commit, plus start modes and Simulate.
 import { S, $, video, sleep, say, bar, loadImg } from './state.js';
-import { fetchEvent, fetchBase, fetchBrush, fetchPresence, fetchRender, fetchVisits, fetchGallery, saveVisit, clearVisits } from './api.js';
+import { fetchEvent, fetchBase, fetchBrush, fetchPresence, fetchRender, fetchLine, fetchVisits, fetchGallery, saveVisit, clearVisits } from './api.js';
 import { listen } from './audio.js';
 import { askName } from './name.js';
 import { startGlow, stopGlow } from './glow.js';
@@ -27,7 +27,7 @@ async function reset(clear) {
   S.busy = true; setButtons(); stopGlow(false);
   try {
     S.event = S.event || await fetchEvent();          // the event's question, scene and closing (events/*.json)
-    if (clear) { await clearVisits(); S.finished = false; }
+    if (clear) { await clearVisits(); S.finished = false; $('#say').classList.remove('long'); }
     const saved = clear ? [] : await fetchVisits().catch(e => (console.warn('saved visits unavailable', e), []));
     const last = saved[saved.length - 1];
     if (last?.start) S.start = last.start;
@@ -75,6 +75,10 @@ async function visit(sim) {
       fetchPresence({ feeling: heard.feeling, loudness: heard.arousal, movement: texture })
         .catch(e => (console.warn('presence scorer unavailable:', e), null)),
     ]);
+    // The line after the visit (#67), written while the canvas renders. Never awaited: if it isn't back by the time
+    // it shows, the event's fixed closing line shows instead.
+    let line = null;
+    fetchLine({ reading: d.reading, before: S.visitors }).then(r => { line = r.line; }).catch(e => console.warn('no visit line:', e));
     const artists = pres?.artists?.length ? pres.artists : d.artists;
     if (pres) console.info('presence', pres.read, artists.map(a => `${a.label} ${a.weight}`));
     const look = { palette: d.palette?.length ? d.palette : ['#e6bd6a'], width: S.W * (.035 + .045 * (d.size ?? .5)) };
@@ -99,7 +103,7 @@ async function visit(sim) {
     S.visitors++; showCount();
     startGlow(strokes);                                   // their strokes breathe behind the name prompt, then fade
     const name = await askName(S.visitors, !!sim, stopGlow);   // '' = skipped; never throws, so the visit always finishes
-    say(S.event.closing, reason);
+    say(line || S.event.closing, reason);
     const painters = artists.map(a => ({ name: a.label || a.name, id: a.name, weight: a.weight }));
     await saveVisit({ name, reading: d.reading, painters, presence: heard.presence, start: S.start,
                       strokes, mood: vibe.src, canvas: S.base.toDataURL('image/jpeg', .92), before })
