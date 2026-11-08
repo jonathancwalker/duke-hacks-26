@@ -1,0 +1,5 @@
+# The booth server's Python packages (start.sh installs these into booth/.venv).
+google-genai     # Gemini: the director and the presence scorer's emotion read
+torch            # presence scorer: CLIP ViT-H text tower, run on this laptop
+transformers
+numpy

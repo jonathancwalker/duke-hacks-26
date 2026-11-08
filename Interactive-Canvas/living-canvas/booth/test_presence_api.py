@@ -53,6 +53,13 @@ def test_presence_unavailable_is_a_clear_error():
         raise AssertionError("expected PresenceUnavailable")
 
 
+def test_health_says_whether_the_presence_scorer_is_ready():
+    bs.PRESENCE, bs.PRESENCE_ERROR = None, "FileNotFoundError: presence_library.npz (build it with presence/build.py)"
+    assert bs.presence_status() == "unavailable: FileNotFoundError: presence_library.npz (build it with presence/build.py)"
+    bs.PRESENCE = FakePresence()
+    assert bs.presence_status() == "ready"
+
+
 def _capture_render(v):
     seen = {}
     orig = bs.lab_frame

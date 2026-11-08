@@ -32,7 +32,9 @@ From `Interactive-Canvas/living-canvas/`:
 ./start.sh
 ```
 
-It starts the GPU VM, opens the tunnel to it, waits until the lab answers, then runs the booth in that terminal. Leave the terminal open. The first run on a laptop also sets up the booth's Python (`booth/.venv`). Run `./start.sh --dry-run` to see each command without starting anything.
+It starts the GPU VM, opens the tunnel to it, waits until the lab answers, then runs the booth in that terminal. Leave the terminal open. The first run on a laptop also sets up the booth's Python (`booth/.venv`, from `booth/requirements.txt`; torch is a large download) and downloads the presence scorer's CLIP text model (~4 GB). Run `./start.sh --dry-run` to see each command without starting anything.
+
+The vibe painters come from the presence scorer. It loads about 10 s after the booth starts: the booth's log says `presence scorer ready`, and http://localhost:8790/api/health shows `"presence": "ready"`. If it says `unavailable`, the presence library is missing on this laptop (start.sh warns about that too; build it once, see `presence/README.md`). Visits still work then, with the Gemini director picking the painters.
 
 Then in Chrome:
 

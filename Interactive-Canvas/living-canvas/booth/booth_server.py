@@ -639,6 +639,11 @@ def _unit(x, default=0.5):
     return max(0.0, min(1.0, x)) if math.isfinite(x) else default
 
 
+def presence_status():
+    """For /api/health: "ready", or why the director is picking painters instead."""
+    return "ready" if PRESENCE is not None else f"unavailable: {PRESENCE_ERROR}"
+
+
 def presence_api(v):
     """{feeling, loudness (or arousal), movement} -> {artists: [{name, weight, label, ...}], vectors, read}."""
     if PRESENCE is None:
@@ -819,9 +824,11 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/api/health":
             try:
                 lab = lab_exec("print(BOOTH['n'])", timeout=20)["stdout"].strip()
-                return self._send(200, {"lab": "ok", "visitors": int(lab or 0), "director": DIRECTOR_NAME})
+                return self._send(200, {"lab": "ok", "visitors": int(lab or 0), "director": DIRECTOR_NAME,
+                                        "presence": presence_status()})
             except Exception as e:
-                return self._send(200, {"lab": f"down: {e.__class__.__name__}", "director": DIRECTOR_NAME})
+                return self._send(200, {"lab": f"down: {e.__class__.__name__}", "director": DIRECTOR_NAME,
+                                        "presence": presence_status()})
         self._send(404, {"error": "not found"})
 
     def do_POST(self):
