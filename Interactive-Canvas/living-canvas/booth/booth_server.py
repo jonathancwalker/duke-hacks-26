@@ -674,6 +674,16 @@ def _num(x):
     return round(x, 2) if isinstance(x, float) else x
 
 
+NAME_MAX = 24
+
+
+def credit_name(name, n):
+    """The name a visit is credited under (shown on public screens): the visitor's name as the station cleaned it, or
+    "Visitor N" when they skipped or the name fails the same check as the reading (issue #30)."""
+    name = " ".join(str(name or "").split())[:NAME_MAX].strip()
+    return name if name and reading_is_safe(name) else f"Visitor {n}"
+
+
 def visit_save(v):
     """Store one finished visit. Images are written first and the JSON last (atomically), so a crash never leaves a
     visit that points at missing files."""
@@ -684,7 +694,7 @@ def visit_save(v):
         n = 1 + max([int(f[:4]) for f in os.listdir(TONIGHT) if re.fullmatch(r"\d{4}\.json", f)] or [0])
         vid = f"{n:04d}"
         rec = {"id": vid, "t": time.strftime("%Y-%m-%dT%H:%M:%S"),
-               "name": str(v.get("name") or "")[:60] or None,
+               "name": credit_name(v.get("name"), n),
                "reading": str(v.get("reading") or "")[:90],
                "painters": v.get("painters") or [], "presence": v.get("presence"),
                "start": v.get("start") if v.get("start") in ("chapel", "blank", "abstract") else None,
@@ -725,16 +735,26 @@ def gallery_state():
     after Reset and the projector must not show last night's cached 0001."""
     files = set(os.listdir(TONIGHT)) if os.path.isdir(TONIGHT) else set()
     ids = sorted(f[:4] for f in files if re.fullmatch(r"\d{4}\.json", f))
+    name = _latest_name(ids[-1]) if ids else None
     for vid in reversed(ids):
         for ext in ("jpg", "png"):
-            name = f"{vid}-canvas.{ext}"
-            if name in files:
+            img = f"{vid}-canvas.{ext}"
+            if img in files:
                 try:
-                    v = os.stat(os.path.join(TONIGHT, name)).st_mtime_ns
+                    v = os.stat(os.path.join(TONIGHT, img)).st_mtime_ns
                 except OSError:                       # Reset moved the folder aside mid-read: the next poll catches up
-                    return {"visits": 0, "id": None, "canvas": None}
-                return {"visits": len(ids), "id": vid, "canvas": f"/visits/{name}?v={v}"}
-    return {"visits": len(ids), "id": None, "canvas": None}
+                    return {"visits": 0, "id": None, "canvas": None, "name": None}
+                return {"visits": len(ids), "id": vid, "canvas": f"/visits/{img}?v={v}", "name": name}
+    return {"visits": len(ids), "id": None, "canvas": None, "name": name}
+
+
+def _latest_name(vid):
+    """The credited name of tonight's latest visit, for the gallery's "latest:" line (one small JSON read per poll)."""
+    try:
+        with open(os.path.join(TONIGHT, f"{vid}.json")) as f:
+            return json.load(f).get("name")
+    except (OSError, ValueError):
+        return None
 
 
 def visits_clear():

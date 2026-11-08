@@ -1,5 +1,5 @@
 // Montage: a fast replay of tonight's saved visits, in order, about a second each. Each visit's path reveals the canvas
-// as it was after that visit over the canvas as it was before it, captioned with the reading (and name, when stored),
+// as it was after that visit over the canvas as it was before it, captioned with the reading and who it's credited to,
 // ending on the night's final canvas. Revealing the saved canvases (not the mood frames) needs no GPU, and every step
 // lands exactly on what the station showed, palette-wash fallbacks included. ?loop replays forever, picking up new
 // visits each time (for the projector).
@@ -49,7 +49,7 @@ async function play() {
 
   const t0 = performance.now();
   for (const [i, s] of p.steps.entries()) {
-    say(s.caption || '…', [s.name, `visitor ${i + 1} of ${n}`].filter(Boolean).join(' · '));
+    say(s.caption || '…', [s.name, `${i + 1} of ${n}`].filter(Boolean).join(' · '));
     meter(i / n);
     const end = t0 + s.at + s.ms, after = imgs.get(s.after), strokes = s.visit.strokes?.filter(st => st.length) || [];
     if (after && strokes.length) await reveal(strokes, after, S.W * .08, .35, null, s.ms * REVEAL_SHARE);

@@ -1,5 +1,7 @@
 // The montage schedule: every saved visit in order, about a second each, then a hold on the night's final canvas.
 // Pure (no DOM), so node can test it: node vibe/test_montage.mjs.
+import { creditName } from './name_text.js';
+
 export const SLOT_MS = 1000, FINAL_MS = 4000, MAX_MS = 58000;
 
 // The visit's reading; without one (the rule-based director gives none), its painters, as the station names them.
@@ -8,6 +10,9 @@ function caption(v) {
   const names = (Array.isArray(v.painters) ? v.painters : []).map(a => String(a?.name || '').split(',')[0]).filter(Boolean);
   return names.length ? 'after ' + names.join(', ') : '';
 }
+
+// Who the visit is credited to (#30): the saved name, or "Visitor N" for visits saved before names were asked.
+const credit = v => v.name || (Number(v.id) ? creditName('', Number(v.id)) : null);
 
 // visits: /api/visits records, oldest first. Each step reveals its visit's canvas over `before` (the canvas as it was
 // before that visit: the previous saved canvas, or the first visit's own `before`). A long night gets shorter slots so
@@ -19,7 +24,7 @@ export function plan(visits) {
   const ms = Math.min(SLOT_MS, Math.floor((MAX_MS - FINAL_MS) / n));
   let before = visits[0].before || null;
   const steps = visits.map((v, i) => {
-    const s = { visit: v, before, after: v.canvas || null, caption: caption(v), name: v.name || null, at: i * ms, ms };
+    const s = { visit: v, before, after: v.canvas || null, caption: caption(v), name: credit(v), at: i * ms, ms };
     before = v.canvas || before;
     return s;
   });

@@ -25,7 +25,7 @@ export const fetchPresence = args => api('/api/presence', args);
 // { artists, vectors?, energy, warmth, light, atmosphere, mode } -> { image } : the event's scene repainted in the mood.
 // vectors: CLIP vectors for paintings outside the lab library, as fetchPresence returns them.
 export const fetchRender = args => api('/api/vibe/render', { ...args, event: EVENT });
-// Tonight's saved visits, oldest first: [{ id, t, name, reading, painters, presence, start, strokes, mood, canvas }].
+// Tonight's saved visits, oldest first: [{ id, t, name ('Visitor N' if skipped), reading, painters, presence, start, strokes, mood, canvas }].
 export const fetchVisits = async () => { const r = await fetch('/api/visits'); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); };
 // Store one finished visit (images as data URLs) -> { id }.
 export const saveVisit = v => api('/api/visits', v);
