@@ -14,8 +14,8 @@ import { fit, startCanvas, setTrailBlend, trace, reveal, clearTrail, paletteWash
 import { watchIdle } from './idle.js';
 import { playMontage } from './montage_play.js';
 import { stationButtons, downloadName } from './finish_plan.js';
+import { SPEAK_S, TRACE_S, SIM_TRACE_S } from './timing.js';
 
-const SPEAK_S = 10, TRACE_S = 12, SIM_TRACE_S = 5;
 // The station's screens (visit_ui.js): question card, 3 · 2 · 1, camera with meters, get-ready countdown. Look only;
 // every call is optional, so this module runs the same on a page without them.
 const ui = () => window.momento || {};
