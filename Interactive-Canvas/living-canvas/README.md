@@ -24,7 +24,7 @@ By default each visitor becomes a mix of real paintings plus intensity (`BOOTH_P
 
 **Brush experiment:** open http://localhost:8790/brush instead. You paint with your hands, in the hand of the painters Gemini picks from what you say (36 paintings), with a light AI glaze over your strokes afterward. Built on `Shared-Canvas`.
 
-**Vibe paint:** open http://localhost:8790/vibe. Say how you feel, trace a path in the air with a finger, and the painting is repainted in your mood only along that path. **Simulate** runs a pretend visitor. Pick what the night starts from at the top: the chapel, a blank canvas the chapel emerges from, or a blank canvas for abstract mood paint.
+**Vibe paint:** open http://localhost:8790/vibe. Say how you feel, trace a path in the air with a finger, and the painting is repainted in your mood only along that path. The painters come from the presence scorer (`presence/`): your words, voice loudness and movement pick 3 of about 2,600 WikiArt paintings. It needs `torch` and `transformers` in the booth's venv and a one-time library build (see `presence/README.md`); without it the Gemini director picks from the 36 lab paintings. **Simulate** runs a pretend visitor. Pick what the night starts from at the top: the chapel, a blank canvas the chapel emerges from, or a blank canvas for abstract mood paint.
 
 **Gallery:** open http://localhost:8790/gallery fullscreen on the projector. It shows tonight's shared canvas, crossfades to each new visit within about a second, and shows the visitor count and event name. It has no controls and no camera. A reload brings back the current canvas.
 
@@ -37,6 +37,7 @@ Stop the GPU when you're done (`gcloud compute instances stop ...`, same flags).
 - `booth/`: the booth page and server
 - `brush/`: the brush experiment page
 - `vibe/`: the vibe paint page
+- `presence/`: words + voice + movement → 3 paintings (`/api/presence`). Built from ArtEmis, which is licensed for non-commercial research and education only: the built library stays outside git.
 - `experiments/`: the GPU lab, experiments, and Google Cloud setup
 - `prototype/`, `artifact/`: early prototypes and explainer pages
 - `HYPOTHESES.md`: what we tried and what we learned
@@ -49,5 +50,5 @@ Stop the GPU when you're done (`gcloud compute instances stop ...`, same flags).
 - `hand.js`: camera + MediaPipe HandLandmarker, mirrored fingertip positions (`startCamera`, `readTips`)
 - `audio.js`: mic loudness and Web Speech → `{ feeling, arousal }` (`listen`)
 - `render.js`: canvas layout, linen start, glowing trails while tracing, bristle-masked reveal
-- `api.js`: calls to `/api/brush`, `/api/vibe/base`, `/api/vibe/render`
+- `api.js`: calls to `/api/brush`, `/api/presence`, `/api/vibe/base`, `/api/vibe/render`
 - `state.js`: shared state (`S`: canvas size, painting, start mode), DOM handles, small helpers
