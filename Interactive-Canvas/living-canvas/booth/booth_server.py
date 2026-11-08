@@ -641,6 +641,24 @@ def visits_list():
     return out
 
 
+def gallery_state():
+    """What the projector gallery shows: tonight's visit count and the latest saved canvas. Read from file names only,
+    so polling every second stays cheap. The canvas URL carries the file's write time, because ids restart at 0001
+    after Reset and the projector must not show last night's cached 0001."""
+    files = set(os.listdir(TONIGHT)) if os.path.isdir(TONIGHT) else set()
+    ids = sorted(f[:4] for f in files if re.fullmatch(r"\d{4}\.json", f))
+    for vid in reversed(ids):
+        for ext in ("jpg", "png"):
+            name = f"{vid}-canvas.{ext}"
+            if name in files:
+                try:
+                    v = os.stat(os.path.join(TONIGHT, name)).st_mtime_ns
+                except OSError:                       # Reset moved the folder aside mid-read: the next poll catches up
+                    return {"visits": 0, "id": None, "canvas": None}
+                return {"visits": len(ids), "id": vid, "canvas": f"/visits/{name}?v={v}"}
+    return {"visits": len(ids), "id": None, "canvas": None}
+
+
 def visits_clear():
     """Start a new night: tonight's folder is moved aside, not deleted."""
     with _VISITS_LOCK:
@@ -672,6 +690,11 @@ class Handler(BaseHTTPRequestHandler):
         if self.path.split("?")[0] in ("/montage", "/montage.html"):     # fast replay of tonight's visits
             with open(os.path.join(HERE, "..", "vibe", "montage.html"), "rb") as f:
                 return self._send(200, f.read(), "text/html; charset=utf-8")
+        if self.path.split("?")[0] in ("/gallery", "/gallery.html"):   # the projector screen (issue #26)
+            with open(os.path.join(HERE, "..", "vibe", "gallery.html"), "rb") as f:
+                return self._send(200, f.read(), "text/html; charset=utf-8")
+        if self.path == "/api/gallery":
+            return self._send(200, gallery_state())
         m = re.fullmatch(r"/vibe/([a-z_]+)\.(js|css)", self.path.split("?")[0])
         if m:                                          # vibe page modules and stylesheet
             p = os.path.join(HERE, "..", "vibe", f"{m[1]}.{m[2]}")
