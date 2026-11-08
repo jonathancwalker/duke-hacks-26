@@ -6,7 +6,7 @@ export const pctx = paint.getContext('2d'), tctx = trail.getContext('2d'), cctx 
 // W/H: canvas size. base: the night's painting so far. start: 'chapel' (pale underpainting; your path repaints it),
 // 'blank' (linen; your path reveals the chapel in your mood), 'abstract' (linen; your path lays down pure mood paint,
 // no scene: the most varied).
-export const S = { W: 768, H: 432, base: null, busy: false, visitors: 0, start: 'chapel' };
+export const S = { W: 768, H: 432, base: null, busy: false, asking: false, visitors: 0, start: 'chapel' };
 try { S.start = localStorage.getItem('vibe-start') || 'chapel'; } catch {}
 export const blankStart = () => S.start !== 'chapel';
 

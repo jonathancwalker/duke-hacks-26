@@ -2,16 +2,18 @@
 // saved as. Pure (no DOM), so node can test it: node vibe/test_finish.mjs.
 
 // busy: a visit, reset or the finishing montage is running. ready: the canvas is up. finished: the night was closed
-// out; the station holds on the final piece until Reset starts a new night.
-// -> { go, sim, reset, finish, download: { hidden, disabled } }
-export function stationButtons({ busy, ready, visitors, finished }) {
+// out; the station holds on the final piece until Reset starts a new night. asking: the question card is up.
+// After a visit the station rests on the painting until someone presses Next visitor, which brings the card back.
+// -> { go, sim, next, reset, finish, download: { hidden, disabled } }
+export function stationButtons({ busy, ready, visitors, finished, asking }) {
   const off = busy || !ready;
+  const hide = { hidden: true, disabled: true };
   if (finished) {
-    const hide = { hidden: true, disabled: true };
-    return { go: hide, sim: hide, finish: hide, reset: { hidden: false, disabled: busy },
+    return { go: hide, sim: hide, next: hide, finish: hide, reset: { hidden: false, disabled: busy },
              download: { hidden: busy, disabled: busy } };
   }
   return { go: { hidden: false, disabled: off }, sim: { hidden: false, disabled: off },
+           next: off || asking ? hide : { hidden: false, disabled: false },
            reset: { hidden: false, disabled: busy },     // Reset also recovers a canvas that failed to load
            finish: { hidden: false, disabled: off || !visitors },
            download: { hidden: true, disabled: true } };

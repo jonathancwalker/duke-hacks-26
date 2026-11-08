@@ -36,6 +36,25 @@ test('holding on the final piece of 12 visits: only Download and Reset (a new ni
   assert.ok(b.go.hidden && b.sim.hidden && b.finish.hidden, 'no more visits after finishing');
 });
 
+// Next visitor: the station waits on the painting after a visit until someone presses Next visitor (no timer).
+test('after a visit, with the painting showing, Next visitor is offered', () => {
+  const b = stationButtons({ ...live, asking: false });
+  assert.equal(b.next.hidden, false); assert.equal(b.next.disabled, false);
+});
+
+test('while the question card is up, there is no Next visitor button', () => {
+  assert.equal(stationButtons({ ...live, asking: true }).next.hidden, true);
+  assert.equal(stationButtons({ ...live, visitors: 0, asking: true }).next.hidden, true);
+});
+
+test('mid-visit, Next visitor is hidden', () => {
+  assert.equal(stationButtons({ ...live, busy: true, asking: false }).next.hidden, true);
+});
+
+test('holding on the final piece, Next visitor is hidden', () => {
+  assert.equal(stationButtons({ ...live, finished: true, asking: false }).next.hidden, true);
+});
+
 test('Duke Chapel Night on 7 Nov 2026 downloads as duke-chapel-night-2026-11-07.jpg', () => {
   assert.equal(downloadName({ id: 'museum', name: 'Duke Chapel Night' }, new Date(2026, 10, 7, 23, 30)),
                'duke-chapel-night-2026-11-07.jpg');
