@@ -2,6 +2,7 @@
 // (booth/booth.html labanFrom), and the whole talk becomes ONE movement score that sets the stroke's edge texture.
 // Only talk-time movement counts; how the fingertip moves while drawing never changes the texture.
 import { video } from './state.js';
+import { pickHand, boxOf } from './pick.js';
 
 let pose = null;
 
@@ -11,19 +12,22 @@ export async function startPose() {
   try {
     const { FilesetResolver, PoseLandmarker } = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14');
     const vision = await FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
-    pose = await PoseLandmarker.createFromOptions(vision, { runningMode: 'VIDEO', numPoses: 1,
+    pose = await PoseLandmarker.createFromOptions(vision, { runningMode: 'VIDEO', numPoses: 3,
       baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task', delegate: 'GPU' } });
   } catch (e) { console.warn('pose unavailable', e); }
 }
 
 // Record wrists until stop() is called; stop() returns the Laban effort of the whole recording.
+// Several bodies in frame: lock onto the largest (nearest) one and follow it by its nose, same rule as the drawing hand.
 export function trackMoves() {
-  const track = []; let on = true, lastT = -1;
+  const track = []; let on = true, lastT = -1, lock = null;
   const loop = now => {
     if (!on) return;
     if (pose && video.readyState >= 2 && video.currentTime !== lastT) {
       lastT = video.currentTime;
-      const L = pose.detectForVideo(video, now).landmarks?.[0];
+      const bodies = (pose.detectForVideo(video, now).landmarks || []).map(L => ({ ...boxOf(L, 0), L }));   // 0: nose
+      const pick = pickHand(bodies, lock, now / 1000), L = pick.hand?.L;
+      lock = pick.lock;
       if (L) track.push({ t: now / 1000, l: L[15].visibility > .5 ? [L[15].x, L[15].y] : null, r: L[16].visibility > .5 ? [L[16].x, L[16].y] : null });
     }
     requestAnimationFrame(loop);

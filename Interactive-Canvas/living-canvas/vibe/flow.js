@@ -72,7 +72,7 @@ async function visit(sim) {
     say(sim ? 'Tracing…' : 'Now trace a path in the air with your finger.', `${d.reason}`);
     $('#sub').prepend(Object.assign(document.createElement('span'), { id: 'swatches',
       innerHTML: look.palette.slice(0, 8).map(c => `<i style="background:${c}"></i>`).join('') }));
-    resetTips();
+    resetTips();                                          // locks onto the largest hand: the 3, 2, 1 should end here
     const strokes = await trace(sim ? SIM_TRACE_S : TRACE_S, look, sim ? sim.path : readTips);
     video.classList.remove('on');
     if (!strokes.length) { say('No path this time.', 'Hold a hand up where the camera can see it, then trace.'); clearTrail(); return; }
