@@ -1,0 +1,129 @@
+<title>Momento Style Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="momento.css">
+<style>
+/* Layout: a single column reference for momento.css; each block shows a piece and the class names to use. */
+:root{color-scheme:dark}
+html,body{background:#171615}
+.guide{max-width:1040px; margin:0 auto; padding-block:40px 80px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); display:grid; gap:48px}
+.sec{display:grid; gap:16px}
+.sec h2{margin:0; font:700 22px/1.1 var(--m-font); letter-spacing:-.03em}
+.code{font:12px/1.6 var(--m-mono); color:var(--m-muted); background:#1E1D1B; border:1px solid var(--m-line-soft); border-radius:10px; padding:12px 14px; overflow-x:auto; white-space:pre}
+.swatches{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px}
+.sw{display:grid; gap:6px; font-size:13px}
+.sw i{display:block; height:64px; border-radius:12px; border:1px solid var(--m-line)}
+.sw b{font-weight:600}
+.sw span{color:var(--m-muted); font:12px var(--m-mono)}
+.demo{background:#171615; border:1px dashed var(--m-line); border-radius:20px; padding:28px; display:grid; place-items:center; gap:20px; overflow:hidden}
+.panel-demo{position:static; width:100%; max-width:400px; box-shadow:none; border:1px solid var(--m-line-soft); border-radius:16px}
+.meter-demo canvas{background:none}
+</style>
+
+<div class="m-body">
+<main class="guide">
+  <header class="sec">
+    <span class="m-label">Momento</span>
+    <h1 class="m-display" style="max-width:none">Style guide</h1>
+    <p class="m-text m-muted">Link <b style="color:var(--m-fg)">momento.css</b> and use these classes, so every new Momento screen matches the booth. Keep it neutral: the only color on screen should be the painting.</p>
+    <div class="code">&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&amp;display=swap"&gt;
+&lt;link rel="stylesheet" href="momento.css"&gt;
+&lt;body class="m-body"&gt;</div>
+  </header>
+
+  <section class="sec">
+    <h2>Color</h2>
+    <div class="swatches">
+      <div class="sw"><i style="background:var(--m-bg)"></i><b>Page</b><span>--m-bg #171615</span></div>
+      <div class="sw"><i style="background:var(--m-surface)"></i><b>Panel</b><span>--m-surface #1E1D1B</span></div>
+      <div class="sw"><i style="background:var(--m-card)"></i><b>Card</b><span>--m-card #252421</span></div>
+      <div class="sw"><i style="background:var(--m-field)"></i><b>Field</b><span>--m-field #272623</span></div>
+      <div class="sw"><i style="background:var(--m-fg)"></i><b>Text and buttons</b><span>--m-fg #F1EDE6</span></div>
+      <div class="sw"><i style="background:var(--m-muted)"></i><b>Labels</b><span>--m-muted #A09A90</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Type</h2>
+    <div class="demo" style="justify-items:start">
+      <span class="m-label">m-label · MOMENTO</span>
+      <h3 class="m-display">How do you feel today?</h3>
+      <p class="m-title">m-title · Your moment</p>
+      <p class="m-text">m-text · Say it out loud, then move however you feel for ten seconds.</p>
+      <p class="m-small m-muted">m-small m-muted · secondary text</p>
+      <span class="m-num" style="font-size:120px">3</span>
+    </div>
+    <div class="code">.m-display  the question (bold Helvetica)     .m-title  headings
+.m-text     body                               .m-label  small caps labels
+.m-num      the 3 · 2 · 1 countdown            .m-muted  grey text</div>
+  </section>
+
+  <section class="sec">
+    <h2>The card</h2>
+    <div class="demo" style="padding:20px">
+      <div class="m-card" style="width:100%; max-height:none">
+        <span class="m-card__brand m-label">Momento</span>
+        <h3 class="m-display">How do you feel today?</h3>
+        <button class="m-btn-round" type="button">Start</button>
+      </div>
+    </div>
+    <div class="code">&lt;div class="m-card"&gt;
+  &lt;span class="m-card__brand m-label"&gt;Momento&lt;/span&gt;
+  &lt;h1 class="m-display"&gt;How do you feel today?&lt;/h1&gt;
+  &lt;button class="m-btn-round"&gt;Start&lt;/button&gt;
+&lt;/div&gt;
+Several screens in one card: give each .m-screen and toggle .is-off</div>
+  </section>
+
+  <section class="sec">
+    <h2>Buttons</h2>
+    <div class="demo"><div class="m-row" style="justify-content:center; --m-gap:16px">
+      <button class="m-btn-round" type="button">Start</button>
+      <button class="m-btn" type="button">Primary</button>
+      <button class="m-btn m-btn--ghost" type="button">Ghost</button>
+      <button class="m-btn m-btn--small" type="button">Small</button>
+      <button class="m-link" type="button">Text link</button>
+      <span class="m-kbd">space</span>
+    </div></div>
+    <div class="code">.m-btn-round  the Start circle      .m-btn  primary       .m-btn--ghost  outlined
+.m-btn--small  compact              .m-link  text link    .m-kbd  key hint</div>
+  </section>
+
+  <section class="sec">
+    <h2>Forms and panels</h2>
+    <div class="demo">
+      <aside class="m-panel panel-demo">
+        <div class="m-panel__head"><b class="m-title" style="font-size:17px">Event setup</b><button class="m-icon-btn" type="button" aria-label="Close">&times;</button></div>
+        <div class="m-field"><label for="sgEv">What's the event?</label><input class="m-input" id="sgEv" placeholder="Duke hackathon"></div>
+        <button class="m-btn m-btn--block" type="button">Write questions with AI</button>
+        <p class="m-status">Pick one. It shows on the card right away.</p>
+        <div class="m-options" role="radiogroup" aria-label="Example options">
+          <button class="m-option" role="radio" aria-checked="true" type="button">How is your brain feeling right now?</button>
+          <button class="m-option" role="radio" aria-checked="false" type="button">What kept you going today?</button>
+        </div>
+      </aside>
+    </div>
+    <div class="code">.m-panel  side drawer   .m-field + .m-input  labelled input   .m-options / .m-option  pick one
+.m-status  small status line (add .is-error for problems)</div>
+  </section>
+
+  <section class="sec">
+    <h2>Camera and meters</h2>
+    <div class="demo meter-demo">
+      <div class="m-camera"><span class="m-camera__corner">7</span><span class="m-camera__note">camera</span><div class="m-timebar"><i style="width:30%"></i></div></div>
+      <div class="m-meters"><span>Vol</span><canvas id="sgVol"></canvas><span>Move</span><canvas id="sgMove"></canvas></div>
+    </div>
+    <div class="code">.m-camera (put the &lt;video&gt; inside; it's mirrored)  .m-camera__corner  seconds   .m-timebar &gt; i  progress
+.m-meters: label + canvas per row. Draw bars in --m-fg, newest on the left, fading right.</div>
+  </section>
+</main>
+</div>
+<script>
+// draws sample bars so the meters section isn't empty
+(function(){
+  function draw(id, seed){ const c=document.getElementById(id), d=Math.min(devicePixelRatio||1,2); c.width=c.clientWidth*d; c.height=c.clientHeight*d; const g=c.getContext('2d'), N=48, W=c.width, H=c.height, gap=W/N, bw=Math.max(2,gap*.42);
+    g.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--m-fg').trim()||'#F1EDE6';
+    for(let i=0;i<N;i++){ const v=Math.max(.08, Math.abs(Math.sin(i*0.45+seed))*Math.exp(-i/26)); g.globalAlpha=1-.75*(i/N); g.fillRect(i*gap+(gap-bw)/2,(H-v*H*.95)/2,bw,v*H*.95); } }
+  draw('sgVol',1.3); draw('sgMove',0.2);
+})();
+</script>

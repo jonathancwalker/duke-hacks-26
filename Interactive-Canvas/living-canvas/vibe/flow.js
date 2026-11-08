@@ -4,7 +4,7 @@
 // This module is the visit state machine: speak -> brush -> trace -> reveal -> commit, plus start modes and Simulate.
 import { S, $, video, sleep, say, bar, loadImg } from './state.js';
 import { fetchEvent, fetchBase, fetchBrush, fetchRender, fetchVisits, saveVisit, clearVisits } from './api.js';
-import { listen } from './audio.js';
+import { listen, envelope } from './audio.js';
 import { startCamera, readTips, resetTips } from './hand.js';
 import { startPose, trackMoves, moveScore } from './move.js';
 import { fit, startCanvas, setTrailBlend, trace, reveal, clearTrail, paletteWash } from './render.js';
@@ -46,13 +46,29 @@ async function reset(clear) {
   S.busy = false; setButtons();
 }
 
+// ---------------------------------------------------------------- arriving from the booth
+// The booth page (/) asks the question and captures 10 s of voice and movement, then sends the visitor here to draw.
+// Its capture arrives in sessionStorage; this page skips its own listening step and returns to the booth afterward.
+function boothHandoff() {
+  if (new URLSearchParams(location.search).get('from') !== 'booth') return null;
+  try {
+    const h = JSON.parse(sessionStorage.getItem('booth-visit') || 'null');
+    sessionStorage.removeItem('booth-visit');               // one drawing per capture, even on reload
+    if (!h || Date.now() - h.t > 120000) return null;       // stale: the visitor has long gone
+    return { heard: { feeling: h.feeling, arousal: h.arousal ?? .3, envelope: Array.isArray(h.levels) ? envelope(h.levels) : null },
+             laban: h.laban };
+  } catch (e) { console.warn('booth handoff unreadable', e); return null; }
+}
+const fromBooth = boothHandoff();
+
 // ---------------------------------------------------------------- one visit
-async function visit(sim) {
+async function visit(sim, pre) {
   if (S.busy || !S.base) return;
   S.busy = true; setButtons();
   try {
     let heard, laban;
     if (sim) { heard = sim.heard; laban = sim.laban; say(`“${heard.feeling}”`, `a pretend visitor, ${sim.voice}`); await sleep(900); }
+    else if (pre) { heard = pre.heard; laban = pre.laban; await startCamera(); video.classList.add('on'); }   // the booth already listened
     else {
       await startCamera(); await startPose(); video.classList.add('on');
       say(S.event.question, 'Say it out loud, any way you like.');
@@ -94,7 +110,10 @@ async function visit(sim) {
     say('Next visitor: step up.', 'Each visit repaints only the path its hands drew.');
   } catch (e) {
     console.error(e); say('Something went wrong.', String(e.message || e));
-  } finally { S.busy = false; setButtons(); bar(0); video.classList.remove('on'); }
+  } finally {
+    S.busy = false; setButtons(); bar(0); video.classList.remove('on');
+    if (pre) setTimeout(() => { location.href = '/'; }, 2500);   // back to the booth card for the next visitor
+  }
 }
 
 // A pretend visitor: a scripted feeling, how they moved while saying it, a voice loudness shape and a looping path, so
@@ -128,4 +147,8 @@ document.querySelectorAll('.modes button').forEach(b => b.onclick = () => {
   reset(true);
 });
 addEventListener('keydown', e => { if (e.code === 'Space' && !S.busy) { e.preventDefault(); visit(); } });
-reset();
+reset().then(() => {
+  if (!fromBooth) return;
+  if (S.base) visit(null, fromBooth);
+  else setTimeout(() => { location.href = '/'; }, 4000);   // no canvas to draw on: back to the booth rather than strand them
+});
