@@ -1,0 +1,5 @@
+# Built from ArtEmis (non-commercial research only): never commit
+*.npz
+*.npy
+build.json
+__pycache__/

@@ -18,7 +18,12 @@ export async function fetchEvent() {
 export const fetchBase = () => api('/api/vibe/base', { event: EVENT });
 // heard { feeling, arousal } -> { artists, palette, size, energy, warmth, light, atmosphere, reason }.
 export const fetchBrush = heard => api('/api/brush', heard);
-// { artists, energy, warmth, light, atmosphere, mode } -> { image } : the event's scene repainted in the mood.
+// { feeling, loudness, movement } -> { artists: [{ name, weight, label }], vectors, read } : the presence scorer's
+// 3 paintings (issue #7), from the text head blended with Gemini's read (up to 8 s). Fails (503) when the scorer is
+// not loaded; the director's painters are used then.
+export const fetchPresence = args => api('/api/presence', args);
+// { artists, vectors?, energy, warmth, light, atmosphere, mode } -> { image } : the event's scene repainted in the mood.
+// vectors: CLIP vectors for paintings outside the lab library, as fetchPresence returns them.
 export const fetchRender = args => api('/api/vibe/render', { ...args, event: EVENT });
 // Tonight's saved visits, oldest first: [{ id, t, name ('Visitor N' if skipped), reading, painters, presence, start, strokes, mood, canvas }].
 export const fetchVisits = async () => { const r = await fetch('/api/visits'); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); };
