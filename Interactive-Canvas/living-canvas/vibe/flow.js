@@ -26,7 +26,8 @@ const showCount = () => { $('#count').textContent = S.visitors ? `${S.visitors} 
 async function reset(clear) {
   S.busy = true; setButtons(); stopGlow(false);
   try {
-    S.event = S.event || await fetchEvent();          // the event's question, scene and closing (events/*.json)
+    // The event's question, scene and closing (events/*.json). Reset re-reads it, so an event saved on /setup goes live.
+    if (clear || !S.event) S.event = await fetchEvent();
     if (clear) { await clearVisits(); S.finished = false; $('#say').classList.remove('long'); }
     const saved = clear ? [] : await fetchVisits().catch(e => (console.warn('saved visits unavailable', e), []));
     const last = saved[saved.length - 1];

@@ -5,9 +5,9 @@ async function api(path, body) {
   if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
   return j;
 }
-// The event this page is for: ?event=<name> on the page URL, else the server's BOOTH_EVENT.
+// The event this page is for: ?event=<name> on the page URL, else the server's active event (set on /setup).
 const EVENT = new URLSearchParams(location.search).get('event') || undefined;
-// { id, name, kind, question, scene, closing } : the active event's config.
+// { id, name, kind, question, scene, closing, context?, voice?, date? } : the active event's config.
 export async function fetchEvent() {
   const r = await fetch('/api/event' + (EVENT ? `?event=${encodeURIComponent(EVENT)}` : ''));
   const j = await r.json().catch(() => ({}));
